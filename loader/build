@@ -1,0 +1,11 @@
+#!/bin/bash
+
+CODE_FNAME="fast_loader"
+mips64-gcc -Wall -Wno-pointer-sign -Wno-main -mno-gpopt -fomit-frame-pointer -G 0 -Os --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy -fdata-sections -ffunction-sections -c -o $CODE_FNAME.o $CODE_FNAME.c
+# mips64-ld -o $CODE_FNAME.elf $CODE_FNAME.o --gc-sections --emit-relocs -T $CODE_FNAME.ld
+mips64-ld -o $CODE_FNAME.elf $CODE_FNAME.o --emit-relocs -T $CODE_FNAME.ld
+mips64-objcopy -R .MIPS.abiflags -O binary $CODE_FNAME.elf $CODE_FNAME.bin
+rm $CODE_FNAME.o
+rm $CODE_FNAME.elf
+hexdump -C $CODE_FNAME.bin
+

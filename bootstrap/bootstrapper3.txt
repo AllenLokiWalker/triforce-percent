@@ -1,0 +1,9 @@
+New Bootstrapper 3 is the same as BS1, except we're now executing from the
+context of padmgr_HandleRetraceMsg (func_800A25DC)--at 3x the speed.
+Important: s0 = 8011D500 = padmgr 
+Looks like memory from 8011DDA0 to 8011E640 is free, not sure about beginning and end of it
+Looks like the end is a stack
+Maybe use 8011E400 for safety--looks like here to about 0x100 after this is never read/written during normal gameplay
+
+Basically the difference with BS1 is that we`re now using s0 instead of s1, and the starting offset is different
+And also, BS1 is 3 frames of the same thing repeatedly, whereas BS3 is single frames
