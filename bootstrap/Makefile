@@ -1,6 +1,6 @@
-.PHONY: all clean
+.PHONY: default clean
 
-all: bootstrapper2.bin bootstrapper4.bin
+default: bootstrapper2.bin bootstrapper4.bin
 
 %.o: %.s
 	mips64-as -Os -o $@ $<

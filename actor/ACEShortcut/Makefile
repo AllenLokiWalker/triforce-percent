@@ -1,9 +1,7 @@
 PROGRAM = ACEShortcut
 OVLOUT = actor.zovl
 ADDRESS = 0x80800000
-ACTORDIR = "../../../fs-test-1.0U/actor/130"
-ZZRTLEXE = "../../../../Tools/zzrtl-0.01-r2/zzrtl"
-RTL = "../../../fs-test-1.0U/oot_build.rtl"
+ACTORDIR = "../../build-shortcut/actor/130"
 PARTS = $(PROGRAM).o
 
 CC   = mips64-gcc
@@ -21,7 +19,6 @@ $(PROGRAM).ovl: $(PARTS)
 	$(NOVL) $(NOVLFLAGS) $(PROGRAM).elf
 	cp $(OVLOUT) $(ACTORDIR)
 	cp conf.txt $(ACTORDIR)
-	$(ZZRTLEXE) $(RTL)
 
 clean:
 	rm -fv $(PROGRAM).elf $(OVLOUT) $(PARTS)

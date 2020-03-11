@@ -1,9 +1,7 @@
 PROGRAM = triforcepiece
 OVLOUT = actor.zovl
 ADDRESS = 0x80800000
-ACTORDIR = "../../../triforce-fs/actor/130 - Triforce"
-ZZROMTOOLEXE = "../../../../Tools/zzromtool-0.01-r4/linux/zzromtool"
-ZZRP = "../../../triforce-fs/project.zzrp"
+ACTORDIR = "../../build-romhack/actor/130"
 PARTS = $(PROGRAM).o
 
 CC   = mips64-gcc
@@ -21,7 +19,6 @@ $(PROGRAM).ovl: $(PARTS)
 	$(NOVL) $(NOVLFLAGS) $(PROGRAM).elf
 	cp $(OVLOUT) $(ACTORDIR)
 	cp conf.txt $(ACTORDIR)
-	$(ZZROMTOOLEXE) $(ZZRP) --silent
 
 clean:
 	rm -fv $(PROGRAM).elf $(OVLOUT) $(PARTS)
