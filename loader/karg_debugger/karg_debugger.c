@@ -20,6 +20,7 @@ typedef struct {
 	u8  memview_blinker;
 	u8  f_blank_screen;
 	u8  f_input_disable;
+	u32 random;
 	u8  padmode;
 } __attribute__((packed)) debugger_globals_t;
 
@@ -52,6 +53,17 @@ void print_pad( raw_input_t pad, u16 x, u16 y ) {
 	_printf( x, y, "%4i %4i", pad.s.x, pad.s.y );
 }
 
+u32 random( void ) {
+	return dgvars.random = 1103515245U * dgvars.random + 24691U;
+}
+
+void clear_cs( void ) {
+	extern volatile void* cutscene_pointer;
+	const u32 null_cs[] = {0,0};
+	asm("cutscene_pointer = 0xA01CA208");
+	cutscene_pointer = (void*)&null_cs;
+}
+
 // entry point
 void run( void ) __attribute__((section(".start")));
 void run( void ) {
@@ -61,9 +73,9 @@ void run( void ) {
 	}
 	
 	if( dgvars.f_blank_screen )
-		draw_rectangle( 20, 48, 250, 152, color_black );
+		draw_rectangle( 20, 64, 20+230, 64+104, color_black );
 	
-	_printf( 20, 48, "Page %u", dgvars.current_page );
+	_printf( 20, 64, "Page %u", dgvars.current_page );
 	
 	// before menu code is run
 	
@@ -101,19 +113,19 @@ void run( void ) {
 	switch( dgvars.current_page ) {
 		
 		case  1: { // print pads
-			_puts( "pad data:", 20, 56 );
-			print_pad( padmgr.pads[0], 20, 64 );
-			print_pad( padmgr.pads[1], 20, 72 );
-			print_pad( padmgr.pads[2], 20, 80 );
-			print_pad( padmgr.pads[3], 20, 88 );
+			_puts( "pad data:", 20, 72 );
+			print_pad( padmgr.pads[0], 20,  80 );
+			print_pad( padmgr.pads[1], 20,  88 );
+			print_pad( padmgr.pads[2], 20,  96 );
+			print_pad( padmgr.pads[3], 20, 104 );
 		} break;
 		
 		case  2: { // print raw pad data
-			print_string_and_bytes( 20, 56, "raw pad data:", padmgr.pads, 24, 12 );
+			print_string_and_bytes( 20, 72, "raw pad data:", padmgr.pads, 24, 12 );
 		} break;
 		
 		case  3: { // print command output data
-			print_string_and_bytes( 20, 56, "command data:", &gvars.out.bytes, _data_len, 12 );
+			print_string_and_bytes( 20, 72, "command data:", &gvars.out.bytes, _data_len, 12 );
 		} break;
 		
 		case  4:
@@ -175,17 +187,17 @@ void run( void ) {
 				u32 x;
 				u16 offset_x, offset_y;
 				offset_x = ( dgvars.memview_addr_offset & 15 ) * 14;
-				offset_y = ( ( dgvars.memview_addr_offset >> 4 ) *  8 ) + 64;
+				offset_y = ( ( dgvars.memview_addr_offset >> 4 ) *  8 ) + 80;
 				x = 20; x += _letter_width; x -= (dgvars.memview_nybble >> 2)*_letter_width; x += offset_x;
 				draw_rectangle( x, offset_y, x + _letter_width, offset_y + _letter_height, cursor_colors[ (dgvars.memview_blinker >> 5) & 1 ] );
 			} else {
 				u32 x;
 				x = 20; x += 16 * _letter_width; x -= (dgvars.memview_nybble >> 2)*_letter_width;
-				draw_rectangle( x, 56, x + _letter_width, 56 + _letter_height, cursor_colors[ (dgvars.memview_blinker >> 5) & 1 ] );
+				draw_rectangle( x, 72, x + _letter_width, 72 + _letter_height, cursor_colors[ (dgvars.memview_blinker >> 5) & 1 ] );
 			}
 			// draw values
-			_printf( 20, 56, "Address: %08X", dgvars.memview_addr );
-			print_bytes( 20, 64, (void*)dgvars.memview_addr, 16*5, 16 );
+			_printf( 20, 72, "Address: %08X", dgvars.memview_addr );
+			print_bytes( 20, 80, (void*)dgvars.memview_addr, 16*5, 16 );
 			
 			++dgvars.memview_blinker;
 		} break;
@@ -195,25 +207,27 @@ void run( void ) {
 			if( padmgr.pads[0].buttons.cu ) { link_vel.y = 7.5f; padmgr.pads[0].buttons.cu = 0; };
 			if( padmgr.pads[0].buttons.dd ) link_vel.y = -15.0f;
 			//if( pad_last.buttons.l ) link_speed = 40.0f;
-			_puts( "Velocity:", 20, 56 );
-			_printf( 20, 64, "X %.3f", link_vel.x );
-			_printf( 20, 72, "Y %.3f", link_vel.y );
-			_printf( 20, 80, "Z %.3f", link_vel.z );
-			_printf( 20, 96, "Speed %.3f", link_speed );
+			_puts( "Velocity:", 20, 72 );
+			_printf( 20,  80, "X %.3f", link_vel.x );
+			_printf( 20,  88, "Y %.3f", link_vel.y );
+			_printf( 20,  96, "Z %.3f", link_vel.z );
+			_printf( 20, 104, "Speed %.3f", link_speed );
 		} break;
 		
 		case  7: {
 			if( !dgvars.pad_last.buttons.cr && padmgr.pads[0].buttons.cr ) dgvars.f_blank_screen = 1;
 			if( !dgvars.pad_last.buttons.cl && padmgr.pads[0].buttons.cl ) dgvars.f_blank_screen = 0;
-			_printf( 20, 56, "Blank screen: %u", dgvars.f_blank_screen );
+			_printf( 20, 72, "Blank screen: %u", dgvars.f_blank_screen );
 			dgvars.f_input_disable = 1;
 		} break;
 		
 		
 		case  8: {
-			if( padmgr.pads[0].buttons.dd ) link_health = 0;
-			if( padmgr.pads[0].buttons.du ) b_button_slot = 0x2C;
-			_puts( "D-pad down: kill Link\nD-pad up: sold-out on B", 20, 56 );
+			if( padmgr.pads[0].buttons.cu ) link_health = 0;
+			if( padmgr.pads[0].buttons.cl ) b_button_slot = 0x2C;
+			if( padmgr.pads[0].buttons.cr ) clear_cs();
+			_puts( "C-up: kill Link\nC-left: SOLD OUT on B\nC-right: clear cutscene pointer", 20, 72 );
+			dgvars.f_input_disable = 1;
 		} break;
 		
 		case  9: { // change FPS divider
@@ -221,7 +235,7 @@ void run( void ) {
 				*((volatile s8*)0xA01C6FA1) -= ( *((volatile s8*)0xA01C6FA1) == 1 ) ? 2 : 1;
 			if( !dgvars.pad_last.buttons.cr && padmgr.pads[0].buttons.cr )
 				*((volatile s8*)0xA01C6FA1) += ( *((volatile s8*)0xA01C6FA1) == -1 ) ? 2 : 1;
-			_printf( 20, 56, "FPS divider: %i", *((volatile s8*)0xA01C6FA1) );
+			_printf( 20, 72, "FPS divider: %i", *((volatile s8*)0xA01C6FA1) );
 			dgvars.f_input_disable = 1;
 		} break;
 		
@@ -230,7 +244,7 @@ void run( void ) {
 				--dgvars.padmode;
 			if( !dgvars.pad_last.buttons.cr && padmgr.pads[0].buttons.cr )	
 				++dgvars.padmode;
-			_printf( 20, 56, "pad mode: %u", dgvars.padmode );
+			_printf( 20, 72, "pad mode: %u", dgvars.padmode );
 			dgvars.f_input_disable = 1;
 		} break;
 		
@@ -238,6 +252,13 @@ void run( void ) {
 	}
 	
 	dgvars.pad_last = padmgr.pads[ 0 ];
+	
+	if( dgvars.padmode == 3 ) {
+		padmgr.pads[0].b1 = ( random() >> 24 ) & 0xEF;
+		padmgr.pads[0].b2 = random() >> 26;
+		padmgr.pads[0].x  = random() >> 24;
+		padmgr.pads[0].y  = random() >> 24;
+	}
 	
 	if( dgvars.f_input_disable ) _memset( padmgr.pads, 0, 4 );
 	return;

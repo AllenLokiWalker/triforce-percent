@@ -91,7 +91,6 @@ void run( void* queue ) {
 		rumble_message( 2 ); // ack
 		
 		switch( gvars.out.command.id ) {
-			// S = usable data, minus signalling data
 			
 			case 1: //   fixed 81 byte size
 			case 2: { // up to 80 byte size
@@ -151,7 +150,6 @@ void rumble_message( u32 bits ) {
 }
 
 void pad_sanitize( raw_input_t* bits ) {
-	//const u8 dpad_encoder[16] = {0,7,3,0,5,6,4,0,1,8,2,0,0,0,0,0}; // D-pad positions: nothing | up | up-left | left | down-left | down | down-right | right | up-right
 	if( bits->status ) _memset( bits->bytes, 0, 4 );
 	if( bits->b2 & 0x80 ) { // this bit gets set on official N64 controllers when holding L+R+Start
 		bits->b2 |= 0x30; // assume that those buttons are being held
