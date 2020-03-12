@@ -32,8 +32,8 @@ void rumble_message( u32 bits );
 void run( void* queue ) {
 	// Draw green bar in the corner
 	const u64 green64 = 0x7c107c107c107c1ULL;
-	(*((volatile u64**)0x8011F56C))[3686] = green64;
-	(*((volatile u64**)0x8011F56C))[3687] = green64;
+	(*((volatile u64**)0x8011F56C))[1286] = green64; // shifted two pixels to the right of the "real" one
+	(*((volatile u64**)0x8011F56C))[1287] = green64; // due to longword alignment
 	
 	// Poll controllers
 	{
