@@ -3,6 +3,7 @@ ifeq ("$(wildcard local.mk)","")
 endif
 
 include local.mk
+export
 
 ifeq ("$(and $(wildcard build-shortcut/oot_1.0U_uncomp.z64), $(wildcard build-romhack/oot_1.0U_uncomp.z64))","")
     $(error Original ROMs not found, please read README.md)
@@ -15,11 +16,11 @@ ifeq ("$(and $(wildcard build-romhack/oot_build.rtl), $(wildcard build-romhack/o
     $(shell cp toolchain/zzrtl/oot_build.rtl toolchain/zzrtl/oot_dump.rtl build-romhack/)
 endif
 
-SUBDIRS = actor/ bootstrap/ loader/ music/ scene/
+SUBDIRS = actor/ music/ scene/
 
-.PHONY: default clean dumps builds $(SUBDIRS)
+.PHONY: default clean dumps builds $(SUBDIRS) loader bootstrap
 
-default: dumps builds $(SUBDIRS)
+default: dumps builds $(SUBDIRS) loader bootstrap
 
 dumps: build-shortcut/project.zzrpl build-romhack/project.zzrpl
 
@@ -33,3 +34,9 @@ builds: build-shortcut/build.z64 build-romhack/build.z64
 
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
+
+loader: $(SUBDIRS)
+	$(MAKE) -C loader/ $(MAKECMDGOALS)
+    
+bootstrap: loader
+	$(MAKE) -C bootstrap/ $(MAKECMDGOALS)
