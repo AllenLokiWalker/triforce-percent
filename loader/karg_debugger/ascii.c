@@ -133,6 +133,11 @@ const u16 button_gfx[ 128 ] = {
 	 2720, 7544,30686,30046,30686,30686, 8180, 1360
 };
 
+extern volatile u16* volatile framebuffer16;
+extern volatile u64* volatile framebuffer64;
+asm( ".equ framebuffer16, 0x8011F56C" );
+asm( ".equ framebuffer64, 0x8011F56C" );
+
 // screen bounds:
 // 4 <= X <= 316
 // 1 <= Y <= 237
@@ -143,7 +148,7 @@ void put_pixel( u32 x, u32 y, u16 color ) {
 	if( y >= 240 ) return;
 	y *= 320;
 	y += x;
-	(*((volatile u16**)0x8011F56C))[ y ] = color;
+	framebuffer16[ y ] = color;
 }
 
 void draw_button( u16 x, u16 y, u16 button ) {
@@ -265,17 +270,27 @@ void print_color( u16 x, u16 y, u16 color ) {
 
 void draw_rectangle( u16 x_start, u16 y_start, u16 x_end, u16 y_end, u16 color ) {
 	u32 x, y;
+	union __attribute__((packed)) {
+		u64 color64;
+		u16 color16[4];
+	} u;
+	x_start >>= 2;
+	x_end >>= 2;
 	if( x_start == x_end ) return;
 	if( y_start == y_end ) return;
 	if( x_end < x_start ) {u16 swap; swap = x_end; x_end = x_start; x_start = swap;};
 	if( y_end < y_start ) {u16 swap; swap = x_end; x_end = x_start; x_start = swap;};
-	if( x_start >= 320 ) return;
+	if( x_start >= 80 ) return;
 	if( y_start >= 240 ) return;
-	if( x_end > 320 ) x_end = 320;
+	if( x_end > 80 ) x_end = 80;
 	if( y_end > 240 ) y_end = 240;
+	u.color16[0] = color;
+	u.color16[1] = color;
+	u.color16[2] = color;
+	u.color16[3] = color;
 	for( y = y_start; y < y_end; ++y )
 		for( x = x_start; x < x_end; ++x )
-			(*((u16**)0x8011F56C))[ y * 320 + x ] = color;
+			framebuffer64[ y * 80 + x ] = u.color64;
 }
 
 #endif

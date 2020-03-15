@@ -32,7 +32,7 @@ def command_to_bitstream( _command ):
 	command = 0
 	
 	# load_bytes <address> <data>
-	# ex. "load_bytes 0xA0402000 39,189,255,200,175,176,0,36,60,16,128,65,38,16,64,0,..."
+	# ex. "load_bytes 0x80402000 39,189,255,200,175,176,0,36,60,16,128,65,38,16,64,0,..."
 	# * if  < 81 bytes are given, command 2 will be used
 	# * if == 81 bytes are given, command 1 will be used
 	# * if  > 81 bytes are given, extra bytes are ignored

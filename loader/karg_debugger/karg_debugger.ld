@@ -4,10 +4,10 @@ OUTPUT_ARCH (mips)
 
 INCLUDE ../karg_common/karg_common.ld
 
-link_vel      = 0xA01DAA8C;
-link_speed    = 0xA01DAA98;
-link_health   = 0xA011A600;
-b_button_slot = 0xA011A638;
+link_vel      = 0x801DAA8C;
+link_speed    = 0x801DAA98;
+link_health   = 0x8011A600;
+b_button_slot = 0x8011A638;
 
 dgvars = 0x80414000;
 

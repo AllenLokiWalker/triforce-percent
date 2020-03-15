@@ -1,6 +1,6 @@
 /* Optional debugger
 To run:
-load to 0xA0402000
+load to 0x80402000
 set fp_postcmd to 0x80402000
 set f_postcmd_enable to 1
 */
@@ -60,7 +60,7 @@ u32 random( void ) {
 void clear_cs( void ) {
 	extern volatile void* cutscene_pointer;
 	const u32 null_cs[] = {0,0};
-	asm("cutscene_pointer = 0xA01CA208");
+	asm("cutscene_pointer = 0x801CA208");
 	cutscene_pointer = (void*)&null_cs;
 }
 
@@ -68,12 +68,12 @@ void clear_cs( void ) {
 void run( void ) __attribute__((section(".start")));
 void run( void ) {
 	if( !dgvars.f_init ) {
-		dgvars.memview_addr = 0xA0400000;
+		dgvars.memview_addr = 0x80400000;
 		dgvars.f_init = 1;
 	}
 	
 	if( dgvars.f_blank_screen )
-		draw_rectangle( 20, 64, 20+230, 64+104, color_black );
+		draw_rectangle( 20, 64, 20+232, 64+104, color_black );
 	
 	_printf( 20, 64, "Page %u", dgvars.current_page );
 	
@@ -204,8 +204,11 @@ void run( void ) {
 		
 		case  6: {
 			// press c-up to levitate
+			// press A to run fast
 			if( padmgr.pads[0].buttons.cu ) { link_vel.y = 7.5f; padmgr.pads[0].buttons.cu = 0; };
 			if( padmgr.pads[0].buttons.dd ) link_vel.y = -15.0f;
+			if( padmgr.pads[0].buttons.a ) *((volatile u8*)0x801DB258) = 0x42;
+			
 			//if( pad_last.buttons.l ) link_speed = 40.0f;
 			_puts( "Velocity:", 20, 72 );
 			_printf( 20,  80, "X %.3f", link_vel.x );
@@ -232,10 +235,10 @@ void run( void ) {
 		
 		case  9: { // change FPS divider
 			if( !dgvars.pad_last.buttons.cl && padmgr.pads[0].buttons.cl )
-				*((volatile s8*)0xA01C6FA1) -= ( *((volatile s8*)0xA01C6FA1) == 1 ) ? 2 : 1;
+				*((volatile s8*)0x801C6FA1) -= ( *((volatile s8*)0x801C6FA1) == 1 ) ? 2 : 1;
 			if( !dgvars.pad_last.buttons.cr && padmgr.pads[0].buttons.cr )
-				*((volatile s8*)0xA01C6FA1) += ( *((volatile s8*)0xA01C6FA1) == -1 ) ? 2 : 1;
-			_printf( 20, 72, "FPS divider: %i", *((volatile s8*)0xA01C6FA1) );
+				*((volatile s8*)0x801C6FA1) += ( *((volatile s8*)0x801C6FA1) == -1 ) ? 2 : 1;
+			_printf( 20, 72, "FPS divider: %i", *((volatile s8*)0x801C6FA1) );
 			dgvars.f_input_disable = 1;
 		} break;
 		
@@ -261,6 +264,8 @@ void run( void ) {
 	}
 	
 	if( dgvars.f_input_disable ) _memset( padmgr.pads, 0, 4 );
+	osWritebackDCache(NULL, 0x4000);
+	osInvalICache(NULL, 0x4000);
 	return;
 }
 

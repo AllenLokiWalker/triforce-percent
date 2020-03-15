@@ -16,16 +16,14 @@ void init( void ) {
 	}
 	
 	// patch padmgr to call run() every frame
-	*((u32*)0xA00A2634) = 0; // disable zeroing of pad 2
-	*((u32*)0xA00A2640) = 0x0C000000 | ( ( ((u32)run) >> 2 ) & 0x03FFFFFF ); // construct jal to run() (also disable zeroing of pad 4)
-	*((u32*)0xA00A2644) = 0x8FA4002C; // first argument is address to queue
+	*((u32*)0x800A2640) = 0x0C000000 | ( ( ((u32)run) >> 2 ) & 0x03FFFFFF ); // construct jal to run() (also disable zeroing of pad 4)
+	*((u32*)0x800A2644) = 0x8FA4002C; // first argument is address to queue
 	
 	return;
 }
 
 int huge_push_data( huge_t* n, u32 bits, u32 amount );
 u32 huge_pop_data( huge_t* n, u32 amount );
-void pad_sanitize( raw_input_t* bits );
 void rumble_message( u32 bits );
 
 // called by padmgr
@@ -55,10 +53,6 @@ void run( void* queue ) {
 			osContGetReadData( pad_data ); // actually get the pad data
 		}
 		
-		pad_sanitize( &pad_data[1] );
-		pad_sanitize( &pad_data[2] );
-		pad_sanitize( &pad_data[3] );
-		
 		huge_push_data( &temp2, pad_data[ 1 ].b1, 8 );
 		huge_push_data( &temp2, pad_data[ 1 ].b2, 6 );
 		huge_push_data( &temp2, pad_data[ 1 ].x,  8 );
@@ -80,6 +74,8 @@ void run( void* queue ) {
 		--i;
 		gvars.out.bytes[ i ] = huge_pop_data( &temp2, 8 );
 	}
+	osWritebackDCache(NULL, 0x4000);
+	osInvalICache(NULL, 0x4000);
 	}
 	
 	// CRC everything except for the CRC itself
@@ -116,10 +112,7 @@ void run( void* queue ) {
 			} break;
 			
 			case 5: { // Treat command data as instructions and jump to them (can execute `2.5 * POLLS` instructions)
-				u32 addr;
-				addr = (u32) &gvars.out.command.cmd05.instructions;
-				addr += 0x20000000; // bypass cache
-				((void(*)(void))addr)();
+				((void(*)(void))&gvars.out.command.cmd05.instructions)();
 			} break;
 			
 			case 6: { // Call specified address
@@ -147,15 +140,6 @@ void rumble_message( u32 bits ) {
 		padmgr.rumble_enable[ i ] = bits & 1;
 		bits >>= 1;
 	}	
-}
-
-void pad_sanitize( raw_input_t* bits ) {
-	if( bits->status ) _memset( bits->bytes, 0, 4 );
-	if( bits->b2 & 0x80 ) { // this bit gets set on official N64 controllers when holding L+R+Start
-		bits->b2 |= 0x30; // assume that those buttons are being held
-		bits->b1 |= 0x10; // set their bits appropriately
-	}
-	bits->b2 &= 0x3F;
 }
 
 int huge_shift_up( huge_t* n, u32 amount ) {
