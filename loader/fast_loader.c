@@ -103,7 +103,7 @@ void run( void* queue ) {
 				}
 			} break;
 			
-			case 4: { // DMA that I'm not sure if this would actually work or not but whatever
+			case 4: { // DMA uncompressed data
 				DmaMgr_SendRequest0(
 					gvars.out.command.cmd04.vram,
 					gvars.out.command.cmd04.vrom,
@@ -111,12 +111,25 @@ void run( void* queue ) {
 				);
 			} break;
 			
-			case 5: { // Treat command data as instructions and jump to them (can execute `2.5 * POLLS` instructions)
-				((void(*)(void))&gvars.out.command.cmd05.instructions)();
+			case 5: { // DMA compressed data
+				Yaz0_Decompress(
+					gvars.out.command.cmd04.vrom,
+					gvars.out.command.cmd04.vram,
+					gvars.out.command.cmd04.size
+				);
 			} break;
 			
-			case 6: { // Call specified address
-				gvars.out.command.cmd06.function_pointer();
+			case 6: { // Treat command data as instructions and jump to them (can execute `2.5 * POLLS` instructions)
+				((void(*)(void))&gvars.out.command.cmd06.instructions)();
+			} break;
+			
+			case 7: { // Call specified address
+				gvars.out.command.cmd07.function_pointer(
+					gvars.out.command.cmd07.a0,
+					gvars.out.command.cmd07.a1,
+					gvars.out.command.cmd07.a2,
+					gvars.out.command.cmd07.a3,
+				);
 			} break;
 			
 			default: break; // NOP
@@ -176,4 +189,3 @@ u32 huge_pop_data( huge_t* n, u32 amount ) {
 	huge_shift_down( n, amount );
 	return (u32)r;
 }
-

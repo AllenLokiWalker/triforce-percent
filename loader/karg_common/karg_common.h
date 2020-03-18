@@ -87,7 +87,8 @@ typedef union {
 				u8  padding[ _command_len - 9 ];
 			} cmd03;
 			
-			// Command 4: DMA data
+			// Command 4: DMA uncompressed data
+			// Command 5: DMA compressed data
 			struct __attribute__((packed)) {
 				void* vram;
 				void* vrom;
@@ -95,16 +96,18 @@ typedef union {
 				u8  padding[ _command_len - 12 ];
 			} cmd04;
 			
-			// Command 5: Call command data as code (call data itself)
-			struct __attribute__((packed)) {
-				u8  instructions[ _command_len ];
-			} cmd05;
+			// Command 6: Call command data as code
+			//No need for a separate struct--just call `bytes`
 			
-			// Command 6: Call specified address with no args
+			// Command 7: Call specified address with up to 4 args
 			struct __attribute__((packed)) {
 				void(*function_pointer)(void);
-				u8  padding[ _command_len - 4 ];
-			} cmd06;
+				u32 a0;
+				u32 a1;
+				u32 a2;
+				u32 a3;
+				u8  padding[ _command_len - 20 ];
+			} cmd07;
 			
 		};
 		u8 id;
@@ -150,4 +153,3 @@ extern void osInvalICache(void* addr, s32 size);
 
 
 #endif
-
