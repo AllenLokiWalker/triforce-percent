@@ -1,3 +1,4 @@
+// Game globals
 
 typedef unsigned long long u64;
 typedef          long long s64;
@@ -8,9 +9,7 @@ typedef          short s16;
 typedef unsigned char u8;
 typedef          char s8;
 
-typedef u32 OSMesgQueue; //since we're not using it
-typedef u32 OSMesg; //again not using it
-
+typedef u32 OSMesgQueue; typedef u32 OSMesg; //not using them
 typedef struct
 {
     /* 0x00 */ u32      vromAddr; // VROM address (source)
@@ -33,7 +32,70 @@ typedef struct
 
 extern DmaEntry* gDmaDataTable;
 
-void memcpy(void* dest, void* src, u32 size)
+extern s32 __osDisableInt(); //80005130
+extern void __osRestoreInt(s32 i); //800051A0
+typedef u32 OSThread; typedef s32 OSPri; //not using thread, pri actually correct
+extern void osSetThreadPri(OSThread* thread, OSPri pri); //80004480
+
+// DmaPatcher RAM
+
+typedef struct
+{
+    u32 vrom;
+    u8* patch;
+} DmaPatchEntry;
+
+#define DMAPATCHER_MAXPATCHES 1024
+
+typedef struct
+{
+    u32 npatches;
+    u32 dummy1;
+    u32 dummy2;
+    u32 dummy3;
+    DmaPatchEntry patches[DMAPATCHER_MAXPATCHES];
+} DmaPatcher_t;
+
+extern DmaPatcher_t patcher;
+
+// DmaPatcher code
+
+void DmaPatcher_ProcessMsg(DmaRequest* req);
+
+void DmaPatcher_Init() __attribute__((section(".start")))
+{
+    s32 i = __osDisableInt();
+    patcher.npatches = 0;
+    // Patch DmaMgr_ProcessMsg to jump to DmaPatcher_ProcessMsg
+	*((u32*)0x80000B0C) = 0x08000000 | ( ( ((u32)DmaPatcher_ProcessMsg) >> 2 ) & 0x03FFFFFF );
+	*((u32*)0x80000B10) = 0; //nop
+    __osRestoreInt(i);
+}
+
+void DmaPatcher_Error(const char* message)
+{
+    //TODO
+}
+
+void DmaPatcher_AddPatch(u32 vrom, u8* patch)
+{
+    s32 i = __osDisableInt();
+    if(patcher.npatches >= DMAPATCHER_MAXPATCHES){
+        DmaPatcher_Error("Too many patches added!");
+    }else{
+        patcher.patches[patcher.npatches].vrom = vrom;
+        patcher.patches[patcher.npatches].patch = patch;
+        ++patcher.npatches;
+    }
+    __osRestoreInt(i);
+}
+
+void DmaPatcher_ReplaceFile(u32 filenum, u32 injectedAddr)
+{
+    gDmaDataTable[filenum].romStart = injectedAddr;
+}
+
+void _memcpy(void* dest, void* src, u32 size)
 {
     if(!((u32)dest & 0x7) && !((u32)src & 0x7) && !(size & 0x7)){
         //All multiple of 8 bytes
@@ -50,9 +112,22 @@ void memcpy(void* dest, void* src, u32 size)
     while(size--) *dest8++ = *src8++;
 }
 
-void DmaPatcher_Error(const char* message)
+void DmaPatcher_ApplyPatch(u32 ram, u32 size, u8* patch)
 {
-    //TODO
+    u8 skipcount, writecount;
+    u8* ptr = (u8*)ram;
+    u8* ptrend = (u8*)ram + size;
+    while(true){
+        skipcount = *patch++;
+        writecount = *patch++;
+        if(!skipcount && !writecount) return;
+        ptr += skipcount;
+        if(ptr + writecount > ptrend){
+            DmaPatcher_Error("Patch trying to write off end of file!");
+            return;
+        }
+        while(writecount--) *ptr++ = *patch++;
+    }
 }
 
 void DmaPatcher_ProcessMsg(DmaRequest* req)
@@ -63,7 +138,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
     u32 romStart;
     u32 romSize;
     u32 copyStart;
-    u32 patchFlags;
+    u32 p;
     DmaEntry* iter = gDmaDataTable;
     
     while(iter->vromEnd){
@@ -77,14 +152,15 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
                 DmaPatcher_Error("Tried to load off end of file!");
                 return;
             }
-            romStart = iter->romStart & 0x3FFFFFFF;
-            patchFlags = (iter->romStart & 0xC0000000) >> 30;
+            romStart = iter->romStart;
             copyStart = romStart + (vrom - iter->vromStart);
-            if(patchFlags & 2){
+            if(romStart & 0x80000000){
                 //The file is actually in RAM, copy it
-                memcpy((void*)ram, (void*)(copyStart | 0x80000000), size);
+                _memcpy((void*)ram, (void*)copyStart, size);
                 return;
             }
+            romStart &= 0x7FFFFFFF;
+            copyStart &= 0x7FFFFFFF;
             if(iter->romEnd == 0){
                 //Uncompressed file
                 DmaMgr_DMARomToRam(copyStart, ram, size);
@@ -97,11 +173,17 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
                 Yaz0_Decompress(romStart, ram, romSize);
                 osSetThreadPri(0, 0x10);
             }
-            if(patchFlags & 1){
-                //The file needs to be patched after loading
-                //TODO
+            //Patch file after loading
+            for(p=0; p<patcher.npatches; ++p){
+                if(patcher.patches[p].vrom == vrom){
+                    DmaPatcher_ApplyPatch(ram, size, patcher.patches[p].patch);
+                    return;
+                }
             }
+            return;
         }
         ++iter;
     }
+    DmaPatcher_Error("File not found in dmadata!");
+    DmaMgr_DMARomToRam(copyStart, ram, size);
 }
