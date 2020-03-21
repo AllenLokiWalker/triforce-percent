@@ -1,7 +1,9 @@
 #include "fast_loader.h"
 
+fl_globals_t fl_gvars;
+
 // entry point
-void fl_init() __attribute__((section(".start"))){
+__attribute__((section(".start"))) void fl_init() {
 	// generate CRC table
 	u32 r, i; u8 counter;
 	for(i = 0; i < 256; ++i) {
@@ -106,7 +108,7 @@ void fl_run(void* queue) {
 			case 6: { // Treat command data as instructions and jump to them (can execute `2.5 * POLLS` instructions)
 				osWritebackDCache(NULL, 0x4000);
 				osInvalICache(NULL, 0x4000);
-				((void(*)(void))&fl_gvars.out.command.cmd06.instructions)();
+				((void(*)(void))&fl_gvars.out.command.bytes)();
 			} break;
 			
 			case 7: { // Call specified address
@@ -114,7 +116,7 @@ void fl_run(void* queue) {
 					fl_gvars.out.command.cmd07.a0,
 					fl_gvars.out.command.cmd07.a1,
 					fl_gvars.out.command.cmd07.a2,
-					fl_gvars.out.command.cmd07.a3,
+					fl_gvars.out.command.cmd07.a3
 				);
 			} break;
 			

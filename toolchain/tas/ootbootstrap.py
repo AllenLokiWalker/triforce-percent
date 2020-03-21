@@ -14,13 +14,13 @@ def bootstrapper1and3(bsidx, smart, data, regstartoffset, jrraaddr):
     assert(bsidx == 1 or bsidx == 3)
     
     def li_cmd(twobytedata):
-        print('    addi $gp, $zero, 0x' + twobytedata.hex())
+        #print('    addi $gp, $zero, 0x' + twobytedata.hex())
         #00100000 00011100 IIIIIIII IIIIIIII
         return b'\x20\x1C' + twobytedata
     
     def sh_cmd(offset):
         ob = offset.to_bytes(2, byteorder='big')
-        print('    sh $gp, 0x' + ob.hex() + '(s' + ('0' if bsidx == 3 else '1') + ')')
+        #print('    sh $gp, 0x' + ob.hex() + '(s' + ('0' if bsidx == 3 else '1') + ')')
         #10100110 00111100 KKKKKKKK KKKKKKKK for bs1
         #10100110 00011100 KKKKKKKK KKKKKKKK for bs3
         byte2 = b'\x1C' if bsidx == 3 else b'\x3C'

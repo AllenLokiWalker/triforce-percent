@@ -1,6 +1,8 @@
 #include "dma_patcher.h"
 
-void DmaPatcher_Init() __attribute__((section(".start")))
+DmaPatcher_t patcher;
+
+__attribute__((section(".start"))) void DmaPatcher_Init()
 {
     s32 i = __osDisableInt();
     patcher.npatches = 0;
@@ -55,7 +57,7 @@ void DmaPatcher_ApplyPatch(u32 ram, u32 size, u8* patch)
     u8 skipcount, writecount;
     u8* ptr = (u8*)ram;
     u8* ptrend = (u8*)ram + size;
-    while(true){
+    while(1){
         skipcount = *patch++;
         writecount = *patch++;
         if(!skipcount && !writecount) return;
@@ -123,5 +125,5 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
         ++iter;
     }
     DmaPatcher_Error("File not found in dmadata!");
-    DmaMgr_DMARomToRam(copyStart, ram, size);
+    DmaMgr_DMARomToRam(vrom, ram, size);
 }

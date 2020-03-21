@@ -1,8 +1,8 @@
 #ifndef __DMA_PATCHER_H__
 #define __DMA_PATCHER_H__
 
-#include "common.h"
-#include "z_functions.h"
+#include "../common/common.h"
+#include "../common/z_functions.h"
 
 
 typedef u32 OSMesgQueue; typedef u32 OSMesg; //not using them
@@ -28,9 +28,6 @@ typedef struct
 
 extern DmaEntry* gDmaDataTable;
 
-typedef u32 OSThread; typedef s32 OSPri; //not using thread, pri actually correct
-extern void osSetThreadPri(OSThread* thread, OSPri pri); //80004480
-
 // DmaPatcher RAM
 
 typedef struct
@@ -49,8 +46,6 @@ typedef struct
     u32 dummy3;
     DmaPatchEntry patches[DMAPATCHER_MAXPATCHES];
 } DmaPatcher_t;
-
-extern DmaPatcher_t patcher;
 
 // DmaPatcher code
 

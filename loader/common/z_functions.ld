@@ -1,0 +1,12 @@
+__osDisableInt = 0x80005130;
+__osRestoreInt = 0x800051A0;
+osWritebackDCache = 0x80003440;
+osInvalICache = 0x800041A0;
+bzero = 0x80002E80;
+osRecvMesg = 0x80002030;
+osSetThreadPri = 0x80004480;
+DmaMgr_DMARomToRam = 0x8000085C;
+Yaz0_Decompress = 0x80001254;
+DmaMgr_SendRequest0 = 0x80001AA0;
+osContStartReadData = 0x800D0160;
+osContGetReadData = 0x800D01E4;

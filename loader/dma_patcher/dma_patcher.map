@@ -1,0 +1,76 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+patcher             0x2010            dma_patcher/dma_patcher.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000080005130                __osDisableInt = 0x80005130
+                0x00000000800051a0                __osRestoreInt = 0x800051a0
+                0x0000000080003440                osWritebackDCache = 0x80003440
+                0x00000000800041a0                osInvalICache = 0x800041a0
+                0x0000000080002e80                bzero = 0x80002e80
+                0x0000000080002030                osRecvMesg = 0x80002030
+                0x0000000080004480                osSetThreadPri = 0x80004480
+                0x000000008000085c                DmaMgr_DMARomToRam = 0x8000085c
+                0x0000000080001254                Yaz0_Decompress = 0x80001254
+                0x0000000080001aa0                DmaMgr_SendRequest0 = 0x80001aa0
+                0x00000000800d0160                osContStartReadData = 0x800d0160
+                0x00000000800d01e4                osContGetReadData = 0x800d01e4
+                0x000000008000b140                gDmaDataTable = 0x8000b140
+                0x0000000080401000                . = 0x80401000
+
+.start          0x0000000080401000       0x4c
+ *(.start)
+ .start         0x0000000080401000       0x4c dma_patcher/dma_patcher.o
+                0x0000000080401000                DmaPatcher_Init
+
+.text           0x000000008040104c      0x2d8
+ *(.text)
+ .text          0x000000008040104c      0x2d8 dma_patcher/dma_patcher.o
+                0x000000008040104c                DmaPatcher_Error
+                0x0000000080401054                DmaPatcher_AddPatch
+                0x00000000804010bc                DmaPatcher_ReplaceFile
+                0x00000000804010d4                _memcpy
+                0x0000000080401138                DmaPatcher_ApplyPatch
+                0x000000008040118c                DmaPatcher_ProcessMsg
+
+.MIPS.abiflags  0x0000000080401328       0x18
+ .MIPS.abiflags
+                0x0000000080401328       0x18 dma_patcher/dma_patcher.o
+
+.data           0x0000000080401340        0x0
+ *(.data)
+ .data          0x0000000080401340        0x0 dma_patcher/dma_patcher.o
+
+.bss            0x0000000080401340     0x2010
+ *(.bss)
+ .bss           0x0000000080401340        0x0 dma_patcher/dma_patcher.o
+ COMMON         0x0000000080401340     0x2010 dma_patcher/dma_patcher.o
+                0x0000000080401340                patcher
+LOAD dma_patcher/dma_patcher.o
+OUTPUT(dma_patcher/dma_patcher.elf elf32-bigmips)
+
+.reginfo        0x0000000000000000       0x18
+ .reginfo       0x0000000000000000       0x18 dma_patcher/dma_patcher.o
+
+.pdr            0x0000000000000000       0xe0
+ .pdr           0x0000000000000000       0xe0 dma_patcher/dma_patcher.o
+
+.mdebug.abi32   0x0000000000000000        0x0
+ .mdebug.abi32  0x0000000000000000        0x0 dma_patcher/dma_patcher.o
+
+.comment        0x0000000000000000       0x11
+ .comment       0x0000000000000000       0x11 dma_patcher/dma_patcher.o
+                                         0x12 (size before relaxing)
+
+.gnu.attributes
+                0x0000000000000000       0x10
+ .gnu.attributes
+                0x0000000000000000       0x10 dma_patcher/dma_patcher.o

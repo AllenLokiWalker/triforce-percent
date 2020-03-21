@@ -21,16 +21,18 @@ extern void bzero(void* addr, s32 size); //80002E80
 
 // msg = NULL, to_block = yes
 extern void osRecvMesg(void* queue, void* msg, u32 to_block); //80002030
+extern void osSetThreadPri(void* thread, s32 pri); //80004480
 
 //DMA
 
-extern void DmaMgr_SendRequest0(void* vram_addr, void* vrom_addr, s32 size); //80001AA0
-extern void Yaz0_Decompress(void* vrom_addr, void* vram_addr, s32 rom_size); //80001254
+extern void Yaz0_Decompress(u32 vrom_addr, u32 vram_addr, u32 rom_size); //80001254
+extern void DmaMgr_DMARomToRam(u32 vrom_addr, u32 vram_addr, u32 size); //8000085C
+extern void DmaMgr_SendRequest0(u32 vram_addr, u32 vrom_addr, u32 size); //80001AA0
 
 //Padmgr
 
 extern void osContStartReadData(void* queue); //800D0160
-extern void osContGetReadData(raw_input_t* input_data); //800D01E4
+extern void osContGetReadData(void* input_data); //800D01E4
 
 
 #endif //__Z_FUNCTIONS_H__

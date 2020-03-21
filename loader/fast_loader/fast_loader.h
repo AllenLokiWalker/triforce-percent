@@ -1,8 +1,8 @@
 #ifndef __FAST_LOADER_H__
 #define __FAST_LOADER_H__
 
-#include "common.h"
-#include "z_functions.h"
+#include "../common/common.h"
+#include "../common/z_functions.h"
 
 typedef union {
 	u8 bytes[6];
@@ -83,8 +83,8 @@ typedef union {
 			// Command 4: DMA uncompressed data
 			// Command 5: DMA compressed data
 			struct {
-				void* vram;
-				void* vrom;
+				u32 vram;
+				u32 vrom;
 				u32 size;
 				u8  padding[COMMAND_LEN - 12];
 			} cmd04;
@@ -94,11 +94,11 @@ typedef union {
 			
 			// Command 7: Call specified address with up to 4 args
 			struct {
-				void(*function_pointer)(void);
-				u32 a0;
-				u32 a1;
-				u32 a2;
-				u32 a3;
+				void(*function_pointer)(s32 a0, s32 a1, s32 a2, s32 a3);
+				s32 a0;
+				s32 a1;
+				s32 a2;
+				s32 a3;
 				u8  padding[COMMAND_LEN - 20];
 			} cmd07;
 			
@@ -129,7 +129,6 @@ typedef struct {
 #define RUMBLE_NOP 5
 #define RUMBLE_VALID 6
 
-extern fl_globals_t fl_gvars;
 extern padmgr_t padmgr;
 
 

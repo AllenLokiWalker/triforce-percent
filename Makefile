@@ -18,7 +18,7 @@ endif
 
 SUBDIRS = actor/ music/ scene/
 
-.PHONY: default clean dumps builds $(SUBDIRS) loader bootstrap
+.PHONY: default clean builds $(SUBDIRS) loader bootstrap
 
 default: dumps builds $(SUBDIRS) loader bootstrap
 

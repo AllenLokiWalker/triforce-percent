@@ -1,0 +1,80 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+fl_gvars            0x4e4             fast_loader/fast_loader.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000080005130                __osDisableInt = 0x80005130
+                0x00000000800051a0                __osRestoreInt = 0x800051a0
+                0x0000000080003440                osWritebackDCache = 0x80003440
+                0x00000000800041a0                osInvalICache = 0x800041a0
+                0x0000000080002e80                bzero = 0x80002e80
+                0x0000000080002030                osRecvMesg = 0x80002030
+                0x0000000080004480                osSetThreadPri = 0x80004480
+                0x000000008000085c                DmaMgr_DMARomToRam = 0x8000085c
+                0x0000000080001254                Yaz0_Decompress = 0x80001254
+                0x0000000080001aa0                DmaMgr_SendRequest0 = 0x80001aa0
+                0x00000000800d0160                osContStartReadData = 0x800d0160
+                0x00000000800d01e4                osContGetReadData = 0x800d01e4
+                0x000000008011d500                padmgr = 0x8011d500
+                0x0000000080400000                . = 0x80400000
+
+.start          0x0000000080400000       0x8c
+ *(.start)
+ .start         0x0000000080400000       0x8c fast_loader/fast_loader.o
+                0x0000000080400000                fl_init
+
+.text           0x000000008040008c      0x504
+ *(.text)
+ .text          0x000000008040008c      0x504 fast_loader/fast_loader.o
+                0x000000008040008c                fl_rumble_message
+                0x00000000804000d0                fl_crc_data
+                0x0000000080400118                fl_huge_shift_up
+                0x0000000080400160                fl_huge_shift_down
+                0x00000000804001a4                fl_huge_push_data
+                0x00000000804001e8                fl_huge_pop_data
+                0x0000000080400218                fl_run
+
+.MIPS.abiflags  0x0000000080400590       0x18
+ .MIPS.abiflags
+                0x0000000080400590       0x18 fast_loader/fast_loader.o
+
+.rodata         0x00000000804005a8       0x1c
+ .rodata        0x00000000804005a8       0x1c fast_loader/fast_loader.o
+
+.data           0x00000000804005c4        0x0
+ *(.data)
+ .data          0x00000000804005c4        0x0 fast_loader/fast_loader.o
+
+.bss            0x00000000804005c4      0x4e4
+ *(.bss)
+ .bss           0x00000000804005c4        0x0 fast_loader/fast_loader.o
+ COMMON         0x00000000804005c4      0x4e4 fast_loader/fast_loader.o
+                0x00000000804005c4                fl_gvars
+LOAD fast_loader/fast_loader.o
+OUTPUT(fast_loader/fast_loader.elf elf32-bigmips)
+
+.reginfo        0x0000000000000000       0x18
+ .reginfo       0x0000000000000000       0x18 fast_loader/fast_loader.o
+
+.pdr            0x0000000000000000      0x100
+ .pdr           0x0000000000000000      0x100 fast_loader/fast_loader.o
+
+.mdebug.abi32   0x0000000000000000        0x0
+ .mdebug.abi32  0x0000000000000000        0x0 fast_loader/fast_loader.o
+
+.comment        0x0000000000000000       0x11
+ .comment       0x0000000000000000       0x11 fast_loader/fast_loader.o
+                                         0x12 (size before relaxing)
+
+.gnu.attributes
+                0x0000000000000000       0x10
+ .gnu.attributes
+                0x0000000000000000       0x10 fast_loader/fast_loader.o
