@@ -128,15 +128,16 @@ typedef struct {
 #define RUMBLE_NOP 5
 #define RUMBLE_VALID 6
 
-extern fl_globals_t gvars;
-extern padmgr_t  padmgr;
+extern fl_globals_t fl_gvars;
+extern padmgr_t padmgr;
 
 
-void init();
-void run(void* queue);
-int huge_push_data(huge_t* n, u32 bits, u32 amount);
-u32 huge_pop_data(huge_t* n, u32 amount);
-void rumble_message(u32 bits);
+void fl_init();
+void fl_run(void* queue);
+void fl_rumble_message(u32 bits);
+u32 fl_crc_data(void* data, u32 size);
+int fl_huge_push_data(huge_t* n, u32 bits, u32 amount);
+u32 fl_huge_pop_data(huge_t* n, u32 amount);
 
 
 #endif //__FAST_LOADER_H__
