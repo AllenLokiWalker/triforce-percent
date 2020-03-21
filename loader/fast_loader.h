@@ -2,6 +2,7 @@
 #define __FAST_LOADER_H__
 
 #include "common.h"
+#include "z_functions.h"
 
 typedef union {
 	u8 bytes[6];
