@@ -31,33 +31,33 @@ Linker script and memory map
  .start         0x0000000080400000       0x8c fast_loader/fast_loader.o
                 0x0000000080400000                fl_init
 
-.text           0x000000008040008c      0x504
+.text           0x0000000080400090      0x504
  *(.text)
- .text          0x000000008040008c      0x504 fast_loader/fast_loader.o
-                0x000000008040008c                fl_rumble_message
-                0x00000000804000d0                fl_crc_data
-                0x0000000080400118                fl_huge_shift_up
-                0x0000000080400160                fl_huge_shift_down
-                0x00000000804001a4                fl_huge_push_data
-                0x00000000804001e8                fl_huge_pop_data
-                0x0000000080400218                fl_run
+ .text          0x0000000080400090      0x504 fast_loader/fast_loader.o
+                0x0000000080400090                fl_rumble_message
+                0x00000000804000d4                fl_crc_data
+                0x000000008040011c                fl_huge_shift_up
+                0x0000000080400164                fl_huge_shift_down
+                0x00000000804001a8                fl_huge_push_data
+                0x00000000804001ec                fl_huge_pop_data
+                0x000000008040021c                fl_run
 
-.MIPS.abiflags  0x0000000080400590       0x18
+.MIPS.abiflags  0x0000000080400598       0x18
  .MIPS.abiflags
-                0x0000000080400590       0x18 fast_loader/fast_loader.o
+                0x0000000080400598       0x18 fast_loader/fast_loader.o
 
-.rodata         0x00000000804005a8       0x1c
- .rodata        0x00000000804005a8       0x1c fast_loader/fast_loader.o
+.rodata         0x00000000804005b0       0x1c
+ .rodata        0x00000000804005b0       0x1c fast_loader/fast_loader.o
 
-.data           0x00000000804005c4        0x0
+.data           0x00000000804005d0        0x0
  *(.data)
- .data          0x00000000804005c4        0x0 fast_loader/fast_loader.o
+ .data          0x00000000804005d0        0x0 fast_loader/fast_loader.o
 
-.bss            0x00000000804005c4      0x4e4
+.bss            0x00000000804005d0      0x4e4
  *(.bss)
- .bss           0x00000000804005c4        0x0 fast_loader/fast_loader.o
- COMMON         0x00000000804005c4      0x4e4 fast_loader/fast_loader.o
-                0x00000000804005c4                fl_gvars
+ .bss           0x00000000804005d0        0x0 fast_loader/fast_loader.o
+ COMMON         0x00000000804005d0      0x4e4 fast_loader/fast_loader.o
+                0x00000000804005d0                fl_gvars
 LOAD fast_loader/fast_loader.o
 OUTPUT(fast_loader/fast_loader.elf elf32-bigmips)
 

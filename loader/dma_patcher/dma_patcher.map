@@ -23,37 +23,39 @@ Linker script and memory map
                 0x0000000080001aa0                DmaMgr_SendRequest0 = 0x80001aa0
                 0x00000000800d0160                osContStartReadData = 0x800d0160
                 0x00000000800d01e4                osContGetReadData = 0x800d01e4
+                0x00000000804005d0                fl_gvars = 0x804005d0
+                0x0000000080400ac0                fast_loader_END = 0x80400ac0
                 0x000000008000b140                gDmaDataTable = 0x8000b140
-                0x0000000080401000                . = 0x80401000
+                0x0000000080400ac0                . = fast_loader_END
 
-.start          0x0000000080401000       0x4c
+.start          0x0000000080400ac0       0x4c
  *(.start)
- .start         0x0000000080401000       0x4c dma_patcher/dma_patcher.o
-                0x0000000080401000                DmaPatcher_Init
+ .start         0x0000000080400ac0       0x4c dma_patcher/dma_patcher.o
+                0x0000000080400ac0                DmaPatcher_Init
 
-.text           0x000000008040104c      0x2d8
+.text           0x0000000080400b10      0x2d8
  *(.text)
- .text          0x000000008040104c      0x2d8 dma_patcher/dma_patcher.o
-                0x000000008040104c                DmaPatcher_Error
-                0x0000000080401054                DmaPatcher_AddPatch
-                0x00000000804010bc                DmaPatcher_ReplaceFile
-                0x00000000804010d4                _memcpy
-                0x0000000080401138                DmaPatcher_ApplyPatch
-                0x000000008040118c                DmaPatcher_ProcessMsg
+ .text          0x0000000080400b10      0x2d8 dma_patcher/dma_patcher.o
+                0x0000000080400b10                DmaPatcher_Error
+                0x0000000080400b18                DmaPatcher_AddPatch
+                0x0000000080400b80                DmaPatcher_ReplaceFile
+                0x0000000080400b98                _memcpy
+                0x0000000080400bfc                DmaPatcher_ApplyPatch
+                0x0000000080400c50                DmaPatcher_ProcessMsg
 
-.MIPS.abiflags  0x0000000080401328       0x18
+.MIPS.abiflags  0x0000000080400de8       0x18
  .MIPS.abiflags
-                0x0000000080401328       0x18 dma_patcher/dma_patcher.o
+                0x0000000080400de8       0x18 dma_patcher/dma_patcher.o
 
-.data           0x0000000080401340        0x0
+.data           0x0000000080400e00        0x0
  *(.data)
- .data          0x0000000080401340        0x0 dma_patcher/dma_patcher.o
+ .data          0x0000000080400e00        0x0 dma_patcher/dma_patcher.o
 
-.bss            0x0000000080401340     0x2010
+.bss            0x0000000080400e00     0x2010
  *(.bss)
- .bss           0x0000000080401340        0x0 dma_patcher/dma_patcher.o
- COMMON         0x0000000080401340     0x2010 dma_patcher/dma_patcher.o
-                0x0000000080401340                patcher
+ .bss           0x0000000080400e00        0x0 dma_patcher/dma_patcher.o
+ COMMON         0x0000000080400e00     0x2010 dma_patcher/dma_patcher.o
+                0x0000000080400e00                patcher
 LOAD dma_patcher/dma_patcher.o
 OUTPUT(dma_patcher/dma_patcher.elf elf32-bigmips)
 

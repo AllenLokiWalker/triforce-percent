@@ -14,3 +14,4 @@ fast_loader dma_patcher:
 	$(CC) $(CFLAGS) -c $@/$@.c -o $@/$@.o
 	$(LD) $(LDFLAGS) -T $@/$@.ld -Map $@/$@.map -o $@/$@.elf $@/$@.o
 	$(OC) $(OCFLAGS) $@/$@.elf $@.bin
+	$(PYTHON3) ../toolchain/ldout.py $@/$@.map $@/$@.out.ld
