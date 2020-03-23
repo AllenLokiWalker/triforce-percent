@@ -1,6 +1,51 @@
 #include "dma_patcher.h"
+#include "../debugger/debugger.h"
 
-DmaPatcher_t patcher;
+typedef u32 OSMesgQueue; typedef u32 OSMesg; //not using them
+typedef struct
+{
+    /* 0x00 */ u32      vromAddr; // VROM address (source)
+    /* 0x04 */ void*    dramAddr; // DRAM address (destination)
+    /* 0x08 */ u32      size;     // File Transfer size
+    /* 0x0C */ char*    filename; // Filename for debugging
+    /* 0x10 */ s32      line;     // Line for debugging
+    /* 0x14 */ s32      unk_14;
+    /* 0x18 */ OSMesgQueue* notifyQueue; // Message queue for the notification message
+    /* 0x1C */ OSMesg   notifyMsg;       // Completion notification message
+} DmaRequest; // size = 0x20
+
+typedef struct
+{
+    /* 0x00 */ u32 vromStart;
+    /* 0x04 */ u32 vromEnd;
+    /* 0x08 */ u32 romStart;
+    /* 0x0C */ u32 romEnd; 
+} DmaEntry;
+
+extern DmaEntry* gDmaDataTable;
+
+// DmaPatcher RAM
+
+typedef struct
+{
+    u32 vrom;
+    u8* patch;
+} DmaPatchEntry;
+
+#define DMAPATCHER_MAXPATCHES 1024
+
+typedef struct
+{
+    u32 npatches;
+    u32 dummy1;
+    u32 dummy2;
+    u32 dummy3;
+    DmaPatchEntry patches[DMAPATCHER_MAXPATCHES];
+} DmaPatcher_t;
+
+static DmaPatcher_t patcher;
+
+static void DmaPatcher_ProcessMsg(DmaRequest* req);
 
 __attribute__((section(".start"))) void DmaPatcher_Init()
 {
@@ -12,16 +57,11 @@ __attribute__((section(".start"))) void DmaPatcher_Init()
     __osRestoreInt(i);
 }
 
-void DmaPatcher_Error(const char* message)
-{
-    //TODO
-}
-
 void DmaPatcher_AddPatch(u32 vrom, u8* patch)
 {
     s32 i = __osDisableInt();
     if(patcher.npatches >= DMAPATCHER_MAXPATCHES){
-        DmaPatcher_Error("Too many patches added!");
+        Debugger_Printf("AddPatch %08X: Too many patches!", vrom);
     }else{
         patcher.patches[patcher.npatches].vrom = vrom;
         patcher.patches[patcher.npatches].patch = patch;
@@ -35,24 +75,7 @@ void DmaPatcher_ReplaceFile(u32 filenum, u32 injectedAddr)
     gDmaDataTable[filenum].romStart = injectedAddr;
 }
 
-void _memcpy(void* dest, void* src, u32 size)
-{
-    if(!(((u32)dest | (u32)src | size) & 0x7)){
-        //All multiple of 8 bytes
-        u64* dest64 = (u64*)dest;
-        u64* src64 = (u64*)src;
-        while(size){
-            *dest64++ = *src64++;
-            size -= 8;
-        }
-        return;
-    }
-    u8* dest8 = (u8*)dest;
-    u8* src8 = (u8*)src;
-    while(size--) *dest8++ = *src8++;
-}
-
-void DmaPatcher_ApplyPatch(u32 ram, u32 size, u8* patch)
+static void DmaPatcher_ApplyPatch(u32 ram, u32 size, u8* patch)
 {
     u8 skipcount, writecount;
     u8* ptr = (u8*)ram;
@@ -63,14 +86,14 @@ void DmaPatcher_ApplyPatch(u32 ram, u32 size, u8* patch)
         if(!skipcount && !writecount) return;
         ptr += skipcount;
         if(ptr + writecount > ptrend){
-            DmaPatcher_Error("Patch trying to write off end of file!");
+            Debugger_Printf("Patch to %08X overflowing file sz %X!", ram, size);
             return;
         }
         while(writecount--) *ptr++ = *patch++;
     }
 }
 
-void DmaPatcher_ProcessMsg(DmaRequest* req)
+static void DmaPatcher_ProcessMsg(DmaRequest* req)
 {
     u32 vrom = req->vromAddr;
     u32 ram = (u32)req->dramAddr;
@@ -89,7 +112,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
             //originally were, as long as the file is always loaded starting
             //from its start.
             if(vrom + size > iter->vromEnd){
-                DmaPatcher_Error("Tried to load off end of file!");
+                Debugger_Printf("DMA @%08X sz %X off end %08X", vrom, size, iter->vromEnd);
                 return;
             }
             romStart = iter->romStart;
@@ -107,7 +130,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
             }else{
                 romSize = iter->romEnd - romStart;
                 if(copyStart != romStart || size != romSize){
-                    DmaPatcher_Error("Tried to load only portion of compressed file!");
+                    Debugger_Printf("DMA @%08X middle of compressed file %08X", copyStart, romStart);
                 }
                 osSetThreadPri(0, 0x0A);
                 Yaz0_Decompress(romStart, ram, romSize);
@@ -124,6 +147,6 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
         }
         ++iter;
     }
-    DmaPatcher_Error("File not found in dmadata!");
+    Debugger_Printf("DMA %08X not found", vrom);
     DmaMgr_DMARomToRam(vrom, ram, size);
 }

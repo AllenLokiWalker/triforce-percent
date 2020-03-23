@@ -1,2 +1,3 @@
-fl_gvars = 0x804005d0;
-fast_loader_END = 0x80400ac0;
+fp_precmd = 0x80400a08;
+fp_postcmd = 0x80400a04;
+fast_loader_END = 0x80400a10;

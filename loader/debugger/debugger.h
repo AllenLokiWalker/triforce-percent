@@ -1,0 +1,14 @@
+#ifndef __DEBUGGER_H__
+#define __DEBUGGER_H__
+
+#include "../common/common.h"
+#include "../common/z_functions.h"
+
+extern void _memcpy(void* dest, const void* src, u32 size);
+extern char *Debugger_GetNextMessageBuffer(u8 timeout);
+extern void Debugger_ShowMessage(u8 timeout, const char *msg);
+
+#define Debugger_Printf(format...) \
+    _sprintf(Debugger_GetNextMessageBuffer(255), format)
+
+#endif //__DEBUGGER_H__
