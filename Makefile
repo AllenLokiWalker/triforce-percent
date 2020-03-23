@@ -16,15 +16,18 @@ ifeq ("$(and $(wildcard build-romhack/oot_build.rtl), $(wildcard build-romhack/o
     $(shell cp toolchain/zzrtl/oot_build.rtl toolchain/zzrtl/oot_dump.rtl build-romhack/)
 endif
 
-SUBDIRS = actor/ music/ scene/
+CONTENTS = actor/ music/ scene/
+SUBDIRS = $(CONTENTS) loader/ bootstrap/
+DUMPS = build-shortcut/project.zzrpl build-romhack/project.zzrpl
+BUILDS = build-shortcut/build.z64 build-romhack/build.z64
 
-.PHONY: default clean builds $(SUBDIRS) loader bootstrap
+.PHONY: default clean $(SUBDIRS)
 
-default: dumps builds $(SUBDIRS) loader bootstrap
+default: $(SUBDIRS) $(DUMPS) $(BUILDS)
 
-dumps: build-shortcut/project.zzrpl build-romhack/project.zzrpl
+loader/: actor/ music/ scene/
 
-builds: build-shortcut/build.z64 build-romhack/build.z64
+bootstrap/: loader/
 
 %project.zzrpl: %oot_1.0U_uncomp.z64 %oot_build.rtl %oot_dump.rtl
 	$(ZZRTL) $*oot_dump.rtl
@@ -34,9 +37,3 @@ builds: build-shortcut/build.z64 build-romhack/build.z64
 
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
-
-loader: $(SUBDIRS)
-	$(MAKE) -C loader/ $(MAKECMDGOALS)
-    
-bootstrap: loader
-	$(MAKE) -C bootstrap/ $(MAKECMDGOALS)

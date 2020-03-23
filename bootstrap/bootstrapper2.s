@@ -13,40 +13,39 @@ addiu $a1, $zero, 0x7FFF = 24057FFF (not needed, a1 is not touched by osWritebac
 jal 0x8011D790 (pad 1) = 0C0475E4
 nop
 */
-lui  $v0,      0x800A
+lui   $v0,      0x800A
 
-lui  $gp,      0x0C00
-addi $gp, $gp, 0x0D10
-sw   $gp,      0x2630($v0)
-addi $gp, $gp, (0x1068 - 0x0D10)
-sw   $gp,      0x2638($v0)
+lui   $gp,      0x0C00
+addiu $gp, $gp, 0x0D10
+sw    $gp,      0x2630($v0)
+addiu $gp, $gp, (0x1068 - 0x0D10)
+sw    $gp,      0x2638($v0)
 
-lui  $gp,      0x2405
-addi $gp, $gp, 0x7FFF
-sw   $gp,      0x2634($v0)
-sw   $gp,      0x263C($v0)
+lui   $gp,      0x2405
+addiu $gp, $gp, 0x7FFF
+sw    $gp,      0x2634($v0)
+sw    $gp,      0x263C($v0)
 
-lui  $gp,      0x0C04
-addi $gp, $gp, 0x75E4
-sw   $gp,      0x2640($v0)
-sw   $zero,    0x2644($v0)
+lui   $gp,      0x0C04
+addiu $gp, $gp, 0x75E4
+sw    $gp,      0x2640($v0)
+sw    $zero,    0x2644($v0)
 /*
-Write 0x80402000 (address of start of Kargarocs payload--to jal here, instruction 0C100800)
+Write 0x80400000 (address of start of Kargarocs payload--to jal here, instruction 0C100000)
 to address counter 0x801C8000
 */
-lui $gp, 0x8040 
-addi $gp, $gp, 0x2000
-lui $v0, %hi(0x801C8000)
-sw $gp, %lo(0x801C8000)($v0)
+lui   $gp, 0x8040
+lui   $v0, %hi(0x801C8000)
+sw    $gp, %lo(0x801C8000)($v0)
 /*
 Write jr $ra; instruction 0x03E00008 
 to seed rotation 0x801FC000
 Except currently using 0x801C8004 for "seed rotation"
 */
-lui $gp, 0x03E0
-addi $gp, $gp, 0x0008
-lui $v0, %hi(0x801C8004)
-sw $gp, %lo(0x801C8004)($v0)
+lui   $gp, 0x03E0
+addiu $gp, $gp, 0x0008
+lui   $v0, %hi(0x801C8004)
+sw    $gp, %lo(0x801C8004)($v0)
 /* 
 Finishing up
  */

@@ -34,7 +34,6 @@ dma_patcher/dma_patcher.elf: debugger/debugger.out.ld
 
 %.bin: %.elf
 	$(OC) $(OCFLAGS) $< $@
-	@cp $@ ../
 
 %.out.ld: %.map
 	$(PYTHON3) ../toolchain/ldout.py $< $@
