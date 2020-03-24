@@ -1,6 +1,15 @@
 #ifndef __ASCII_C
 #define __ASCII_C
 
+const u8 hex_to_ascii[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+
+#define color_new( r, g, b ) ( (u16)((((u16)(r))<<11)|(((u16)(g))<<6)|(((u16)(b))<<1)|1) )
+#define color_white  (color_new( 31, 31, 31 ))
+#define color_gray75 (color_new( 23, 23, 23 ))
+#define color_gray50 (color_new( 16, 16, 16 ))
+#define color_gray25 (color_new(  8,  8,  8 ))
+#define color_black  (color_new(  0,  0,  0 ))
+
 #define _letter_width  6
 #define _letter_height 8
 
@@ -103,14 +112,31 @@ const u8 ascii_letters[ 760 ] = {
 	 0, 8,20,34,34,34,62, 0
 };
 
-const u8 hex_to_ascii[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+// button gfx from the practice rom
+// each u16 is a 2bpp 8px scanline (X:0 is LSB)
+const u16 button_gfx[ 128 ] = {
+	 2720, 8184,32606,30046,30046,32606, 8180, 1360,
+	 2720, 8184,30206,30046,30046,30206, 8180, 1360,
+	 2720, 8184,30046,30046,32126,32126, 8180, 1360,
+	 2720, 8184,32126,32126,30046,30046, 8180, 1360,
+		0,  682, 5470,30686,32094,30686,30686,21845,
+		0,27264,32616,32638,32638,32638,30078,21845,
+		0,    0,    0,    0,    0,    0,    0,    0,
+	 2720, 7512,30686,32094,30686,30686, 8180, 1360,
+		0,27306,32607,32159,30367,32159,32607,21845,
+		0,43690,62974,63102,63134,63102,62974,21845,
+	32760,32760,21848,23192,30328,32248,32760,21844,
+	27304,32760,32248,30328,23192,21848,32760,32760,
+	 2720, 5496,32734,32126,30718,32094, 8180, 1360,
+	27306,30046,30718,32126,32734,30046, 8180, 1360,
+	 2720, 7512,30686,32094,30686,32094, 8180, 1360,
+	 2720, 7544,30686,30046,30686,30686, 8180, 1360
+};
 
-#define color_new( r, g, b ) ( (u16)((((u16)(r))<<11)|(((u16)(g))<<6)|(((u16)(b))<<1)|1) )
-#define color_white  (color_new( 31, 31, 31 ))
-#define color_gray75 (color_new( 23, 23, 23 ))
-#define color_gray50 (color_new( 16, 16, 16 ))
-#define color_gray25 (color_new(  8,  8,  8 ))
-#define color_black  (color_new(  0,  0,  0 ))
+extern volatile u16* volatile framebuffer16;
+extern volatile u64* volatile framebuffer64;
+asm( ".equ framebuffer16, 0x8011F56C" );
+asm( ".equ framebuffer64, 0x8011F56C" );
 
 // screen bounds:
 // 4 <= X <= 316
@@ -118,15 +144,29 @@ const u8 hex_to_ascii[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','
 
 inline void put_pixel( u32 x, u32 y, u16 color );
 void put_pixel( u32 x, u32 y, u16 color ) {
-	u16* framebuffer;
-	x += 4; // account for overscan
-	y += 1;
-	if( x > 316 ) return;
-	if( y > 237 ) return;
+	if( x >= 320 ) return;
+	if( y >= 240 ) return;
 	y *= 320;
 	y += x;
-	framebuffer = *((u16**)0x8011F56C);
-	framebuffer[ y ] = color;
+	framebuffer16[ y ] = color;
+}
+
+void draw_button( u16 x, u16 y, u16 button ) {
+	u16 dx, dy;
+	const u16 button_gfx_palette[4] = { 1, color_new(15,0,0), color_new(22,14,14), color_new(30,29,29) };
+	if( button >= 16 || button == 6 ) return; // there's only 16 button pictures
+	button *= 8;
+	for( dy = 0; dy < 8; ++dy ) {
+		u16 scanline;
+		scanline = button_gfx[ button + dy ];
+		for( dx = 0; dx < 8; ++dx ) {
+			register u16 f;
+			f = scanline & 3;
+			if( f ) put_pixel( x + dx, y + dy, button_gfx_palette[ f ] );
+			scanline >>= 2;
+		}
+	}
+	
 }
 
 // Print letter to the screen, with a shadow
@@ -170,7 +210,7 @@ void _puts( u8* str, u16 x, u16 y ) {
 extern s32 _sprintf( u8* dest, const char* format, ...);
 asm( ".equ _sprintf, 0x800CE7B4" );
 
-#define _printf( x, y, format...) {_sprintf(gvars.sprintf_buffer,format);_puts(gvars.sprintf_buffer,(x),(y));}
+#define _printf( x, y, format...) {_sprintf(dgvars.sprintf_buffer,format);_puts(dgvars.sprintf_buffer,(x),(y));}
 
 // from openbsd
 u8* n_strcat( u8* str, u8* append ) {
@@ -194,25 +234,25 @@ void bytes_to_str( u8* str, u32 l_str, u8* bytes, u32 l_bytes ) {
 	}
 }
 
-void print_bytes( u16 x, u16 y, u8* bytes, u16 amount, u16 per_line ) {
-	u16 xstart, i, j;
+void print_bytes( u16 x, u16 y, void* bytes, u16 amount, u16 per_line ) {
+	u16 xstart, j;
 	xstart = x;
 	j = 0;
-	for( i = 0; i < amount; ++i ) {
+	while( amount ) {
 		u8 c;
-		c = bytes[ i ];
+		c = *((volatile u8*)bytes++);
 		print_char( hex_to_ascii[ c >> 4 ], x, y, color_white ); x += _letter_width;
 		print_char( hex_to_ascii[ c & 15 ], x, y, color_white ); x += _letter_width; x += 2;
 		++j;
-		
 		if( j >= per_line ) {
 			x = xstart; j = 0;
 			y += _letter_height;
 		}
+		--amount;
 	}
 }
 
-void print_string_and_bytes( u16 x, u16 y, u8* str, u8* bytes, u16 amount, u16 per_line ) {
+void print_string_and_bytes( u16 x, u16 y, u8* str, void* bytes, u16 amount, u16 per_line ) {
 	_puts( str, x, y );
 	y += _letter_height;
 	print_bytes( x, y, bytes, amount, per_line );
@@ -226,6 +266,31 @@ void print_color( u16 x, u16 y, u16 color ) {
 		x += _letter_width;
 		color <<= 5;
 	}
+}
+
+void draw_rectangle( u16 x_start, u16 y_start, u16 x_end, u16 y_end, u16 color ) {
+	u32 x, y;
+	union __attribute__((packed)) {
+		u64 color64;
+		u16 color16[4];
+	} u;
+	x_start >>= 2;
+	x_end >>= 2;
+	if( x_start == x_end ) return;
+	if( y_start == y_end ) return;
+	if( x_end < x_start ) {u16 swap; swap = x_end; x_end = x_start; x_start = swap;};
+	if( y_end < y_start ) {u16 swap; swap = x_end; x_end = x_start; x_start = swap;};
+	if( x_start >= 80 ) return;
+	if( y_start >= 240 ) return;
+	if( x_end > 80 ) x_end = 80;
+	if( y_end > 240 ) y_end = 240;
+	u.color16[0] = color;
+	u.color16[1] = color;
+	u.color16[2] = color;
+	u.color16[3] = color;
+	for( y = y_start; y < y_end; ++y )
+		for( x = x_start; x < x_end; ++x )
+			framebuffer64[ y * 80 + x ] = u.color64;
 }
 
 #endif

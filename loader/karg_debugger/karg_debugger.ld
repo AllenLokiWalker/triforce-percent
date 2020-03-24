@@ -2,18 +2,19 @@
 OUTPUT_FORMAT("elf32-bigmips", "elf32-bigmips", "elf32-littlemips")
 OUTPUT_ARCH (mips)
 
-gvars = 0x8040C000;
-padmgr = 0x8011D500;
+INCLUDE ../karg_common/karg_common.ld
 
-DmaMgr_SendRequest0 = 0x80001AA0;
-osContStartReadData = 0x800D0160;
-osRecvMesg = 0x80002030;
-osContGetReadData = 0x800D01E4;
+link_vel      = 0x801DAA8C;
+link_speed    = 0x801DAA98;
+link_health   = 0x8011A600;
+b_button_slot = 0x8011A638;
 
-ENTRY( init );
+dgvars = 0x80414000;
+
+ENTRY( run );
 
 SECTIONS {
-	. = 0x80400000;
+	. = 0x80402000;
 	.start ALIGN( 4 ): { *(.start) }
 	.text ALIGN( 4 ): { *(.text) }
 	.data ALIGN( 4 ): { *(.data) }

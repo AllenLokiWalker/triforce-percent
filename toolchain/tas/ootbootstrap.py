@@ -14,13 +14,13 @@ def bootstrapper1and3(bsidx, smart, data, regstartoffset, jrraaddr):
     assert(bsidx == 1 or bsidx == 3)
     
     def li_cmd(twobytedata):
-        print('    addi $gp, $zero, 0x' + twobytedata.hex())
+        #print('    addi $gp, $zero, 0x' + twobytedata.hex())
         #00100000 00011100 IIIIIIII IIIIIIII
         return b'\x20\x1C' + twobytedata
     
     def sh_cmd(offset):
         ob = offset.to_bytes(2, byteorder='big')
-        print('    sh $gp, 0x' + ob.hex() + '(s' + ('0' if bsidx == 3 else '1') + ')')
+        #print('    sh $gp, 0x' + ob.hex() + '(s' + ('0' if bsidx == 3 else '1') + ')')
         #10100110 00111100 KKKKKKKK KKKKKKKK for bs1
         #10100110 00011100 KKKKKKKK KKKKKKKK for bs3
         byte2 = b'\x1C' if bsidx == 3 else b'\x3C'
@@ -69,7 +69,8 @@ def jumpsingle3(addr):
     return bytes([0]*8) + jumpcmd(addr) + bytes([0]*4)
     
 def dataforbootstrapper4(data, bs4addr):
-    assert(len(data) % 8 == 0)
+    if len(data) % 8 != 0:
+        data += bytes([0] * (8 - (len(data) % 8)))
     c1data = jumpcmd(bs4addr)
     ret = bytearray()
     d = 0
@@ -94,7 +95,7 @@ def ootbootstraprun(bs2data, bs4data, maindata):
     bs2loc = 0x801C8010 #must be within 0x8000 of global context
     bs3s0 = 0x8011D500 #padmgr
     bs4loc = 0x8011E400 #must be within 0x8000 of padmgr
-    kargaroc_loader_entry = 0x80402000
+    kargaroc_loader_entry = 0x80400000
     ret = bytearray()
     ret.extend(walk_into_bs1(jrraaddr) * 240) #frames of walking
     ret.extend(bootstrapper1and3(1, True, bs2data, bs2loc - bs1s1, jrraaddr))
