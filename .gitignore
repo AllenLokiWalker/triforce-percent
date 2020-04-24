@@ -6,3 +6,4 @@ local.mk
 
 *.o
 *.elf
+*.map

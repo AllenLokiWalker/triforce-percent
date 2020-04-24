@@ -1,6 +1,9 @@
 #include "fast_loader.h"
 
 #define RUMBLE_CRCFAIL 1
+#define RUMBLE_Q_FALSE 2
+#define RUMBLE_Q_TRUE 3
+#define RUMBLE_INVALID 4
 #define RUMBLE_NOP 5
 #define RUMBLE_VALID 6
 
@@ -117,6 +120,18 @@ __attribute__((section(".start"))) void fl_init() {
 	*((u32*)0x800A2640) = 0x0C000000 | ((((u32)fl_run) >> 2) & 0x03FFFFFF); // construct jal to run() (also disable zeroing of pad 4)
 	*((u32*)0x800A2644) = 0x8FA4002C; // first argument is address to queue
 	
+	// PadMgr_RumbleControl will only poll other controllers for rumble paks
+	// if it hasn't attempted to send a rumble message to another controller
+	// on the same frame. Since we're messing with the rumble pack sending
+	// so that messages are sent every frame, once one controller is successfully
+	// polled it'll get messages every frame and then no other controllers will
+	// be polled for rumble pak. So, patch out the check so it will always
+	// poll for rumble paks even if other rumble paks have been accessed this frame.
+	// Line "if (!triedRumbleComm) {" in decomp
+	// Instruction  B3E824 800C7684 16A00052   bnez  $s5, .L800C77D0 in Debug ROM
+	// Instruction         800A21E4            bne    s3, $zero, lbl_800A22C0 in 1.0
+	*((u32*)0x800A21E4) = 0;
+	
 	return;
 }
 
@@ -168,7 +183,9 @@ static void fl_run(void* queue) {
 	
 	// CRC everything except for the CRC itself
 	u8 rumble_result;
-	if(fl_crc_data(out_data.command.bytes, DATA_LEN - 4) != out_data.command.crc) {
+	if(out_data.command.id == 0){
+		rumble_result = RUMBLE_NOP;
+	} else if(fl_crc_data(out_data.command.bytes, DATA_LEN - 4) != out_data.command.crc) {
 		rumble_result = RUMBLE_CRCFAIL;
 	} else {
 		rumble_result = RUMBLE_VALID;
@@ -220,8 +237,8 @@ static void fl_run(void* queue) {
 				);
 			} break;
 			
-			default: { //NOP
-				rumble_result = RUMBLE_NOP;
+			default: {
+				rumble_result = RUMBLE_INVALID;
 			} break;
 		}
 	}

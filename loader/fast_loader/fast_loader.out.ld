@@ -1,3 +1,3 @@
-fp_precmd = 0x80400a08;
-fp_postcmd = 0x80400a04;
-fast_loader_END = 0x80400a10;
+fp_precmd = 0x80400a18;
+fp_postcmd = 0x80400a14;
+fast_loader_END = 0x80400a20;
