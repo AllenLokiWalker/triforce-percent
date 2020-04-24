@@ -9,7 +9,7 @@ sExceptionNames = 0x800FF320;
 __osFaultedThread = 0x80006344;
 padmgrth = 0x8011D580;
 
-ENTRY(DmaPatcher_Init);
+ENTRY(Debugger_Init);
 
 SECTIONS {
 	. = fast_loader_END;

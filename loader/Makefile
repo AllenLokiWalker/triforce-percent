@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wno-main -mno-gpopt -fomit-frame-pointer -G 0 -Os --std=gnu99 -m
 LDFLAGS = --emit-relocs
 OCFLAGS = -R .MIPS.abiflags -O binary
 
-default: fast_loader/fast_loader.bin debugger/debugger.bin dma_patcher/dma_patcher.bin
+default: fast_loader/fast_loader.bin debugger/debugger.bin dma_patcher/dma_patcher.bin dma_patcher/dma_patcher.out.ld
 
 #Dependencies
 

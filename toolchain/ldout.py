@@ -16,18 +16,24 @@ def find_symbol(map, sym):
     print('Could not find token ' + sym + ' in map file')
     return None
 
-def find_end(map):
+def find_start_end(map, find_end):
     map.seek(0)
     for l in map:
         l = l.strip()
         toks = [t for t in l.split(' ') if t]
         if len(toks) != 3:
             continue
-        if toks[0] != '.bss':
-            continue
-        print('Found end of BSS at ' + toks[1] + ' length ' + toks[2])
-        return ((int(toks[1], 16) + int(toks[2], 16)) + 15) & 0xFFFFFFFFFFFFFFF0
-    print('Could not find end of BSS')
+        if find_end:
+            if toks[0] != '.bss':
+                continue
+            print('Found end of BSS at ' + toks[1] + ' length ' + toks[2])
+            return ((int(toks[1], 16) + int(toks[2], 16)) + 15) & 0xFFFFFFFFFFFFFFF0
+        else:
+            if toks[0] != '.start':
+                continue
+            print('Found start at ' + toks[1] + ' length (unused) ' + toks[2])
+            return int(toks[1], 16)
+    print('Could not find', 'end of BSS' if find_end else 'start')
     return None
 
 def ldout(map, outin, out):
@@ -41,8 +47,10 @@ def ldout(map, outin, out):
         assert(len(toks) == 3)
         assert(toks[1] == '=')
         a = None
-        if toks[0].endswith('_END'):
-            a = find_end(map)
+        if toks[0].endswith('_START'):
+            a = find_start_end(map, False)
+        elif toks[0].endswith('_END'):
+            a = find_start_end(map, True)
         else:
             a = find_symbol(map, toks[0])
         if not a:
