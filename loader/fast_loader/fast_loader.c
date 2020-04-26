@@ -23,7 +23,7 @@ typedef struct {
 extern padmgr_t padmgr;
 
 #define POLLS 8
-#define DATA_LEN (45 * ((POLLS) / 4))
+#define DATA_LEN (45 * ((POLLS) >> 2))
 #define COMMAND_LEN ((DATA_LEN) - 5)
 #define HUGE_T_SIZE 23 /* ceiling((30 bits * 3 pads * 8 polls) / 32)*/
 
@@ -78,15 +78,18 @@ typedef union {
 		u8 id;
 	} command;
 	u8 bytes[DATA_LEN];
+	u16 halves[DATA_LEN>>1];
 } out_data_t;
 
 static out_data_t out_data;
 
+/*
 typedef struct {
 	u32 blocks[HUGE_T_SIZE];
 } huge_t;
 
 static huge_t huge_data;
+*/
 
 //Other data
 
@@ -101,9 +104,10 @@ void fl_init();
 static void fl_run(void* queue);
 static void fl_rumble_message(u32 bits);
 static u32 fl_crc_data(void* data, u32 size);
+/*
 static int fl_huge_push_data(huge_t* n, u32 bits, u32 amount);
 static u32 fl_huge_pop_data(huge_t* n, u32 amount);
-
+*/
 
 // entry point
 __attribute__((section(".start"))) void fl_init() {
@@ -148,7 +152,7 @@ static void fl_run(void* queue) {
 	for(i = 0; i < (POLLS); ++i) {
 		raw_input_t* p;
 		
-		// try to preserve the original pad input as polled by the original code
+		// Preserve the original pad input as polled by the original code
 		if(!i) { // the first time, use pad data from the original game poll
 			p = &padmgr.pads[0];
 		} else { // afterwards, poll the pads ourselves, and discard data for pad 1
@@ -159,6 +163,31 @@ static void fl_run(void* queue) {
 			osContGetReadData(p); // actually get the pad data
 		}
 		
+		// We use halfwords, because two of the raw_input_t objects are 2-byte
+		// aligned and two are 4-byte aligned.
+		u16* data_out = &out_data.halves[6*i];
+		data_out[0] = p[1].halves[0] & 0xFF3F;
+		data_out[1] = p[1].halves[1];
+		data_out[2] = p[2].halves[0] & 0xFF3F;
+		if(i < POLLS-1){
+			data_out[3] = p[2].halves[1];
+			data_out[4] = p[3].halves[0] & 0xFF3F;
+			data_out[5] = p[3].halves[1];
+		}else{
+			u64 temp = p[2].halves[1];
+			temp <<= 8;
+			temp |= p[3].bytes[0];
+			temp <<= 6;
+			temp |= p[3].bytes[1] & 0x3F;
+			temp <<= 16;
+			temp |= p[3].halves[1];
+			//Fill in all the missing 2-bits out of each word
+			for(s32 j=0; j<(DATA_LEN + 3) >> 2; ++j){
+				out_data.bytes[(j<<2)+1] |= (u8)(temp & 3) << 6;
+				temp >>= 2;
+			}
+		}
+		/*
 		fl_huge_push_data(&huge_data, p[1].b1, 8);
 		fl_huge_push_data(&huge_data, p[1].b2, 6);
 		fl_huge_push_data(&huge_data, p[1].x,  8);
@@ -171,15 +200,18 @@ static void fl_run(void* queue) {
 		fl_huge_push_data(&huge_data, p[3].b2, 6);
 		fl_huge_push_data(&huge_data, p[3].x,  8);
 		fl_huge_push_data(&huge_data, p[3].y,  8);
+		*/
 	}
 	
 	if(fp_precmd) fp_precmd();
 	
+	/*
 	i = DATA_LEN;
 	while(i > 0) {
 		--i;
 		out_data.bytes[i] = fl_huge_pop_data(&huge_data, 8);
 	}
+	*/
 	
 	// CRC everything except for the CRC itself
 	u8 rumble_result;
@@ -274,6 +306,7 @@ static u32 fl_crc_data(void* data, u32 size) {
 	return state;
 }
 
+/*
 static int fl_huge_shift_up(huge_t* n, u32 amount) {
 	u32 i;
 	for(i = 0; i < (HUGE_T_SIZE - 1); ++i) {
@@ -308,3 +341,4 @@ static u32 fl_huge_pop_data(huge_t* n, u32 amount) {
 	fl_huge_shift_down(n, amount);
 	return (u32)r;
 }
+*/

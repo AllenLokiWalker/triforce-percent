@@ -73,6 +73,7 @@ extern void DmaMgr_SendRequest0(u32 vram_addr, u32 vrom_addr, u32 size); //80001
 
 typedef union {
 	u8 bytes[6];
+	u8 halves[3];
 	struct {
 		u8 b1, b2, x, y;
 		u16 status;
