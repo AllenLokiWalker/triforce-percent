@@ -83,6 +83,11 @@ typedef union {
 
 static out_data_t out_data;
 
+//TODO debugging
+out_data_t out_data_copy;
+raw_input_t last_pad_data[4];
+u32 comp_checksum;
+
 /*
 typedef struct {
 	u32 blocks[HUGE_T_SIZE];
@@ -136,6 +141,11 @@ __attribute__((section(".start"))) void fl_init() {
 	// Instruction         800A21E4            bne    s3, $zero, lbl_800A22C0 in 1.0
 	*((u32*)0x800A21E4) = 0;
 	
+	// Initialize out_data to something invalid to see if controller polling is working
+	for(i=0; i<DATA_LEN; ++i){
+		out_data.bytes[i] = 0xA5;
+	}
+	
 	return;
 }
 
@@ -156,9 +166,14 @@ static void fl_run(void* queue) {
 		if(!i) { // the first time, use pad data from the original game poll
 			p = &padmgr.pads[0];
 		} else { // afterwards, poll the pads ourselves, and discard data for pad 1
-			bzero(pad_data, 24);
+			for(u32 j=0; j<24; ++j){
+				((u8*)pad_data)[j] = 0xFF;
+			}
 			p = pad_data;
-			osContStartReadData(queue);
+			while(osContStartReadData(queue) != 0){
+				//Wait until ready
+				osWritebackDCache(NULL, 0x4000); //busy wait, this should take a little time
+			}
 			osRecvMesg(queue, NULL, 1);
 			osContGetReadData(p); // actually get the pad data
 		}
@@ -174,18 +189,11 @@ static void fl_run(void* queue) {
 			data_out[4] = p[3].halves[0] & 0xFF3F;
 			data_out[5] = p[3].halves[1];
 		}else{
-			u64 temp = p[2].halves[1];
-			temp <<= 8;
-			temp |= p[3].bytes[0];
-			temp <<= 6;
-			temp |= p[3].bytes[1] & 0x3F;
-			temp <<= 16;
-			temp |= p[3].halves[1];
-			//Fill in all the missing 2-bits out of each word
-			for(s32 j=0; j<(DATA_LEN + 3) >> 2; ++j){
-				out_data.bytes[(j<<2)+1] |= (u8)(temp & 3) << 6;
-				temp >>= 2;
-			}
+			u32 j = 1, k, temp;
+			for(temp = p[3].halves[1], k=0; k<8; ++k, j+=4, temp>>=2) out_data.bytes[j] |= (u8)(temp&3)<<6;
+			for(temp = p[3].bytes[1] , k=0; k<3; ++k, j+=4, temp>>=2) out_data.bytes[j] |= (u8)(temp&3)<<6;
+			for(temp = p[3].bytes[0] , k=0; k<4; ++k, j+=4, temp>>=2) out_data.bytes[j] |= (u8)(temp&3)<<6;
+			for(temp = p[2].halves[1], k=0; k<8; ++k, j+=4, temp>>=2) out_data.bytes[j] |= (u8)(temp&3)<<6;
 		}
 		/*
 		fl_huge_push_data(&huge_data, p[1].b1, 8);
@@ -203,6 +211,11 @@ static void fl_run(void* queue) {
 		*/
 	}
 	
+	if(out_data.command.crc != 0){
+		for(i=0; i<90; ++i) out_data_copy.bytes[i] = out_data.bytes[i];
+		for(i=0; i<24; ++i) ((u8*)last_pad_data)[i] = ((u8*)pad_data)[i];
+	}
+	
 	if(fp_precmd) fp_precmd();
 	
 	/*
@@ -213,11 +226,13 @@ static void fl_run(void* queue) {
 	}
 	*/
 	
-	// CRC everything except for the CRC itself
 	u8 rumble_result;
-	if(out_data.command.id == 0){
+	if(out_data.command.id == 0 && out_data.command.crc == 0){
+		// Assume it's all zero
 		rumble_result = RUMBLE_NOP;
-	} else if(fl_crc_data(out_data.command.bytes, DATA_LEN - 4) != out_data.command.crc) {
+	} else if((comp_checksum = fl_crc_data(out_data.command.bytes, DATA_LEN - 4)) 
+			!= out_data.command.crc) {
+		// CRC everything except for the CRC itself
 		rumble_result = RUMBLE_CRCFAIL;
 	} else {
 		rumble_result = RUMBLE_VALID;

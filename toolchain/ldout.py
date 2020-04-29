@@ -18,21 +18,29 @@ def find_symbol(map, sym):
 
 def find_start_end(map, find_end):
     map.seek(0)
+    ret = None
     for l in map:
         l = l.strip()
         toks = [t for t in l.split(' ') if t]
         if len(toks) != 3:
             continue
-        if find_end:
-            if toks[0] != '.bss':
-                continue
-            print('Found end of BSS at ' + toks[1] + ' length ' + toks[2])
+        def end_of_section(toks):
             return ((int(toks[1], 16) + int(toks[2], 16)) + 15) & 0xFFFFFFFFFFFFFFF0
+        if find_end:
+            if toks[0] == '.bss':
+                print('Found end of BSS at ' + toks[1] + ' length ' + toks[2])
+                ret = end_of_section(toks)
+            elif toks[0] == '.scommon':
+                print('Found end of SCommon at ' + toks[1] + ' length ' + toks[2])
+                return end_of_section(toks)
         else:
             if toks[0] != '.start':
                 continue
             print('Found start at ' + toks[1] + ' length (unused) ' + toks[2])
             return int(toks[1], 16)
+    if ret is not None:
+        print('Did not find SCommon, giving end of BSS')
+        return ret
     print('Could not find', 'end of BSS' if find_end else 'start')
     return None
 

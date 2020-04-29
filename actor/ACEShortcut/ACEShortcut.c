@@ -292,9 +292,17 @@ uint32_t LoadBadVAddr() {
 
 static void step( entity_t* entity, z64_global_t* global ) {
 	_printf(8, 64, "Distance to AOE: %.3f", (entity->actor.dist_from_link_xz) - AOE);
-	_printf(8, 72, "Seed angle: %08X, Kar addr:%08X", *(u32*)SEED_ROTATION_ADDR, *(u32*)KARGAROC_ADDR_COUNTER);
-	print_string_and_bytes(8, 80, "Pads: ", (u8*)0x8011D790, 24, 12);
+#define COMP_CHECKSUM_LOC 0x80400ad4
+#define LAST_PAD_DATA_LOC 0x80400ab8
+#define OUT_DATA_COPY_LOC 0x80400a58
+	print_bytes(8, 72, (u8*)OUT_DATA_COPY_LOC, 90, 20);
+	print_bytes(8, 112, (u8*)LAST_PAD_DATA_LOC, 0x18, 0xC);
+	print_bytes(8, 128, (u8*)COMP_CHECKSUM_LOC, 4, 4);
 	
+	//_printf(8, 72, "Seed angle: %08X, Kar addr:%08X", *(u32*)SEED_ROTATION_ADDR, *(u32*)KARGAROC_ADDR_COUNTER);
+	//print_string_and_bytes(8, 80, "Pads: ", (u8*)0x8011D790, 24, 12);
+	
+#define ROW_PM 136
 	OSThread *padmgrth = (OSThread*)PADMGR_THREAD;
 	uint16_t state = padmgrth->state;
 	uint32_t crashed = !(state & (OS_STATE_WAITING | OS_STATE_RUNNING | OS_STATE_RUNNABLE));
@@ -306,7 +314,7 @@ static void step( entity_t* entity, z64_global_t* global ) {
 	}else{
 		msg = "OK";
 	}
-	_printf(8, 104, "padmgr: %s", msg);
+	_printf(8, ROW_PM, "padmgr: %s", msg);
 	/*
 	_printf(8, 104, "padmgr (@%08X ra%08X): %s", padmgrth->context.pc, (uint32_t)padmgrth->context.ra, msg);
 	_printf(8, 112, "at %08X v0 %08X v1 %08X", (uint32_t)padmgrth->context.at, 
@@ -323,11 +331,11 @@ static void step( entity_t* entity, z64_global_t* global ) {
 	    if (causeStrIdx == 0x1f)
 	        causeStrIdx = 0x11;
 		const char *causeStr = (causeStrIdx >= 0 ? sExceptionNames[causeStrIdx] : "Unknown");
-		_printf(8, 112, "(%d) %s", causeStrIdxRaw, causeStr);
+		_printf(8, ROW_PM+8, "(%d) %s", causeStrIdxRaw, causeStr);
 		if(is_exception_memory_related[causeStrIdx]){
-			_printf(8, 120, "Bad VA: %08X", padmgrth->context.badvaddr);
+			_printf(8, ROW_PM+16, "Bad VA: %08X", padmgrth->context.badvaddr);
 		}else{
-			_printf(8, 120, "(Press C-right to pay respects)");
+			_printf(8, ROW_PM+16, "(Press C-right to pay respects)");
 		}
 		uint32_t pc = padmgrth->context.pc;
 		uint32_t instruction = (pc >= 0x80000000 && pc < 0x80800000) ? *(uint32_t*)pc : 0x69690420;
@@ -335,8 +343,8 @@ static void step( entity_t* entity, z64_global_t* global ) {
 		uint8_t rbs = (instruction & 0x03E00000) >> 21;
 		uint8_t rt = (instruction & 0x001F0000) >> 16;
 		uint8_t rd = (instruction & 0x0000F800) >> 11;
-		_printf(8, 128, "@%08X: instr %08X", pc, instruction);
-		uint8_t row = 136;
+		_printf(8, ROW_PM+24, "@%08X: instr %08X", pc, instruction);
+		uint8_t row = ROW_PM+32;
 		if(instruction != 0x08 && instruction != 0x0C){
 			if(instruction == 0x00){
 				_printf(8, row, "rd = $%s = %08X", register_names[rd], read_register(padmgrth, rd));

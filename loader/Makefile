@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wno-main -mno-gpopt -fomit-frame-pointer -G 0 -Os --std=gnu99 -m
 LDFLAGS = --emit-relocs
 OCFLAGS = -R .MIPS.abiflags -O binary
 
-default: fast_loader/fast_loader.bin debugger/debugger.bin dma_patcher/dma_patcher.bin dma_patcher/dma_patcher.out.ld
+default: fast_loader/fast_loader.bin fast_loader/fast_loader.elf debugger/debugger.bin dma_patcher/dma_patcher.bin dma_patcher/dma_patcher.out.ld
 
 #Dependencies
 
@@ -37,3 +37,6 @@ dma_patcher/dma_patcher.elf: debugger/debugger.out.ld
 
 %.out.ld: %.map
 	$(PYTHON3) ../toolchain/ldout.py $< $@
+
+clean:
+	rm -rf */*.o */*.map */*.elf fast_loader/fast_loader.bin debugger/debugger.bin dma_patcher/dma_patcher.bin
