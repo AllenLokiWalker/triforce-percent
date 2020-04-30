@@ -272,37 +272,15 @@ uint32_t read_register(OSThread *th, uint8_t reg){
 	return (uint32_t)((&(th->context.at))[reg]);
 }
 
-void print_register_info(OSThread *th, const char *regslot, uint8_t reg, uint8_t *row){
-	
-}
-
-/*
-uint32_t LoadEPC() {
-	asm(".LLoadEPC:     \n mfc0 $v0, $14 \n nop \n nop \n nop \n jr $ra \n nop");
-}
-uint32_t LoadEEPC() {
-	asm(".LLoadEEPC:    \n mfc0 $v0, $30 \n nop \n nop \n nop \n jr $ra \n nop");
-}
-uint32_t LoadBadVAddr() {
-	asm(".LLoadBadVAddr: \n mfc0 $v0, $8  \n nop \n nop \n nop \n jr $ra \n nop");
-}
-*/
-
 #define AOE 600.0f
 
 static void step( entity_t* entity, z64_global_t* global ) {
-	_printf(8, 64, "Distance to AOE: %.3f", (entity->actor.dist_from_link_xz) - AOE);
-#define COMP_CHECKSUM_LOC 0x80400ad4
-#define LAST_PAD_DATA_LOC 0x80400ab8
-#define OUT_DATA_COPY_LOC 0x80400a58
-	print_bytes(8, 72, (u8*)OUT_DATA_COPY_LOC, 90, 20);
-	print_bytes(8, 112, (u8*)LAST_PAD_DATA_LOC, 0x18, 0xC);
-	print_bytes(8, 128, (u8*)COMP_CHECKSUM_LOC, 4, 4);
+	_printf(8, 48, "Distance to AOE: %.3f", (entity->actor.dist_from_link_xz) - AOE);
 	
 	//_printf(8, 72, "Seed angle: %08X, Kar addr:%08X", *(u32*)SEED_ROTATION_ADDR, *(u32*)KARGAROC_ADDR_COUNTER);
 	//print_string_and_bytes(8, 80, "Pads: ", (u8*)0x8011D790, 24, 12);
 	
-#define ROW_PM 136
+#define ROW_PM 56
 	OSThread *padmgrth = (OSThread*)PADMGR_THREAD;
 	uint16_t state = padmgrth->state;
 	uint32_t crashed = !(state & (OS_STATE_WAITING | OS_STATE_RUNNING | OS_STATE_RUNNABLE));

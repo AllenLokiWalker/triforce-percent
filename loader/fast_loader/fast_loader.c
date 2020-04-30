@@ -42,7 +42,7 @@ typedef union {
 				u8* address;
 				u8  data[COMMAND_LEN - 5];
 				u8  length; // Is last data byte when run as command 1
-			} cmd01;
+			} __attribute__((packed)) cmd01;
 			
 			// Command 3: Load X counts of byte Y to specified address
 			struct {
@@ -50,7 +50,7 @@ typedef union {
 				u32 length;
 				u8  byte;
 				u8  padding[COMMAND_LEN - 9];
-			} cmd03;
+			} __attribute__((packed)) cmd03;
 			
 			// Command 4: DMA uncompressed data
 			// Command 5: DMA compressed data
@@ -59,7 +59,7 @@ typedef union {
 				u32 vrom;
 				u32 size;
 				u8  padding[COMMAND_LEN - 12];
-			} cmd04;
+			} __attribute__((packed)) cmd04;
 			
 			// Command 6: Call command data as code
 			//No need for a separate struct--just call `bytes`
@@ -72,29 +72,16 @@ typedef union {
 				s32 a2;
 				s32 a3;
 				u8  padding[COMMAND_LEN - 20];
-			} cmd07;
+			} __attribute__((packed)) cmd07;
 			
-		};
+		} __attribute__((packed));
 		u8 id;
-	} command;
+	} __attribute__((packed)) command;
 	u8 bytes[DATA_LEN];
 	u16 halves[DATA_LEN>>1];
-} out_data_t;
+} __attribute__((packed)) out_data_t;
 
 static out_data_t out_data;
-
-//TODO debugging
-out_data_t out_data_copy;
-raw_input_t last_pad_data[4];
-u32 comp_checksum;
-
-/*
-typedef struct {
-	u32 blocks[HUGE_T_SIZE];
-} huge_t;
-
-static huge_t huge_data;
-*/
 
 //Other data
 
@@ -109,10 +96,7 @@ void fl_init();
 static void fl_run(void* queue);
 static void fl_rumble_message(u32 bits);
 static u32 fl_crc_data(void* data, u32 size);
-/*
-static int fl_huge_push_data(huge_t* n, u32 bits, u32 amount);
-static u32 fl_huge_pop_data(huge_t* n, u32 amount);
-*/
+
 
 // entry point
 __attribute__((section(".start"))) void fl_init() {
@@ -195,43 +179,15 @@ static void fl_run(void* queue) {
 			for(temp = p[3].bytes[0] , k=0; k<4; ++k, j+=4, temp>>=2) out_data.bytes[j] |= (u8)(temp&3)<<6;
 			for(temp = p[2].halves[1], k=0; k<8; ++k, j+=4, temp>>=2) out_data.bytes[j] |= (u8)(temp&3)<<6;
 		}
-		/*
-		fl_huge_push_data(&huge_data, p[1].b1, 8);
-		fl_huge_push_data(&huge_data, p[1].b2, 6);
-		fl_huge_push_data(&huge_data, p[1].x,  8);
-		fl_huge_push_data(&huge_data, p[1].y,  8);
-		fl_huge_push_data(&huge_data, p[2].b1, 8);
-		fl_huge_push_data(&huge_data, p[2].b2, 6);
-		fl_huge_push_data(&huge_data, p[2].x,  8);
-		fl_huge_push_data(&huge_data, p[2].y,  8);
-		fl_huge_push_data(&huge_data, p[3].b1, 8);
-		fl_huge_push_data(&huge_data, p[3].b2, 6);
-		fl_huge_push_data(&huge_data, p[3].x,  8);
-		fl_huge_push_data(&huge_data, p[3].y,  8);
-		*/
-	}
-	
-	if(out_data.command.crc != 0){
-		for(i=0; i<90; ++i) out_data_copy.bytes[i] = out_data.bytes[i];
-		for(i=0; i<24; ++i) ((u8*)last_pad_data)[i] = ((u8*)pad_data)[i];
 	}
 	
 	if(fp_precmd) fp_precmd();
-	
-	/*
-	i = DATA_LEN;
-	while(i > 0) {
-		--i;
-		out_data.bytes[i] = fl_huge_pop_data(&huge_data, 8);
-	}
-	*/
 	
 	u8 rumble_result;
 	if(out_data.command.id == 0 && out_data.command.crc == 0){
 		// Assume it's all zero
 		rumble_result = RUMBLE_NOP;
-	} else if((comp_checksum = fl_crc_data(out_data.command.bytes, DATA_LEN - 4)) 
-			!= out_data.command.crc) {
+	} else if(fl_crc_data(out_data.command.bytes, DATA_LEN - 4) != out_data.command.crc) {
 		// CRC everything except for the CRC itself
 		rumble_result = RUMBLE_CRCFAIL;
 	} else {
@@ -241,7 +197,7 @@ static void fl_run(void* queue) {
 			case 1: //   fixed 81 byte size
 			case 2: { // up to 80 byte size
 				int i, len;
-				len = out_data.command.id == 1 ? COMMAND_LEN - 4 : out_data.command.cmd01.length;
+				len = (out_data.command.id == 1) ? (COMMAND_LEN - 4) : out_data.command.cmd01.length;
 				for(i = 0; i < len; ++i)
 					*(out_data.command.cmd01.address++) = out_data.command.cmd01.data[i];
 			} break;
@@ -320,40 +276,3 @@ static u32 fl_crc_data(void* data, u32 size) {
 	}
 	return state;
 }
-
-/*
-static int fl_huge_shift_up(huge_t* n, u32 amount) {
-	u32 i;
-	for(i = 0; i < (HUGE_T_SIZE - 1); ++i) {
-		n->blocks[i] <<= amount;
-		n->blocks[i]  |= (n->blocks[i + 1] >> (32 - amount));
-	}
-	n->blocks[i] <<= amount;
-	return 1;
-}
-
-static int fl_huge_shift_down(huge_t* n, u32 amount) {
-	u32 i;
-	for(i = HUGE_T_SIZE - 1; i > 0; --i) {
-		n->blocks[i] >>= amount;
-		n->blocks[i]  |= (n->blocks[i - 1] << (32 - amount));
-	}
-	n->blocks[i] >>= amount;
-	return 1;
-}
-
-static int fl_huge_push_data(huge_t* n, u32 bits, u32 amount) {
-	fl_huge_shift_up(n, amount);
-	n->blocks[HUGE_T_SIZE - 1] |= (bits & (~(0xFFFFFFFF << amount)));
-	return 0;
-}
-
-static u32 fl_huge_pop_data(huge_t* n, u32 amount) {
-	u32 mask, r;
-	mask = 0xFFFFFFFF; mask <<= amount; mask = ~mask;
-	r = n->blocks[HUGE_T_SIZE - 1];
-	r &= mask;
-	fl_huge_shift_down(n, amount);
-	return (u32)r;
-}
-*/
