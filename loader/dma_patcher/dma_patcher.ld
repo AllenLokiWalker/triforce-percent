@@ -6,6 +6,7 @@ INCLUDE common/z_functions.ld
 INCLUDE debugger/debugger.out.ld
 
 gDmaDataTable = 0x8000B140;
+DmaMgr_Error = 0x800AF734;
 
 ENTRY(DmaPatcher_Init);
 

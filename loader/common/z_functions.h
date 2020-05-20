@@ -65,9 +65,9 @@ extern void osSetThreadPri(OSThread* thread, OSPri pri); //80004480
 
 //DMA
 
-extern void Yaz0_Decompress(u32 vrom_addr, u32 vram_addr, u32 rom_size); //80001254
-extern void DmaMgr_DMARomToRam(u32 vrom_addr, u32 vram_addr, u32 size); //8000085C
-extern void DmaMgr_SendRequest0(u32 vram_addr, u32 vrom_addr, u32 size); //80001AA0
+extern void Yaz0_Decompress(u32 vrom_addr, void* vram_addr, u32 rom_size); //80001254
+extern void DmaMgr_DMARomToRam(u32 vrom_addr, void* vram_addr, u32 size); //8000085C
+extern void DmaMgr_SendRequest0(void* vram_addr, u32 vrom_addr, u32 size); //80001AA0
 
 //Padmgr
 

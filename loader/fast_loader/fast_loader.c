@@ -55,7 +55,7 @@ typedef union {
 			// Command 4: DMA uncompressed data
 			// Command 5: DMA compressed data
 			struct {
-				u32 vram;
+				void* vram;
 				u32 vrom;
 				u32 size;
 				u8  padding[COMMAND_LEN - 12];
@@ -209,7 +209,7 @@ static void fl_run(void* queue) {
 				}
 			} break;
 			
-			case 4: { // DMA uncompressed data
+			case 4: { // DMA uncompressed or compressed data--handled on DmaMgr thread
 				DmaMgr_SendRequest0(
 					out_data.command.cmd04.vram,
 					out_data.command.cmd04.vrom,
@@ -217,13 +217,15 @@ static void fl_run(void* queue) {
 				);
 			} break;
 			
-			case 5: { // DMA compressed data
+			/*
+			case 5: { // DMA compressed data--this would be on this thread, problems!
 				Yaz0_Decompress(
 					out_data.command.cmd04.vrom,
 					out_data.command.cmd04.vram,
 					out_data.command.cmd04.size
 				);
 			} break;
+			*/
 			
 			case 6: { // Treat command data as instructions and jump to them (can execute `2.5 * POLLS` instructions)
 				osWritebackDCache(NULL, 0x4000);
