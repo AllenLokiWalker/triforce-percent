@@ -4,7 +4,7 @@ CC = mips64-gcc
 LD = mips64-ld
 OC = mips64-objcopy
 
-CFLAGS = -save-temps -Wall -Wno-main -mno-gpopt -fomit-frame-pointer -G 0 -O2 --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
+CFLAGS = -Wall -Wno-main -mno-gpopt -fomit-frame-pointer -G 0 -O2 --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
 LDFLAGS = --emit-relocs
 OCFLAGS = -R .MIPS.abiflags -O binary
 

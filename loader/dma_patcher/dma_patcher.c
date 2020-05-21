@@ -104,7 +104,58 @@ static void DmaPatcher_ApplyPatch(u8* ram, u32 size, u8* patch)
 
 void DmaPatcher_ProcessMsg(DmaRequest* req)
 {
-    #if 0
+    u32 vrom = req->vromAddr;
+    void* ram = req->dramAddr;
+    u32 size = req->size;
+    u32 romStart, romSize, copyStart, p;
+    DmaEntry* iter = gDmaDataTable;
+    while (iter->vromEnd) {
+        if(vrom >= iter->vromStart && vrom < (iter+1)->vromStart){
+            //It's in this file
+            //Changed from originally checking between vromStart and vromEnd
+            //because this way we can patch files to be bigger than they
+            //originally were, as long as the file is always loaded starting
+            //from its start.
+            if(vrom + size > iter->vromEnd){
+                Debugger_Printf("!! DMA @%08X sz %X off end %08X", vrom, size, iter->vromEnd);
+            }
+            romStart = iter->romStart;
+            copyStart = romStart + (vrom - iter->vromStart);
+            if(romStart & 0x80000000){
+                //The file is actually in RAM, copy it
+                _memcpy((void*)ram, (void*)copyStart, size);
+                Debugger_Printf("DMA @%08X replaced file", vrom);
+                return;
+            }
+            if (iter->romEnd == 0) {
+                DmaMgr_DMARomToRam(copyStart, ram, size);
+            }else{
+                romSize = iter->romEnd - romStart;
+                if(copyStart != romStart || size != romSize){
+                    Debugger_Printf("!! DMA @%08X middle of compressed file %08X", copyStart, romStart);
+                }
+                osSetThreadPri(NULL, 0x0A);
+                Yaz0_Decompress(romStart, ram, romSize);
+                osSetThreadPri(NULL, 0x10);
+            }
+            //Patch file after loading
+            for(p=0; p<patcher.npatches; ++p){
+                if(patcher.patches[p].vrom == vrom){
+                    Debugger_Printf("DMA @%08X patching file", vrom);
+                    DmaPatcher_ApplyPatch(ram, size, patcher.patches[p].patch);
+                    return;
+                }
+            }
+            return;
+        }
+        ++iter;
+    }
+    Debugger_Printf("!! DMA @%08X not found", vrom);
+    DmaMgr_DMARomToRam(vrom, ram, size);
+}
+
+
+#if 0
     //Working homebrewed version, less than half the length of the original
     asm(".set noat\n .set noreorder\n"
     //a0 = req (for now); at, t9 temps
@@ -151,27 +202,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
     "j       DmaMgr_DMARomToRam\n"//DmaMgr_DMARomToRam(vrom, ram, size);
     "or      $a0, $a3, $zero\n"//a0 = vromAddr
     ".set at");
-    #endif
-    u32 vrom = req->vromAddr;
-    void* ram = req->dramAddr;
-    u32 size = req->size;
-    DmaEntry* iter = gDmaDataTable;
-    while (iter->vromEnd) {
-        if (vrom >= iter->vromStart && vrom < iter->vromEnd) {
-            if (iter->romEnd == 0) {
-                DmaMgr_DMARomToRam(iter->romStart + (vrom - iter->vromStart), ram, size);
-                return;
-            } else {
-                osSetThreadPri(NULL, 0x0A);
-                Yaz0_Decompress(iter->romStart, ram, iter->romEnd - iter->romStart);
-                osSetThreadPri(NULL, 0x10);
-                return;
-            }
-        }
-        iter++;
-    }
-    DmaMgr_DMARomToRam(vrom, ram, size);
-#if 0
+
     //This one works
     asm(".set noat\n .set noreorder\n"
     "addiu   $sp, $sp, 0xFFC0             \n"//## $sp = FFFFFFC0
@@ -293,8 +324,8 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
 	"jr      $ra                          \n"//
 	"nop                                  \n"//
 ".set at");
-#endif
-#if 0
+
+    //Attempt at replicating original
     u32 vrom;
     void* ram;
     u32 size;
@@ -329,8 +360,8 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
     if (!found) {
         DmaMgr_DMARomToRam(vrom, ram, size);
     }
-#endif
-#if 0
+
+    //First hack
     u32 vrom = req->vromAddr;
     u32 ram = (u32)req->dramAddr;
     u32 size = req->size;
@@ -393,5 +424,5 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
     }
     //Debugger_Printf("DMA %08X not found", vrom);
     DmaMgr_DMARomToRam(vrom, ram, size);
+    
 #endif
-}
