@@ -22,7 +22,7 @@ typedef struct
     /* 0x0C */ u32 romEnd; 
 } DmaEntry;
 
-extern DmaEntry* gDmaDataTable;
+extern DmaEntry gDmaDataTable[];
 
 // DmaPatcher RAM
 
@@ -104,6 +104,75 @@ static void DmaPatcher_ApplyPatch(u8* ram, u32 size, u8* patch)
 
 void DmaPatcher_ProcessMsg(DmaRequest* req)
 {
+    #if 0
+    //Working homebrewed version, less than half the length of the original
+    asm(".set noat\n .set noreorder\n"
+    //a0 = req (for now); at, t9 temps
+    "lw      $a1, 0x0004($a0)\n" //a1 = dramAddr
+    "lw      $a2, 0x0008($a0)\n" //a2 = size
+    "lw      $a3, 0x0000($a0)\n" //a3 = vromAddr
+    "lui     $v0, 0x8001\n"
+    "addiu   $v0, $v0, 0xB130\n" //v0 = iter = 8000B140 (gDmaDataTable) - 0x10
+"lbl_loop:\n"
+    "addiu   $v0, $v0, 0x0010\n"
+    "lw      $t1, 0x0004($v0)\n" //t1 = vromEnd
+    "beq     $t1, $zero, lbl_notfound\n"
+    "lw      $t0, 0x0000($v0)\n" //t0 = vromStart
+    "sltu    $at, $a3, $t0\n"    //if(vromAddr < iter->vromStart)
+    "bne     $at, $zero, lbl_loop\n"
+    "sltu    $t9, $a3, $t1\n"    //if(vromAddr >= iter->vromEnd)
+    "beq     $t9, $zero, lbl_loop\n"
+    "lw      $t3, 0x000C($v0)\n" //t3 = romEnd
+    "lw      $t2, 0x0008($v0)\n" //t2 = romStart
+    "bne     $t3, $zero, lbl_compressed\n"
+    "addu    $t9, $t2, $a3\n"    //t9 = iter->romStart + req->vromAddr
+    "j       DmaMgr_DMARomToRam\n"//DmaMgr_DMARomToRam(iter->romStart + (vrom - iter->vromStart), ram, size);
+	"subu    $a0, $t9, $t0\n"    //a0 = t9 - iter->vromStart
+"lbl_compressed:\n"
+    "addiu   $sp, $sp, 0xFFF0\n"
+    "sw      $ra, 0x0000($sp)\n"
+    "sw      $t2, 0x0004($sp)\n" //romStart
+    "sw      $a1, 0x0008($sp)\n" //dramAddr
+    "subu    $t9, $t3, $t2\n" //romSize = romEnd - romStart
+    "sw      $t9, 0x000C($sp)\n" //romSize
+    "or      $a0, $zero, $zero\n" //a0 = 0
+	"jal     osSetThreadPri\n"
+	"addiu   $a1, $zero, 0x000A\n"//a1 = 0A
+	"lw      $a0, 0x0004($sp)\n" //romStart
+	"lw      $a1, 0x0008($sp)\n" //dramAddr
+	"jal     Yaz0_Decompress\n"  //Yaz0_Decompress(romStart, ram, romSize);
+	"lw      $a2, 0x000C($sp)\n" //romSize
+    "lw      $ra, 0x0000($sp)\n"
+    "addiu   $sp, $sp, 0x0010\n"
+    "or      $a0, $zero, $zero\n" //a0 = 0
+	"j       osSetThreadPri\n"
+	"addiu   $a1, $zero, 0x0010\n"//a1 = 0x10
+"lbl_notfound:\n"
+    "j       DmaMgr_DMARomToRam\n"//DmaMgr_DMARomToRam(vrom, ram, size);
+    "or      $a0, $a3, $zero\n"//a0 = vromAddr
+    ".set at");
+    #endif
+    u32 vrom = req->vromAddr;
+    void* ram = req->dramAddr;
+    u32 size = req->size;
+    DmaEntry* iter = gDmaDataTable;
+    while (iter->vromEnd) {
+        if (vrom >= iter->vromStart && vrom < iter->vromEnd) {
+            if (iter->romEnd == 0) {
+                DmaMgr_DMARomToRam(iter->romStart + (vrom - iter->vromStart), ram, size);
+                return;
+            } else {
+                osSetThreadPri(NULL, 0x0A);
+                Yaz0_Decompress(iter->romStart, ram, iter->romEnd - iter->romStart);
+                osSetThreadPri(NULL, 0x10);
+                return;
+            }
+        }
+        iter++;
+    }
+    DmaMgr_DMARomToRam(vrom, ram, size);
+#if 0
+    //This one works
     asm(".set noat\n .set noreorder\n"
     "addiu   $sp, $sp, 0xFFC0             \n"//## $sp = FFFFFFC0
 	"lui     $a2, 0x8001                  \n"//
@@ -224,6 +293,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
 	"jr      $ra                          \n"//
 	"nop                                  \n"//
 ".set at");
+#endif
 #if 0
     u32 vrom;
     void* ram;
@@ -259,6 +329,8 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
     if (!found) {
         DmaMgr_DMARomToRam(vrom, ram, size);
     }
+#endif
+#if 0
     u32 vrom = req->vromAddr;
     u32 ram = (u32)req->dramAddr;
     u32 size = req->size;
