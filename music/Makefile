@@ -1,8 +1,10 @@
 .PHONY: default clean
 
-default:
-	@echo "Music Makefile is not set up yet"
+default: triforce.pat
+
+%.pat: %.aseq
+	$(PYTHON3) ../toolchain/create_patch.py --full $< $@
 
 clean:
-	@echo "Music Makefile is not set up yet"
+	rm triforce.pat
 	

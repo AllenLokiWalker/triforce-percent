@@ -46,6 +46,8 @@ typedef struct
 static DmaPatcher_t patcher;
 
 void DmaPatcher_ProcessMsg(DmaRequest* req);
+void DmaPatcher_PatchAudio_Pre();
+void DmaPatcher_PatchAudio_Post();
 
 __attribute__((section(".start"))) void DmaPatcher_Init()
 {
@@ -63,6 +65,9 @@ __attribute__((section(".start"))) void DmaPatcher_Init()
     *((u32*)0x80000B0C) = 0x08000000 | ((DUMMY_DMAMGR_LOC >> 2) & 0x03FFFFFF);
 	*((u32*)0x80000B10) = 0; //nop
     */
+	// Patch Sound_LoadFile to jump to DmaPatcher_PatchAudio_Pre and _Post
+	*((u32*)0x800B806C) = 0x08000000 | ( ( ((u32)DmaPatcher_PatchAudio_Pre) >> 2 ) & 0x03FFFFFF );
+	*((u32*)0x800B8184) = 0x08000000 | ( ( ((u32)DmaPatcher_PatchAudio_Post) >> 2 ) & 0x03FFFFFF );
     __osRestoreInt(i);
 }
 
@@ -72,6 +77,8 @@ void DmaPatcher_AddPatch(u32 vrom, u8* patch)
     if(patcher.npatches >= DMAPATCHER_MAXPATCHES){
         Debugger_Printf("AddPatch %08X: Too many patches!", vrom);
     }else{
+        Debugger_Printf("AddPatch %d VROM %08X inj %08X", patcher.npatches+1, vrom, patch);
+        Debugger_Printf("First patch data %08X %08X", *(u32*)patch, *(u32*)(patch+4));
         patcher.patches[patcher.npatches].vrom = vrom;
         patcher.patches[patcher.npatches].patch = patch;
         ++patcher.npatches;
@@ -79,9 +86,12 @@ void DmaPatcher_AddPatch(u32 vrom, u8* patch)
     __osRestoreInt(i);
 }
 
-void DmaPatcher_ReplaceFile(u32 filenum, void* injectedAddr)
+void DmaPatcher_ReplaceFile(u32 filenum, void* injectedAddr, u32 newsize)
 {
+    s32 i = __osDisableInt();
     gDmaDataTable[filenum].romStart = (u32)injectedAddr;
+    gDmaDataTable[filenum].vromEnd = gDmaDataTable[filenum].vromStart + newsize;
+    __osRestoreInt(i);
 }
 
 static void DmaPatcher_ApplyPatch(u8* ram, u32 size, u8* patch)
@@ -100,6 +110,42 @@ static void DmaPatcher_ApplyPatch(u8* ram, u32 size, u8* patch)
         }
         while(writecount--) *ptr++ = *patch++;
     }
+}
+
+void DmaPatcher_PatchAudio_Impl(u32 vrom, void* ram, u32 size)
+{
+	u32 p;
+    Debugger_Printf("Audio DMA %08X sz %04X", vrom, size);
+	for(p=0; p<patcher.npatches; ++p){
+		if(patcher.patches[p].vrom == vrom){
+			Debugger_Printf("Audio DMA @%08X patching file", vrom);
+			DmaPatcher_ApplyPatch(ram, size, patcher.patches[p].patch);
+			return;
+		}
+	}
+}
+
+void DmaPatcher_PatchAudio_Pre()
+{
+	asm(".set noat\n .set noreorder\n"
+	//a0 = romaddr, a1 = ramaddr, a2 = size
+    //Store them onto the stack, in their "original" (optimized out) positions
+    "sw      $a0, 0x0050($sp)\n"
+    "sw      $a1, 0x0054($sp)\n"
+    "sw      $a2, 0x0058($sp)\n"
+    "j       0x800B8074\n" //three instructions into the function
+    "sw      $s2, 0x0038($sp)\n"
+    ".set at\n .set reorder");
+}
+
+void DmaPatcher_PatchAudio_Post()
+{
+	asm(".set noat\n .set noreorder\n"
+    "lw      $a0, 0x0000($sp)\n"
+    "lw      $a1, 0x0004($sp)\n"
+	"j       DmaPatcher_PatchAudio_Impl\n"
+    "lw      $a2, 0x0008($sp)\n"
+    ".set at\n .set reorder");
 }
 
 void DmaPatcher_ProcessMsg(DmaRequest* req)
@@ -201,7 +247,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
 "lbl_notfound:\n"
     "j       DmaMgr_DMARomToRam\n"//DmaMgr_DMARomToRam(vrom, ram, size);
     "or      $a0, $a3, $zero\n"//a0 = vromAddr
-    ".set at");
+    ".set at\n .set reorder");
 
     //This one works
     asm(".set noat\n .set noreorder\n"
@@ -323,7 +369,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
 	"addiu   $sp, $sp, 0x0040             \n"//## $sp = 00000000
 	"jr      $ra                          \n"//
 	"nop                                  \n"//
-".set at");
+".set at\n .set reorder");
 
     //Attempt at replicating original
     u32 vrom;
