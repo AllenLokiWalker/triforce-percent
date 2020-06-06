@@ -1,5 +1,4 @@
 PROGRAM = triforcepiece
-OVLOUT = actor.zovl
 ADDRESS = 0x80800000
 ACTORDIR = "../../build-romhack/actor/130"
 PARTS = $(PROGRAM).o
@@ -10,15 +9,14 @@ NOVL = novl
 
 CFLAGS = -G 0 -Os --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
 LDFLAGS = -T /opt/n64/mips64/include/z64ovl/z64ovl.ld --emit-relocs
-NOVLFLAGS = -v -c -A $(ADDRESS) -o $(OVLOUT)
+NOVLFLAGS = -v -c -A $(ADDRESS) -o $(PROGRAM).zovl
 
 default: $(PROGRAM).ovl
 
 $(PROGRAM).ovl: $(PARTS)
 	$(LD) -o $(PROGRAM).elf $(PARTS) $(LDFLAGS)
 	$(NOVL) $(NOVLFLAGS) $(PROGRAM).elf
-	cp $(OVLOUT) $(ACTORDIR)
-	cp conf.txt $(ACTORDIR)
+	cp $(PROGRAM).zovl conf.txt $(ACTORDIR)
 
 clean:
 	rm -fv $(PROGRAM).elf $(OVLOUT) $(PARTS)

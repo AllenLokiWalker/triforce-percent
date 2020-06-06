@@ -1,8 +1,8 @@
-#include <z64ovl/oot/debug.h>     // change to `u10.h` or similar to change build targets
+#include <z64ovl/oot/u10.h>
 #include "obj.h"
 
 // Actor Information
-#define OBJ_ID         134        // primary object dependency (change if needed)
+#define OBJ_ID 0x010A // primary object dependency (change if needed)
 
 #define TRIFORCE_POWER 0
 #define TRIFORCE_WISDOM 1
@@ -76,15 +76,17 @@ static void rotcombine(int16_t *r, int16_t tbl, int32_t framesleft){
 	if(framesleft > 10){
 		//Do a little more than needed; will automatically slow down the
 		//last few frames.
-		d = (d * 9) >> 3;
+		d += d >> 3;
 	}
 	*r -= d;
 }
 
 static void init(entity_t *en, z64_global_t *global) {
+	/*
 	en->state = 0;
 	en->frame = 0;
 	setpos(en, 0.0f, 0.0f, 0.0f);
+	*/
 }
 
 static void dest(entity_t *en, z64_global_t *global) {
@@ -92,6 +94,7 @@ static void dest(entity_t *en, z64_global_t *global) {
 }
 
 static void play(entity_t *en, z64_global_t *global) {
+	/*
 	float x, y, s, lastx, lasty, lasts;
 	int16_t variable = en->actor.variable;
 	if(variable >= 3) variable = 0;
@@ -131,7 +134,7 @@ static void play(entity_t *en, z64_global_t *global) {
 	}
 	float z = (state == STATE_LINK) ? 50.0f : 0.0f;
 	setpos(en, x, y, z);
-	actor_set_scale(&en->actor, s * 2.5f * 0.0078125f /*1/128*/);
+	actor_set_scale(&en->actor, s * 2.5f * 0.0078125f); //1/128
 	//Rotation
 	const int16_t *rottable = &pieces_rot[3*variable];
 	if(state == STATE_RISE || state == STATE_WAIT0){
@@ -160,10 +163,13 @@ static void play(entity_t *en, z64_global_t *global) {
 		}
 		en->frame = frame;
 	}
+	*/
 }
 
 static void draw(entity_t *en, z64_global_t *global) {
+	/*
 	draw_dlist_opa(global, DL_TFPIECE);
+	*/
 }
 
 const z64_actor_init_t init_vars = {

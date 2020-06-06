@@ -1,6 +1,6 @@
 
 /* Display Lists * * * */
-     #define   DL_TFPIECE_CUBE_MATERIAL     0x06000560
+     #define   DL_TFPIECE     0x06000560
 
 /* Collisions * * * */
 

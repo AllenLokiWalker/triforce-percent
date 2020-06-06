@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Created with SharpOcarina 1.23-->
+<!--Created with SharpOcarina 1.26-->
 <ZScene cloneid="0" xmlns="clr-namespace:SharpOcarina;assembly=SharpOcarina">
   <Name>Triforce Room</Name>
   <Scale>1</Scale>
@@ -10,7 +10,7 @@
   <SpecialObject>3</SpecialObject>
   <ElfMessage>0</ElfMessage>
   <InjectOffset>47185920</InjectOffset>
-  <SceneNumber>108</SceneNumber>
+  <SceneNumber>39</SceneNumber>
   <Reverb>0</Reverb>
   <CameraMovement>0</CameraMovement>
   <WorldMap>14</WorldMap>
@@ -827,6 +827,8 @@
       <ZRot>0</ZRot>
       <Type>3</Type>
       <Fov>45</Fov>
+      <Unk1>65535</Unk1>
+      <Unk2>65535</Unk2>
     </ZCamera>
   </Cameras>
   <SceneHeaders>
@@ -883,13 +885,13 @@
       <ZObjects>
         <Capacity>4</Capacity>
         <ZScene-ZUShort>
-          <Value>134</Value>
+          <Value>4</Value>
         </ZScene-ZUShort>
       </ZObjects>
       <ZActors>
         <Capacity>4</Capacity>
         <ZActor>
-          <Number>130</Number>
+          <Number>1</Number>
           <XPos>0</XPos>
           <YPos>0</YPos>
           <ZPos>0</ZPos>
@@ -903,7 +905,7 @@
           <BackCamera>0</BackCamera>
         </ZActor>
         <ZActor>
-          <Number>130</Number>
+          <Number>1</Number>
           <XPos>0</XPos>
           <YPos>0</YPos>
           <ZPos>0</ZPos>
@@ -917,7 +919,7 @@
           <BackCamera>0</BackCamera>
         </ZActor>
         <ZActor>
-          <Number>130</Number>
+          <Number>1</Number>
           <XPos>0</XPos>
           <YPos>0</YPos>
           <ZPos>0</ZPos>
@@ -974,6 +976,12 @@
           <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
           <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
         </Metallic>
+        <EnvColor>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+        </EnvColor>
         <Decal>
           <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
           <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
@@ -986,6 +994,12 @@
           <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
           <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
         </IgnoreFog>
+        <SmoothRGBAEdges>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+        </SmoothRGBAEdges>
         <Pixelated>
           <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
           <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
@@ -1052,6 +1066,24 @@
           <int xmlns="https://extendedxmlserializer.github.io/system">8</int>
           <int xmlns="https://extendedxmlserializer.github.io/system">8</int>
         </AnimationBank>
+        <LodGroup>
+          <int xmlns="https://extendedxmlserializer.github.io/system">0</int>
+          <int xmlns="https://extendedxmlserializer.github.io/system">0</int>
+          <int xmlns="https://extendedxmlserializer.github.io/system">0</int>
+          <int xmlns="https://extendedxmlserializer.github.io/system">0</int>
+        </LodGroup>
+        <LodDistance>
+          <int xmlns="https://extendedxmlserializer.github.io/system">0</int>
+          <int xmlns="https://extendedxmlserializer.github.io/system">0</int>
+          <int xmlns="https://extendedxmlserializer.github.io/system">0</int>
+          <int xmlns="https://extendedxmlserializer.github.io/system">0</int>
+        </LodDistance>
+        <LOD>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+          <boolean xmlns="https://extendedxmlserializer.github.io/system">false</boolean>
+        </LOD>
       </GroupSettings>
       <ModelShortFilename>TriforceRoom</ModelShortFilename>
     </ZScene-ZRoom>
