@@ -82,11 +82,9 @@ static void rotcombine(int16_t *r, int16_t tbl, int32_t framesleft){
 }
 
 static void init(entity_t *en, z64_global_t *global) {
-	/*
 	en->state = 0;
 	en->frame = 0;
 	setpos(en, 0.0f, 0.0f, 0.0f);
-	*/
 }
 
 static void dest(entity_t *en, z64_global_t *global) {
@@ -94,7 +92,6 @@ static void dest(entity_t *en, z64_global_t *global) {
 }
 
 static void play(entity_t *en, z64_global_t *global) {
-	/*
 	float x, y, s, lastx, lasty, lasts;
 	int16_t variable = en->actor.variable;
 	if(variable >= 3) variable = 0;
@@ -163,13 +160,10 @@ static void play(entity_t *en, z64_global_t *global) {
 		}
 		en->frame = frame;
 	}
-	*/
 }
 
 static void draw(entity_t *en, z64_global_t *global) {
-	/*
 	draw_dlist_opa(global, DL_TFPIECE);
-	*/
 }
 
 const z64_actor_init_t init_vars = {

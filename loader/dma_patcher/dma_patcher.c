@@ -64,10 +64,14 @@ __attribute__((section(".start"))) void DmaPatcher_Init()
 	// Patch Sound_LoadFile to jump to DmaPatcher_PatchAudio_Pre and _Post
 	*((u32*)0x800B806C) = 0x08000000 | ( ( ((u32)DmaPatcher_PatchAudio_Pre) >> 2 ) & 0x03FFFFFF );
 	*((u32*)0x800B8184) = 0x08000000 | ( ( ((u32)DmaPatcher_PatchAudio_Post) >> 2 ) & 0x03FFFFFF );
+    /*
 	// Add another line to dmadata that maps 8 MiB of VROM after end to entire RAM
-	gDmaDataTable[N_DMADATA].vromStart = 0x04000000;
-	gDmaDataTable[N_DMADATA].vromEnd   = 0x04800000;
-	gDmaDataTable[N_DMADATA].romStart  = 0x80000000;
+	gDmaDataTable[N_DMADATA].vromStart   = 0x04000000;
+	gDmaDataTable[N_DMADATA].vromEnd     = 0x04800000;
+	gDmaDataTable[N_DMADATA].romStart    = 0x80000000;
+	gDmaDataTable[N_DMADATA+1].vromStart = 0x04800000;
+	gDmaDataTable[N_DMADATA+1].vromEnd   = 0;
+    */
     __osRestoreInt(i);
 }
 
@@ -155,8 +159,13 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
     u32 size = req->size;
     u32 romStart, romSize, copyStart, p;
     DmaEntry* iter = gDmaDataTable;
+    if(vrom >= 0x04000000 && vrom < 0x04800000){
+        Debugger_Printf("DMA %08X VROM RAM map", vrom);
+        _memcpy(ram, (void*)(0x80000000 + ((s32)vrom - 0x04000000)), size);
+        return;
+    }
     while (iter->vromEnd) {
-        if(vrom >= iter->vromStart && vrom < (iter+1)->vromStart){
+        if(vrom >= iter->vromStart && (vrom < (iter+1)->vromStart || vrom < iter->vromEnd)){
             //It's in this file
             //Changed from originally checking between vromStart and vromEnd
             //because this way we can patch files to be bigger than they
