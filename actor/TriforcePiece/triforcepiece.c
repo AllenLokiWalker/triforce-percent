@@ -2,7 +2,7 @@
 #include "obj.h"
 
 // Actor Information
-#define OBJ_ID 0x010A // primary object dependency (change if needed)
+#define OBJ_ID 4 // primary object dependency (change if needed)
 
 #define TRIFORCE_POWER 0
 #define TRIFORCE_WISDOM 1
