@@ -81,8 +81,7 @@ void DmaPatcher_AddPatch(u32 vrom, u8* patch)
     if(patcher.npatches >= DMAPATCHER_MAXPATCHES){
         Debugger_Printf("AddPatch %08X: Too many patches!", vrom);
     }else{
-        Debugger_Printf("AddPatch %d VROM %08X inj %08X", patcher.npatches+1, vrom, patch);
-        Debugger_Printf("First patch data %08X %08X", *(u32*)patch, *(u32*)(patch+4));
+        //Debugger_Printf("AddPatch %d VROM %08X inj %08X", patcher.npatches+1, vrom, patch);
         patcher.patches[patcher.npatches].vrom = vrom;
         patcher.patches[patcher.npatches].patch = patch;
         ++patcher.npatches;
@@ -119,10 +118,10 @@ static void DmaPatcher_ApplyPatch(u8* ram, u32 size, u8* patch)
 void DmaPatcher_PatchAudio_Impl(u32 vrom, void* ram, u32 size)
 {
 	u32 p;
-    Debugger_Printf("Audio DMA %08X sz %04X", vrom, size);
+    //Debugger_Printf("Audio DMA %08X sz %04X", vrom, size);
 	for(p=0; p<patcher.npatches; ++p){
 		if(patcher.patches[p].vrom == vrom){
-			Debugger_Printf("Audio DMA @%08X patching file", vrom);
+			//Debugger_Printf("Audio DMA @%08X patching file", vrom);
 			DmaPatcher_ApplyPatch(ram, size, patcher.patches[p].patch);
 			return;
 		}
@@ -160,7 +159,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
     u32 romStart, romSize, copyStart, p;
     DmaEntry* iter = gDmaDataTable;
     if(vrom >= 0x04000000 && vrom < 0x04800000){
-        Debugger_Printf("DMA %08X VROM RAM map", vrom);
+        //Debugger_Printf("DMA %08X VROM RAM map", vrom);
         _memcpy(ram, (void*)(0x80000000 + ((s32)vrom - 0x04000000)), size);
         return;
     }
@@ -179,7 +178,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
             if(romStart & 0x80000000){
                 //The file is actually in RAM, copy it
                 _memcpy(ram, (void*)copyStart, size);
-                Debugger_Printf("DMA @%08X replaced file", vrom);
+                //Debugger_Printf("DMA @%08X replaced file", vrom);
                 return;
             }
             if (iter->romEnd == 0) {
@@ -196,7 +195,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
             //Patch file after loading
             for(p=0; p<patcher.npatches; ++p){
                 if(patcher.patches[p].vrom == vrom){
-                    Debugger_Printf("DMA @%08X patching file", vrom);
+                    //Debugger_Printf("DMA @%08X patching file", vrom);
                     DmaPatcher_ApplyPatch(ram, size, patcher.patches[p].patch);
                     return;
                 }
