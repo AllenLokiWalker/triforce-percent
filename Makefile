@@ -16,8 +16,8 @@ ifeq ("$(and $(wildcard build-romhack/oot_build.rtl), $(wildcard build-romhack/o
     $(shell cp toolchain/zzrtl/oot_build.rtl toolchain/zzrtl/oot_dump.rtl build-romhack/)
 endif
 
-CONTENTS = actor/ music/ scene/
-SUBDIRS = $(CONTENTS) loader/ bootstrap/
+CONTENTS = actor/ music/ scene/ textures/
+SUBDIRS = toolchain/ $(CONTENTS) loader/ bootstrap/
 DUMPS = build-shortcut/project.zzrpl build-romhack/project.zzrpl
 BUILDS = build-shortcut/build.z64 build-romhack/build.z64
 
