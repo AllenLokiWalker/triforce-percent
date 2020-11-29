@@ -17,5 +17,5 @@ buildrunbs:
 	$(PYTHON3) ../toolchain/tas/m642bk2.py ../run/bootstrap.m64 ../run/bootstrap-inputlog.txt
 
 clean:
-	rm *.o *.bin ../run/bootstrap.m64 ../run/bootstrap-inputlog.txt
+	rm -f *.o *.bin ../run/bootstrap.m64 ../run/bootstrap-inputlog.txt
 

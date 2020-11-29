@@ -6,5 +6,5 @@ default: triforce.pat
 	$(PYTHON3) ../toolchain/create_patch.py --full $< $@
 
 clean:
-	rm triforce.pat
+	rm -f triforce.pat
 	

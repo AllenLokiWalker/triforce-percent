@@ -10,7 +10,7 @@ CREATE_PATCH = $(PYTHON3) ../toolchain/create_patch.py
 default: $(TEXTURES)
 
 clean:
-	rm *.rgba32 *.rgb5a1 *.ia8 *.ci8 *.i4 *.ia4 *.pat
+	rm -f *.rgba32 *.rgb5a1 *.ia8 *.ci8 *.i4 *.ia4 *.pat
 
 %.pat: %
 	$(CREATE_PATCH) --full $< $@

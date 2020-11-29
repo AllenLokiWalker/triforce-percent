@@ -60,17 +60,17 @@ typedef struct {
 } entity_t;
 
 static void setpos(entity_t *en, float x, float y, float z){
-	en->actor.pos_2.x = x;
-	en->actor.pos_2.y = y;
-	en->actor.pos_2.z = z;
+	en->actor.pos.x = x;
+	en->actor.pos.y = y;
+	en->actor.pos.z = z;
 }
 
 static void rotcombine(int16_t *r, int16_t tbl, int32_t framesleft){
 	int32_t rremain = (int32_t)(*r);
 	if(tbl > 0 && rremain > 0){
-		rremain = 0x10000 - rremain;
+		rremain = -0x10000 + rremain;
 	}else if(tbl < 0 && rremain < 0){
-		rremain = -0x10000 - rremain;
+		rremain = 0x10000 + rremain;
 	}
 	int32_t d = rremain / framesleft;
 	if(framesleft > 10){
@@ -136,20 +136,20 @@ static void play(entity_t *en, z64_global_t *global) {
 	const int16_t *rottable = &pieces_rot[3*variable];
 	if(state == STATE_RISE || state == STATE_WAIT0){
 		//Free rotation
-		en->actor.rot_2.x += *rottable++;
-		en->actor.rot_2.y += *rottable++;
-		en->actor.rot_2.z += *rottable;
+		en->actor.rot.x += *rottable++;
+		en->actor.rot.y += *rottable++;
+		en->actor.rot.z += *rottable;
 	}else if(state == STATE_COMBINE){
 		//Rotate back to upright
 		int32_t framesleft = frames - frame;
-		rotcombine(&en->actor.rot_2.x, *rottable++, framesleft);
-		rotcombine(&en->actor.rot_2.y, *rottable++, framesleft);
-		rotcombine(&en->actor.rot_2.z, *rottable, framesleft);
+		rotcombine(&en->actor.rot.x, *rottable++, framesleft);
+		rotcombine(&en->actor.rot.y, *rottable++, framesleft);
+		rotcombine(&en->actor.rot.z, *rottable, framesleft);
 	}else{
 		//No rotation
-		en->actor.rot_2.x = 0;
-		en->actor.rot_2.y = 0;
-		en->actor.rot_2.z = 0;
+		en->actor.rot.x = 0;
+		en->actor.rot.y = 0;
+		en->actor.rot.z = 0;
 	}
 	//Increment
 	if(mode != STATE_MODE_LAST){

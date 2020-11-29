@@ -1,6 +1,7 @@
 PROGRAM = triforcepiece
 ADDRESS = 0x80800000
-ACTORDIR = "../../build-romhack/actor/130"
+ACTORDIR = "../../build-romhack/actor/1"
+OBJECTDIR = "../../build-romhack/object/4"
 PARTS = $(PROGRAM).o
 
 CC   = mips64-gcc
@@ -16,7 +17,9 @@ default: $(PROGRAM).ovl
 $(PROGRAM).ovl: $(PARTS)
 	$(LD) -o $(PROGRAM).elf $(PARTS) $(LDFLAGS)
 	$(NOVL) $(NOVLFLAGS) $(PROGRAM).elf
+	rm -f $(ACTORDIR)/actor.zovl
 	cp $(PROGRAM).zovl conf.txt $(ACTORDIR)
+	cp zobj.zobj $(OBJECTDIR)
 
 clean:
 	rm -fv $(PROGRAM).elf $(OVLOUT) $(PARTS)

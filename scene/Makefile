@@ -1,8 +1,8 @@
-.PHONY: default clean
+SUBDIRS = TriforceRoom/
 
-default:
-	@echo "Scene Makefile is not set up yet"
+.PHONY: default clean $(SUBDIRS)
 
-clean:
-	@echo "Scene Makefile is not set up yet"
-	
+default clean: $(SUBDIRS)
+
+$(SUBDIRS):
+	$(MAKE) -C $@ $(MAKECMDGOALS)
