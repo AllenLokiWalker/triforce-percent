@@ -1,6 +1,6 @@
 build-shortcut/
 build-romhack/
-run/
+backup/
 
 local.mk
 

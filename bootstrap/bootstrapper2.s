@@ -44,8 +44,8 @@ Except currently using 0x801C8004 for "seed rotation"
 */
 lui   $gp, 0x03E0
 addiu $gp, $gp, 0x0008
-lui   $v0, %hi(0x801C8004)
-sw    $gp, %lo(0x801C8004)($v0)
+lui   $v0, %hi(0x801FC000)
+sw    $gp, %lo(0x801FC000)($v0)
 /* 
 Finishing up
  */
