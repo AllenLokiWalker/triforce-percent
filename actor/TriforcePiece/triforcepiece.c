@@ -51,18 +51,25 @@ static const uint8_t smoothtable[] = {
 static const int16_t pieces_rot[] = {
 	1200, -870, 0,
 	-570, 0, -1070,
-	0, 1337, 420 // :lenny_face:
+	0, 1337, 580
 };
 
 typedef struct {
 	z64_actor_t actor;
 	uint8_t state, frame;
+	z64_light_node_t *lightnode;
+	z64_light_t light;
 } entity_t;
 
 static void setpos(entity_t *en, float x, float y, float z){
 	en->actor.pos.x = x;
 	en->actor.pos.y = y;
 	en->actor.pos.z = z;
+	if(en->actor.variable == 0){
+		en->light.lightn.light2.x = (int16_t)x;
+		en->light.lightn.light2.y = (int16_t)y - 12;
+		en->light.lightn.light2.z = (int16_t)z + 4;
+	}
 }
 
 static void rotcombine(int16_t *r, int16_t tbl, int32_t framesleft){
@@ -73,22 +80,29 @@ static void rotcombine(int16_t *r, int16_t tbl, int32_t framesleft){
 		rremain = 0x10000 + rremain;
 	}
 	int32_t d = rremain / framesleft;
-	if(framesleft > 10){
+	if(framesleft > 3){
 		//Do a little more than needed; will automatically slow down the
 		//last few frames.
-		d += d >> 3;
+		//d += d >> 1;
+		d <<= 1;
 	}
 	*r -= d;
 }
 
 static void init(entity_t *en, z64_global_t *global) {
+	if(en->actor.variable == 0){
+		z_lights_init_pos_2(&en->light, 0, 0, 0, 255, 200, 0, 2000);
+		en->lightnode = z_lights_insert(global, &global->lighting, &en->light);
+	}
 	en->state = 0;
 	en->frame = 0;
 	setpos(en, 0.0f, 0.0f, 0.0f);
 }
 
 static void dest(entity_t *en, z64_global_t *global) {
-	//do nothing
+	if(en->actor.variable == 0){
+		z_lights_kill(global, &global->lighting, en->lightnode);
+	}
 }
 
 static void play(entity_t *en, z64_global_t *global) {
