@@ -44,6 +44,9 @@ static const uint8_t states_lowpieces_x[] = {
 static const uint8_t states_scale[] = {
    64,64, 128, 128, 128, 128, 128,128,128, 64
 };
+static const int8_t states_brightness[] = {
+  -40,-40, 80,  80,  80,  80,  80, 80,  0, 80
+};
 
 static const uint8_t smoothtable[] = {
 	0x00, 0x0A, 0x1C, 0x48, 0x80, 0xB8, 0xE4, 0xF6, 0xFF
@@ -91,7 +94,7 @@ static void rotcombine(int16_t *r, int16_t tbl, int32_t framesleft){
 
 static void init(entity_t *en, z64_global_t *global) {
 	if(en->actor.variable == 0){
-		z_lights_init_pos_2(&en->light, 0, 0, 0, 255, 200, 0, 2000);
+		z_lights_init_pos_0(&en->light, 0, 0, 0, 128, 100, 0, 2000);
 		en->lightnode = z_lights_insert(global, &global->lighting, &en->light);
 	}
 	en->state = 0;
@@ -106,7 +109,7 @@ static void dest(entity_t *en, z64_global_t *global) {
 }
 
 static void play(entity_t *en, z64_global_t *global) {
-	float x, y, s, lastx, lasty, lasts;
+	float x, y, s, brightness, lastx, lasty, lasts, lastbrightness;
 	int16_t variable = en->actor.variable;
 	if(variable >= 3) variable = 0;
 	uint8_t state = en->state;
@@ -118,9 +121,11 @@ static void play(entity_t *en, z64_global_t *global) {
 	lastx = (float)states_lowpieces_x[state];
 	lasty = (float)states_lowpieces_y[state];
 	lasts = (float)states_scale[state];
+	lastbrightness = (float)states_brightness[state];
 	x = (float)states_lowpieces_x[state+1]; //End of current state
 	y = (float)states_lowpieces_y[state+1];
 	s = (float)states_scale[state+1];
+	brightness = (float)states_brightness[state+1];
 	if(variable == TRIFORCE_COURAGE){
 		lastx = -lastx;
 		x = -x;
@@ -142,10 +147,15 @@ static void play(entity_t *en, z64_global_t *global) {
 		x = (x - lastx) * m + lastx;
 		y = (y - lasty) * m + lasty;
 		s = (s - lasts) * m + lasts;
+		brightness = (brightness - lastbrightness) * m + lastbrightness;
 	}
 	float z = (state == STATE_LINK) ? 50.0f : 0.0f;
 	setpos(en, x, y, z);
 	actor_set_scale(&en->actor, s * 2.5f * 0.0078125f); //1/128
+	if(variable == 0){
+		if(y < 40.0f || brightness < 0.0f) brightness = 0.0f;
+		en->light.lightn.light2.intensity = (int16_t)brightness << 5;
+	}
 	//Rotation
 	const int16_t *rottable = &pieces_rot[3*variable];
 	if(state == STATE_RISE || state == STATE_WAIT0){
