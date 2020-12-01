@@ -88,21 +88,27 @@ def walk_into_bs1(jrraaddr):
     #Need c1 to be a NOP opcode, and also Link walking forward.
     c1data = bytes([0, 0, 0, 0x40])
     return c1data + bytes([0]*4) + jumpcmd(jrraaddr) + bytes([0]*4)
+    
+def unpause(jrraaddr):
+    return bytes([0x10, 0, 0, 0]) + bytes([0]*4) + jumpcmd(jrraaddr) + bytes([0]*4)
 
 def ootbootstraprun(bs2data, bs4data, maindata):
     jrraaddr = 0x80000490
+    jstackrestore = 0x80020850
     bs1s1 = 0x801C84A0 #global context
     bs2loc = 0x801C8010 #must be within 0x8000 of global context
     bs3s0 = 0x8011D500 #padmgr
     bs4loc = 0x8011E400 #must be within 0x8000 of padmgr
     kargaroc_loader_entry = 0x80400000
     ret = bytearray()
-    ret.extend(walk_into_bs1(jrraaddr) * 240) #frames of walking
-    ret.extend(bootstrapper1and3(1, True, bs2data, bs2loc - bs1s1, jrraaddr))
+    #ret.extend(walk_into_bs1(jrraaddr) * 240) #frames of walking
+    ret.extend(unpause(jstackrestore) * 3)
+    ret.extend(jumpsingle3(jstackrestore) * 240) #frames of waiting for the camera to rotate
+    ret.extend(bootstrapper1and3(1, True, bs2data, bs2loc - bs1s1, jstackrestore))
     ret.extend(jumpsingle3(bs2loc) * 3)
     ret.extend(bootstrapper1and3(3, True, bs4data, bs4loc - bs3s0, jrraaddr))
     ret.extend(dataforbootstrapper4(maindata, bs4loc))
-    ret.extend(jumpsingle3(kargaroc_loader_entry) * 600) #frames of running K's loader
+    ret.extend(jumpsingle3(kargaroc_loader_entry) * 3) #frames of running K's loader--should get overwritten on first frame
     return m64.create_header(4, len(ret) // 16) + ret
     
 if __name__ == '__main__':

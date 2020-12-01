@@ -41,15 +41,23 @@ sw    $gp, %lo(0x801C8000)($v0)
 Write jr $ra; instruction 0x03E00008 
 to seed rotation 0x801FC000
 Except currently using 0x801C8004 for "seed rotation"
-*/
 lui   $gp, 0x03E0
 addiu $gp, $gp, 0x0008
-/* Real live seed rotation address
+Real live seed rotation address
 lui   $v0, %hi(0x801FC000)
 sw    $gp, %lo(0x801FC000)($v0)
-Fake seed rotation address for shortcut: */
+Fake seed rotation address for shortcut:
 lui   $v0, %hi(0x801C8004)
 sw    $gp, %lo(0x801C8004)($v0)
+
+Write 0002 to 801f73c6 to fix the SRM'd wonder item
+and turn off the ACE
+(this address has been changed to branch to Link's rotation,
+this will restore the original code)
+*/
+addiu $gp, $zero, 0x0002
+lui   $v0, %hi(0x801f73c6)
+sh    $gp, %lo(0x801f73c6)($v0)
 /* 
 Finishing up
  */
