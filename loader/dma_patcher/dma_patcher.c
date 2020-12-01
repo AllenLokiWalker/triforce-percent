@@ -156,7 +156,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
     u32 vrom = req->vromAddr;
     void* ram = req->dramAddr;
     u32 size = req->size;
-    u32 romStart, romSize, copyStart, p;
+    u32 romStart, vromSize, copyStart, p;
     DmaEntry* iter = gDmaDataTable;
     if(vrom >= 0x04000000 && vrom < 0x04800000){
         //Debugger_Printf("DMA %08X VROM RAM map", vrom);
@@ -184,12 +184,15 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
             if (iter->romEnd == 0) {
                 DmaMgr_DMARomToRam(copyStart, ram, size);
             }else{
-                romSize = iter->romEnd - romStart;
-                if(copyStart != romStart || size != romSize){
+                if(copyStart != romStart){
                     Debugger_Printf("!! DMA @%08X middle of compressed file %08X", copyStart, romStart);
                 }
+                vromSize = iter->vromEnd - iter->vromStart;
+                if(size != vromSize){
+                    Debugger_Printf("!! DMA @%08X wrong size %08X should be %08X", size, vromSize);
+                }
                 osSetThreadPri(NULL, 0x0A);
-                Yaz0_Decompress(romStart, ram, romSize);
+                Yaz0_Decompress(romStart, ram, iter->romEnd - romStart); //romSize
                 osSetThreadPri(NULL, 0x10);
             }
             //Patch file after loading
