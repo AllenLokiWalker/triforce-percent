@@ -84,13 +84,17 @@ def dataforbootstrapper4(data, bs4addr):
     print('Kargaroc payload injection is ' + str(float(len(ret)//16)/60) + ' sec.')
     return ret
 
-def walk_into_bs1(jrraaddr):
+def walk_into_bs1(ctrlr3addr):
     #Need c1 to be a NOP opcode, and also Link walking forward.
     c1data = bytes([0, 0, 0, 0x40])
-    return c1data + bytes([0]*4) + jumpcmd(jrraaddr) + bytes([0]*4)
+    return c1data + bytes([0]*4) + jumpcmd(ctrlr3addr) + bytes([0]*4)
     
-def unpause(jrraaddr):
-    return bytes([0x10, 0, 0, 0]) + bytes([0]*4) + jumpcmd(jrraaddr) + bytes([0]*4)
+def unpause(ctrlr3addr):
+    return bytes([0x10, 0, 0, 0]) + bytes([0]*4) + jumpcmd(ctrlr3addr) + bytes([0]*4)
+    
+def holdr_nop(ctrlr3addr):
+    # Instruction: or zero, s0, zero
+    return bytes([0, 0x10, 0, 0x25]) + bytes([0]*4) + jumpcmd(ctrlr3addr) + bytes([0]*4)
 
 def ootbootstraprun(bs2data, bs4data, maindata):
     jrraaddr = 0x80000490
@@ -104,6 +108,7 @@ def ootbootstraprun(bs2data, bs4data, maindata):
     #ret.extend(walk_into_bs1(jrraaddr) * 240) #frames of walking
     ret.extend(unpause(jstackrestore) * 3)
     ret.extend(jumpsingle3(jstackrestore) * 240) #frames of waiting for the camera to rotate
+    ret.extend(holdr_nop(jstackrestore) * 3)
     ret.extend(bootstrapper1and3(1, True, bs2data, bs2loc - bs1s1, jstackrestore))
     ret.extend(jumpsingle3(bs2loc) * 3)
     ret.extend(bootstrapper1and3(3, True, bs4data, bs4loc - bs3s0, jrraaddr))

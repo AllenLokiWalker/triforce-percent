@@ -60,6 +60,12 @@ lui   $v0, %hi(0x801f73c6)
 sh    $gp, %lo(0x801f73c6)($v0)
 /* 
 Finishing up
- */
+Old version from slingshot:
 jr $ra
+New version from wonder item: jump to the end of a function which
+restores the stack correctly (could do the restore manually,
+but this saves some instructions)
+ */
+j 0x80020850
+/*This is for both versions*/
 lw $v0, -0x20($sp)
