@@ -3,6 +3,21 @@
 .set gp=64
 /* Bootstrapper 2 (new version) */
 sw $v0, -0x20($sp) /*v0 contains 0x7FFF so unlikely to be useful*/
+
+/* Detect whether running from the ACE context or the padmgr context
+If padmgr, need normal return, not special stack restore
+(but don't need to actually execute the rest of the bootstrapper)
+During ACE context, s1 is global context 0x801C84A0*/
+lui   $v0,      %hi(0x801C84A0)
+addiu $v0, $v0, %lo(0x801C84A0)
+beq   $v0, $s1, in_ace_context
+lui   $gp,      0x0C00 /* First instruction of cache time below */
+
+/* If not in ACE context, return */
+jr $ra
+lw $v0, -0x20($sp)
+
+in_ace_context:
 /*
 Cache time!
 Setting the 6 instructions at 800A2630 to:
@@ -15,7 +30,7 @@ nop
 */
 lui   $v0,      0x800A
 
-lui   $gp,      0x0C00
+/*lui   $gp,      0x0C00 -- in branch delay slot above*/
 addiu $gp, $gp, 0x0D10
 sw    $gp,      0x2630($v0)
 addiu $gp, $gp, (0x1068 - 0x0D10)
@@ -30,6 +45,7 @@ lui   $gp,      0x0C04
 addiu $gp, $gp, 0x75E4
 sw    $gp,      0x2640($v0)
 sw    $zero,    0x2644($v0)
+
 /*
 Write 0x80400000 (address of start of Kargarocs payload--to jal here, instruction 0C100000)
 to address counter 0x801C8000
@@ -37,7 +53,9 @@ to address counter 0x801C8000
 lui   $gp, 0x8040
 lui   $v0, %hi(0x801C8000)
 sw    $gp, %lo(0x801C8000)($v0)
+
 /*
+Turn off ACE
 Write jr $ra; instruction 0x03E00008 
 to seed rotation 0x801FC000
 Except currently using 0x801C8004 for "seed rotation"
@@ -58,8 +76,9 @@ this will restore the original code)
 addiu $gp, $zero, 0x0002
 lui   $v0, %hi(0x801f73c6)
 sh    $gp, %lo(0x801f73c6)($v0)
+
 /* 
-Finishing up
+Jump back to safety
 Old version from slingshot:
 jr $ra
 New version from wonder item: jump to the end of a function which

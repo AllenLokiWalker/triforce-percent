@@ -102,7 +102,7 @@ def ootbootstraprun(bs2data, bs4data, maindata):
     bs1s1 = 0x801C84A0 #global context
     bs2loc = 0x801C8010 #must be within 0x8000 of global context
     bs3s0 = 0x8011D500 #padmgr
-    bs4loc = 0x8011E400 #must be within 0x8000 of padmgr
+    bs4loc = 0x8011CBC0 #must be within 0x8000 of padmgr
     kargaroc_loader_entry = 0x80400000
     ret = bytearray()
     #ret.extend(walk_into_bs1(jrraaddr) * 240) #frames of walking
