@@ -1,0 +1,25 @@
+WARNING:objex.OBJEX_OT_export.execute: Scene uses display_device='sRGB' which changes how colors are displayed in the viewport, reducing the preview accuracy.
+This can be changed under Color Management in Scene properties.
+Note that this should also be kept consistent with the Color Space property of image texture nodes (display_device="None", Color Space="Linear").
+In Blender 2.7x, "Color Space" can be found in the Image Editor.
+Recommended value: None
+INFO:objex.OBJEX_OT_export.progress_report_print:   (  0.0001 sec |   0.0000 sec) Objex Export path: '/data/Games/N64/Mods/triforce-dev/actor/TriforcePiece/triforcepiece2.objex'
+DEBUG:objex.ObjexWriter.write_object: Skipped triangulating tfpiece, mesh only has triangles
+INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0130 sec |   0.0118 sec) Finished writing geometry of 'tfpiece'.
+INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.0140 sec |   0.0134 sec) Finished exporting geometry, now exporting materials
+TRACE:objex.export_objex_mtl.write_mtl: Writing name='tfmatl' name_q='"tfmatl"' material=bpy.data.materials['tfmatl'] face_img=None
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: per-flag used sockets: {'G_ACMUX_SHADE': bpy.data...nodes["OBJEX_Shade"].outputs[1], 'G_ACMUX_TEXEL0': bpy.data...nodes["OBJEX_Texel0"].outputs[1], 'G_ACMUX_PRIMITIVE': bpy.data...nodes["OBJEX_PrimColor"].outputs[1], 'G_CCMUX_SHADE': bpy.data...nodes["OBJEX_Shade"].outputs[0], 'G_CCMUX_TEXEL0': bpy.data...nodes["OBJEX_Texel0"].outputs[0], 'G_CCMUX_PRIMITIVE': bpy.data...nodes["OBJEX_PrimColor"].outputs[0]}
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: getting primitiveRGB from bpy.data...nodes["OBJEX_PrimColor"].outputs[0]
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: getting primitiveA from bpy.data...nodes["OBJEX_PrimColor"].outputs[1]
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: getting texel0RGB from bpy.data...nodes["OBJEX_Texel0"].outputs[0]
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: getting texel0A from bpy.data...nodes["OBJEX_Texel0"].outputs[1]
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: getting shadeRGB from bpy.data...nodes["OBJEX_Shade"].outputs[0]
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: getting shadeA from bpy.data...nodes["OBJEX_Shade"].outputs[1]
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: data before merge: {'primitiveRGB': bpy.data...nodes["OBJEX_PrimColorRGB"].outputs[0].default_value, 'primitiveA': 1.0, 'texel0RGB': {'image': bpy.data.images['tf_refl.png'], 'uv_scale_u': 0, 'uv_scale_v': 0, 'uv_wrap_u': True, 'uv_wrap_v': True, 'uv_mirror_u': False, 'uv_mirror_v': False, 'uv_layer': '', 'uv_map': False, 'texgen': True, 'texgen_linear': False, 'uv_scale_u_main': 0.029999999329447746, 'uv_scale_v_main': 0.029999999329447746}, 'texel0A': {'image': bpy.data.images['tf_refl.png'], 'uv_scale_u': 0, 'uv_scale_v': 0, 'uv_wrap_u': True, 'uv_wrap_v': True, 'uv_mirror_u': False, 'uv_mirror_v': False, 'uv_layer': '', 'uv_map': False, 'texgen': True, 'texgen_linear': False, 'uv_scale_u_main': 0.029999999329447746, 'uv_scale_v_main': 0.029999999329447746}, 'shadeRGB': {'type': 'normals'}, 'shadeA': {'type': 'normals'}}
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: Merged primitiveRGB bpy.data...nodes["OBJEX_PrimColorRGB"].outputs[0].default_value and primitiveA 1.0 into primitive (1.0, 1.0, 1.0, 1.0)
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: Merged texel0RGB {'image': bpy.data.images['tf_refl.png'], 'uv_scale_u': 0, 'uv_scale_v': 0, 'uv_wrap_u': True, 'uv_wrap_v': True, 'uv_mirror_u': False, 'uv_mirror_v': False, 'uv_layer': '', 'uv_map': False, 'texgen': True, 'texgen_linear': False, 'uv_scale_u_main': 0.029999999329447746, 'uv_scale_v_main': 0.029999999329447746} and texel0A {'image': bpy.data.images['tf_refl.png'], 'uv_scale_u': 0, 'uv_scale_v': 0, 'uv_wrap_u': True, 'uv_wrap_v': True, 'uv_mirror_u': False, 'uv_mirror_v': False, 'uv_layer': '', 'uv_map': False, 'texgen': True, 'texgen_linear': False, 'uv_scale_u_main': 0.029999999329447746, 'uv_scale_v_main': 0.029999999329447746} into texel0 {'image': bpy.data.images['tf_refl.png'], 'uv_scale_u': 0, 'uv_scale_v': 0, 'uv_wrap_u': True, 'uv_wrap_v': True, 'uv_mirror_u': False, 'uv_mirror_v': False, 'uv_layer': '', 'uv_map': False, 'texgen': True, 'texgen_linear': False, 'uv_scale_u_main': 0.029999999329447746, 'uv_scale_v_main': 0.029999999329447746}
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: Merged shadeRGB {'type': 'normals'} and shadeA {'type': 'normals'} into shade {'type': 'normals'}
+INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.0174 sec |   0.0169 sec) Finished exporting materials, now exporting skeletons/animations
+INFO:objex.ObjexWriter.write: now exporting skeletons
+INFO:objex.ObjexWriter.write:  ... and animations
+INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.0187 sec |   0.0181 sec) Objex Export Finished
