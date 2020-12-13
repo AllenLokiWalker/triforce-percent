@@ -1,5 +1,5 @@
 # Blender MTL File: 'TriforceRoom.blend'
-# Material Count: 4
+# Material Count: 3
 
 newmtl initialShadingGroup
 Ns 96.078431
@@ -22,17 +22,6 @@ Ni 1.000000
 d 1.000000
 illum 2
 map_Kd COS-0x10F08_32x32_RGBA16.png
-
-newmtl initialShadingGroup_SH-0x85E8_64x32_RGBA16.png
-Ns 96.078431
-Ka 0.000000 0.000000 0.000000
-Kd 0.500000 0.500000 0.500000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 2
-map_Kd SH-0x85E8_64x32_RGBA16.png
 
 newmtl initialShadingGroup_Tile.bmp
 Ns 96.078431
