@@ -1,0 +1,21 @@
+WARNING:objex.OBJEX_OT_export.execute: Scene uses display_device='sRGB' which changes how colors are displayed in the viewport, reducing the preview accuracy.
+This can be changed under Color Management in Scene properties.
+Note that this should also be kept consistent with the Color Space property of image texture nodes (display_device="None", Color Space="Linear").
+In Blender 2.7x, "Color Space" can be found in the Image Editor.
+Recommended value: None
+INFO:objex.OBJEX_OT_export.progress_report_print:   (  0.0001 sec |   0.0000 sec) Objex Export path: '/data/Games/N64/Mods/triforce-dev/actor/TriforceLight/triforcelight.objex'
+INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0011 sec |   0.0002 sec) Finished writing geometry of 'LightSkel'.
+DEBUG:objex.ObjexWriter.write_object: Skipped triangulating Light, mesh only has triangles
+INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0040 sec |   0.0022 sec) Finished writing geometry of 'Light'.
+INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.0051 sec |   0.0046 sec) Finished exporting geometry, now exporting materials
+TRACE:objex.export_objex_mtl.write_mtl: Writing name='lightmatl' name_q='"lightmatl"' material=bpy.data.materials['lightmatl'] face_img=None
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: per-flag used sockets: {'G_ACMUX_SHADE': bpy.data...nodes["OBJEX_Shade"].outputs[1], 'G_ACMUX_0': bpy.data...nodes["OBJEX_Color0"].outputs[0], 'G_ACMUX_1': bpy.data...nodes["OBJEX_Color1"].outputs[0], 'G_CCMUX_SHADE': bpy.data...nodes["OBJEX_Shade"].outputs[0], 'G_CCMUX_0': bpy.data...nodes["OBJEX_Color0"].outputs[0], 'G_CCMUX_1': bpy.data...nodes["OBJEX_Color1"].outputs[0]}
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: getting shadeRGB from bpy.data...nodes["OBJEX_Shade"].outputs[0]
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: getting shadeA from bpy.data...nodes["OBJEX_Shade"].outputs[1]
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: data before merge: {'shadeRGB': {'type': 'vertex_colors', 'vertex_color_layer': ''}, 'shadeA': {'type': 'vertex_colors', 'vertex_color_layer': ''}}
+DEBUG:objex.ObjexMaterialNodeTreeExplorer.buildCombinerInputs: Merged shadeRGB {'type': 'vertex_colors', 'vertex_color_layer': ''} and shadeA {'type': 'vertex_colors', 'vertex_color_layer': ''} into shade {'type': 'vertex_colors', 'vertex_color_layer': ''}
+INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.0077 sec |   0.0072 sec) Finished exporting materials, now exporting skeletons/animations
+INFO:objex.ObjexWriter.write: now exporting skeletons
+INFO:objex.ObjexWriter.write:  ... and animations
+DEBUG:objex.anim.write_skeleton: root bone Root at Vector((254.8402099609375, 14.593849182128906, 0.0)) does not start at armature origin
+INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.0159 sec |   0.0154 sec) Objex Export Finished

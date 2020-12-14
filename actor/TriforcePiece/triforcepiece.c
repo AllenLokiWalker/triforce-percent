@@ -10,8 +10,8 @@
 #define TRIFORCE_COURAGE 2
 
 #define TFCOLOR_R 255
-#define TFCOLOR_G 200
-#define TFCOLOR_B 0
+#define TFCOLOR_G 217
+#define TFCOLOR_B 100
 
 #define STATE_START 0
 #define STATE_RISE 1
@@ -32,7 +32,7 @@ static const uint8_t states_mode[] = {
 };
 // -- ST  RIS   W0  CMB   W1  SNK  W2  DS  LK
 static const uint8_t states_frames[] = {
-	  50,  90, 100,  60,  10,  60, 10, 60,  0
+	  57,  88,  95,  60,  10,  60, 10, 57,  0
 };
 //These have an extra value at the beginning so we can interpolate from last
 //to current without worrying about crashes
@@ -47,7 +47,7 @@ static const uint8_t states_lowpieces_x[] = {
 	0, 0,  25,  25,  12,  12,  12, 12, 12,  6
 };
 static const uint8_t states_scale[] = {
-   64,64, 128, 128, 128, 128, 128,128,128, 64
+   64,64, 128, 128, 128, 128, 128,128,  1, 64
 };
 static const int8_t states_brightness[] = {
   -30,-30, 60,  60,  60,  60,  60, 60,  0, 60

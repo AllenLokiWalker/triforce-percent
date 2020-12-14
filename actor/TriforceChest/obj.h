@@ -3,4 +3,4 @@
 #define  DL_TRIFORCECHEST_MAIN          0x06001330
 #define  DL_TRIFORCECHEST_LID           0x06001860
 #define  SKEL_TRIFORCECHEST             0x060019B0
-#define  ANIM_CHESTOPENING              0x060019EC
+#define  ANIM_CHESTOPENING              0x06001A3C

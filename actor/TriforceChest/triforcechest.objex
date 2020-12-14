@@ -2,7 +2,7 @@
 # www.blender.org
 # io_export_objex2 v2.0.0
 version 2.0
-exportid 1607819021.824512
+exportid 1607912838.240003
 softinfo animation_framerate 20
 mtllib triforcechest.mtlex
 skellib triforcechest.skel
