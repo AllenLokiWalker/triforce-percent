@@ -1,4 +1,4 @@
-SUBDIRS = ACEShortcut/ TriforcePiece/ TriforceLight/
+SUBDIRS = ACEShortcut/ TriforcePiece/ TriforceChest/ TriforceLight/
 
 .PHONY: default clean $(SUBDIRS)
 

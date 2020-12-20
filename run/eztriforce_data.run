@@ -5,6 +5,8 @@ OBJECT 4 ../actor/TriforcePiece/zobj.zobj
 ACTOR 1 ../actor/TriforcePiece/triforcepiece.zovl
 OBJECT 5 ../actor/TriforceChest/zobj.zobj
 ACTOR 3 ../actor/TriforceChest/triforcechest.zovl
+OBJECT 16 ../actor/TriforceLight/zobj.zobj
+ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
 //Entrance table 0x800F9C90 entries 0x9C-9F
 WRITE 16 0x800F9F00 0x27 0x00 0x02 0x01 0x27 0x00 0x02 0x01 0x27 0x00 0x02 0x01 0x27 0x00 0x02 0x01
 //Entrance cutscene table 0x800EFD04 entry 17 (originally Inside Jabu)

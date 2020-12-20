@@ -242,7 +242,7 @@
         </ZCutscenePosition>
         <ZCutscenePosition>
           <Cameraroll>0</Cameraroll>
-          <Frames>60</Frames>
+          <Frames>64</Frames>
           <Angle>60</Angle>
           <Position>
             <X>-221.401459</X>
@@ -262,7 +262,7 @@
           <Position>
             <X>-221.4015</X>
             <Y>94</Y>
-            <Z>69.26325</Z>
+            <Z>44</Z>
           </Position>
           <Position2>
             <X>257.384247</X>
@@ -276,8 +276,8 @@
           <Angle>60</Angle>
           <Position>
             <X>-221.4015</X>
-            <Y>94</Y>
-            <Z>69.26325</Z>
+            <Y>110</Y>
+            <Z>20</Z>
           </Position>
           <Position2>
             <X>257.3842</X>
@@ -293,7 +293,7 @@
         <Capacity>0</Capacity>
       </CutsceneActors>
       <StartFrame>0</StartFrame>
-      <EndFrame>220</EndFrame>
+      <EndFrame>224</EndFrame>
     </ZCutscene>
     <ZCutscene>
       <Marker>1</Marker>
@@ -337,7 +337,7 @@
         </ZCutscenePosition>
         <ZCutscenePosition>
           <Cameraroll>0</Cameraroll>
-          <Frames>0</Frames>
+          <Frames>30</Frames>
           <Angle>45</Angle>
           <Position>
             <X>-23</X>
@@ -355,7 +355,7 @@
           <Frames>0</Frames>
           <Angle>45</Angle>
           <Position>
-            <X>-82</X>
+            <X>-55</X>
             <Y>64</Y>
             <Z>22</Z>
           </Position>
@@ -363,6 +363,21 @@
             <X>261.65152</X>
             <Y>-52.5442924</Y>
             <Z>423.750641</Z>
+          </Position2>
+        </ZCutscenePosition>
+        <ZCutscenePosition>
+          <Cameraroll>0</Cameraroll>
+          <Frames>0</Frames>
+          <Angle>45</Angle>
+          <Position>
+            <X>-82</X>
+            <Y>64</Y>
+            <Z>22</Z>
+          </Position>
+          <Position2>
+            <X>243.010513</X>
+            <Y>-46.222477</Y>
+            <Z>401.95813</Z>
           </Position2>
         </ZCutscenePosition>
       </Points>
@@ -373,7 +388,7 @@
         <Capacity>0</Capacity>
       </CutsceneActors>
       <StartFrame>170</StartFrame>
-      <EndFrame>200</EndFrame>
+      <EndFrame>230</EndFrame>
     </ZCutscene>
     <ZCutscene>
       <Marker>1</Marker>
@@ -447,7 +462,7 @@
         </ZCutscenePosition>
         <ZCutscenePosition>
           <Cameraroll>0</Cameraroll>
-          <Frames>60</Frames>
+          <Frames>50</Frames>
           <Angle>70</Angle>
           <Position>
             <X>-120</X>
@@ -498,7 +513,7 @@
         <Capacity>0</Capacity>
       </CutsceneActors>
       <StartFrame>220</StartFrame>
-      <EndFrame>520</EndFrame>
+      <EndFrame>510</EndFrame>
     </ZCutscene>
     <ZCutscene>
       <Marker>1</Marker>
@@ -527,7 +542,7 @@
         </ZCutscenePosition>
         <ZCutscenePosition>
           <Cameraroll>0</Cameraroll>
-          <Frames>20</Frames>
+          <Frames>30</Frames>
           <Angle>45</Angle>
           <Position>
             <X>0.4867878</X>
@@ -546,7 +561,7 @@
           <Angle>30</Angle>
           <Position>
             <X>0</X>
-            <Y>128</Y>
+            <Y>121</Y>
             <Z>150</Z>
           </Position>
           <Position2>
@@ -558,7 +573,7 @@
         <ZCutscenePosition>
           <Cameraroll>0</Cameraroll>
           <Frames>0</Frames>
-          <Angle>45</Angle>
+          <Angle>30</Angle>
           <Position>
             <X>0</X>
             <Y>92</Y>
@@ -573,7 +588,7 @@
         <ZCutscenePosition>
           <Cameraroll>0</Cameraroll>
           <Frames>0</Frames>
-          <Angle>45</Angle>
+          <Angle>30</Angle>
           <Position>
             <X>0</X>
             <Y>92</Y>
@@ -592,8 +607,8 @@
       <CutsceneActors>
         <Capacity>0</Capacity>
       </CutsceneActors>
-      <StartFrame>410</StartFrame>
-      <EndFrame>450</EndFrame>
+      <StartFrame>405</StartFrame>
+      <EndFrame>455</EndFrame>
     </ZCutscene>
     <ZCutscene>
       <Marker>10</Marker>
@@ -890,9 +905,12 @@
         <ZScene-ZUShort>
           <Value>5</Value>
         </ZScene-ZUShort>
+        <ZScene-ZUShort>
+          <Value>16</Value>
+        </ZScene-ZUShort>
       </ZObjects>
       <ZActors>
-        <Capacity>4</Capacity>
+        <Capacity>8</Capacity>
         <ZActor>
           <Number>1</Number>
           <XPos>0</XPos>
@@ -937,6 +955,20 @@
         </ZActor>
         <ZActor>
           <Number>3</Number>
+          <XPos>0</XPos>
+          <YPos>0</YPos>
+          <ZPos>0</ZPos>
+          <XRot>0</XRot>
+          <YRot>0</YRot>
+          <ZRot>0</ZRot>
+          <Variable>0</Variable>
+          <FrontSwitchTo>0</FrontSwitchTo>
+          <FrontCamera>0</FrontCamera>
+          <BackSwitchTo>0</BackSwitchTo>
+          <BackCamera>0</BackCamera>
+        </ZActor>
+        <ZActor>
+          <Number>5</Number>
           <XPos>0</XPos>
           <YPos>0</YPos>
           <ZPos>0</ZPos>

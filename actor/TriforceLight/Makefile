@@ -1,9 +1,7 @@
 PROGRAM = triforcelight
 ADDRESS = 0x80800000
-#ACTORDIR = "../../build-romhack/actor/5"
-#OBJECTDIR = "../../build-romhack/object/10"
-ACTORDIR = "../../build-romhack/actor/3"
-OBJECTDIR = "../../build-romhack/object/5"
+ACTORDIR = "../../build-romhack/actor/5"
+OBJECTDIR = "../../build-romhack/object/16"
 PARTS = $(PROGRAM).o
 
 CC   = mips64-gcc

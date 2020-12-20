@@ -2,7 +2,7 @@
 #include "obj.h"
 
 // Actor Information
-#define OBJ_ID 5 // primary object dependency
+#define OBJ_ID 16 // primary object dependency
 
 #define OPEN_DELAY 60
 #define ANIM_LEN 50
