@@ -247,11 +247,16 @@ typedef struct {
 #define PADMGR_CODE_ADDR 0x800A2630
 #define PADMGR_THREAD 0x8011D580
 
+#define SAVE_CONTEXT 0x8011A5D0
+#define QUEST_STATUS 0xA4
+#define INVENTORY 0x74
+
 extern void seed_rotation( void );
 asm( ".equ seed_rotation, " QUOTE(SEED_ROTATION_ADDR) );
 
 static void create( entity_t* entity, z64_global_t* global ) {
 	*(u32*)SEED_ROTATION_ADDR = 0x080475E4; // seed angle = J 0x8011D790
+	((u8*)SAVE_CONTEXT)[INVENTORY+7] = 0x08; //give Ocarina of Time
 }
 
 const u8 is_exception_memory_related[] = {
@@ -275,6 +280,7 @@ uint32_t read_register(OSThread *th, uint8_t reg){
 #define AOE 600.0f
 
 static void step( entity_t* entity, z64_global_t* global ) {
+	*((u32*)(SAVE_CONTEXT + QUEST_STATUS)) = 0x00FFFFFFu; //give all Quest Status items
 	_printf(8, 48, "Distance to AOE: %.3f", (entity->actor.dist_from_link_xz) - AOE);
 	
 	//_printf(8, 72, "Seed angle: %08X, Kar addr:%08X", *(u32*)SEED_ROTATION_ADDR, *(u32*)KARGAROC_ADDR_COUNTER);
