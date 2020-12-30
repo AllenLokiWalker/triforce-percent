@@ -1,0 +1,7 @@
+Goal: set gSaveContext.unk_1422 = 1 when killing actor
+Save Context = 8011A5D0
+ 
+Starting at 0xA8 in actor.zovl
+a0 = this, a1 = globalCtx
+
+Ends at 0x108

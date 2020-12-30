@@ -2,12 +2,12 @@ ifeq ($(PYTHON3),"")
 	$(error Python3 command not defined or internal error)
 endif
 
-ACTORNUM=459
+ACTORNUM=394
 ACTORDIR=../../build-romhack/actor/${ACTORNUM}
 ACTORDIR2=../../build-shortcut/actor/${ACTORNUM}
-FUNCNAME=OceffWipe4_Update
-FUNCOFFSET=128
-ORIGMD5=53695eecd6dfa69fb7face182c04192c
+FUNCNAME=OceffWipe_Update
+FUNCOFFSET=168
+ORIGMD5=ec388e81c32e26d8ee35fd8771c8c84e
 
 .PHONY: default clean
 

@@ -250,6 +250,8 @@ typedef struct {
 #define SAVE_CONTEXT 0x8011A5D0
 #define QUEST_STATUS 0xA4
 #define INVENTORY 0x74
+#define LINK_AGE_NEXT 0x801DA288
+#define SUN_SONG_FLAG 0x8011A5D0
 
 extern void seed_rotation( void );
 asm( ".equ seed_rotation, " QUOTE(SEED_ROTATION_ADDR) );
@@ -281,6 +283,7 @@ uint32_t read_register(OSThread *th, uint8_t reg){
 
 static void step( entity_t* entity, z64_global_t* global ) {
 	*((u32*)(SAVE_CONTEXT + QUEST_STATUS)) = 0x00FFFFFFu; //give all Quest Status items
+	_printf(8, 40, "Link age next %d, SS flag %d", *(u8*)(LINK_AGE_NEXT), *(u16*)(SUN_SONG_FLAG));
 	_printf(8, 48, "Distance to AOE: %.3f", (entity->actor.dist_from_link_xz) - AOE);
 	
 	//_printf(8, 72, "Seed angle: %08X, Kar addr:%08X", *(u32*)SEED_ROTATION_ADDR, *(u32*)KARGAROC_ADDR_COUNTER);

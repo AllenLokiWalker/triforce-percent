@@ -21,13 +21,14 @@ endif
 CONTENTS = actor/ music/ scene/ textures/
 SUBDIRS = toolchain/ $(CONTENTS) loader/ bootstrap/
 DUMPS = build-shortcut/project.zzrpl build-romhack/project.zzrpl
-BUILDS = build-shortcut/build.z64 build-romhack/build.z64
+BUILDS = build-shortcut/tf-shortcut.z64 build-romhack/tf-romhack.z64
 
 .PHONY: default clean $(SUBDIRS)
 
 default: $(SUBDIRS) $(DUMPS) $(BUILDS)
 
 clean: $(SUBDIRS)
+	rm -rf $(DUMPS) $(BUILDS)
 
 actor/: $(DUMPS)
 
@@ -40,8 +41,11 @@ bootstrap/: loader/
 %project.zzrpl: %oot_1.0U_uncomp.z64 %oot_build.rtl %oot_dump.rtl
 	$(ZZRTL) $*oot_dump.rtl
 
-%build.z64: $(SUBDIRS)
-	$(ZZRTL) $*oot_build.rtl
+build-shortcut/tf-shortcut.z64: $(SUBDIRS)
+	$(ZZRTL) build-shortcut/oot_build.rtl
+    
+build-romhack/tf-romhack.z64: $(SUBDIRS)
+	$(ZZRTL) build-romhack/oot_build.rtl
 
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
