@@ -15,19 +15,20 @@ Reconstructing "lost beta elements" and "legitimately" obtaining the Triforce in
 
 - Sauraen: concept, director, bootstrapper MIPS ASM programmer, DMA patcher C programmer, TAStm32 firmware mods, TAStm32 Z64TC mode Python frontend, actor design/programming, music arranging
 - Kargaroc: fast_loader and debugger C programmer
-- /zel/: map design: Triforce Room, Unicorn Fountain
-- Savestate: live speedrun skills
+- Zel: Map Design: Triforce Room
+- CDi-Fails: Map Design: Unicorn Fountain
+- Savestate: Live speedrun skills
 
 ## Tools
 
-- z64ovl: z64me, Skawo, CrookedPoe, ???
+- z64ovl: z64me, Skawo, CrookedPoe, Zel, ???
 - zzrtl: z64me
-- OoT decomp: OoT decomp team
+- OoT Decompilation Project: OoT Decomp Team
 - SEQ64: Sauraen
 
 ## Technical Support
 
-- /zel/
+- Zel
 - z64me
 - CrookedPoe
 - mzxrules
