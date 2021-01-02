@@ -21,14 +21,14 @@ Reconstructing "lost beta elements" and "legitimately" obtaining the Triforce in
 
 ## Tools
 
-- z64ovl: z64me, Skawo, CrookedPoe, ???
+- z64ovl: z64me, Skawo, CrookedPoe, Zel, ???
 - zzrtl: z64me
 - OoT decomp: a bunch of clever folks
 - SEQ64: Sauraen
 
 ## Technical Support
 
-- /zel/
+- Zel
 - z64me
 - CrookedPoe
 - mzxrules
