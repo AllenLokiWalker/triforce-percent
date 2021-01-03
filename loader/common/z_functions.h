@@ -1,6 +1,6 @@
 #ifndef __Z_FUNCTIONS_H__
 #define __Z_FUNCTIONS_H__
- 
+
 #include "common.h"
 
 //Low-level system
@@ -111,6 +111,5 @@ extern void osContGetReadData(void* input_data); //800D01E4
 
 extern volatile u16* volatile framebuffer16;
 extern volatile u64* volatile framebuffer64;
-
 
 #endif //__Z_FUNCTIONS_H__

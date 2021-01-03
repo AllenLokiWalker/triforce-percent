@@ -1,5 +1,8 @@
 #include "fast_loader.h"
 
+#include "../common/common.h"
+#include "../common/z_functions.h"
+
 #define RUMBLE_CRCFAIL 1
 #define RUMBLE_Q_FALSE 2
 #define RUMBLE_Q_TRUE 3

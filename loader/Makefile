@@ -1,4 +1,4 @@
-.PHONY: default clean fast_loader dma_patcher
+.PHONY: default clean
 
 CC = mips64-gcc
 LD = mips64-ld
@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wno-main -mno-gpopt -fomit-frame-pointer -G 0 -O2 --std=gnu99 -m
 LDFLAGS = --emit-relocs
 OCFLAGS = -R .MIPS.abiflags -O binary
 
-default: fast_loader/fast_loader.bin fast_loader/fast_loader.elf debugger/debugger.bin dma_patcher/dma_patcher.bin dma_patcher/dma_patcher.out.ld
+default: fast_loader/fast_loader.bin debugger/debugger.bin dma_patcher/dma_patcher.map dma_patcher/dma_patcher.bin statics/statics.bin statics/statics.out.ld
 
 #Dependencies
 
@@ -19,6 +19,10 @@ debugger/debugger.elf: fast_loader/fast_loader.out.ld
 dma_patcher/dma_patcher.o: debugger/debugger.h
 
 dma_patcher/dma_patcher.elf: debugger/debugger.out.ld
+	
+statics/statics.o: fast_loader/fast_loader.h debugger/debugger.h
+
+statics/statics.elf: fast_loader/fast_loader.out.ld debugger/debugger.out.ld dma_patcher/dma_patcher.out.ld
 
 # fast_loader dma_patcher:
 # 	$(CC) $(CFLAGS) -c $@/$@.c -o $@/$@.o
@@ -30,7 +34,7 @@ dma_patcher/dma_patcher.elf: debugger/debugger.out.ld
 	$(CC) $(CFLAGS) -c $< -o $@
 
 %.elf %.map: %.o %.ld
-	$(LD) $(LDFLAGS) -T $*.ld -Map $*.map -o $*.elf $<
+	$(LD) $(LDFLAGS) -T $*.ld -Map $*.map -o $*.elf $*.o
 
 %.bin: %.elf
 	$(OC) $(OCFLAGS) $< $@
@@ -39,4 +43,4 @@ dma_patcher/dma_patcher.elf: debugger/debugger.out.ld
 	$(PYTHON3) ../toolchain/ldout.py $< $@
 
 clean:
-	rm -rf */*.o */*.map */*.elf fast_loader/fast_loader.bin debugger/debugger.bin dma_patcher/dma_patcher.bin
+	rm -rf */*.o */*.map */*.elf fast_loader/fast_loader.bin debugger/debugger.bin dma_patcher/dma_patcher.bin statics/statics.bin

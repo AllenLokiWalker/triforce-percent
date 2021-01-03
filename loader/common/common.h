@@ -11,6 +11,4 @@ typedef unsigned char u8;
 typedef          char s8;
 #define NULL ((void*)0)
 
-
-
 #endif //__COMMON__

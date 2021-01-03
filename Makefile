@@ -30,11 +30,9 @@ default: $(SUBDIRS) $(DUMPS) $(BUILDS)
 clean: $(SUBDIRS)
 	rm -rf $(DUMPS) $(BUILDS)
 
-actor/: $(DUMPS)
+actor/: $(DUMPS) loader/
 
 scene/: $(DUMPS)
-
-loader/: actor/ music/ scene/
 
 bootstrap/: loader/
 

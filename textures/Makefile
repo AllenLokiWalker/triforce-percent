@@ -1,6 +1,6 @@
 TEXTURES = triforce.rgba32.pat
 
-ZAP2 = ../toolchain/ZAP2/ZAP2.out
+ZAP2 = ../toolchain/ZAP2/ZAPD.out
 CREATE_PATCH = $(PYTHON3) ../toolchain/create_patch.py
 
 .PHONY: default clean

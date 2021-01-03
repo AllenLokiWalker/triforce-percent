@@ -1,4 +1,5 @@
 #include "dma_patcher.h"
+#include "../common/z_functions.h"
 #include "../debugger/debugger.h"
 
 typedef u32 OSMesgQueue; typedef u32 OSMesg; //not using them
@@ -198,7 +199,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
             //Patch file after loading
             for(p=0; p<patcher.npatches; ++p){
                 if(patcher.patches[p].vrom == vrom){
-                    //Debugger_Printf("DMA @%08X patching file", vrom);
+                    Debugger_Printf("DMA @%08X patching file", vrom);
                     DmaPatcher_ApplyPatch(ram, size, patcher.patches[p].patch);
                     return;
                 }

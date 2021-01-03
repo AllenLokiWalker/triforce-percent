@@ -1,4 +1,4 @@
-ifeq ("$(wildcard ZAP2/makefile)","")
+ifeq ("$(wildcard ZAP2/Makefile)","")
     $(error You did not properly set up the Git submodules (ZAP2 makefile not found))
 endif
 

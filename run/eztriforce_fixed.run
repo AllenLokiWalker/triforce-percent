@@ -1,2 +1,3 @@
 FIXED_AND_CALL_START ../loader/debugger/debugger.bin
 FIXED_AND_CALL_START ../loader/dma_patcher/dma_patcher.bin
+FIXED_AND_CALL_START ../loader/statics/statics.bin

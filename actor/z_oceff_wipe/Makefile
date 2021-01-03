@@ -4,7 +4,6 @@ endif
 
 ACTORNUM=394
 ACTORDIR=../../build-romhack/actor/${ACTORNUM}
-ACTORDIR2=../../build-shortcut/actor/${ACTORNUM}
 FUNCNAME=OceffWipe_Update
 FUNCOFFSET=168
 ORIGMD5=ec388e81c32e26d8ee35fd8771c8c84e
@@ -14,12 +13,14 @@ ORIGMD5=ec388e81c32e26d8ee35fd8771c8c84e
 default: actor.pat actor.zovl
 	echo "${ORIGMD5} ${ACTORDIR}/actor.zovl.orig" | md5sum -c
 	cp actor.zovl ${ACTORDIR}
-	cp actor.zovl ${ACTORDIR2}
 
 %.o: %.s
 	mips64-as -Os -o $@ $<
 
-%.bin: %.o
+%.elf: %.o z_oceff_wipe.ld ../../loader/statics/statics.out.ld
+	mips64-ld -T z_oceff_wipe.ld -o $@ $<
+
+%.bin: %.elf
 	mips64-objcopy -O binary -j .text -j .data $< $@
 
 ${ACTORDIR}/actor.zovl.orig:
