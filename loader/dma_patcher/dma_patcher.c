@@ -56,7 +56,7 @@ void DmaPatcher_PatchAudio_Post();
 
 __attribute__((section(".start"))) void DmaPatcher_Init()
 {
-    Debugger_Printf("DmaPatcher loaded");
+    //Debugger_Printf("DmaPatcher loaded");
     s32 i = __osDisableInt();
     patcher.npatches = 0;
     // Patch DmaMgr_ProcessMsg to jump to DmaPatcher_ProcessMsg
@@ -179,7 +179,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
             if(romStart & 0x80000000){
                 //The file is actually in RAM, copy it
                 _memcpy(ram, (void*)copyStart, size);
-                //Debugger_Printf("DMA @%08X replaced file", vrom);
+                Debugger_Printf("DMA @%08X replaced file", vrom);
                 return;
             }
             if (iter->romEnd == 0) {
@@ -203,6 +203,9 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
                     DmaPatcher_ApplyPatch(ram, size, patcher.patches[p].patch);
                     return;
                 }
+            }
+            if(vrom >= 0x00BFAC30){ //first actor
+                Debugger_Printf("DMA @%08X normal", vrom);
             }
             return;
         }
