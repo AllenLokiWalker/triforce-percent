@@ -29,12 +29,13 @@ jr    $ra
 sh    $t4, 0x013E($a0)
 
 lbl_timetravel:
-addiu $sp, $sp, -4
+addiu $sp, $sp, -8
 sw    $ra, 0($sp)
 jal   Statics_TimeTravel
-nop
+sw    $a0, 4($sp)
+lw    $a0, 4($sp)
 lw    $ra, 0($sp)
-addiu $sp, $sp, 4
+addiu $sp, $sp, 8
 
 lbl_kill:
 /* Tail call optimization--don't need stack */

@@ -29,12 +29,12 @@ __attribute__((section(".start"))) void Statics_Init(){
 }
 
 void Statics_TimeTravel(){
-    gGlobalContext.link_age = !gSaveContext.link_age;
+    gGlobalContext.link_age = gSaveContext.link_age ^ 1;
     //gGlobalContext.unk_1D_ = 1; //unk_11DE9 not sure? next variable after link_age
     gSaveContext.respawn_flag = -2;
     gGlobalContext.scene_load_flag = 0x14;
     gGlobalContext.entrance_index = gSaveContext.entrance_index;
-    gSaveContext.next_day_time = gSaveContext.day_time;
+    //gSaveContext.next_day_time = gSaveContext.day_time;
     gGlobalContext.fadeout_transition = 0x2C;
     gSaveContext.next_transition = 5;
     /*
