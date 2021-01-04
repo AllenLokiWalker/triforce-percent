@@ -19,7 +19,7 @@ we can clobber a0-a3 freely (actually probably t0-t9 and v0-v1 too)
 bzero, which was the call there, clobbers a0, a1, a3, v1, and at
 
 0x8011D790 = address of controllers
-0x801C8000 = address counter
+0x801C800C = address counter
 
 */
 /*Address of controllers -> v0*/
@@ -38,12 +38,12 @@ lwl   $a2, (%lo(0x8011D790)+0x12)($v0) /* word isn't aligned */
 lwr   $a2, (%lo(0x8011D790)+0x15)($v0)
 or    $a2, $a2, $a0      /* extra 2 bits from controller 2 */
 /*Address counter + 8 -> v1 */
-lui   $at, %hi(0x801C8000)
-lw    $v1, %lo(0x801C8000)($at)
+lui   $at, %hi(0x801C800C)
+lw    $v1, %lo(0x801C800C)($at)
 sw    $a1, 0($v1)
 sw    $a2, 4($v1)
 addiu $v1, $v1, 8
-sw    $v1, %lo(0x801C8000)($at)
+sw    $v1, %lo(0x801C800C)($at)
 /*Zero controllers*/
 sh    $zero, (%lo(0x8011D790)+0x06)($v0) /*zero*/
 sw    $zero, (%lo(0x8011D790)+0x08)($v0) /*them*/

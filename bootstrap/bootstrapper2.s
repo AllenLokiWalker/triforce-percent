@@ -48,11 +48,11 @@ sw    $zero,    0x2644($v0)
 
 /*
 Write 0x80400000 (address of start of Kargarocs payload--to jal here, instruction 0C100000)
-to address counter 0x801C8000
+to address counter 0x801C800C
 */
 lui   $gp, 0x8040
-lui   $v0, %hi(0x801C8000)
-sw    $gp, %lo(0x801C8000)($v0)
+lui   $v0, %hi(0x801C800C)
+sw    $gp, %lo(0x801C800C)($v0)
 
 /*
 Turn off ACE

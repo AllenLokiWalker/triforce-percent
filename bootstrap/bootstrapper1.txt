@@ -17,6 +17,6 @@ which is A, Z, D-down, D-left, L, R, C-up, C-down, and stick position
 s1 points to global context 0x801C84A0, so we just have to find about 80 unused bytes somewhere
 around there
 Looks like between 0x801C7E70 and 0x801C8460 is unused
-Going to use 0x801C8000 for the address counter,
+Going to use 0x801C800C for the address counter,
 0x801C8004 for the simulated seed rotation,
 and 0x801C8010 for BS2 injection
