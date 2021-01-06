@@ -798,6 +798,39 @@ particle(struct rom *rom)
 	printf("success!\n");
 }
 
+enum rhstatics_info {
+    RHSTATICS_PATCH_START = 0x000011A0
+};
+
+void rhstatics(struct rom* rom) {
+	char *patchfile;
+	int patchfilesz;
+	char *ptrdata;
+	
+    /* Write rhstatics data to rom */
+	rom.seek(rom.size());
+    rom.align(0x100);
+    rom.inject("rhstatics.bin", true);
+	
+    /* Patch func_800005A0 in boot to load rhstatics */
+    patchfile = loadfile("rhstatics_patch.bin", &patchfilesz, false);
+	if(patchfilesz <= 0 || patchfilesz > 0x9C)
+		die("size error with rhstatics patch file");
+	
+	/* Update the pointers to rhstatics based on injection */
+	ptrdata = find_bytes_stride(patchfile, patchfilesz, "DEADBEEF", 8, true);
+	if (!ptrdata)
+		die("pointer edit error in rhstatics patch file");
+	put32(ptrdata, rom.file_start());
+	ptrdata += 8;
+	put32(ptrdata, rom.file_sz());
+	
+	/* Write the patch */
+	rom.seek(RHSTATICS_PATCH_START);
+	rom.write(patchfile, patchfilesz);
+
+}
+
 int
 main(int argc, char **argv)
 {
@@ -849,6 +882,7 @@ main(int argc, char **argv)
 	particle(rom);
 	object(rom);
 	scene(rom);
+	rhstatics(rom);
 	route(rom);
 	
 	/* write built rom */

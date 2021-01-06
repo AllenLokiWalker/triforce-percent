@@ -9,41 +9,28 @@ ifeq ("$(and $(wildcard build-shortcut/oot_1.0U_uncomp.z64), $(wildcard build-ro
     $(error Original ROMs not found, please read README.md)
 endif
 
-ifeq ("$(and $(wildcard build-shortcut/oot_build.rtl), $(wildcard build-shortcut/oot_dump.rtl))","")
-    $(shell cp toolchain/zzrtl/oot_build.rtl toolchain/zzrtl/oot_dump.rtl build-shortcut/)
-    $(shell sed -i 's/build.z64/tf-shortcut.z64/g' build-shortcut/oot_build.rtl)
-endif
-ifeq ("$(and $(wildcard build-romhack/oot_build.rtl), $(wildcard build-romhack/oot_dump.rtl))","")
-    $(shell cp toolchain/zzrtl/oot_build.rtl toolchain/zzrtl/oot_dump.rtl build-romhack/)
-    $(shell sed -i 's/build.z64/tf-romhack.z64/g' build-romhack/oot_build.rtl)
-endif
-
 CONTENTS = actor/ music/ scene/ textures/
-SUBDIRS = toolchain/ $(CONTENTS) loader/ bootstrap/
+SUBDIRS = toolchain/ $(CONTENTS) loader/ bootstrap/ rom-setup/
 DUMPS = build-shortcut/project.zzrpl build-romhack/project.zzrpl
-BUILDS = build-shortcut/tf-shortcut.z64 build-romhack/tf-romhack.z64
 
 .PHONY: default clean $(SUBDIRS)
 
-default: $(SUBDIRS) $(DUMPS) $(BUILDS)
+default: $(SUBDIRS)
 
 clean: $(SUBDIRS)
-	rm -rf $(DUMPS) $(BUILDS)
+	rm -rf $(DUMPS)
 
 actor/: $(DUMPS) loader/
 
 scene/: $(DUMPS)
 
 bootstrap/: loader/
-
-%project.zzrpl: %oot_1.0U_uncomp.z64 %oot_build.rtl %oot_dump.rtl
-	$(ZZRTL) $*oot_dump.rtl
-
-build-shortcut/tf-shortcut.z64: $(SUBDIRS)
-	$(ZZRTL) build-shortcut/oot_build.rtl
     
-build-romhack/tf-romhack.z64: $(SUBDIRS)
-	$(ZZRTL) build-romhack/oot_build.rtl
+rom-setup/: loader/ $(CONTENTS)
+
+%project.zzrpl: %oot_1.0U_uncomp.z64 %oot_dump.rtl
+	cp toolchain/zzrtl/oot_dump.rtl $*oot_dump.rtl
+	$(ZZRTL) $*oot_dump.rtl
 
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)

@@ -1,2 +1,5 @@
-ZZRTL = "../../Tools/zzrtl-0.01-r2/zzrtl"
+# Don't use relative paths, these tools get used elsewhere in the hierarchy
+# so the relative paths will become wrong.
+
+ZZRTL = "/home/your_name/n64/Tools/zzrtl-0.01-r2/zzrtl"
 PYTHON3 = python

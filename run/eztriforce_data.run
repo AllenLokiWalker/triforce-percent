@@ -7,7 +7,7 @@ ACTOR 3 ../actor/TriforceChest/triforcechest.zovl
 OBJECT 16 ../actor/TriforceLight/zobj.zobj
 ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
 //Patch Zelda's Lullaby / Song of Time actor
-PATCH 0xEA7360 ../actor/z_oceff_wipe/actor.pat
+//PATCH 0xEA7360 ../actor/z_oceff_wipe/actor.pat
 
 SCENE 39 ../scene/TriforceRoom/scene.zscene
 //Entrance table 0x800F9C90 entries 0x9C-9F

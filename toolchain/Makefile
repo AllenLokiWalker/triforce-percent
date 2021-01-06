@@ -4,7 +4,7 @@ endif
 
 .PHONY: default clean zap2
 
-default clean: zap2
+default: zap2
 
 zap2:
 	#sed -i 's/ -O2 / -g /g' ZAP2/makefile
