@@ -5,9 +5,9 @@ INCLUDE ../../loader/statics/statics.out.ld
 
 DmaMgr_Init = 0x80000E6C;
 Main = 0x800A1C50;
-/*osGetMemSize = 0x80003E90;*/
+osGetMemSize = 0x80003E90;
 
-ENTRY_POINT = 0x80800000;
+ENTRY_POINT = 0x800005A0;
 ENTRY(ENTRY_POINT)
 
 SECTIONS {

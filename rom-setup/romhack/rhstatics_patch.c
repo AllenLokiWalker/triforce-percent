@@ -2,7 +2,7 @@
 
 extern void DmaMgr_Init();
 extern void Main(void*);
-/*extern u32 osGetMemSize(void);*/
+extern u32 osGetMemSize(void);
 
 extern u32 statics_START;
 

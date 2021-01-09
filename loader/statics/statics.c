@@ -9,17 +9,26 @@ extern z64_save_context_t gSaveContext;
 
 extern void Audio_FadeOut(u16 frames);
 
+u8 sLPress = 0;
 
 void Statics_Update(){
     //Press L on pause menu to toggle inventory editor
-    if(/*(gGlobalContext.pause_ctxt.state > 0) && */
-            (gGlobalContext.common.input[0].pad_pressed & INPUT_L_TRIGGER)){
-        if(gGlobalContext.pause_ctxt.unk_02_[1]){
-            gGlobalContext.pause_ctxt.unk_02_[1] = 0;
-        /*}else if((gGlobalContext.common.input[0].raw.pad & INPUT_D_UP)){
-            gGlobalContext.pause_ctxt.unk_02_[1] = 3;*/
-        }else{
-            gGlobalContext.pause_ctxt.unk_02_[1] = 2;
+    //The "press" variable doesn't quite work right because this is run on the
+    //VI, not in sync with the game loop. So we have to keep our own press flag.
+    if(!sLPress){
+        if(gGlobalContext.common.input[0].raw.l){
+            sLPress = 1;
+            if(gGlobalContext.pause_ctxt.unk_02_[1]){
+                gGlobalContext.pause_ctxt.unk_02_[1] = 0;
+            /*}else if(gGlobalContext.common.input[0].raw.du){
+                gGlobalContext.pause_ctxt.unk_02_[1] = 3;*/
+            }else{
+                gGlobalContext.pause_ctxt.unk_02_[1] = 2;
+            }
+        }
+    }else{
+        if(!gGlobalContext.common.input[0].raw.l){
+            sLPress = 0;
         }
     }
 }

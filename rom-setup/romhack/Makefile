@@ -1,6 +1,7 @@
 .PHONY: default clean
 
 BUILDDIR = ../../build-romhack
+PATCHDIR = $(BUILDDIR)/patch
 BUILDRTL = $(BUILDDIR)/oot_build.rtl
 
 CC = mips64-gcc
@@ -14,9 +15,10 @@ OCFLAGS = -R .MIPS.abiflags -O binary
 
 default: $(BUILDDIR)/tf-romhack.z64
 	
-$(BUILDDIR)/tf-romhack.z64: rhstatics_patch.bin ../../toolchain/zzrtl/oot_build.rtl
-	cp rhstatics_patch.bin ../../build-romhack/
-	cp ../../loader/statics/statics.bin $(BUILDDIR)/rhstatics.bin
+$(BUILDDIR)/tf-romhack.z64: rhstatics_patch.bin call_rhstatics.bin ../../toolchain/zzrtl/oot_build.rtl
+	mkdir -p $(PATCHDIR)
+	cp rhstatics_patch.bin call_rhstatics.bin $(PATCHDIR)
+	cp ../../loader/statics/statics.bin $(PATCHDIR)/rhstatics.bin
 	cp ../../toolchain/zzrtl/oot_build.rtl $(BUILDRTL)
 	sed -i 's/build.z64/tf-romhack.z64/g' $(BUILDRTL)
 	$(ZZRTL) $(BUILDRTL)
@@ -24,8 +26,11 @@ $(BUILDDIR)/tf-romhack.z64: rhstatics_patch.bin ../../toolchain/zzrtl/oot_build.
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.elf: %.o %.ld
-	$(LD) $(LDFLAGS) -T $*.ld -Map $*.map -o $*.elf $*.o
+%.o: %.s
+	mips64-as -Os -o $@ $<
+
+%.elf: %.o rhstatics.ld ../../loader/statics/statics.out.ld
+	$(LD) $(LDFLAGS) -T rhstatics.ld -o $*.elf $*.o
 
 %.bin: %.elf
 	$(OC) $(OCFLAGS) $< $@

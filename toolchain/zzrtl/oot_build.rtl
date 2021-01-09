@@ -799,13 +799,16 @@ particle(struct rom *rom)
 }
 
 enum rhstatics_info {
-    RHSTATICS_PATCH_START = 0x000011A0
+    RHSTATICS_PATCH_START = 0x000011A0,
+	PADMGR_PATCH_CALL_RHSTATICS = 0x00B18598
 };
 
 void rhstatics(struct rom* rom) {
 	char *patchfile;
 	int patchfilesz;
 	char *ptrdata;
+	
+	dir_enter("patch");
 	
     /* Write rhstatics data to rom */
     rom.align(0x1000);
@@ -829,6 +832,18 @@ void rhstatics(struct rom* rom) {
 	rom.seek(RHSTATICS_PATCH_START);
 	rom.write(patchfile, patchfilesz);
 
+	/* Patch padmgr to call Statics_Update every frame */
+	patchfile = loadfile("call_rhstatics.bin", &patchfilesz, false);
+	if(u32op(patchfilesz, ">", 16)){
+		die("call_rhstatics patch file too big");
+	}
+	if(u32op(patchfilesz, "<", 16)){
+		die("call_rhstatics patch file too small");
+	}
+	rom.seek(PADMGR_PATCH_CALL_RHSTATICS);
+	rom.write(patchfile, patchfilesz);
+	
+	dir_leave();
 }
 
 int
