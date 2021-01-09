@@ -12,6 +12,10 @@ ENTRY(ENTRY_POINT)
 
 SECTIONS {
 	. = ENTRY_POINT;
-	.text ALIGN(16): { *(.text) }
-	.data ALIGN(4): { *(.data) }
+	.text ALIGN(4): { FILL(0); *(.text); . = ALIGN(4); }
+	.data ALIGN(4): { FILL(0); *(.data); . = ALIGN(4); }
+	.rodata ALIGN(4): { FILL(0); *(.rodata); . = ALIGN(4); }
+	.bss ALIGN(4): { *(.bss); . = ALIGN(4); }
+	. = ALIGN(4);
+	end = .;
 }

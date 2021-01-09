@@ -1,5 +1,6 @@
 # Don't use relative paths, these tools get used elsewhere in the hierarchy
 # so the relative paths will become wrong.
 
-ZZRTL = "/home/your_name/n64/Tools/zzrtl-0.01-r2/zzrtl"
+ZZRTL = "/home/your_name/n64/Tools/zzrtl-0.01-r4/zzrtl"
+Z64OVLDIR = "/home/your_name/n64/mips64/include/z64ovl"
 PYTHON3 = python

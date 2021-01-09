@@ -808,21 +808,21 @@ void rhstatics(struct rom* rom) {
 	char *ptrdata;
 	
     /* Write rhstatics data to rom */
-	rom.seek(rom.size());
-    rom.align(0x100);
+    rom.align(0x1000);
     rom.inject("rhstatics.bin", true);
 	
     /* Patch func_800005A0 in boot to load rhstatics */
     patchfile = loadfile("rhstatics_patch.bin", &patchfilesz, false);
-	if(patchfilesz <= 0 || patchfilesz > 0x9C)
-		die("size error with rhstatics patch file");
+	if(u32op(patchfilesz, ">", 0x9C)){
+		die("rhstatics patch file too big");
+	}
 	
 	/* Update the pointers to rhstatics based on injection */
-	ptrdata = find_bytes_stride(patchfile, patchfilesz, "DEADBEEF", 8, true);
+	ptrdata = find_bytes_stride(patchfile, patchfilesz, "DEADBEEF", 4, true);
 	if (!ptrdata)
 		die("pointer edit error in rhstatics patch file");
 	put32(ptrdata, rom.file_start());
-	ptrdata += 8;
+	ptrdata = ptrdata + 8;
 	put32(ptrdata, rom.file_sz());
 	
 	/* Write the patch */
