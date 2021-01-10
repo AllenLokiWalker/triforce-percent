@@ -1,0 +1,16 @@
+# base addr
+808301C0
+
+# Patch func_808519EC / func_8084F868 (1.0) / Link_Action_MasterSword_Init to always use child link anim
+8084F898 lui a2, 0x0400
+8084F8A8 addiu a2, a2, 0x2360
+
+# Patch func_80851A50 / func_8084F8CC / Link_Action_MasterSword_Update to use child data for most things
+# anim frame to grab sword
+8084F8F4 addiu v1, zero, 1
+8084F918 addiu v1, zero, 1
+# don't patch dlist selection
+# sfx
+8084F97C addiu a1, zero, 0x1836
+8084F994 addiu t2, zero, 1
+8084F9AC addiu a1, zero, 0x6801

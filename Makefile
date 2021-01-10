@@ -18,7 +18,7 @@ DUMPS = build-shortcut/project.zzrpl build-romhack/project.zzrpl
 default: $(SUBDIRS)
 
 clean: $(SUBDIRS)
-	rm -rf $(DUMPS)
+	find build-romhack/ build-shortcut/ -mindepth 1 -maxdepth 1 ! -name 'oot_1.0U_uncomp.z64' -exec rm -rf {} +
 
 actor/: $(DUMPS) loader/
 
@@ -28,9 +28,11 @@ bootstrap/: loader/
     
 rom-setup/: loader/ $(CONTENTS)
 
-%project.zzrpl: %oot_1.0U_uncomp.z64 %oot_dump.rtl
+%project.zzrpl: %oot_1.0U_uncomp.z64 toolchain/zzrtl/oot_dump.rtl
 	cp toolchain/zzrtl/oot_dump.rtl $*oot_dump.rtl
+	cp toolchain/zzrtl/oot_names.tsv $*oot_names.tsv
 	$(ZZRTL) $*oot_dump.rtl
+	touch $*update.txt
 
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)

@@ -1,5 +1,0 @@
- 
-808DE1CC to addiu $t8, $zero, 1
-808DE2F8 to addiu $t8, $zero, 1
-808DE4AC to addiu $t8, $zero, 1
-808E2D6C to addiu $t6, $zero, 1

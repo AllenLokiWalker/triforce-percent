@@ -2,25 +2,26 @@ ifeq ($(PYTHON3),"")
 	$(error Python3 command not defined or internal error)
 endif
 
-ACTORNUM=108
+ACTORNUM="108 - Master Sword"
 ACTORDIR=../../build-romhack/actor/${ACTORNUM}
-ORIGMD5=0
+ORIGMD5=3503c9424b64bb7d087b6e291cec85d1
 
 .PHONY: default clean
 
 default: actor.pat actor.zovl
 	echo "${ORIGMD5} ${ACTORDIR}/actor.zovl.orig" | md5sum -c
-	cp actor.zovl ${ACTORDIR}
+	cp actor.zovl ${ACTORDIR}/
+	touch $(ACTORDIR)/../../update.txt
 
 ${ACTORDIR}/actor.zovl.orig:
 	cp ${ACTORDIR}/actor.zovl ${ACTORDIR}/actor.zovl.orig
 	
-actor.zovl: ${ACTORDIR}/actor.zovl.orig ${FUNCNAME}.bin
+actor.zovl: ${ACTORDIR}/actor.zovl.orig linkagepatch.txt
 	cp ${ACTORDIR}/actor.zovl.orig actor.zovl
-	dd conv=notrunc if=${FUNCNAME}.bin of=actor.zovl bs=1 seek=${FUNCOFFSET}
+	$(PYTHON3) ../../toolchain/patchinstr.py actor.zovl linkagepatch.txt
 
 actor.pat: actor.zovl ${ACTORDIR}/actor.zovl.orig
 	${PYTHON3} ../../toolchain/create_patch.py ${ACTORDIR}/actor.zovl.orig actor.zovl actor.pat
 
 clean:
-	rm -f *.o *.bin *.zovl *.pat
+	rm -f *.zovl *.pat

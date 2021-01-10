@@ -1,0 +1,4 @@
+func_808519EC init
+func_80851A50 continue
+0x04002360 child link pulls MS
+0x04002720 adult link drops MS

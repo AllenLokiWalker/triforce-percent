@@ -15,7 +15,7 @@ OCFLAGS = -R .MIPS.abiflags -O binary
 
 default: $(BUILDDIR)/tf-romhack.z64
 	
-$(BUILDDIR)/tf-romhack.z64: rhstatics_patch.bin call_rhstatics.bin ../../toolchain/zzrtl/oot_build.rtl
+$(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt rhstatics_patch.bin call_rhstatics.bin ../../toolchain/zzrtl/oot_build.rtl
 	mkdir -p $(PATCHDIR)
 	cp rhstatics_patch.bin call_rhstatics.bin $(PATCHDIR)
 	cp ../../loader/statics/statics.bin $(PATCHDIR)/rhstatics.bin

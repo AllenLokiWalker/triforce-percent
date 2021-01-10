@@ -1,7 +1,7 @@
 PROGRAM = triforcelight
 ADDRESS = 0x80800000
-ACTORDIR = "../../build-romhack/actor/5"
-OBJECTDIR = "../../build-romhack/object/16"
+ACTORDIR = "../../build-romhack/actor/5 - Empty - (unused)"
+OBJECTDIR = "../../build-romhack/object/16 - (unused)"
 PARTS = $(PROGRAM).o
 
 CC   = mips64-gcc
@@ -18,8 +18,9 @@ $(PROGRAM).ovl: $(PARTS)
 	$(LD) -o $(PROGRAM).elf $(PARTS) $(LDFLAGS)
 	$(NOVL) $(NOVLFLAGS) $(PROGRAM).elf
 	rm -f $(ACTORDIR)/actor.zovl
-	cp $(PROGRAM).zovl conf.txt $(ACTORDIR)
-	cp zobj.zobj $(OBJECTDIR)
+	cp $(PROGRAM).zovl conf.txt $(ACTORDIR)/
+	cp zobj.zobj $(OBJECTDIR)/
+	touch $(ACTORDIR)/../../update.txt
 
 clean:
 	rm -fv $(PROGRAM).elf $(OVLOUT) $(PARTS)

@@ -1,7 +1,7 @@
 PROGRAM = ACEShortcut
 OVLOUT = actor.zovl
 ADDRESS = 0x80800000
-ACTORDIR = "../../build-shortcut/actor/130"
+ACTORDIR = "../../build-shortcut/actor/130 - Orange Pot (unused)"
 PARTS = $(PROGRAM).o
 
 CC   = mips64-gcc
@@ -17,8 +17,9 @@ default: $(PROGRAM).ovl
 $(PROGRAM).ovl: $(PARTS)
 	$(LD) -o $(PROGRAM).elf $(PARTS) $(LDFLAGS)
 	$(NOVL) $(NOVLFLAGS) $(PROGRAM).elf
-	cp $(OVLOUT) $(ACTORDIR)
-	cp conf.txt $(ACTORDIR)
+	cp $(OVLOUT) $(ACTORDIR)/
+	cp conf.txt $(ACTORDIR)/
+	touch $(ACTORDIR)/../../update.txt
 
 clean:
 	rm -fv $(PROGRAM).elf $(OVLOUT) $(PARTS)
