@@ -1,0 +1,5 @@
+Pretend always child:
+set 80918F74 to addiu $t6, $zero, 1 (render)
+set 80919058, 80919070, 80919080, 809190B0 to addiu $t3, $zero, 1 (action func 1, A)
+set 809190E0 to addiu $t6, $zero, 1 (action func 1, B)
+set 809191C4 to addiu $t6, $zero, 1 (action func 2)
