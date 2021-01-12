@@ -1,7 +1,7 @@
 PROGRAM = triforcepiece
 ADDRESS = 0x80800000
-ACTORDIR = "../../build-romhack/actor/1 - Empty - (unused)"
-OBJECTDIR = "../../build-romhack/object/4 - (unused)"
+ACTORDIR = ../../build-romhack/actor/1
+OBJECTDIR = ../../build-romhack/object/4
 PARTS = $(PROGRAM).o
 
 CC   = mips64-gcc

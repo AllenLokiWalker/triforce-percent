@@ -2,9 +2,6 @@
  * <z64.me> zzrtl script for extracting assets from OoT *
  ********************************************************/
 
-/* global variables */
-char *g_tsv;
-
 /* how to use */
 /* uncomment the enum associated with the OoT version you *
  * are targeting, and comment out or delete the others    */
@@ -472,12 +469,7 @@ scene(struct rom *rom)
 		printf("\r""scene %d/%d: ", index, TBL_SCENE_ENTRIES - 1);
 		
 		/* create and enter directory */
-		dir_enter(
-			dir_mkname(
-				index
-				, tsv_col_row(g_tsv, "scene", index + 1)
-			)
-		);
+		dir_enter(dir_mkname(index, 0));
 		
 		/* go to table entry */
 		rom.seek(TBL_SCENE + index * 20);
@@ -603,12 +595,7 @@ particle(struct rom *rom)
 		printf("\r""particle %d/%d: ", index, TBL_PARTICLE_ENTRIES - 1);
 		
 		/* create and enter directory */
-		dir_enter(
-			dir_mkname(
-				index
-				, tsv_col_row(g_tsv, "particle", index + 1)
-			)
-		);
+		dir_enter(dir_mkname(index, 0));
 		
 		/* go to table entry */
 		rom.seek(TBL_PARTICLE + index * 28);
@@ -693,20 +680,8 @@ actor(struct rom *rom)
 		naddr = rom.read32();  /* name addr   */
 		atype = rom.read16();  /* alloc type  */
 		
-		/* get name string */
-		/* NOTE: an assumption is being made that naddr falls inside   *
-		 *       code's vram; this is fine for roms that have not been *
-		 *       drastically altered, and naddr is always 0 on retail  *
-		 *       roms anyway; just be aware of this if you have issues */
-		if (g_tsv)
-			name = tsv_col_row(g_tsv, "actor", index + 1);
-		else if (naddr)
-			name = rom.raw((naddr - VRAM_CODE) + VROM_CODE);
-		else
-			name = 0;
-		
 		/* create and enter directory */
-		dir_enter(dir_mkname(index, name));
+		dir_enter(dir_mkname(index, 0));
 		
 		/* used entries have non-zero start */
 		if (start)
@@ -765,12 +740,7 @@ object(struct rom *rom)
 		printf("\r""object %d/%d: ", index, TBL_OBJECT_ENTRIES - 1);
 		
 		/* create and enter directory */
-		dir_enter(
-			dir_mkname(
-				index
-				, tsv_col_row(g_tsv, "object", index + 1)
-			)
-		);
+		dir_enter(dir_mkname(index, 0));
 		
 		/* go to table entry */
 		rom.seek(TBL_OBJECT + index * 8);
@@ -805,9 +775,6 @@ main(int argc, char **argv)
 	/* NOTE: the rom of the given name must exist *
 	 *       in the same directory as this .rtl   */
 	name = "oot_1.0U_uncomp.z64";
-	
-	/* initialize name lists */
-	g_tsv = loadfile("oot_names.tsv", 0, true/*file is optional*/);
 	
 	/* folder naming style */
 	dir_use_style("pre");

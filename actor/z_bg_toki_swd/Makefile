@@ -2,8 +2,7 @@ ifeq ($(PYTHON3),"")
 	$(error Python3 command not defined or internal error)
 endif
 
-ACTORNUM="108 - Master Sword"
-ACTORDIR=../../build-romhack/actor/${ACTORNUM}
+ACTORDIR=../../build-romhack/actor/108
 ORIGMD5=3503c9424b64bb7d087b6e291cec85d1
 
 .PHONY: default clean

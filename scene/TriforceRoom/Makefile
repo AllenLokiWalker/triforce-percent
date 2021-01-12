@@ -1,4 +1,4 @@
-SCENEDIR = "../../build-romhack/scene/39 - House - Twins"
+SCENEDIR=../../build-romhack/scene/39
 
 .PHONY: default clean
 

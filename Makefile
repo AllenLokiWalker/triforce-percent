@@ -30,7 +30,6 @@ rom-setup/: loader/ $(CONTENTS)
 
 %project.zzrpl: %oot_1.0U_uncomp.z64 toolchain/zzrtl/oot_dump.rtl
 	cp toolchain/zzrtl/oot_dump.rtl $*oot_dump.rtl
-	cp toolchain/zzrtl/oot_names.tsv $*oot_names.tsv
 	$(ZZRTL) $*oot_dump.rtl
 	touch $*update.txt
 

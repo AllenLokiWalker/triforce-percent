@@ -1,7 +1,7 @@
 PROGRAM = ACEShortcut
 OVLOUT = actor.zovl
 ADDRESS = 0x80800000
-ACTORDIR = "../../build-shortcut/actor/130 - Orange Pot (unused)"
+ACTORDIR = ../../build-shortcut/actor/130
 PARTS = $(PROGRAM).o
 
 CC   = mips64-gcc

@@ -5,12 +5,20 @@
 8084F898 lui a2, 0x0400
 8084F8A8 addiu a2, a2, 0x2360
 
-# Patch func_80851A50 / func_8084F8CC / Link_Action_MasterSword_Update to use child data for most things
+# Patch func_80851A50 / func_8084F8CC (1.0) / Link_Action_MasterSword_Update to use child data for most things
 # anim frame to grab sword
 8084F8F4 addiu v1, zero, 1
 8084F918 addiu v1, zero, 1
-# don't patch dlist selection
+# dlist selection--change left hand to holding regular sword (MS)
+8084F96C addiu v0, v0, 0x7908
 # sfx
 8084F97C addiu a1, zero, 0x1836
 8084F994 addiu t2, zero, 1
 8084F9AC addiu a1, zero, 0x6801
+8084F9B8 addiu t3, zero, 1
+
+# Patch func_8083E5A8 / func_8083C678 (1.0) / Link_PressAOnInteractedActor_OrSomething to always child, don't take out weapon when pulling Master Sword
+8083CA00 addiu t1, zero, 1
+
+# Patch func_808473D4 / func_808454D8 (1.0) / Link_GetDoActionForInteractedActor to always child when in front of Master Sword ("Grab" on A)
+80845678 addiu t5, zero, 1

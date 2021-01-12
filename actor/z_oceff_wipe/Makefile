@@ -2,8 +2,8 @@ ifeq ($(PYTHON3),"")
 	$(error Python3 command not defined or internal error)
 endif
 
-ACTORNUM="394 - Song of Time Effect"
-ACTORDIR=../../build-romhack/actor/${ACTORNUM}
+# Must escape spaces ugh
+ACTORDIR=../../build-romhack/actor/394
 FUNCNAME=OceffWipe_Update
 FUNCOFFSET=168
 ORIGMD5=c09e59cc2653411f695ad73c54b925cf

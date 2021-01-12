@@ -2,3 +2,27 @@ func_808519EC init
 func_80851A50 continue
 0x04002360 child link pulls MS
 0x04002720 adult link drops MS
+
+Cutscene action 0xC
+TOOL MODE / csMode = 18
+Action model group 6 (or 7?)
+
+Display list offsets:
+Adult
+Child
+Adult low LOD
+Child low LOD
+D_80125E18: display lists for closed hand, index 1
+D_80125E38: maybe holding normal sword? index 2. Same contents as 28, index 3.
+D_80125DE8: display lists for holding alternate sword, index 4, sword is broken adds 4
+
+line 5997: if press A on Master Sword, put away held item?
+func_80836898: must be set press A action to func_8083A0F4
+func_8083A0F4: press A to set MS parent to Link, which triggers cutscene. Also sets some other action to func_8084F608
+
+func_8083399C: PLAYER_AP_LAST_USED [1], if holding Master Sword: updates action param
+func_80835F44: ITEM_LAST_USED: looks like take out item?
+
+line 9242: setting doAction to 0xC ("Drop") if adult and 0x11 ("Pull") if child
+
+near lbl_8083E974 in dbg
