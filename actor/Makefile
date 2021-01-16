@@ -4,6 +4,7 @@ TriforcePiece/ \
 TriforceChest/ \
 TriforceLight/ \
 z_bg_toki_swd/ \
+z_demo_effect/ \
 z_en_xc/ \
 z_oceff_wipe/ \
 z_player/

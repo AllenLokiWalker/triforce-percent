@@ -1,0 +1,6 @@
+# Patching Spiritual Stones actor to always treat Link as child
+# Base addr
+8092ACC0
+
+#init
+8092AD4C addiu t7, zero, 1

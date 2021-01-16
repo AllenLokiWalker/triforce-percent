@@ -16,6 +16,8 @@ void Statics_Update(){
     //Press L on pause menu to toggle inventory editor
     //The "press" variable doesn't quite work right because this is run on the
     //VI, not in sync with the game loop. So we have to keep our own press flag.
+    //Also, the game already has code to press L to turn OFF the inventory
+    //editor, which conflicts with this. This is why this is convoluted.
     if(!sLPress){
         if(gGlobalContext.common.input[0].raw.l){
             sLPress = 1;
@@ -39,8 +41,23 @@ void Statics_Update(){
     gSaveContext.event_chk_inf[0x8] |= 1 << 0x2; //Bridge Unlocked (After Zelda Escape Cutscene)
     gSaveContext.event_chk_inf[0xA] |= 1 << 0x9; //Learned Song of Time
     gSaveContext.event_chk_inf[0xC] |= 1 << 0x1; //Spoke to Saria on Lost Woods Bridge
-    */
     gSaveContext.inf_table    [0x0] |= 1 << 0x0; //Greeted by Saria
+    */
+    //Set up Adult Link inventory to not have the Master Sword
+    if(gSaveContext.adult_equips.button_items[0] == 0xFF){
+        //Adult has empty B button, so this was not run yet
+        gSaveContext.adult_equips.button_items[0] = 0x3D; //ITEM_SWORD_BGS
+        gSaveContext.adult_equips.button_items[1] = 0xFF; //ITEM_NONE
+        gSaveContext.adult_equips.button_items[2] = 0x02; //ITEM_BOMB
+        gSaveContext.adult_equips.button_items[3] = 0x08; //ITEM_OCARINA_TIME
+        gSaveContext.adult_equips.c_button_slots[0] = 0xFF; //SLOT_NONE
+        gSaveContext.adult_equips.c_button_slots[1] = 0x02; //SLOT_BOMB
+        gSaveContext.adult_equips.c_button_slots[2] = 0x07; //SLOT_OCARINA
+        gSaveContext.adult_equips.equipment = 0x1103;
+        //Giant's Knife -> Biggoron Sword
+        gSaveContext.bgs_flag = 1;
+        gSaveContext.bgs_hits_left = 8;
+    }
 }
 
 __attribute__((section(".start"))) void Statics_Init(){

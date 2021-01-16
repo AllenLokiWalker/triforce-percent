@@ -1,0 +1,3 @@
+Triforce on wall: Bg_Toki_Hikari
+Door of Time: Demo_Kankyo
+Spiritual Stones: Demo_Effect
