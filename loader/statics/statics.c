@@ -4,15 +4,102 @@
 
 #include <z64ovl/oot/u10.h>
 
+#include "interface.h"
+
 extern z64_global_t gGlobalContext;
 extern z64_save_context_t gSaveContext;
 
+extern void bzero(void* addr, s32 size);
+extern void osWritebackDCache(void* addr, s32 size);
+extern void osInvalICache(void* addr, s32 size);
+
 extern void Audio_FadeOut(u16 frames);
 
+void Patched_LoadItemIconMain(z64_global_t *global, u16 button, u16 num){
+    InterfaceContext *interfaceCtx = (InterfaceContext*)&global->if_ctxt;
+    u32 rom = 0x007BD000; //icon_item_static
+    u8 *ram = interfaceCtx->icon_itemSegment + button * 0x1000;
+    u32 *image = (u32*)ram;
+    u32 size = 0x1000;
+    u8 item = gSaveContext.equips.button_items[button];
+    s8 x, y;
+    
+    if(item >= 0xF0){
+        //Empty/no item, clear texture
+        bzero(ram, size);
+        return;
+    }else if(item >= 0x66 && item <= 0x79){
+        item -= 0x66;
+        size = 0x900;
+        rom = 0x00846000; //icon_item_24_static
+    }else if(item >= 0x5B){
+        item = 0x35; //if invalid item, default to Frog
+    }
+    rom += item * size;
+    
+    if(num == 0){
+        DmaMgr_SendRequest1(ram, rom, size, 0);
+    }else{
+        DmaRequest *request = ((num == 1) ? &interfaceCtx->dmaRequest_160 : &interfaceCtx->dmaRequest_180);
+        osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
+        DmaMgr_SendRequest2(request, ram, rom, size, 0, &interfaceCtx->loadQueue, 0);
+        osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
+    }
+    
+    if(size == 0x1000) return;
+    
+    //Recenter icon from 24x24 to 32x32.
+    for(y=31; y>=0; --y){
+        for(x=31; x>=0; --x){
+            u32 pixel = 0;
+            if(x>=4 && x<28 && y>=4 && y<28){
+                pixel = image[24*(y-4) + (x-4)];
+            }
+            image[32*y+x] = pixel;
+        }
+    }
+}
+
+void Patched_LoadAllItemIcons(){
+    Patched_LoadItemIconMain(&gGlobalContext, 0, 0);
+    Patched_LoadItemIconMain(&gGlobalContext, 1, 0);
+    Patched_LoadItemIconMain(&gGlobalContext, 2, 0);
+    Patched_LoadItemIconMain(&gGlobalContext, 3, 0);
+}
+
+void Patched_LoadItemIcon1(z64_global_t *global, u16 button){
+    Patched_LoadItemIconMain(global, button, 1);
+}
+
+void Patched_LoadItemIcon2(z64_global_t *global, u16 button){
+    Patched_LoadItemIconMain(global, button, 2);
+}
+
+u8 sCodePatched = 0;
 u8 sLPress = 0;
 u8 sInvEditorLastState = 0;
 
+void Statics_ApplyCodePatches(){
+	*( (u32*)Interface_LoadItemIcon1   ) = 0x08000000 | ((((u32)Patched_LoadItemIcon1)>>2) & 0x03FFFFFF);
+	*(((u32*)Interface_LoadItemIcon1)+1) = 0;
+    *( (u32*)Interface_LoadItemIcon2   ) = 0x08000000 | ((((u32)Patched_LoadItemIcon2)>>2) & 0x03FFFFFF);
+	*(((u32*)Interface_LoadItemIcon2)+1) = 0;
+    //At beginning of z_construct item icon loading, jal Patched_LoadAllItemIcons
+    *( (u32*)Construct_Icon_Start   ) = 0x0C000000 | ((((u32)Patched_LoadAllItemIcons)>>2) & 0x03FFFFFF);
+	*(((u32*)Construct_Icon_Start)+1) = 0;
+    //After returning, jump to end of icon loading
+    *(((u32*)Construct_Icon_Start)+2) = 0x08000000 | ((((u32)Construct_Icon_Target)>>2) & 0x03FFFFFF);
+    *(((u32*)Construct_Icon_Start)+3) = 0;
+    //
+    osWritebackDCache(0, 0x4000);
+    osInvalICache(0, 0x4000);
+    sCodePatched = 1;
+}
+
 void Statics_Update(){
+    if(!sCodePatched){
+        Statics_ApplyCodePatches();
+    }
     //Press L on pause menu to toggle inventory editor
     //The "press" variable doesn't quite work right because this is run on the
     //VI, not in sync with the game loop. So we have to keep our own press flag.
@@ -57,6 +144,15 @@ void Statics_Update(){
         //Giant's Knife -> Biggoron Sword
         gSaveContext.bgs_flag = 1;
         gSaveContext.bgs_hits_left = 8;
+    }
+    //Press Z+D-left to give Fire Medallion in last bottle slot and magic
+    if(gGlobalContext.common.input[0].raw.z && gGlobalContext.common.input[0].raw.dl){
+        gSaveContext.items[21] = 0x67;
+        gSaveContext.magic_acquired = 1;
+        gSaveContext.magic_level = 2;
+        gSaveContext.magic = 0x60;
+        gSaveContext.unk_13F4 = 0x60;
+        gSaveContext.double_magic = 1;
     }
 }
 

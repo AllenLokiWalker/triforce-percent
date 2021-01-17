@@ -22,3 +22,8 @@
 
 # Patch func_808473D4 / func_808454D8 (1.0) / Link_GetDoActionForInteractedActor to always child when in front of Master Sword ("Grab" on A)
 80845678 addiu t5, zero, 1
+
+# Patch Player_ItemToActionParam / func_80831758 (1.0) to do Din's Fire action when using Fire Medallion on C, replacing Fishing Pole
+80831774 addiu at, zero, 0x67
+80831780 addiu at, zero, 0x67
+80831790 addiu v0, zero, 0x1A
