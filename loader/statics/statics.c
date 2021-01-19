@@ -6,6 +6,9 @@
 
 #include "interface.h"
 
+#define CTRLR_RAW gGlobalContext.common.input[0].raw
+#define CTRLR_PRESS gGlobalContext.common.input[0].pad_pressed
+
 extern z64_global_t gGlobalContext;
 extern z64_save_context_t gSaveContext;
 
@@ -75,6 +78,37 @@ void Patched_LoadItemIcon2(z64_global_t *global, u16 button){
     Patched_LoadItemIconMain(global, button, 2);
 }
 
+u8 threeFramesCounter = 0;
+
+void Statics_HandleEquipMedallionsToC(){
+    PauseContext *pauseCtx = &gGlobalContext.pause_ctxt;
+    u8 item = pauseCtx->cursorItem[2];
+    if(!pauseCtx->state || pauseCtx->flag || pauseCtx->kscpPos != 2) return;
+    
+    if(item >= 0x66 && item <= 0x79 && //actually has item, not empty
+            (CTRLR_PRESS & (INPUT_C_LEFT | INPUT_C_DOWN | INPUT_C_RIGHT))){
+        //Equipping a Quest Status item
+        if(CTRLR_PRESS & INPUT_C_LEFT){
+            pauseCtx->equipTargetCBtn = 0;
+        }else if(CTRLR_PRESS & INPUT_C_DOWN){
+            pauseCtx->equipTargetCBtn = 1;
+        }else{
+            pauseCtx->equipTargetCBtn = 2;
+        }
+        pauseCtx->equipTargetSlot = 0 + pauseCtx->equipTargetCBtn; //TODO 24
+        pauseCtx->equipTargetItem = item;
+        pauseCtx->unk_1E4 = 3;
+        pauseCtx->equipAnimX = 50; //TODO
+        pauseCtx->equipAnimY = 50; //TODO
+        pauseCtx->equipAnimAlpha = 255;
+        sEquipAnimTimer = 0;
+        sEquipAnimState = 3;
+        sEquipAnimNumFrames = 10;
+        Audio_PlaySoundGeneral(0x4808, //NA_SE_SY_DECIDE
+            &sSoundParam1, 4, &sSoundParam34, &sSoundParam34, &sSoundParam5);
+    }
+}
+
 u8 sCodePatched = 0;
 u8 sLPress = 0;
 u8 sInvEditorLastState = 0;
@@ -106,14 +140,14 @@ void Statics_Update(){
     //Also, the game already has code to press L to turn OFF the inventory
     //editor, which conflicts with this. This is why this is convoluted.
     if(!sLPress){
-        if(gGlobalContext.common.input[0].raw.l){
+        if(CTRLR_RAW.l){
             sLPress = 1;
             if(!sInvEditorLastState && gGlobalContext.pause_ctxt.state){
                 gGlobalContext.pause_ctxt.unk_02_[1] = 1;
             }
         }
     }else{
-        if(!gGlobalContext.common.input[0].raw.l){
+        if(!CTRLR_RAW.l){
             sLPress = 0;
         }
     }
@@ -145,15 +179,14 @@ void Statics_Update(){
         gSaveContext.bgs_flag = 1;
         gSaveContext.bgs_hits_left = 8;
     }
-    //Press Z+D-left to give Fire Medallion in last bottle slot and magic
-    if(gGlobalContext.common.input[0].raw.z && gGlobalContext.common.input[0].raw.dl){
-        gSaveContext.items[21] = 0x67;
-        gSaveContext.magic_acquired = 1;
-        gSaveContext.magic_level = 2;
-        gSaveContext.magic = 0x60;
-        gSaveContext.unk_13F4 = 0x60;
-        gSaveContext.double_magic = 1;
-    }
+    //Give magic
+    gSaveContext.magic_acquired = 1;
+    gSaveContext.magic_level = 2;
+    gSaveContext.magic = 0x60;
+    gSaveContext.unk_13F4 = 0x60;
+    gSaveContext.double_magic = 1;
+    //Equip Quest Status subscreen items to C
+    Statics_HandleEquipMedallionsToC();
 }
 
 __attribute__((section(".start"))) void Statics_Init(){
