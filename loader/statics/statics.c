@@ -35,7 +35,7 @@ void Patched_LoadItemIconMain(z64_global_t *global, u16 button, u16 num){
         item -= 0x66;
         size = 0x900;
         rom = 0x00846000; //icon_item_24_static
-    }else if(item >= 0x5B){
+    }else if(item >= 0x5A){
         item = 0x35; //if invalid item, default to Frog
     }
     rom += item * size;
@@ -78,13 +78,59 @@ void Patched_LoadItemIcon2(z64_global_t *global, u16 button){
     Patched_LoadItemIconMain(global, button, 2);
 }
 
-u8 threeFramesCounter = 0;
+s32 *Patched_EquipEffectTexLoad(s32 *dl, s32 dummy, PauseContext *pauseCtx){
+    s32 gDPLoadBlockW1, gDPSetTileW0, gDPSetTileSizeW1;
+    u16 item = pauseCtx->equipTargetItem;
+    if(item >= 0x66 && item <= 0x79){
+        //24x24 icon
+        gDPLoadBlockW1 = 0x0723F0AB;
+        gDPSetTileW0 = 0xF5180C00;
+        gDPSetTileSizeW1 = 0x0005C05C;
+    }else{
+        //32x32 icon
+        gDPLoadBlockW1 = 0x073FF080;
+        gDPSetTileW0 = 0xF5181000;
+        gDPSetTileSizeW1 = 0x0007C07C;
+    }
+    //gDPSetTextureImage
+    dl[0x0] = 0xFD180000;
+    dl[0x1] = gItemIcons[item];
+    //gDPSetTile
+    dl[0x2] = 0xF5180000;
+    dl[0x3] = 0x07000000;
+    //gDPLoadSync
+    dl[0x4] = 0xE6000000;
+    dl[0x5] = 0;
+    //gDPLoadBlock
+    dl[0x6] = 0xF3000000;
+    dl[0x7] = gDPLoadBlockW1;
+    //gDPPipeSync
+    dl[0x8] = 0xE7000000;
+    dl[0x9] = 0;
+    //gDPSetTile
+    dl[0xA] = gDPSetTileW0;
+    dl[0xB] = 0;
+    //gDPSetTileSize
+    dl[0xC] = 0xF2000000;
+    dl[0xD] = gDPSetTileSizeW1;
+    return dl + 0xE;
+}
 
 void Statics_HandleEquipMedallionsToC(){
     PauseContext *pauseCtx = &gGlobalContext.pause_ctxt;
-    u8 item = pauseCtx->cursorItem[2];
-    if(!pauseCtx->state || pauseCtx->flag || pauseCtx->kscpPos != 2) return;
+    if(!pauseCtx->state) return;
     
+    //Enable C buttons on Quest Status subscreen
+	//Have to set once every time the pause menu overlay gets reloaded
+	if(pauseCtx->state >= 4 && pauseCtx->state <= 11 && sSubscreenButtonStates[3*5+1] == 0xFF){
+		sSubscreenButtonStates[3*5+1] = 0;
+		sSubscreenButtonStates[3*5+2] = 0;
+		sSubscreenButtonStates[3*5+3] = 0;
+	}
+    
+    if(pauseCtx->flag || pauseCtx->kscpPos != 2) return;
+    
+    u8 item = pauseCtx->cursorItem[2];
     if(item >= 0x66 && item <= 0x79 && //actually has item, not empty
             (CTRLR_PRESS & (INPUT_C_LEFT | INPUT_C_DOWN | INPUT_C_RIGHT))){
         //Equipping a Quest Status item
@@ -113,17 +159,28 @@ u8 sCodePatched = 0;
 u8 sLPress = 0;
 u8 sInvEditorLastState = 0;
 
+#define JUMP(func) (0x08000000 | ((((u32)func)>>2) & 0x03FFFFFF))
+#define JAL(func)  (0x0C000000 | ((((u32)func)>>2) & 0x03FFFFFF))
+
 void Statics_ApplyCodePatches(){
-	*( (u32*)Interface_LoadItemIcon1   ) = 0x08000000 | ((((u32)Patched_LoadItemIcon1)>>2) & 0x03FFFFFF);
+    if(sCodePatched) return;
+    //
+	*( (u32*)Interface_LoadItemIcon1   ) = JUMP(Patched_LoadItemIcon1);
 	*(((u32*)Interface_LoadItemIcon1)+1) = 0;
-    *( (u32*)Interface_LoadItemIcon2   ) = 0x08000000 | ((((u32)Patched_LoadItemIcon2)>>2) & 0x03FFFFFF);
+    *( (u32*)Interface_LoadItemIcon2   ) = JUMP(Patched_LoadItemIcon2);
 	*(((u32*)Interface_LoadItemIcon2)+1) = 0;
     //At beginning of z_construct item icon loading, jal Patched_LoadAllItemIcons
-    *( (u32*)Construct_Icon_Start   ) = 0x0C000000 | ((((u32)Patched_LoadAllItemIcons)>>2) & 0x03FFFFFF);
+    *( (u32*)Construct_Icon_Start   ) = JAL(Patched_LoadAllItemIcons);
 	*(((u32*)Construct_Icon_Start)+1) = 0;
     //After returning, jump to end of icon loading
-    *(((u32*)Construct_Icon_Start)+2) = 0x08000000 | ((((u32)Construct_Icon_Target)>>2) & 0x03FFFFFF);
+    *(((u32*)Construct_Icon_Start)+2) = JUMP(Construct_Icon_Target);
     *(((u32*)Construct_Icon_Start)+3) = 0;
+    //
+    //Equip item animation patch
+    *( (u32*)InterfaceEffectTex_Start   ) = JAL(Patched_EquipEffectTexLoad);
+    *(((u32*)InterfaceEffectTex_Start)+1) = 0x00142000; //sll a0, s4, 0
+    *(((u32*)InterfaceEffectTex_Start)+2) = JUMP(InterfaceEffectTex_Target);
+    *(((u32*)InterfaceEffectTex_Start)+3) = 0xAE8202B0; //sw v0, 0x02B0(s4)
     //
     osWritebackDCache(0, 0x4000);
     osInvalICache(0, 0x4000);
@@ -131,9 +188,7 @@ void Statics_ApplyCodePatches(){
 }
 
 void Statics_Update(){
-    if(!sCodePatched){
-        Statics_ApplyCodePatches();
-    }
+    Statics_ApplyCodePatches();
     //Press L on pause menu to toggle inventory editor
     //The "press" variable doesn't quite work right because this is run on the
     //VI, not in sync with the game loop. So we have to keep our own press flag.

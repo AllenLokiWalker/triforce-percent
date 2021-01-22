@@ -1,0 +1,59 @@
+
+32, 
+32,
+
+gDPLoadBlock(OVERLAY_DISP++,
+w0 = 0xF3000000
+w1 = 0x073FF080 for 32, 0x0723F0AB for 24
+
+//((2048 + MAX(1, ((width*4)/8)) - 1) / MAX(1, ((width*4)/8)))
+
+
+
+gDPPipeSync(OVERLAY_DISP++);
+
+0xF5
+0,
+siz = 3 << 19
+0x00180000
+
+0x00001000 for 32
+0x00000C00 for 24
+line = 8 for 32, 6 for 24, << 9
+w0 = 0xF5181000 for 32, 0xF5180C00 for 24
+
+w1 = 0
+
+gDPSetTileSize
+0x0007C07C for 32, 0x0005C05C for 24
+
+
+Whole display list:
+
+gDPSetTextureImage
+0xFD180000
+(800F8D2C[a2->0x024E])
+gDPSetTile
+0xF5180000
+0x07000000
+gDPLoadSync
+0xE6000000
+0
+gDPLoadBlock
+0xF3000000
+0x073FF080 for 32, 0x0723F0AB for 24
+gDPPipeSync
+0xE7000000
+0
+gDPSetTile
+0xF5181000 for 32, 0xF5180C00 for 24
+0
+gDPSetTileSize
+0xF2000000
+0x0007C07C for 32, 0x0005C05C for 24
+
+0x02B0(s4) gets 14 words written = +56
+
+Jump out of execution at 0x80076828
+Resume execution at 800768FC
+a2 only interesting input, can clobber anything besides s registers

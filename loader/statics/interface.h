@@ -102,3 +102,10 @@ extern float sSoundParam5;
 
 extern void Audio_PlaySoundGeneral(u16 sfxId, void* a1, u8 a2, void* a3, void* a4, void* a5);
 //extern void KaleidoScope_UpdateEquipAnim(z64_global_t *global);
+
+extern u8 sSubscreenButtonStates[30];
+
+extern s32 gItemIcons[100]; //size actually unknown, doesn't matter
+
+extern void InterfaceEffectTex_Start();
+extern void InterfaceEffectTex_Target();
