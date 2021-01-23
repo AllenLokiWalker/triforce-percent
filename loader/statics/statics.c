@@ -141,10 +141,10 @@ void Statics_HandleEquipMedallionsToC(){
         }else{
             pauseCtx->equipTargetCBtn = 2;
         }
-        pauseCtx->equipTargetSlot = 0 + pauseCtx->equipTargetCBtn; //TODO 24
+        pauseCtx->equipTargetSlot = 24 + pauseCtx->equipTargetCBtn;
         pauseCtx->equipTargetItem = item;
         pauseCtx->unk_1E4 = 3;
-        pauseCtx->equipAnimX = 50; //TODO
+        pauseCtx->equipAnimX = 770; //TODO
         pauseCtx->equipAnimY = 50; //TODO
         pauseCtx->equipAnimAlpha = 255;
         sEquipAnimTimer = 0;
@@ -178,7 +178,7 @@ void Statics_ApplyCodePatches(){
     //
     //Equip item animation patch
     *( (u32*)InterfaceEffectTex_Start   ) = JAL(Patched_EquipEffectTexLoad);
-    *(((u32*)InterfaceEffectTex_Start)+1) = 0x00142000; //sll a0, s4, 0
+    *(((u32*)InterfaceEffectTex_Start)+1) = 0x8E8402B0; //lw a0, 0x02B0(s4)
     *(((u32*)InterfaceEffectTex_Start)+2) = JUMP(InterfaceEffectTex_Target);
     *(((u32*)InterfaceEffectTex_Start)+3) = 0xAE8202B0; //sw v0, 0x02B0(s4)
     //
