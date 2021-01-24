@@ -1,4 +1,4 @@
-SUBDIRS = TriforceRoom/
+SUBDIRS = TriforceRoom/ spot07_scene
 
 .PHONY: default clean $(SUBDIRS)
 

@@ -8,6 +8,7 @@
 
 #define CTRLR_RAW gGlobalContext.common.input[0].raw
 #define CTRLR_PRESS gGlobalContext.common.input[0].pad_pressed
+#define PLAYER ((z64_player_t*)gGlobalContext.actor_ctxt.actor_list[OVLTYPE_PLAYER].first)
 
 extern z64_global_t gGlobalContext;
 extern z64_save_context_t gSaveContext;
@@ -242,6 +243,10 @@ void Statics_Update(){
     gSaveContext.double_magic = 1;
     //Equip Quest Status subscreen items to C
     Statics_HandleEquipMedallionsToC();
+    //Press L+DD to clip below the ice in Zora's Domain
+    if(CTRLR_RAW.l && (CTRLR_PRESS & INPUT_D_DOWN)){
+        PLAYER->actor.pos.y -= 80.0f;
+    }
 }
 
 __attribute__((section(".start"))) void Statics_Init(){

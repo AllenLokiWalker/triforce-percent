@@ -1,8 +1,5 @@
 import sys
 
-# Not actually needed for the toolchain currently--used to check that 
-# the patch creation was correct.
-
 def applypatch(orig, pat, o):
     origd = orig.read()
     patd = pat.read()
@@ -12,8 +9,12 @@ def applypatch(orig, pat, o):
     while True:
         assert patptr <= len(patd) - 2
         skipcount = patd[patptr]
-        writecount = patd[patptr+1]
-        patptr += 2
+        patptr += 1
+        if skipcount >= 0x80:
+            skipcount = ((skipcount & 0x7F) << 8) | patd[patptr]
+            patptr += 1
+        writecount = patd[patptr]
+        patptr += 1
         if skipcount == 0 and writecount == 0:
             break
         assert origptr + skipcount <= len(origd)

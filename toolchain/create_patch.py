@@ -22,13 +22,13 @@ def patchdiff(orig, mod, o):
         if origd[inptr:] == modd[inptr:]:
             break # No more differences, quit early
         skipcount = 0
-        while skipcount < 255 and inptr < len(origd):
+        while skipcount < 0x7FFF and inptr < len(origd):
             if origd[inptr] != modd[inptr]:
                 break
             skipcount += 1
             inptr += 1
         newdata = b''
-        while len(newdata) < 255 and inptr < len(origd):
+        while len(newdata) < 0xFF and inptr < len(origd):
             if origd[inptr] == modd[inptr]:
                 if inptr < len(origd) - 1 and origd[inptr+1] != modd[inptr+1] and len(newdata) < 200:
                     pass # Don't stop replacement mode for just 1 byte same
@@ -38,7 +38,12 @@ def patchdiff(orig, mod, o):
                     break
             newdata += bytes([modd[inptr]])
             inptr += 1
-        outd += bytes([skipcount, len(newdata)]) + newdata
+        if skipcount <= 0x7F:
+            outd += bytes([skipcount])
+        else:
+            outd += bytes([0x80 | (skipcount >> 8), skipcount & 0xFF])
+        outd += bytes([len(newdata)])
+        outd += newdata
         if inptr == len(origd):
             break
     outd += bytes([0, 0])

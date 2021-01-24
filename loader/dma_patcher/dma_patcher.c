@@ -100,11 +100,15 @@ void DmaPatcher_ReplaceFile(u32 filenum, void* injectedAddr, u32 newsize)
 
 static void DmaPatcher_ApplyPatch(u8* ram, u32 size, u8* patch)
 {
-    u8 skipcount, writecount;
+    u16 skipcount;
+    u8 writecount;
     u8* ptr = ram;
     u8* ptrend = ram + size;
     while(1){
         skipcount = *patch++;
+        if(skipcount >= 0x80){
+            skipcount = ((skipcount & 0x7F) << 8) | *patch++;
+        }
         writecount = *patch++;
         if(!skipcount && !writecount) return;
         ptr += skipcount;
