@@ -1,0 +1,3 @@
+func_800D69EC: equiv to func_80107448, something like Message_LoadMsgInfo
+a1 = textId
+func_800D6A90 is the same for staff credits
