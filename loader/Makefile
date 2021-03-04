@@ -22,7 +22,28 @@ dma_patcher/dma_patcher.elf: debugger/debugger.out.ld
 	
 statics/statics.o: fast_loader/fast_loader.h debugger/debugger.h
 
-statics/statics.elf: fast_loader/fast_loader.out.ld debugger/debugger.out.ld dma_patcher/dma_patcher.out.ld
+STATICS_DEPS = \
+	statics/statics.h \
+	statics/statics.o \
+	statics/statics.ld \
+	statics/interface.h \
+	statics/interface.o \
+	statics/interface.ld \
+	statics/message.h \
+	statics/message.o \
+	statics/message.ld \
+	../text/message_data_fmt.h \
+	../text/messages.c \
+	../text/build_messages_file.o \
+	fast_loader/fast_loader.out.ld \
+	debugger/debugger.out.ld \
+	dma_patcher/dma_patcher.out.ld
+
+STATICS_OBJS = \
+	statics/statics.o \
+	statics/interface.o \
+	statics/message.o \
+	../text/build_messages_file.o
 
 # fast_loader dma_patcher:
 # 	$(CC) $(CFLAGS) -c $@/$@.c -o $@/$@.o
@@ -35,6 +56,9 @@ statics/statics.elf: fast_loader/fast_loader.out.ld debugger/debugger.out.ld dma
 
 %.elf %.map: %.o %.ld
 	$(LD) $(LDFLAGS) -T $*.ld -Map $*.map -o $*.elf $*.o
+	
+statics/statics.elf statics/statics.map: $(STATICS_DEPS)
+	$(LD) $(LDFLAGS) -T statics/statics.ld -Map statics/statics.map -o statics/statics.elf $(STATICS_OBJS)
 
 %.bin: %.elf
 	$(OC) $(OCFLAGS) $< $@
@@ -43,4 +67,4 @@ statics/statics.elf: fast_loader/fast_loader.out.ld debugger/debugger.out.ld dma
 	$(PYTHON3) ../toolchain/ldout.py $< $@
 
 clean:
-	rm -rf */*.o */*.map */*.elf fast_loader/fast_loader.bin debugger/debugger.bin dma_patcher/dma_patcher.bin statics/statics.bin
+	rm -rf */*.o ../text/*.o */*.map */*.elf fast_loader/fast_loader.bin debugger/debugger.bin dma_patcher/dma_patcher.bin statics/statics.bin
