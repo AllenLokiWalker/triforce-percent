@@ -78,6 +78,10 @@ void Statics_Update(){
     if(CTRLR_RAW.l && (CTRLR_PRESS & INPUT_D_DOWN)){
         PLAYER->actor.pos.y -= 80.0f;
     }
+    //Press L+DL for frog
+    if(CTRLR_RAW.l && (CTRLR_PRESS & INPUT_D_LEFT)){
+        textbox_begin(&gGlobalContext, 0x0901, NULL);
+    }
 }
 
 __attribute__((section(".start"))) void Statics_Init(){

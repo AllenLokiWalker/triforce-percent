@@ -22,8 +22,13 @@ dma_patcher/dma_patcher.elf: debugger/debugger.out.ld
 	
 statics/statics.o: fast_loader/fast_loader.h debugger/debugger.h
 
+../text/build_messages_file.o: ../text/message_data_fmt.h ../text/messages.c
+
+statics/message.o: ../text/messages.c
+
 STATICS_DEPS = \
-	statics/statics.h \
+	statics/statics_ext.h \
+	statics/statics_int.h \
 	statics/statics.o \
 	statics/statics.ld \
 	statics/interface.h \

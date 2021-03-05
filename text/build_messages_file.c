@@ -3,6 +3,6 @@
 #include "message_data_fmt.h"
 
 #define DECLARE_MESSAGE(textId, type, yPos, message) \
-    const char _message_##textId##[sizeof(message)] = { message END };
+    __attribute__((no_reorder)) const char _message_ ## textId [sizeof(message)] = { message END };
 
 #include "messages.c"
