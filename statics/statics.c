@@ -1,10 +1,11 @@
-#include "statics_ext.h"
-#include "statics_int.h"
+#include "z64structs.h"
+#include "z64funcs.h"
+#include "statics.h"
 
+#include "../loader/fast_loader/fast_loader.h"
 #include "interface.h"
 #include "message.h"
-
-#include "../fast_loader/fast_loader.h"
+#include "anim.h"
 
 void Statics_ApplyCodePatches(){
     static u8 sCodePatched = 0;
@@ -87,8 +88,6 @@ void Statics_Update(){
 __attribute__((section(".start"))) void Statics_Init(){
     fp_precmd = Statics_Update;
 }
-
-//extern void Audio_FadeOut(u16 frames);
 
 void Statics_TimeTravel(){
     //Don't time travel if playing Song of Time at ocarina prompt

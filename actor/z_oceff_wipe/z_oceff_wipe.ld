@@ -1,4 +1,4 @@
-INCLUDE ../../loader/statics/statics.out.ld
+INCLUDE ../../statics/statics.out.ld
 
 ENTRY_POINT = 0x80800000;
 ENTRY(ENTRY_POINT)

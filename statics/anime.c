@@ -1,6 +1,6 @@
-
-void DmaMgr_SendRequest2(void *req, u32 ram, u32 rom, u32 size, u32 unk0,
-    OSMesgQueue *queue, OSMesg msg);
+#include "z64structs.h"
+#include "z64funcs.h"
+#include "anime.h"
 
 z64_animation_entry_t* AnimationContext_AddEntry(void *animCtx, s32 type);
 

@@ -10,7 +10,7 @@ ifeq ("$(and $(wildcard build-shortcut/oot_1.0U_uncomp.z64), $(wildcard build-ro
 endif
 
 CONTENTS = actor/ music/ scene/ textures/
-SUBDIRS = toolchain/ $(CONTENTS) loader/ bootstrap/ rom-setup/
+SUBDIRS = toolchain/ $(CONTENTS) loader/ statics/ bootstrap/ rom-setup/
 DUMPS = build-shortcut/project.zzrpl build-romhack/project.zzrpl
 
 .PHONY: default clean $(SUBDIRS)
@@ -20,13 +20,15 @@ default: $(SUBDIRS)
 clean: $(SUBDIRS)
 	find build-romhack/ build-shortcut/ -mindepth 1 -maxdepth 1 ! -name 'oot_1.0U_uncomp.z64' -exec rm -rf {} +
 
-actor/: $(DUMPS) loader/
+actor/: $(DUMPS) statics/
 
 scene/: $(DUMPS)
 
+statics/: loader/
+
 bootstrap/: loader/
-    
-rom-setup/: loader/ $(CONTENTS)
+
+rom-setup/: statics/ $(CONTENTS)
 
 %project.zzrpl: %oot_1.0U_uncomp.z64 toolchain/zzrtl/oot_dump.rtl
 	cp toolchain/zzrtl/oot_dump.rtl $*oot_dump.rtl

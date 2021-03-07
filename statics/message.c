@@ -1,41 +1,12 @@
+#include "z64structs.h"
+#include "z64funcs.h"
 #include "message.h"
-#include "statics_int.h"
 
-typedef enum {
-    BOX_BLACK,
-    BOX_WOODEN,
-    BOX_BLUE,
-    BOX_OCARINA,
-    BOX_NONE_BOTTOM,
-    BOX_NONE_NO_SHADOW,
-    BOX_CREDITS = 11
-} MessageBoxType;
-
-typedef enum {
-    POS_VARIABLE,
-    POS_TOP,
-    POS_BOTTOM,
-    POS_MIDDLE
-} MessageBoxPosition;
-
-typedef struct {
-    /* 0x0000 */ u32    msgOffset;
-    /* 0x0004 */ u32    msgLength;
-    /* 0x0008 */ u8     xy;
-    /* 0x0009 */ char   unk_C[0xDC88 - 0x0009];
-    /* 0xDC88 */ char   msgBuf[1064]; // size unconfirmed
-} Font;
-
-typedef struct {
-    u16 textId;
-    u8 typePos;
-    const char* segment;
-} MessageTableEntry;
-
-extern MessageTableEntry *messageTableAddresses[3];
 extern void Message_LoadJpnMsgInfo();
 extern void Message_LoadEngMsgInfo();
 extern void Message_LoadStaffMsgInfo();
+
+extern MessageTableEntry *messageTableAddresses[3];
 
 // typedef struct {
 //     u8 unk[0x60];
