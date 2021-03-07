@@ -7,3 +7,5 @@ local.mk
 *.o
 *.elf
 *.map
+*.xdat
+*.blend1

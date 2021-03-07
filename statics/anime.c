@@ -35,6 +35,24 @@ void Patched_SetLoadFrame(z64_global_t* globalCtx,
     }
 }
 
+#define NUM_ORIG_CS_ACTIONS 0x4E
+#define NUM_CUSTOM_CS_ACTIONS 0x12
+s8 csActionToLinkActionPatchTable[NUM_ORIG_CS_ACTIONS+NUM_CUSTOM_CS_ACTIONS] = {
+    #include "csActionToLinkActionTable.xdat"
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+};
+
+#define NUM_ORIG_LINK_ACTIONS 103
+#define NUM_CUSTOM_LINK_ACTIONS 0x12
+u32 linkActionInitPatchTable[(NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_ACTIONS)*2] = {
+    #include "linkActionInitTable.xdat"
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+};
+u32 linkActionRunPatchTable[(NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_ACTIONS)*2] = {
+    #include "linkActionRunTable.xdat"
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+};
+
 static void *customAnimData;
 
 void Statics_RegisterAnimDataAddress(void *addr){
@@ -42,6 +60,9 @@ void Statics_RegisterAnimDataAddress(void *addr){
 }
 
 void Statics_AnimeCodePatches(){
+    
+    //Patch Link animation loader
     *( (u32*)AnimationContext_SetLoadFrame   ) = JUMPINSTR(Patched_SetLoadFrame);
 	*(((u32*)AnimationContext_SetLoadFrame)+1) = 0;
+    
 }
