@@ -1,7 +1,7 @@
 OUTPUT_FORMAT("elf32-bigmips", "elf32-bigmips", "elf32-littlemips")
 OUTPUT_ARCH (mips)
 
-INCLUDE ../../loader/statics/statics.out.ld
+INCLUDE ../../statics/statics.out.ld
 
 DmaMgr_Init = 0x80000E6C;
 Main = 0x800A1C50;

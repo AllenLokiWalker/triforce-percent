@@ -19,14 +19,14 @@ extern MessageTableEntry *messageTableAddresses[3];
 // Message Symbol Declarations
 #define DECLARE_MESSAGE(textId, type, yPos, message) \
     extern const char _message_ ## textId [];
-#include "../../text/messages.c"
+#include "../text/messages.c"
 #undef DECLARE_MESSAGE
 
 // Message Table Declaration
 MessageTableEntry hackMessageTable[] = {
     #define DECLARE_MESSAGE(textId, type, yPos, message) \
         { textId, (((type) << 4) | (yPos)), _message_ ## textId },
-    #include "../../text/messages.c"
+    #include "../text/messages.c"
     #undef DECLARE_MESSAGE
     { 0xFFFF, 0, NULL },
 };

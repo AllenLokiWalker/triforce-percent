@@ -2,6 +2,7 @@
 #define __TF_Z64STRUCTS_H__
 
 #include <z64ovl/oot/u10.h>
+#include <z64ovl/z64ovl_helpers.h>
 
 extern z64_global_t gGlobalContext;
 extern z64_save_context_t gSaveContext;

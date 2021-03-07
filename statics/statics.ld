@@ -2,8 +2,8 @@
 OUTPUT_FORMAT("elf32-bigmips", "elf32-bigmips", "elf32-littlemips")
 OUTPUT_ARCH (mips)
 
-INCLUDE fast_loader/fast_loader.out.ld
-INCLUDE dma_patcher/dma_patcher.out.ld
+INCLUDE ../loader/fast_loader/fast_loader.out.ld
+INCLUDE ../loader/dma_patcher/dma_patcher.out.ld
 
 INCLUDE z64structs.ld
 INCLUDE z64funcs.ld

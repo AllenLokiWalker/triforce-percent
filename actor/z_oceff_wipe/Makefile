@@ -18,7 +18,7 @@ default: actor.pat actor.zovl
 %.o: %.s
 	mips64-as -Os -o $@ $<
 
-%.elf: %.o z_oceff_wipe.ld ../../loader/statics/statics.out.ld
+%.elf: %.o z_oceff_wipe.ld ../../statics/statics.out.ld
 	mips64-ld -T z_oceff_wipe.ld -o $@ $<
 
 %.bin: %.elf

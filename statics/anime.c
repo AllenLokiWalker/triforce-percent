@@ -7,7 +7,10 @@ z64_animation_entry_t* AnimationContext_AddEntry(void *animCtx, s32 type);
 extern u32 _link_animetionSegmentRomStart[1];
 extern u32 link_animetion_segment[1];
 
-void AnimationContext_SetLoadFrame_Patched(z64_global_t* globalCtx, 
+extern void AnimationContext_SetLoadFrame(z64_global_t* globalCtx, 
+    z64_animation_entry_link_t* animation, s32 frame, s32 limbCount, vec3s_t* frameTable);
+
+void Patched_SetLoadFrame(z64_global_t* globalCtx, 
     z64_animation_entry_link_t* animation, s32 frame, s32 limbCount, vec3s_t* frameTable) 
 {
     z64_animation_entry_link_t* linkAnimHeader = zh_seg2ram((u32)animation);
@@ -26,8 +29,19 @@ void AnimationContext_SetLoadFrame_Patched(z64_global_t* globalCtx,
     }else{
         DmaMgr_SendRequest2(&entry->types.type0.req, ram,
             (u32)&_link_animetionSegmentRomStart
-            + (linkAnimHeader->anim - (u32)&link_animetion_segment)
+            + (linkAnimHeader->anim & 0x00FFFFFF)
             + (animStepSize * frame),
             animStepSize, 0, &entry->types.type0.msgQueue, 0);
     }
+}
+
+static void *customAnimData;
+
+void Statics_RegisterAnimDataAddress(void *addr){
+    customAnimData = addr;
+}
+
+void Statics_AnimeCodePatches(){
+    *( (u32*)AnimationContext_SetLoadFrame   ) = JUMPINSTR(Patched_SetLoadFrame);
+	*(((u32*)AnimationContext_SetLoadFrame)+1) = 0;
 }

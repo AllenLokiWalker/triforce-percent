@@ -5,13 +5,14 @@
 #include "../loader/fast_loader/fast_loader.h"
 #include "interface.h"
 #include "message.h"
-#include "anim.h"
+#include "anime.h"
 
 void Statics_ApplyCodePatches(){
     static u8 sCodePatched = 0;
     if(sCodePatched) return;
 	Statics_InterfaceCodePatches();
     Statics_MessageCodePatches();
+    Statics_AnimeCodePatches();
     osWritebackDCache(0, 0x4000);
     osInvalICache(0, 0x4000);
     sCodePatched = 1;
