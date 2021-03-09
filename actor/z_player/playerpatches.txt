@@ -27,3 +27,19 @@
 80831774 addiu at, zero, 0x67
 80831780 addiu at, zero, 0x67
 80831790 addiu v0, zero, 0x1A
+
+# Patch action loading functions to use patched action tables
+80847B00 lui   t9,     %hi(csActionToLinkActionPatchTable)
+80847B0C lb    t9,     %lo(csActionToLinkActionPatchTable)(t9)
+80850BA4 lui   v0,     %hi(csActionToLinkActionPatchTable)
+80850BB4 lb    v0,     %lo(csActionToLinkActionPatchTable)(v0)
+80850C8C lui   v0,     %hi(csActionToLinkActionPatchTable)
+80850C94 lb    v0,     %lo(csActionToLinkActionPatchTable)(v0)
+80850C60 lui   t5,     %hi(linkActionInitPatchTable)
+80850C64 addiu t5, t5, %lo(linkActionInitPatchTable)
+80850D2C lui   t0,     %hi(linkActionInitPatchTable)
+80850DC0 addiu t0, t0, %lo(linkActionInitPatchTable)
+80850CB4 lui   t9,     %hi(linkActionRunPatchTable)
+80850CB8 addiu t9, t9, %lo(linkActionRunPatchTable)
+80850D50 lui   t2,     %hi(linkActionRunPatchTable)
+80850D54 addiu t2, t2, %lo(linkActionRunPatchTable)

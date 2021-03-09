@@ -37,6 +37,7 @@ void Patched_SetLoadFrame(z64_global_t* globalCtx,
 
 #define NUM_ORIG_CS_ACTIONS 0x4E
 #define NUM_CUSTOM_CS_ACTIONS 0x12
+//orig 1.0 pre-reloc VROM is 8085267C
 s8 csActionToLinkActionPatchTable[NUM_ORIG_CS_ACTIONS+NUM_CUSTOM_CS_ACTIONS] = {
     #include "csActionToLinkActionTable.xdat"
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -44,10 +45,12 @@ s8 csActionToLinkActionPatchTable[NUM_ORIG_CS_ACTIONS+NUM_CUSTOM_CS_ACTIONS] = {
 
 #define NUM_ORIG_LINK_ACTIONS 103
 #define NUM_CUSTOM_LINK_ACTIONS 0x12
+//orig 1.0 pre-reloc VROM is 808529C8
 u32 linkActionInitPatchTable[(NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_ACTIONS)*2] = {
     #include "linkActionInitTable.xdat"
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
+//orig 1.0 pre-reloc VROM is 80852D00
 u32 linkActionRunPatchTable[(NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_ACTIONS)*2] = {
     #include "linkActionRunTable.xdat"
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
