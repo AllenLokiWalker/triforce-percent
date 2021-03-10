@@ -15,10 +15,11 @@ OCFLAGS = -R .MIPS.abiflags -O binary
 
 default: $(BUILDDIR)/tf-romhack.z64
 	
-$(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt rhstatics_patch.bin call_rhstatics.bin ../../toolchain/zzrtl/oot_build.rtl
+BINFILES = ../../anim/anim.bin ../../statics/statics.bin boot_load_statics.bin padmgr_call_statics.bin
+	
+$(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt $(BINFILES) ../../toolchain/zzrtl/oot_build.rtl
 	mkdir -p $(PATCHDIR)
-	cp rhstatics_patch.bin call_rhstatics.bin $(PATCHDIR)
-	cp ../../statics/statics.bin $(PATCHDIR)/rhstatics.bin
+	cp $(BINFILES) $(PATCHDIR)
 	cp ../../toolchain/zzrtl/oot_build.rtl $(BUILDRTL)
 	sed -i 's/build.z64/tf-romhack.z64/g' $(BUILDRTL)
 	$(ZZRTL) $(BUILDRTL)
@@ -29,8 +30,8 @@ $(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt rhstatics_patch.bin call_rhst
 %.o: %.s
 	mips64-as -Os -o $@ $<
 
-%.elf: %.o rhstatics.ld ../../statics/statics.out.ld
-	$(LD) $(LDFLAGS) -T rhstatics.ld -o $*.elf $*.o
+%.elf: %.o boot_load_statics.ld ../../statics/statics.out.ld
+	$(LD) $(LDFLAGS) -T boot_load_statics.ld -o $*.elf $*.o
 
 %.bin: %.elf
 	$(OC) $(OCFLAGS) $< $@

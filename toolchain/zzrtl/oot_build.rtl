@@ -1018,50 +1018,56 @@ particle(struct rom *rom)
 	printf("success!\n");
 }
 
-enum rhstatics_info {
-    RHSTATICS_PATCH_START = 0x000011A0,
-	PADMGR_PATCH_CALL_RHSTATICS = 0x00B18598
+void update_rom_pointer(char *file, int filesz, int romfilestart, int romfilesz) {
+	char *ptrdata;
+	ptrdata = find_bytes_stride(file, filesz, "DEADBEEF", 4, true);
+	if (!ptrdata)
+		die("rom pointer edit error!");
+	put32(ptrdata, romfilestart);
+	ptrdata = ptrdata + 8;
+	put32(ptrdata, romfilesz);
+}
+
+enum statics_patch_info {
+    BOOT_LOAD_STATICS_PATCH_START = 0x000011A0,
+	PADMGR_CALL_STATICS_PATCH_START = 0x00B18598
 };
 
-void rhstatics(struct rom* rom) {
-	char *patchfile;
-	int patchfilesz;
-	char *ptrdata;
+void mods(struct rom* rom) {
+	char *file;
+	int filesz;
 	
 	dir_enter("patch");
 	
-    /* Write rhstatics data to rom */
-    rom.align(0x1000);
-    rom.inject("rhstatics.bin", true);
+	/* Inject Link animation */
+	rom.align(0x10);
+	rom.inject("anim.bin", false);
 	
-    /* Patch func_800005A0 in boot to load rhstatics */
-    patchfile = loadfile("rhstatics_patch.bin", &patchfilesz, false);
-	if(u32op(patchfilesz, ">", 0x9C)){
-		die("rhstatics patch file too big");
+    /* Load statics and patch animation pointer */
+	file = loadfile("statics.bin", &filesz, false);
+	update_rom_pointer(file, filesz, animaddr, rom.file_start(), rom.file_sz());
+    rom.align(0x10);
+    rom.inject_raw(staticsfile, staticssz, true);
+	
+    /* Patch func_800005A0 in boot to load statics */
+    file = loadfile("boot_load_statics.bin", &filesz, false);
+	if(u32op(filesz, ">", 0x9C)){
+		die("boot_load_statics patch file too big");
 	}
-	
-	/* Update the pointers to rhstatics based on injection */
-	ptrdata = find_bytes_stride(patchfile, patchfilesz, "DEADBEEF", 4, true);
-	if (!ptrdata)
-		die("pointer edit error in rhstatics patch file");
-	put32(ptrdata, rom.file_start());
-	ptrdata = ptrdata + 8;
-	put32(ptrdata, rom.file_sz());
-	
-	/* Write the patch */
-	rom.seek(RHSTATICS_PATCH_START);
-	rom.write(patchfile, patchfilesz);
+	update_rom_pointer(file, filesz, rom.file_start(), rom.file_sz());
+	rom.seek(BOOT_LOAD_STATICS_PATCH_START);
+	rom.write(file, filesz);
 
 	/* Patch padmgr to call Statics_Update every frame */
-	patchfile = loadfile("call_rhstatics.bin", &patchfilesz, false);
-	if(u32op(patchfilesz, ">", 16)){
-		die("call_rhstatics patch file too big");
+	file = loadfile("padmgr_call_statics.bin", &filesz, false);
+	if(u32op(filesz, ">", 16)){
+		die("padmgr_call_statics patch file too big");
 	}
-	if(u32op(patchfilesz, "<", 16)){
-		die("call_rhstatics patch file too small");
+	if(u32op(filesz, "<", 16)){
+		die("padmgr_call_statics patch file too small");
 	}
-	rom.seek(PADMGR_PATCH_CALL_RHSTATICS);
-	rom.write(patchfile, patchfilesz);
+	rom.seek(PADMGR_CALL_STATICS_PATCH_START);
+	rom.write(file, filesz);
 	
 	dir_leave();
 }
@@ -1123,7 +1129,7 @@ main(int argc, char **argv)
 	particle(rom);
 	object(rom);
 	scene(rom);
-	rhstatics(rom);
+	mods(rom);
 	route(rom);
 	
 	/* write built rom */
