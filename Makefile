@@ -9,7 +9,7 @@ ifeq ("$(and $(wildcard build-shortcut/oot_1.0U_uncomp.z64), $(wildcard build-ro
     $(error Original ROMs not found, please read README.md)
 endif
 
-CONTENTS = actor/ music/ scene/ textures/
+CONTENTS = actor/ anim/ music/ scene/ textures/
 SUBDIRS = toolchain/ $(CONTENTS) loader/ statics/ bootstrap/ rom-setup/
 DUMPS = build-shortcut/project.zzrpl build-romhack/project.zzrpl
 

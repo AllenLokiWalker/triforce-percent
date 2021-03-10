@@ -56,16 +56,17 @@ u32 linkActionRunPatchTable[(NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_ACTIONS)*2] =
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
-static void *customAnimData;
+//Animation table
+//const z64_animation_entry_link_t linkAnimPatchTable[...] = {...};
+#include "../anim/anim.c"
 
-void Statics_RegisterAnimDataAddress(void *addr){
-    customAnimData = addr;
-}
+static DmaRequest animFileInfo = { 0xDEADBEEF, &anim_START, 0x04206969, 0, 0, NULL, 0 };
 
 void Statics_AnimeCodePatches(){
-    
     //Patch Link animation loader
     *( (u32*)AnimationContext_SetLoadFrame   ) = JUMPINSTR(Patched_SetLoadFrame);
 	*(((u32*)AnimationContext_SetLoadFrame)+1) = 0;
-    
+    //Load animations from extra ROM file to RAM
+    //TODO romhack only
+    z_file_load(&animFileInfo);
 }
