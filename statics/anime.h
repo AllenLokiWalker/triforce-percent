@@ -1,2 +1,2 @@
-void Statics_AnimeCodePatches(); 
-void Statics_RegisterAnimDataAddress(void *addr);
+void Statics_AnimeCodePatches();
+void Statics_AnimeTest();

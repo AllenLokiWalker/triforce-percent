@@ -4,7 +4,7 @@ CC = mips64-gcc
 LD = mips64-ld
 OC = mips64-objcopy
 
-CFLAGS = -Wall -Wno-main -mno-gpopt -fomit-frame-pointer -G 0 -O2 --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
+CFLAGS = -Wall -Wno-main -Wno-missing-braces -mno-gpopt -fomit-frame-pointer -G 0 -O2 --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
 LDFLAGS = --emit-relocs
 OCFLAGS = -R .MIPS.abiflags -O binary
 
@@ -37,7 +37,8 @@ LD_SCRIPTS = \
 	message.ld \
 	anime.ld \
 	../loader/fast_loader/fast_loader.out.ld \
-	../loader/dma_patcher/dma_patcher.out.ld
+	../loader/dma_patcher/dma_patcher.out.ld \
+	../anim/anim.out.ld
 
 %.o: %.c z64funcs.h z64structs.h
 	$(CC) $(CFLAGS) -c $< -o $@

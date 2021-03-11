@@ -4,6 +4,7 @@ OUTPUT_ARCH (mips)
 
 INCLUDE ../loader/fast_loader/fast_loader.out.ld
 INCLUDE ../loader/dma_patcher/dma_patcher.out.ld
+INCLUDE ../anim/anim.out.ld
 
 INCLUDE z64structs.ld
 INCLUDE z64funcs.ld

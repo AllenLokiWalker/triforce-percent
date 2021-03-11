@@ -84,6 +84,10 @@ void Statics_Update(){
     if(CTRLR_RAW.l && (CTRLR_PRESS & INPUT_D_LEFT)){
         textbox_begin(&gGlobalContext, 0x0901, NULL);
     }
+    //Press L+DR for animation test
+    if(CTRLR_RAW.l && (CTRLR_PRESS & INPUT_D_RIGHT)){
+        Statics_AnimeTest();
+    }
 }
 
 __attribute__((section(".start"))) void Statics_Init(){

@@ -14,10 +14,11 @@ LDFLAGS = --emit-relocs
 OCFLAGS = -R .MIPS.abiflags -O binary
 
 default: $(BUILDDIR)/tf-romhack.z64
+
+LOCALBINFILES = boot_load_statics.bin padmgr_call_statics.bin
+BINFILES = $(LOCALBINFILES) ../../anim/anim.bin ../../statics/statics.bin 
 	
-BINFILES = ../../anim/anim.bin ../../statics/statics.bin boot_load_statics.bin padmgr_call_statics.bin
-	
-$(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt $(BINFILES) ../../toolchain/zzrtl/oot_build.rtl
+$(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt $(LOCALBINFILES) ../../toolchain/zzrtl/oot_build.rtl
 	mkdir -p $(PATCHDIR)
 	cp $(BINFILES) $(PATCHDIR)
 	cp ../../toolchain/zzrtl/oot_build.rtl $(BUILDRTL)

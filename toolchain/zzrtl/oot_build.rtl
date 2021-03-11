@@ -1045,9 +1045,9 @@ void mods(struct rom* rom) {
 	
     /* Load statics and patch animation pointer */
 	file = loadfile("statics.bin", &filesz, false);
-	update_rom_pointer(file, filesz, animaddr, rom.file_start(), rom.file_sz());
+	update_rom_pointer(file, filesz, rom.file_start(), rom.file_sz());
     rom.align(0x10);
-    rom.inject_raw(staticsfile, staticssz, true);
+    rom.inject_raw(file, filesz, true);
 	
     /* Patch func_800005A0 in boot to load statics */
     file = loadfile("boot_load_statics.bin", &filesz, false);

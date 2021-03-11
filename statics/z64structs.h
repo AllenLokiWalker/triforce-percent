@@ -143,4 +143,17 @@ typedef struct {
 } MessageTableEntry;
 
 
+typedef struct {
+    /* 0x00 */ u32 vromStart;
+    /* 0x04 */ u32 vromEnd;
+    /* 0x08 */ void* vramStart;
+    /* 0x0C */ void* vramEnd;
+    /* 0x10 */ void* loadedRamAddr; // original name: "allocp"
+    /* 0x14 */ void* initInfo;
+    /* 0x18 */ char* name;
+    /* 0x1C */ u16 allocType;
+    /* 0x1E */ s8 nbLoaded; // original name: "clients"
+} ActorOverlay; // size = 0x20
+
+
 #endif //__TF_Z64STRUCTS_H__

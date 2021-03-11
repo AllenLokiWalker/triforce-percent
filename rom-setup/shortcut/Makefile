@@ -8,7 +8,7 @@ default: $(BUILDDIR)/tf-shortcut.z64
 $(BUILDDIR)/tf-shortcut.z64: $(BUILDDIR)/update.txt ../../toolchain/zzrtl/oot_build.rtl
 	cp ../../toolchain/zzrtl/oot_build.rtl $(BUILDRTL)
 	sed -i 's/build.z64/tf-shortcut.z64/g' $(BUILDRTL)
-	sed -i 's/rhstatics(rom);//g' $(BUILDRTL)
+	sed -i 's/mods(rom);//g' $(BUILDRTL)
 	$(ZZRTL) $(BUILDRTL)
 
 clean:

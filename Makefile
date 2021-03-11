@@ -24,7 +24,7 @@ actor/: $(DUMPS) statics/
 
 scene/: $(DUMPS)
 
-statics/: loader/
+statics/: anim/ loader/
 
 bootstrap/: loader/
 
