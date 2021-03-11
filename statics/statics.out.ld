@@ -2,6 +2,7 @@ statics_START = 0x80404380;
 Statics_Init = 0x80404380;
 Statics_Update = 0x804043f0;
 Statics_TimeTravel = 0x804045c8;
+Statics_Player_Init = 0;
 csActionToLinkActionPatchTable = 0x80405980;
 linkActionInitPatchTable = 0x804055b8;
 linkActionRunPatchTable = 0x804051f0;

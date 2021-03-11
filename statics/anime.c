@@ -2,15 +2,13 @@
 #include "z64funcs.h"
 #include "anime.h"
 
-z64_animation_entry_t* AnimationContext_AddEntry(void *animCtx, s32 type);
-
-extern u32 _link_animetionSegmentRomStart[1];
-extern u32 link_animetion_segment[1];
-
+extern z64_animation_entry_t* AnimationContext_AddEntry(void *animCtx, s32 type);
 extern void AnimationContext_SetLoadFrame(z64_global_t* globalCtx, 
     z64_animation_entry_link_t* animation, s32 frame, s32 limbCount, vec3s_t* frameTable);
 
-void Patched_SetLoadFrame(z64_global_t* globalCtx, 
+extern u32 _link_animetionSegmentRomStart[1];
+
+static void Patched_SetLoadFrame(z64_global_t* globalCtx, 
     z64_animation_entry_link_t* animation, s32 frame, s32 limbCount, vec3s_t* frameTable) 
 {
     z64_animation_entry_link_t* linkAnimHeader = (void*)zh_seg2ram((u32)animation);
@@ -41,23 +39,17 @@ void Patched_SetLoadFrame(z64_global_t* globalCtx,
 
 #define NUM_ORIG_CS_ACTIONS 0x4E
 #define NUM_CUSTOM_CS_ACTIONS 0x12
-//orig 1.0 pre-reloc VROM is 8085267C
+extern s8 csActionToLinkActionTable[NUM_ORIG_CS_ACTIONS];
 s8 csActionToLinkActionPatchTable[NUM_ORIG_CS_ACTIONS+NUM_CUSTOM_CS_ACTIONS] = {
-    #include "csActionToLinkActionTable.xdat"
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-};
-
-#define NUM_ORIG_LINK_ACTIONS 103
-#define NUM_CUSTOM_LINK_ACTIONS 0x12
-//orig 1.0 pre-reloc VROM is 808529C8
-u32 linkActionInitPatchTable[(NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_ACTIONS)*2] = {
-    #include "linkActionInitTable.xdat"
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-};
-//orig 1.0 pre-reloc VROM is 80852D00
-u32 linkActionRunPatchTable[(NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_ACTIONS)*2] = {
-    #include "linkActionRunTable.xdat"
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    //Original
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    //Custom
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0
 };
 
 typedef struct {
@@ -77,22 +69,76 @@ typedef struct {
     };
 } link_action_entry_t; // size = 0x08
 
-link_action_entry_t linkCustomActionInitSrcTable[NUM_CUSTOM_LINK_ACTIONS] = {
+#define NUM_ORIG_LINK_ACTIONS 0x67
+#define NUM_CUSTOM_LINK_ACTIONS 0x12
+extern link_action_entry_t linkActionInitTable[NUM_ORIG_LINK_ACTIONS];
+link_action_entry_t linkActionInitPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_ACTIONS] = {
+    //Original
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL},
+    //Patched
     {2, &linkAnimPatchTable[0]},
     {0, NULL}, 
-    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
-    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
-    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
-    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
 };
-
-link_action_entry_t linkCustomActionRunSrcTable[NUM_CUSTOM_LINK_ACTIONS] = {
-    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
-    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
-    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
-    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+extern link_action_entry_t linkActionRunTable[NUM_ORIG_LINK_ACTIONS];
+link_action_entry_t linkActionRunPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_ACTIONS] = {
+    //Original
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL},
+    //Patched
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
     {0, NULL}, {0, NULL}, 
 };
+
+extern void Player_START();
+
+static void *PlayerVRAMtoRAM(void *ptr){
+    return ptr - (void*)Player_START + 
+        ((ActorOverlay*)(PLAYER->actor.code_entry))->loadedRamAddr;
+}
+
+void Statics_Player_Init(){
+    static u32 alreadyrun = 0;
+    if(alreadyrun) return;
+    alreadyrun = 1;
+    //Patch overwrote 
+    //globalCtx->shootingGalleryStatus = globalCtx->bombchuBowlingStatus = 0;
+    //so we have to do that
+    ((u8*)&gGlobalContext)[0x11E5C] = 0;
+    ((u8*)&gGlobalContext)[0x11E5D] = 0;
+    //Copy original, relocated, animation tables to patch tables in statics.
+    bcopy(PlayerVRAMtoRAM(csActionToLinkActionTable), csActionToLinkActionPatchTable, 
+        sizeof(s8) * NUM_ORIG_CS_ACTIONS);
+    bcopy(PlayerVRAMtoRAM(linkActionInitTable), linkActionInitPatchTable,
+        sizeof(link_action_entry_t) * NUM_ORIG_LINK_ACTIONS);
+    bcopy(PlayerVRAMtoRAM(linkActionRunTable), linkActionRunPatchTable,
+        sizeof(link_action_entry_t) * NUM_ORIG_LINK_ACTIONS);
+}
 
 extern u32 anim_START;
 static DmaRequest animFileInfo = { 0xDEADBEEF, &anim_START, 0x04206969, 0, 0, 0, 0 };
@@ -101,24 +147,15 @@ void Statics_AnimeCodePatches(){
     //Patch Link animation loader
     *( (u32*)AnimationContext_SetLoadFrame   ) = JUMPINSTR(Patched_SetLoadFrame);
 	*(((u32*)AnimationContext_SetLoadFrame)+1) = 0;
-    //Copy src tables to path tables. They're separate because including the
-    //original data in struct form would be a pain. Only a hundred bytes or so waste.
-    bcopy(linkCustomActionInitSrcTable, &linkActionInitPatchTable[NUM_ORIG_LINK_ACTIONS*2],
-        sizeof(link_action_entry_t) * NUM_CUSTOM_LINK_ACTIONS);
-    bcopy(linkCustomActionRunSrcTable, &linkActionRunPatchTable[NUM_ORIG_LINK_ACTIONS*2],
-        sizeof(link_action_entry_t) * NUM_CUSTOM_LINK_ACTIONS);
     //Load animations from extra ROM file to RAM
     //TODO romhack only
     z_file_load(&animFileInfo);
 }
 
-extern void Player_START();
-extern s32 Player_SetUpCutscene(z64_global_t *globalCtx, z64_actor_t *actor, s32 csMode);
 typedef s32 (*Player_SetUpCutscene_t)(z64_global_t *, z64_actor_t *, s32);
+extern s32 Player_SetUpCutscene(z64_global_t *globalCtx, z64_actor_t *actor, s32 csMode);
 
 void Statics_AnimeTest(){
-    Player_SetUpCutscene_t fp = (Player_SetUpCutscene_t)(
-        (void*)Player_SetUpCutscene - (void*)Player_START + 
-        ((ActorOverlay*)(PLAYER->actor.code_entry))->loadedRamAddr);
+    Player_SetUpCutscene_t fp = (Player_SetUpCutscene_t)PlayerVRAMtoRAM(&Player_SetUpCutscene);
     fp(&gGlobalContext, NULL, NUM_ORIG_CS_ACTIONS);
 }

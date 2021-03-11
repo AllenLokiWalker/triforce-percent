@@ -1,5 +1,7 @@
 # base addr
 808301C0
+# reloc table header (count) offset
+!00023130
 
 # Patch func_808519EC / func_8084F868 (1.0) / Link_Action_MasterSword_Init to always use child link anim
 8084F898 lui a2, 0x0400
@@ -28,18 +30,27 @@
 80831780 addiu at, zero, 0x67
 80831790 addiu v0, zero, 0x1A
 
+# Patch Player_Init to jump to Statics_Player_Init
+# Need to save t8 and reconstruct v1 = -1
+80844E28 jal Statics_Player_Init
+80844E2C sw    t8, 0x000C(sp)
+80844E30 lw    t8, 0x000C(sp)
+80844E34 addiu v1, zero, 0xFFFF
+80844E38 nop
+
 # Patch action loading functions to use patched action tables
-80847B00 lui   t9,     %hi(csActionToLinkActionPatchTable)
-80847B0C lb    t9,     %lo(csActionToLinkActionPatchTable)(t9)
-80850BA4 lui   v0,     %hi(csActionToLinkActionPatchTable)
-80850BB4 lb    v0,     %lo(csActionToLinkActionPatchTable)(v0)
-80850C8C lui   v0,     %hi(csActionToLinkActionPatchTable)
-80850C94 lb    v0,     %lo(csActionToLinkActionPatchTable)(v0)
-80850C60 lui   t5,     %hi(linkActionInitPatchTable)
-80850C64 addiu t5, t5, %lo(linkActionInitPatchTable)
-80850D2C lui   t0,     %hi(linkActionInitPatchTable)
-80850DC0 addiu t0, t0, %lo(linkActionInitPatchTable)
-80850CB4 lui   t9,     %hi(linkActionRunPatchTable)
-80850CB8 addiu t9, t9, %lo(linkActionRunPatchTable)
-80850D50 lui   t2,     %hi(linkActionRunPatchTable)
-80850D54 addiu t2, t2, %lo(linkActionRunPatchTable)
+# These are changing from relocatable addresses to non-relocatable
+!80847B00 lui   t9,     %hi(csActionToLinkActionPatchTable)
+!80847B0C lb    t9,     %lo(csActionToLinkActionPatchTable)(t9)
+!80850BA4 lui   v0,     %hi(csActionToLinkActionPatchTable)
+!80850BB4 lb    v0,     %lo(csActionToLinkActionPatchTable)(v0)
+!80850C8C lui   v0,     %hi(csActionToLinkActionPatchTable)
+!80850C94 lb    v0,     %lo(csActionToLinkActionPatchTable)(v0)
+!80850C60 lui   t5,     %hi(linkActionInitPatchTable)
+!80850C64 addiu t5, t5, %lo(linkActionInitPatchTable)
+!80850D2C lui   t0,     %hi(linkActionInitPatchTable)
+!80850DC0 addiu t0, t0, %lo(linkActionInitPatchTable)
+!80850CB4 lui   t9,     %hi(linkActionRunPatchTable)
+!80850CB8 addiu t9, t9, %lo(linkActionRunPatchTable)
+!80850D50 lui   t2,     %hi(linkActionRunPatchTable)
+!80850D54 addiu t2, t2, %lo(linkActionRunPatchTable)

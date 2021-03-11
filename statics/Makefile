@@ -20,7 +20,7 @@ message.o: message.h ../text/messages.c
 
 ../text/build_messages_file.o: ../text/message_data_fmt.h ../text/messages.c
 
-anime.o: anime.h csActionToLinkActionTable.xdat linkActionInitTable.xdat linkActionRunTable.xdat
+anime.o: anime.h
 
 LINK_OBJS = \
 	statics.o \
@@ -57,15 +57,6 @@ CLEANLINKZOVL=${ACTORDIR}/ovl_player_actor.zovl.orig
 
 ${CLEANLINKZOVL}:
 	cp ${ACTORDIR}/ovl_player_actor.zovl ${CLEANLINKZOVL}
-
-csActionToLinkActionTable.xdat: ${CLEANLINKZOVL}
-	$(PYTHON3) ../toolchain/xdat.py ${CLEANLINKZOVL} 0x224BC 0x4E s8 $@
-	
-linkActionInitTable.xdat: ${CLEANLINKZOVL}
-	$(PYTHON3) ../toolchain/xdat.py ${CLEANLINKZOVL} 0x22808 824 u32 $@
-
-linkActionRunTable.xdat: ${CLEANLINKZOVL}
-	$(PYTHON3) ../toolchain/xdat.py ${CLEANLINKZOVL} 0x22B40 824 u32 $@
 
 clean:
 	rm -rf *.o ../text/*.o *.map *.elf statics.bin
