@@ -18,6 +18,7 @@ sSoundParam5 = 0x801043A8;
 
 sSubscreenButtonStates = 0x8039F084; /*0x80829CE4;*/
 /*Offset between 1.0 relocated VRAM and Debug pre-relocated address: 0x48BAE8*/
+/*ovl_kaleido_scope gets loaded at 0x80387D38 ??? */
 
 gItemIcons = 0x800F8D2C;
 
