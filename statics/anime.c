@@ -117,12 +117,15 @@ link_action_entry_t linkActionRunPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LIN
 
 extern void Player_START();
 
-static void *PlayerVRAMtoRAM(void *ptr){
+static void *PlayerVRAMtoRAM_Player(void *ptr, z64_actor_t *playeractor){
     return ptr - (void*)Player_START + 
-        ((ActorOverlay*)(PLAYER->actor.code_entry))->loadedRamAddr;
+        ((ActorOverlay*)(playeractor->code_entry))->loadedRamAddr;
+}
+static void *PlayerVRAMtoRAM(void *ptr){
+    return PlayerVRAMtoRAM_Player(ptr, &(PLAYER->actor));
 }
 
-void Statics_Player_Init(){
+void Statics_Player_Init(z64_actor_t *playeractor){
     static u32 alreadyrun = 0;
     if(alreadyrun) return;
     alreadyrun = 1;
@@ -132,11 +135,14 @@ void Statics_Player_Init(){
     ((u8*)&gGlobalContext)[0x11E5C] = 0;
     ((u8*)&gGlobalContext)[0x11E5D] = 0;
     //Copy original, relocated, animation tables to patch tables in statics.
-    bcopy(PlayerVRAMtoRAM(csActionToLinkActionTable), csActionToLinkActionPatchTable, 
+    bcopy(PlayerVRAMtoRAM_Player(csActionToLinkActionTable, playeractor), 
+        csActionToLinkActionPatchTable, 
         sizeof(s8) * NUM_ORIG_CS_ACTIONS);
-    bcopy(PlayerVRAMtoRAM(linkActionInitTable), linkActionInitPatchTable,
+    bcopy(PlayerVRAMtoRAM_Player(linkActionInitTable, playeractor), 
+        linkActionInitPatchTable,
         sizeof(link_action_entry_t) * NUM_ORIG_LINK_ACTIONS);
-    bcopy(PlayerVRAMtoRAM(linkActionRunTable), linkActionRunPatchTable,
+    bcopy(PlayerVRAMtoRAM_Player(linkActionRunTable, playeractor), 
+        linkActionRunPatchTable,
         sizeof(link_action_entry_t) * NUM_ORIG_LINK_ACTIONS);
 }
 

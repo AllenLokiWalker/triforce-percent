@@ -64,7 +64,7 @@ def patchinstr(data, patchfile):
             regnum = regs.index(tok)
         except ValueError:
             raise RuntimeError('Unknown register ' + tok)
-        if regnum >= 26 or (regnum == 0 and dest):
+        if regnum in [26, 27, 28, 30] or (regnum == 0 and dest):
             raise RuntimeError('You should not be using register ' + tok)
         return regnum
     for l in patchfile:
@@ -140,7 +140,10 @@ def patchinstr(data, patchfile):
                 value = hival if ishi else loval
             else:
                 value = int(toks[-1], 0)
-            assert value >= -0x8000 and value < 0x8000
+                if value >= 0x8000:
+                    value -= 0x10000
+            if value < -0x8000 or value >= 0x8000:
+                raise RuntimeError('Immediate/offset value ' + hex(value) + ' out of range in ' + l)
             data[addr+2:addr+4] = value.to_bytes(2, 'big', signed=True)
             if toks[1] == 'lui':
                 assert len(toks) == 4

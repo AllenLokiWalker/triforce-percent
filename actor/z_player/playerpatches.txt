@@ -49,7 +49,7 @@
 !80850C60 lui   t5,     %hi(linkActionInitPatchTable)
 !80850C64 addiu t5, t5, %lo(linkActionInitPatchTable)
 !80850D2C lui   t0,     %hi(linkActionInitPatchTable)
-!80850DC0 addiu t0, t0, %lo(linkActionInitPatchTable)
+!80850D30 addiu t0, t0, %lo(linkActionInitPatchTable)
 !80850CB4 lui   t9,     %hi(linkActionRunPatchTable)
 !80850CB8 addiu t9, t9, %lo(linkActionRunPatchTable)
 !80850D50 lui   t2,     %hi(linkActionRunPatchTable)
