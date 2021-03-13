@@ -76,17 +76,19 @@ void Statics_Update(){
     gSaveContext.double_magic = 1;
     //Equip Quest Status subscreen items to C
     Statics_HandleEquipMedallionsToC();
-    //Press L+DD to clip below the ice in Zora's Domain
+    //Test/Debugging
     if(CTRLR_RAW.l && (CTRLR_PRESS & INPUT_D_DOWN)){
-        PLAYER->actor.pos.y -= 80.0f;
+        //Press L+DD to clip below the ice in Zora's Domain
+        //PLAYER->actor.pos.y -= 80.0f;
+        Statics_AnimeTest(1);
     }
-    //Press L+DL for frog
     if(CTRLR_RAW.l && (CTRLR_PRESS & INPUT_D_LEFT)){
+        //Press L+DL for frog
         textbox_begin(&gGlobalContext, 0x0901, NULL);
     }
-    //Press L+DR for animation test
     if(CTRLR_RAW.l && (CTRLR_PRESS & INPUT_D_RIGHT)){
-        Statics_AnimeTest();
+        //Press L+DR for animation test
+        Statics_AnimeTest(0);
     }
 }
 

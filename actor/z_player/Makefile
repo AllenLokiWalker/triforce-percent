@@ -15,7 +15,7 @@ default: ovl_player_actor.pat ovl_player_actor.zovl
 ${ACTORDIR}/ovl_player_actor.zovl.orig:
 	cp ${ACTORDIR}/ovl_player_actor.zovl ${ACTORDIR}/ovl_player_actor.zovl.orig
 	
-ovl_player_actor.zovl: ${ACTORDIR}/ovl_player_actor.zovl.orig playerpatches.txt
+ovl_player_actor.zovl: ${ACTORDIR}/ovl_player_actor.zovl.orig playerpatches.txt ../../statics/statics.out.ld
 	cp ${ACTORDIR}/ovl_player_actor.zovl.orig ovl_player_actor.zovl
 	$(PYTHON3) ../../toolchain/patchinstr.py ovl_player_actor.zovl playerpatches.txt ../../statics/statics.out.ld
 

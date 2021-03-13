@@ -17,6 +17,8 @@ static void Patched_SetLoadFrame(z64_global_t* globalCtx,
     z64_animation_entry_t* entry = AnimationContext_AddEntry((u8*)globalCtx + 0x10B20, 0);
     if (entry == NULL) return;
     
+    zh_draw_debug_text(globalCtx, 0xFF8000FF, 1, 1, "%2d %08X", frame, linkAnimHeader->anim);
+    
     osCreateMesgQueue(&entry->types.type0.msgQueue, &entry->types.type0.msg, 1);
     
     if(linkAnimHeader->anim & 0x80000000){
@@ -37,21 +39,6 @@ static void Patched_SetLoadFrame(z64_global_t* globalCtx,
 //z64_animation_entry_link_t linkAnimPatchTable[...] = {...};
 #include "../anim/anim.c"
 
-#define NUM_ORIG_CS_ACTIONS 0x4E
-#define NUM_CUSTOM_CS_ACTIONS 0x12
-extern s8 csActionToLinkActionTable[NUM_ORIG_CS_ACTIONS];
-s8 csActionToLinkActionPatchTable[NUM_ORIG_CS_ACTIONS+NUM_CUSTOM_CS_ACTIONS] = {
-    //Original
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    //Custom
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0
-};
-
 typedef struct {
     //If positive, passes ptr to function in table D_80854AA4 (debug) indexed
     //by value. 
@@ -59,7 +46,7 @@ typedef struct {
     //2: also sets Y to 0, changes to anim, play once at full speed, -6 morph
     //3: same as 2 but 2/3 speed and -8 morph
     //4: same as 3 but looping
-    //5: same as 4 but sets moveFlags to 0x1C
+    //5: once, 2/3 speed, -8 morph, sets moveFlags to 0x1C
     //
     //If negative (-1), calls func. If zero, does nothing.
     /* 0x00 */ s8 type; 
@@ -88,7 +75,7 @@ link_action_entry_t linkActionInitPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LI
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL},
     //Patched
-    {2, &linkAnimPatchTable[0]},
+    {4, &linkAnimPatchTable[0]},
     {0, NULL}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
@@ -113,6 +100,21 @@ link_action_entry_t linkActionRunPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LIN
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
     {0, NULL}, {0, NULL}, 
+};
+
+#define NUM_ORIG_CS_ACTIONS 0x4E
+#define NUM_CUSTOM_CS_ACTIONS 0x12
+extern s8 csActionToLinkActionTable[NUM_ORIG_CS_ACTIONS];
+s8 csActionToLinkActionPatchTable[NUM_ORIG_CS_ACTIONS+NUM_CUSTOM_CS_ACTIONS] = {
+    //Original
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    //Custom
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,
 };
 
 extern void Player_RAM_START();
@@ -155,7 +157,13 @@ void Statics_AnimeCodePatches(){
 typedef s32 (*Player_SetUpCutscene_t)(z64_global_t *, z64_actor_t *, s32);
 extern s32 Player_SetUpCutscene(z64_global_t *globalCtx, z64_actor_t *actor, s32 csMode);
 
-void Statics_AnimeTest(){
+void Statics_AnimeTest(s32 a){
     Player_SetUpCutscene_t fp = (Player_SetUpCutscene_t)PlayerVRAMtoRAM(&Player_SetUpCutscene);
-    fp(&gGlobalContext, NULL, NUM_ORIG_CS_ACTIONS);
+    s32 action = 0;
+    if(a == 0){
+        action = 8;
+    }else if(a == 1){
+        action = NUM_ORIG_LINK_ACTIONS;
+    }
+    fp(&gGlobalContext, NULL, action);
 }
