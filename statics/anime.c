@@ -2,6 +2,11 @@
 #include "z64funcs.h"
 #include "anime.h"
 
+static void *MaybeSeg2RAM(void *ptr){
+    if((u32)ptr & 0x80000000) return ptr;
+    return (void*)zh_seg2ram((u32)ptr);
+}
+
 extern z64_animation_entry_t* AnimationContext_AddEntry(void *animCtx, s32 type);
 extern void AnimationContext_SetLoadFrame(z64_global_t* globalCtx, 
     z64_animation_entry_link_t* animation, s32 frame, s32 limbCount, vec3s_t* frameTable);
@@ -11,9 +16,8 @@ extern u32 _link_animetionSegmentRomStart[1];
 static void Patched_SetLoadFrame(z64_global_t* globalCtx, 
     z64_animation_entry_link_t* animation, s32 frame, s32 limbCount, vec3s_t* frameTable) 
 {
-    z64_animation_entry_link_t* linkAnimHeader = (void*)zh_seg2ram((u32)animation);
+    z64_animation_entry_link_t* linkAnimHeader = MaybeSeg2RAM(animation);
     u32 animStepSize = sizeof(vec3s_t) * limbCount + 2;
-    
     z64_animation_entry_t* entry = AnimationContext_AddEntry((u8*)globalCtx + 0x10B20, 0);
     if (entry == NULL) return;
     
@@ -23,10 +27,11 @@ static void Patched_SetLoadFrame(z64_global_t* globalCtx,
     
     if(linkAnimHeader->anim & 0x80000000){
         //Animation is in RAM
-        bcopy((void*)((s32)linkAnimHeader->anim + (animStepSize * frame)), 
+        bcopy((void*)(((s32)linkAnimHeader->anim | 0x80000000) + (animStepSize * frame)), 
             frameTable, animStepSize);
         osSendMesg(&entry->types.type0.msgQueue, (OSMesg)0, 0);
     }else{
+        //Animation is in ROM
         DmaMgr_SendRequest2(&entry->types.type0.req, frameTable,
             (u32)&_link_animetionSegmentRomStart
             + (linkAnimHeader->anim & 0x00FFFFFF)
@@ -35,9 +40,22 @@ static void Patched_SetLoadFrame(z64_global_t* globalCtx,
     }
 }
 
+extern s16 Animation_GetLength(void *animation);
+extern s16 Animation_GetLastFrame(void *animation);
+extern s16 Animation_GetLength2(void *animation);
+extern s16 Animation_GetLastFrame2(void *animation);
+
+static s16 Patched_GetLengthOrLastFrame(void *animation, s16 minus){
+    z64_anim_header_init_t *anim = MaybeSeg2RAM(animation);
+    return anim->frame_count - minus;
+}
+
 //Animation table
 //z64_animation_entry_link_t linkAnimPatchTable[...] = {...};
 #include "../anim/anim.c"
+
+//Testing
+z64_animation_entry_link_t testAnimHeader = { { 40, 0 }, 0x0701E340 };
 
 typedef struct {
     //If positive, passes ptr to function in table D_80854AA4 (debug) indexed
@@ -76,7 +94,7 @@ link_action_entry_t linkActionInitPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LI
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL},
     //Patched
     {4, &linkAnimPatchTable[0]},
-    {0, NULL}, 
+    {7, &testAnimHeader}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
 };
@@ -97,9 +115,10 @@ link_action_entry_t linkActionRunPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LIN
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL},
     //Patched
+    {11, NULL},
+    {11, NULL},
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
-    {0, NULL}, {0, NULL}, 
 };
 
 #define NUM_ORIG_CS_ACTIONS 0x4E
@@ -149,6 +168,14 @@ void Statics_AnimeCodePatches(){
     //Patch Link animation loader
     *( (u32*)AnimationContext_SetLoadFrame   ) = JUMPINSTR(Patched_SetLoadFrame);
 	*(((u32*)AnimationContext_SetLoadFrame)+1) = 0;
+    *( (u32*)Animation_GetLength       ) = JUMPINSTR(Patched_GetLengthOrLastFrame);
+	*(((u32*)Animation_GetLength    )+1) = 0x34050000; //ori a1, zero, 0x0000
+    *( (u32*)Animation_GetLastFrame    ) = JUMPINSTR(Patched_GetLengthOrLastFrame);
+	*(((u32*)Animation_GetLastFrame )+1) = 0x34050001; //ori a1, zero, 0x0001
+    // *( (u32*)Animation_GetLength2      ) = JUMPINSTR(Patched_GetLengthOrLastFrame);
+	// *(((u32*)Animation_GetLength2   )+1) = 0x34050000; //ori a1, zero, 0x0000
+    // *( (u32*)Animation_GetLastFrame2   ) = JUMPINSTR(Patched_GetLengthOrLastFrame);
+	// *(((u32*)Animation_GetLastFrame2)+1) = 0x34050001; //ori a1, zero, 0x0001
     //Load animations from extra ROM file to RAM
     //TODO romhack only
     z_file_load(&animFileInfo);
@@ -161,7 +188,7 @@ void Statics_AnimeTest(s32 a){
     Player_SetUpCutscene_t fp = (Player_SetUpCutscene_t)PlayerVRAMtoRAM(&Player_SetUpCutscene);
     s32 action = 0;
     if(a == 0){
-        action = 8;
+        action = 13;
     }else if(a == 1){
         action = NUM_ORIG_LINK_ACTIONS;
     }
