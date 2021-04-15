@@ -6,6 +6,7 @@ ENTRY(ENTRY_POINT);
 
 SECTIONS {
 	. = ENTRY_POINT;
-	.data ALIGN(16): { *(.data) }
+	.data ALIGN(16): { *(.data) *(.bss) }
 	.text ALIGN(16): { *(.text) }
+	.MIPS.abiflags ALIGN(16): { *(.MIPS.abiflags) }
 }
