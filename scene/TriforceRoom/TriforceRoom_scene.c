@@ -26,7 +26,9 @@ SCmdSkyboxSettings TriforceRoom_scene_header00_cmd07 = { 0x11, 0x00, 0x00, 0x00,
 
 SCmdLightSettingList TriforceRoom_scene_header00_cmd08 = { 0x0F, 1, (u32)&TriforceRoom_scene_header00_lightSettings };
 
-SCmdEndMarker TriforceRoom_scene_header00_cmd09 = { 0x14, 0x00, 0x00 };
+SCmdCutsceneData TriforceRoom_scene_header00_cmd09 = { 0x17, 0x00, (u32)&TriforceRoom_scene_header00_cutscene };
+
+SCmdEndMarker TriforceRoom_scene_header00_cmd10 = { 0x14, 0x00, 0x00 };
 
 
 ActorEntry TriforceRoom_scene_header00_startPositionList[] = {
@@ -42,7 +44,7 @@ EntranceEntry TriforceRoom_scene_header00_entranceList[1] = {
 };
 
 LightSettings TriforceRoom_scene_header00_lightSettings[1] = {
-	{ 57, 64, 117, 73, 73, 73, 46, 4, 219, 183, 183, 183, 70, 107, 133, 196, 182, 175, 0x07e1, 12800 },
+	{ 57, 64, 117, 73, 73, 73, 134, 130, 219, 183, 183, 183, 70, 107, 133, 196, 182, 175, 0x07e1, 12800 },
 };
 
 u32 TriforceRoom_polygonTypes[] = {
@@ -107,3 +109,82 @@ Vec3s TriforceRoom_vertices[26] = {
 
 CollisionHeader TriforceRoom_collisionHeader = { -275, -50, -56, 275, 0, 649, 26, TriforceRoom_vertices, 24, TriforceRoom_polygons, TriforceRoom_polygonTypes, 0, 0, 0 };
 
+// clang-format off
+s32 TriforceRoom_scene_header00_cutscene[] = {
+	CS_BEGIN_CUTSCENE(9, 542),
+	CS_PLAYER_ACTION_LIST(6),
+		CS_PLAYER_ACTION(0x0001, 0, 50, 0x0, 0xffff8000, 0x0, 0, -49, 442, 0, 0, 62, 0, 0, 0),
+		CS_PLAYER_ACTION(0x0034, 50, 90, 0x0, 0xffff8000, 0x0, 0, 0, 62, 0, 0, 62, 0, 0, 0),
+		CS_PLAYER_ACTION(0x004B, 90, 310, 0x0, 0xffff8000, 0x0, 0, 0, 62, 0, 0, 62, 0, 0, 0),
+		CS_PLAYER_ACTION(0x004E, 310, 410, 0x0, 0xffff8000, 0x0, 0, 0, 62, 0, 0, 62, 0, 0, 0),
+		CS_PLAYER_ACTION(0x0007, 410, 420, 0x0, 0xffff8000, 0x0, 0, 0, 62, 0, 0, 62, 0, 0, 0),
+		CS_PLAYER_ACTION(0x0008, 420, 540, 0x0, 0x0, 0x0, 0, 0, 62, 0, 0, 62, 0, 0, 0),
+	CS_CAM_POS_LIST(0, 286),
+		CS_CAM_POS(0, 0, 0, 0x42960000, 481, -46, 287, 0),
+		CS_CAM_POS(0, 0, 0, 0x42960000, 270, -47, 364, 0),
+		CS_CAM_POS(0, 0, 0, 0x42820000, -148, -40, 418, 0),
+		CS_CAM_POS(0, 0, 0, 0x42820000, -267, 62, 367, 0),
+		CS_CAM_POS(0, 0, 0, 0x42820000, -267, 64, 290, 0),
+		CS_CAM_POS(0, 0, 0, 0x42820000, -268, 73, 215, 0),
+		CS_CAM_POS(0, 0, 0, 0x42820000, -268, 85, 128, 0),
+		CS_CAM_POS(0, 0, 0, 0x42820000, -265, 98, 42, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_POS_LIST(175, 356),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 43, 84, 61, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 32, 84, 22, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -43, 84, 27, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -47, 84, 68, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_POS_LIST(230, 541),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -156, 99, 283, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -223, 87, 209, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -257, 87, 96, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -227, 89, -2, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -158, 94, -75, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -69, 93, -87, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 0, 91, -85, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_POS_LIST(407, 492),
+		CS_CAM_POS(0, 0, 0, 0x428c0000, 0, -44, 936, 0),
+		CS_CAM_POS(0, 0, 0, 0x428c0000, 0, -44, 617, 0),
+		CS_CAM_POS(0, 0, 0, 0x428c0000, 0, -44, 420, 0),
+		CS_CAM_POS(0, 0, 0, 0x425c0000, 0, 96, 367, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 0, 116, 247, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 0, 117, -14, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(0, 305),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42960000, -1, 28, 56, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 25, 0x42960000, -1, 28, 56, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 40, 0x42820000, 3, 81, 34, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 30, 0x42820000, -1, 102, 25, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 40, 0x42820000, -3, 115, 16, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 55, 0x42820000, 0, 129, 15, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 55, 0x42820000, 0, 148, 17, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42820000, 0, 149, 16, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(175, 375),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 3, 81, 61, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 70, 0x42700000, 2, 81, 61, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 70, 0x42700000, 0, 81, 61, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 0, 81, 63, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(230, 560),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 15, 139, 38, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 60, 0x42700000, 13, 133, 33, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 60, 0x42700000, 7, 114, 31, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 50, 0x42700000, 7, 98, 27, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 50, 0x42700000, 6, 93, 29, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 50, 0x42700000, 6, 88, 25, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 6, 88, 27, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(407, 511),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x428c0000, 0, -44, 870, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x428c0000, 0, -39, 551, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 12, 0x428c0000, 0, -39, 354, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 7, 0x425c0000, 0, 78, 301, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 5, 0x42700000, 0, 97, 181, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 0, 98, -80, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_END(),
+};
+// clang-format on

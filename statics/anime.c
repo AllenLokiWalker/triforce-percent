@@ -21,7 +21,7 @@ static void Patched_SetLoadFrame(z64_global_t* globalCtx,
     z64_animation_entry_t* entry = AnimationContext_AddEntry((u8*)globalCtx + 0x10B20, 0);
     if (entry == NULL) return;
     
-    zh_draw_debug_text(globalCtx, 0xFF8000FF, 1, 1, "%2d %08X", frame, linkAnimHeader->anim);
+    //zh_draw_debug_text(globalCtx, 0xFF8000FF, 1, 1, "%2d %08X", frame, linkAnimHeader->anim);
     
     osCreateMesgQueue(&entry->types.type0.msgQueue, &entry->types.type0.msg, 1);
     
@@ -132,7 +132,7 @@ s8 csActionToLinkActionPatchTable[NUM_ORIG_CS_ACTIONS+NUM_CUSTOM_CS_ACTIONS] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     //Custom
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0x67,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,
 };
 

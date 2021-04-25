@@ -10,6 +10,13 @@
 void Statics_ApplyCodePatches(){
     static u8 sCodePatched = 0;
     if(sCodePatched) return;
+    //TODO
+    //Entrance cutscene table 0x800EFD04 entry 17 (originally Inside Jabu)
+    //Entrance 0x9C, age 2, flag 0, segment offset 0x02000130 (from 0x17 cutscene command in scene)
+    //WRITE 8 0x800EFD8C 0x00 0x9C 0x02 0x00 0x02 0x00 0x01 0x30
+    *((u32*)0x800EFD8C) = 0x009C0200;
+    *((u32*)0x800EFD90) = 0x020002D0;
+    //
 	Statics_InterfaceCodePatches();
     Statics_MessageCodePatches();
     Statics_AnimeCodePatches();
