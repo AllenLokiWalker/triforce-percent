@@ -37,17 +37,21 @@ static const uint8_t states_frames[] = {
 //These have an extra value at the beginning so we can interpolate from last
 //to current without worrying about crashes
 static const uint8_t states_highpiece_y[] = {
-	0, 0, 125, 125, 117, 117,  87, 87,  0, 86
+	0, 0, 125, 125, 117, 117,  82, 82,  0, 76
 };
 static const uint8_t states_lowpieces_y[] = {
-	0, 0,  85,  85,  95,  95,  65, 65,  0, 75
+	0, 0,  85,  85,  95,  95,  65, 65,  0, 65
 };
 // -- ST  RIS   W0  CMB   W1  SNK  W2  DS  LK
 static const uint8_t states_lowpieces_x[] = {
-	0, 0,  25,  25,  12,  12,  12, 12, 12,  6
+	0, 0,  25,  25,  12,  12,  10, 10, 10,  6
 };
+static const uint8_t states_z[] = {
+	0, 0,   0,   0,  10,  10,  10, 10,  0, 50
+};
+// -- ST  RIS   W0  CMB   W1  SNK  W2  DS  LK
 static const uint8_t states_scale[] = {
-   64,64, 128, 128, 128, 128, 128,128,  1, 64
+   64,64, 128, 128, 128, 128, 100,100,  1, 64
 };
 static const int8_t states_brightness[] = {
   -30,-30, 60,  60,  60,  60,  60, 60,  0, 60
@@ -59,7 +63,7 @@ static const uint8_t smoothtable[] = {
 static const int16_t pieces_rot[] = {
 	1200, -870, 0,
 	-570, 0, -1070,
-	0, 1337, 580
+	0, 1337, 420 //580
 };
 
 typedef struct {
@@ -67,7 +71,7 @@ typedef struct {
 	uint8_t state, frame, totalframes;
 	z64_light_node_t *lightnode;
 	z64_light_t light;
-	uint8_t initambient[3];
+	//uint8_t initambient[3];
 } entity_t;
 
 static void setpos(entity_t *en, float x, float y, float z){
@@ -98,18 +102,18 @@ static void rotcombine(int16_t *r, int16_t tbl, int32_t framesleft){
 	*r -= d;
 }
 
-static uint8_t interpambient(uint8_t init, uint8_t tfcolor, int16_t brightness){
-	return (uint8_t)((((int32_t)init * (int32_t)(128 - brightness)) 
-		+ ((int32_t)tfcolor * (int32_t)brightness)) >> 7);
-}
+// static uint8_t interpambient(uint8_t init, uint8_t tfcolor, int16_t brightness){
+// 	return (uint8_t)((((int32_t)init * (int32_t)(128 - brightness)) 
+// 		+ ((int32_t)tfcolor * (int32_t)brightness)) >> 7);
+// }
 
 static void init(entity_t *en, z64_global_t *global) {
 	if(en->actor.variable == 0){
 		z_lights_init_pos_0(&en->light, 0, 0, 0, TFCOLOR_R, TFCOLOR_G, TFCOLOR_B, 2000);
 		en->lightnode = z_lights_insert(global, &global->lighting, &en->light);
-		en->initambient[0] = global->lighting.ambient[0];
-		en->initambient[1] = global->lighting.ambient[1];
-		en->initambient[2] = global->lighting.ambient[2];
+		// en->initambient[0] = global->lighting.ambient[0];
+		// en->initambient[1] = global->lighting.ambient[1];
+		// en->initambient[2] = global->lighting.ambient[2];
 	}
 	en->state = 0;
 	en->frame = 0;
@@ -124,7 +128,7 @@ static void dest(entity_t *en, z64_global_t *global) {
 }
 
 static void play(entity_t *en, z64_global_t *global) {
-	float x, y, s, brightness, lastx, lasty, lasts, lastbrightness;
+	float x, y, z, s, brightness, lastx, lasty, lastz, lasts, lastbrightness;
 	int16_t variable = en->actor.variable;
 	if(variable >= 3) variable = 0;
 	uint8_t state = en->state;
@@ -135,10 +139,12 @@ static void play(entity_t *en, z64_global_t *global) {
 	//Position, Scale, Brightness
 	lastx = (float)states_lowpieces_x[state];
 	lasty = (float)states_lowpieces_y[state];
+	lastz = (float)states_z[state];
 	lasts = (float)states_scale[state];
 	lastbrightness = (float)states_brightness[state];
 	x = (float)states_lowpieces_x[state+1]; //End of current state
 	y = (float)states_lowpieces_y[state+1];
+	z = (float)states_z[state+1];
 	s = (float)states_scale[state+1];
 	brightness = (float)states_brightness[state+1];
 	if(variable == TRIFORCE_COURAGE){
@@ -163,10 +169,10 @@ static void play(entity_t *en, z64_global_t *global) {
 	}
 	x = (x - lastx) * m + lastx;
 	y = (y - lasty) * m + lasty;
+	z = (z - lastz) * m + lastz;
 	s = (s - lasts) * m + lasts;
 	brightness = (brightness - lastbrightness) * m + lastbrightness;
 	if(y < 40.0f || brightness < 0.0f) brightness = 0.0f;
-	float z = (state == STATE_LINK) ? 50.0f : 0.0f;
 	setpos(en, x, y, z);
 	actor_set_scale(&en->actor, s * 2.5f * 0.0078125f); //1/128
 	if(variable == 0){
@@ -174,17 +180,17 @@ static void play(entity_t *en, z64_global_t *global) {
 		// global->lighting.ambient[0] = 255; //interpambient(en->initambient[0], TFCOLOR_R, b16);
 		// global->lighting.ambient[1] = 0; //interpambient(en->initambient[1], TFCOLOR_G, b16);
 		// global->lighting.ambient[2] = 0; //interpambient(en->initambient[2], TFCOLOR_B, b16);
-		GlobalContext_Env_t *galias = (GlobalContext_Env_t*)global;
+		// GlobalContext_Env_t *galias = (GlobalContext_Env_t*)global;
 		// if(galias->envCtx.numLightSettings > 0){
 		// 	galias->envCtx.lightSettingsList[0].ambientClrR = 255;
 		// 	galias->envCtx.lightSettingsList[0].ambientClrG = 0;
 		// 	galias->envCtx.lightSettingsList[0].ambientClrB = 0;
 		// }
-		galias->envCtx.screenfadeEnable = 1;
-		galias->envCtx.screenfadeColor[0] = TFCOLOR_R;
-		galias->envCtx.screenfadeColor[1] = TFCOLOR_G;
-		galias->envCtx.screenfadeColor[2] = TFCOLOR_B;
-		galias->envCtx.screenfadeColor[3] = b16 >> 2;
+		// galias->envCtx.screenfadeEnable = 1;
+		// galias->envCtx.screenfadeColor[0] = TFCOLOR_R;
+		// galias->envCtx.screenfadeColor[1] = TFCOLOR_G;
+		// galias->envCtx.screenfadeColor[2] = TFCOLOR_B;
+		// galias->envCtx.screenfadeColor[3] = b16 >> 2;
 		en->light.lightn.light2.intensity = b16 << 4;
 	}
 	//Rotation
