@@ -47,7 +47,7 @@ static const uint8_t states_lowpieces_x[] = {
 	0, 0,  25,  25,  12,  12,  10, 10, 10,  6
 };
 static const uint8_t states_z[] = {
-	0, 0,   0,   0,  10,  10,  10, 10,  0, 50
+	0, 0,   0,   0,  13,  13,  13, 13,  0, 50
 };
 // -- ST  RIS   W0  CMB   W1  SNK  W2  DS  LK
 static const uint8_t states_scale[] = {
@@ -62,8 +62,8 @@ static const uint8_t smoothtable[] = {
 };
 static const int16_t pieces_rot[] = {
 	1200, -870, 0,
-	-570, 0, -1070,
-	0, 1337, 420 //580
+	-580, 0, 1107,
+	0, 1337, 420
 };
 
 typedef struct {

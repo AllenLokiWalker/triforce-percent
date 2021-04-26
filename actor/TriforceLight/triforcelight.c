@@ -6,11 +6,13 @@
 
 #define OPEN_DELAY 60
 #define ANIM_LEN 50
+#define DISAPPEAR_FRAME 380
 
 typedef struct {
 	z64_actor_t actor;
 	z64_skelanime_t skelanime;
-	u8 state, frame;
+	u8 state;
+	u16 frame;
 } entity_t;
 
 static void init(entity_t *en, z64_global_t *global) {
@@ -33,15 +35,19 @@ static void play(entity_t *en, z64_global_t *global) {
 		en->state = 1;
 	}else if(en->frame == OPEN_DELAY + ANIM_LEN - 1){
 		en->state = 2;
+	}else if(en->frame == DISAPPEAR_FRAME){
+		en->state = 3;
 	}
-	if(en->state < 2) ++en->frame;
+	if(en->state < 3) ++en->frame;
 }
 
 static void draw(entity_t *en, z64_global_t *global) {
 	if(en->state < 2){
 		z_skelanime_update_anim(&en->skelanime);
 	}
-	z_skelanime_draw(global, true, &en->actor, &en->skelanime, NULL, NULL);
+	if(en->state < 3){
+		z_skelanime_draw(global, true, &en->actor, &en->skelanime, NULL, NULL);
+	}
 }
 
 const z64_actor_init_t init_vars = {

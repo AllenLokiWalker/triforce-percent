@@ -65,6 +65,7 @@ typedef struct {
     //3: same as 2 but 2/3 speed and -8 morph
     //4: same as 3 but looping
     //5: once, 2/3 speed, -8 morph, sets moveFlags to 0x1C
+    //6: once, full speed, flags 0x9C
     //
     //If negative (-1), calls func. If zero, does nothing.
     /* 0x00 */ s8 type; 
@@ -93,7 +94,7 @@ link_action_entry_t linkActionInitPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LI
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL},
     //Patched
-    {4, &linkAnimPatchTable[0]},
+    {3, &linkAnimPatchTable[0]},
     {7, &testAnimHeader}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
