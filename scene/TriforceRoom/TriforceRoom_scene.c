@@ -24,7 +24,7 @@ SCmdSpawnList TriforceRoom_scene_header00_cmd06 = { 0x00, 1, (u32)&TriforceRoom_
 
 SCmdSkyboxSettings TriforceRoom_scene_header00_cmd07 = { 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 };
 
-SCmdLightSettingList TriforceRoom_scene_header00_cmd08 = { 0x0F, 1, (u32)&TriforceRoom_scene_header00_lightSettings };
+SCmdLightSettingList TriforceRoom_scene_header00_cmd08 = { 0x0F, 2, (u32)&TriforceRoom_scene_header00_lightSettings };
 
 SCmdCutsceneData TriforceRoom_scene_header00_cmd09 = { 0x17, 0x00, (u32)&TriforceRoom_scene_header00_cutscene };
 
@@ -43,8 +43,9 @@ EntranceEntry TriforceRoom_scene_header00_entranceList[1] = {
 	{ 0, 0 },
 };
 
-LightSettings TriforceRoom_scene_header00_lightSettings[1] = {
-	{ 57, 64, 117, 73, 73, 73, 134, 130, 219, 183, 183, 183, 70, 107, 133, 196, 182, 175, 0x07e1, 12800 },
+LightSettings TriforceRoom_scene_header00_lightSettings[2] = {
+	{ 57, 64, 117, 73, 73, 73, 134, 130, 219, 183, 183, 183, 70, 107, 133, 125, 124, 167, 0x7bcf, 12800 },
+	{ 60, 62, 143, 73, 73, 73, 223, 217, 161, 183, 183, 183, 69, 103, 133, 192, 176, 101, 0x3fa2, 12800 },
 };
 
 u32 TriforceRoom_polygonTypes[] = {
@@ -110,7 +111,14 @@ Vec3s TriforceRoom_vertices[26] = {
 CollisionHeader TriforceRoom_collisionHeader = { -275, -50, -56, 275, 0, 649, 26, TriforceRoom_vertices, 24, TriforceRoom_polygons, TriforceRoom_polygonTypes, 0, 0, 0 };
 
 s32 TriforceRoom_scene_header00_cutscene[] = {
-	CS_BEGIN_CUTSCENE(9, 500),
+	CS_BEGIN_CUTSCENE(13, 500),
+	CS_TEXT_LIST(1),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0900, 445, 500, 0x0000, 0x0000, 0x0000),
+	CS_LIGHTING_LIST(2),
+		CS_LIGHTING(2, 88, 89, 0, 0, 0, 0, 0, 0, 0, 0),
+		CS_LIGHTING(1, 392, 393, 0, 0, 0, 0, 0, 0, 0, 0),
+	CS_SCENE_TRANS_FX(1, 377, 382),
+	CS_SCENE_TRANS_FX(5, 382, 389),
 	CS_CAM_POS_LIST(0, 266),
 		CS_CAM_POS(0, 0, 0, 0x42960000, 481, -41, 349, 0),
 		CS_CAM_POS(0, 0, 0, 0x42960000, 281, -43, 349, 0),
@@ -137,8 +145,8 @@ s32 TriforceRoom_scene_header00_cutscene[] = {
 		CS_CAM_POS(0, 0, 0, 0x42700000, 36, 52, 34, 0),
 		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
 	CS_CAM_POS_LIST(407, 492),
-		CS_CAM_POS(0, 0, 0, 0x428c0000, 0, -44, 823, 0),
-		CS_CAM_POS(0, 0, 0, 0x428c0000, 0, -44, 517, 0),
+		CS_CAM_POS(0, 0, 0, 0x428c0000, 0, -44, 782, 0),
+		CS_CAM_POS(0, 0, 0, 0x428c0000, 0, -44, 507, 0),
 		CS_CAM_POS(0, 0, 0, 0x428c0000, 0, -44, 356, 0),
 		CS_CAM_POS(0, 0, 0, 0x42340000, 0, 78, 287, 0),
 		CS_CAM_POS(0, 0, 0, 0x42200000, 0, 89, 153, 0),
@@ -170,19 +178,18 @@ s32 TriforceRoom_scene_header00_cutscene[] = {
 		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 0, 54, 37, 0),
 		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
 	CS_CAM_FOCUS_POINT_LIST(407, 511),
-		CS_CAM_FOCUS_POINT(0, 0, 20, 0x428c0000, 0, -44, 756, 0),
-		CS_CAM_FOCUS_POINT(0, 0, 20, 0x428c0000, 0, -39, 451, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x428c0000, 0, -44, 715, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x428c0000, 0, -39, 441, 0),
 		CS_CAM_FOCUS_POINT(0, 0, 12, 0x428c0000, 0, -39, 289, 0),
 		CS_CAM_FOCUS_POINT(0, 0, 7, 0x42340000, 0, 59, 221, 0),
 		CS_CAM_FOCUS_POINT(0, 0, 5, 0x42200000, 0, 71, 86, 0),
 		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42200000, 0, 80, -62, 0),
 		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
-	CS_PLAYER_ACTION_LIST(7),
+	CS_PLAYER_ACTION_LIST(6),
 		CS_PLAYER_ACTION(0x0001, 0, 50, 0x0, 0xffff8000, 0x0, 0, -49, 442, 0, 0, 47, 0, 0, 0),
 		CS_PLAYER_ACTION(0x0034, 50, 90, 0x0, 0xffff8000, 0x0, 0, 0, 47, 0, 0, 55, 0, 0, 0),
 		CS_PLAYER_ACTION(0x004B, 90, 335, 0x0, 0xffff8000, 0x0, 0, 0, 55, 0, 0, 55, 0, 0, 0),
-		CS_PLAYER_ACTION(0x0005, 335, 340, 0x0, 0xffff8000, 0x0, 0, 0, 55, 0, 0, 55, 0, 0, 0),
-		CS_PLAYER_ACTION(0x004E, 340, 410, 0x0, 0xffff8000, 0x0, 0, 0, 55, 0, 0, 55, 0, 0, 0),
+		CS_PLAYER_ACTION(0x004E, 335, 410, 0x0, 0xffff8000, 0x0, 0, 0, 55, 0, 0, 55, 0, 0, 0),
 		CS_PLAYER_ACTION(0x0007, 410, 420, 0x0, 0xffff8000, 0x0, 0, 0, 55, 0, 0, 55, 0, 0, 0),
 		CS_PLAYER_ACTION(0x0008, 420, 540, 0x0, 0x0, 0x0, 0, 0, 55, 0, 0, 55, 0, 0, 0),
 	CS_END(),

@@ -20,7 +20,7 @@ message.o: message.h ../text/messages.c
 
 ../text/build_messages_file.o: ../text/message_data_fmt.h ../text/messages.c
 
-anime.o: anime.h
+anime.o: anime.h ../anim/anim.c
 
 LINK_OBJS = \
 	statics.o \

@@ -13,7 +13,7 @@ extern SCmdEndMarker TriforceRoom_scene_header00_cmd10;
 extern ActorEntry TriforceRoom_scene_header00_startPositionList[];
 extern RomFile TriforceRoom_scene_roomList[];
 extern EntranceEntry TriforceRoom_scene_header00_entranceList[1];
-extern LightSettings TriforceRoom_scene_header00_lightSettings[1];
+extern LightSettings TriforceRoom_scene_header00_lightSettings[2];
 extern u32 TriforceRoom_polygonTypes[];
 extern CollisionPoly TriforceRoom_polygons[];
 extern Vec3s TriforceRoom_vertices[26];

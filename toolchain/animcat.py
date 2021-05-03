@@ -36,9 +36,13 @@ with open('anim.txt', 'r') as txtfile:
         l = l.strip()
         if not l: continue
         if l[0] == '#': continue
-        binfile = next(filter(lambda x: l in x, binfiles), None)
-        if binfile is None:
+        matchfiles = list(filter(lambda x: l in x, binfiles))
+        if len(matchfiles) == 0:
             raise RuntimeError('Could not find animation matching ' + l)
+        if len(matchfiles) > 1:
+            raise RuntimeError('Multiple animations match ' + l 
+                + ', maybe you did not delete the old one when changing animation length')
+        binfile = matchfiles[0]
         frames = binfile[binfile.rindex('_')+1:-4]
         if not frames.isnumeric():
             raise RuntimeError('Error with anim frame count ' + frames)
