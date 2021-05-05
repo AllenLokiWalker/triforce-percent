@@ -9,7 +9,8 @@ default: $(OUTROM)
 	
 $(OUTROM): $(ACTOR)
 	cp $(ORIGROM) $(OUTROM)
-	dd if=$(ACTOR) of=$(OUTROM) conv=notrunc bs=1 skip=$((0xC85010))
+	dd if=/dev/zero of=$(OUTROM) conv=notrunc bs=1 seek=$$((0xC85010)) count=$$((0x8C0))
+	dd if=$(ACTOR) of=$(OUTROM) conv=notrunc bs=1 seek=$$((0xC85010))
 
 clean:
 	find $(BUILDDIR) -mindepth 1 -maxdepth 1 ! -name 'oot_1.0U_comp.z64' -exec rm -rf {} +

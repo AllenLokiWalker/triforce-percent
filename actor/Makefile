@@ -1,5 +1,4 @@
 SUBDIRS = \
-ACEShortcut/ \
 TriforcePiece/ \
 TriforceChest/ \
 TriforceLight/ \

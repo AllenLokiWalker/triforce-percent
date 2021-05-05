@@ -11,15 +11,15 @@ endif
 
 CONTENTS = actor/ anim/ music/ scene/ textures/
 SUBDIRS = toolchain/ $(CONTENTS) loader/ statics/ bootstrap/ rom-setup/
-DUMPS = build-shortcut/project.zzrpl build-romhack/project.zzrpl
+DUMP = build-romhack/project.zzrpl
 
 .PHONY: default clean $(SUBDIRS)
 
 default clean: $(SUBDIRS)
 
-actor/: toolchain/ $(DUMPS) statics/
+actor/: toolchain/ $(DUMP) statics/
 
-scene/: $(DUMPS)
+scene/: $(DUMP)
 
 statics/: anim/ loader/
 

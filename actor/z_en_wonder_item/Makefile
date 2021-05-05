@@ -16,7 +16,7 @@ default: $(PROGRAM).ovl
 $(PROGRAM).ovl: $(PARTS)
 	$(LD) -o $(PROGRAM).elf $(PARTS) $(LDFLAGS)
 	$(NOVL) $(NOVLFLAGS) $(PROGRAM).elf
-	$(YAZ0) $(PROGRAM).zovl $(PROGRAM).yaz0
+	$(YAZ0) $(PROGRAM).zovl > $(PROGRAM).yaz0
 
 clean:
 	rm -fv $(PROGRAM).elf $(OVLOUT) $(PARTS)

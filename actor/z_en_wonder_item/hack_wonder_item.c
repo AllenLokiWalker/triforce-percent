@@ -52,3 +52,5 @@ const z64_actor_init_t init_vars = {
 	.main = HackWonderItem_Update,
 	.draw = NULL
 };
+
+const char padding2[0x160] = {};
