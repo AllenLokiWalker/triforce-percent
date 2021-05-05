@@ -1,0 +1,11 @@
+dmadata entry: 8530
+VROM: DE8C50 - DE98A0
+ROM: C85010 - C858D0
+VRAM: 0x80A66210
+actor 274
+B70: header
+text: 0 to A70
+data: A70 + D0 = B40
+rodata: B40 + 30 = B70
+reloc entries: 0x32
+looks like start of initvars: A9C

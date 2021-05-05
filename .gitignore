@@ -9,3 +9,5 @@ local.mk
 *.map
 *.xdat
 *.blend1
+
+toolchain/yaz0/yaz0_encode

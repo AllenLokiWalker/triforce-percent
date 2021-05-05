@@ -1,15 +1,15 @@
 .PHONY: default clean
 
 BUILDDIR = ../../build-shortcut
-BUILDRTL = $(BUILDDIR)/oot_build.rtl
+ACTOR = ../../actor/z_en_wonder_item/hack_wonder_item.yaz0
+ORIGROM = $(BUILDDIR)/oot_1.0U_comp.z64
+OUTROM = $(BUILDDIR)/tf-shortcut.z64
 
-default: $(BUILDDIR)/tf-shortcut.z64
+default: $(OUTROM)
 	
-$(BUILDDIR)/tf-shortcut.z64: $(BUILDDIR)/update.txt ../../toolchain/zzrtl/oot_build.rtl
-	cp ../../toolchain/zzrtl/oot_build.rtl $(BUILDRTL)
-	sed -i 's/build.z64/tf-shortcut.z64/g' $(BUILDRTL)
-	sed -i 's/mods(rom);//g' $(BUILDRTL)
-	$(ZZRTL) $(BUILDRTL)
+$(OUTROM): $(ACTOR)
+	cp $(ORIGROM) $(OUTROM)
+	dd if=$(ACTOR) of=$(OUTROM) conv=notrunc bs=1 skip=$((0xC85010))
 
 clean:
-	rm -rf $(BUILDDIR)/tf-shortcut.z64
+	find $(BUILDDIR) -mindepth 1 -maxdepth 1 ! -name 'oot_1.0U_comp.z64' -exec rm -rf {} +

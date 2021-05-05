@@ -38,4 +38,5 @@ $(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt $(LOCALBINFILES) ../../toolch
 	$(OC) $(OCFLAGS) $< $@
 
 clean:
-	rm -rf *.o *.elf *.bin $(BUILDDIR)/tf-romhack.z64 $(BUILDDIR)/*.bin
+	rm -rf *.o *.elf *.bin
+	find $(BUILDDIR) -mindepth 1 -maxdepth 1 ! -name 'oot_1.0U_uncomp.z64' -exec rm -rf {} +

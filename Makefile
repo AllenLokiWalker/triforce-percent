@@ -5,7 +5,7 @@ endif
 include local.mk
 export
 
-ifeq ("$(and $(wildcard build-shortcut/oot_1.0U_uncomp.z64), $(wildcard build-romhack/oot_1.0U_uncomp.z64))","")
+ifeq ("$(and $(wildcard build-shortcut/oot_1.0U_comp.z64), $(wildcard build-romhack/oot_1.0U_uncomp.z64))","")
     $(error Original ROMs not found, please read README.md)
 endif
 
@@ -15,12 +15,9 @@ DUMPS = build-shortcut/project.zzrpl build-romhack/project.zzrpl
 
 .PHONY: default clean $(SUBDIRS)
 
-default: $(SUBDIRS)
+default clean: $(SUBDIRS)
 
-clean: $(SUBDIRS)
-	find build-romhack/ build-shortcut/ -mindepth 1 -maxdepth 1 ! -name 'oot_1.0U_uncomp.z64' -exec rm -rf {} +
-
-actor/: $(DUMPS) statics/
+actor/: toolchain/ $(DUMPS) statics/
 
 scene/: $(DUMPS)
 
