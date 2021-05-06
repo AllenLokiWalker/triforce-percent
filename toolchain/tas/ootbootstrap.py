@@ -105,9 +105,10 @@ def ootbootstraprun(bs2data, bs4data, maindata):
     bs4loc = 0x8011CBC0 #must be within 0x8000 of padmgr
     kargaroc_loader_entry = 0x80400000
     ret = bytearray()
-    slingshot_method = True
-    if slingshot_method:
-        ret.extend(walk_into_bs1(jrraaddr) * 240) #frames of walking
+    slingshot_or_shortcut = True
+    if slingshot_or_shortcut:
+        ret.extend(walk_into_bs1(jrraaddr) * 120) #frames of walking
+        ret.extend(holdr_nop(jrraaddr) * 3)
         ret.extend(bootstrapper1and3(1, True, bs2data, bs2loc - bs1s1, jrraaddr))
     else:
         ret.extend(unpause(jstackrestore) * 3)

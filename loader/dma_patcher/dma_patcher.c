@@ -56,7 +56,7 @@ void DmaPatcher_PatchAudio_Post();
 
 __attribute__((section(".start"))) void DmaPatcher_Init()
 {
-    //Debugger_Printf("DmaPatcher loaded");
+    Debugger_Printf("DmaPatcher loaded");
     s32 i = __osDisableInt();
     patcher.npatches = 0;
     // Patch DmaMgr_ProcessMsg to jump to DmaPatcher_ProcessMsg

@@ -8,4 +8,5 @@ text: 0 to A70
 data: A70 + D0 = B40
 rodata: B40 + 30 = B70
 reloc entries: 0x32
-looks like start of initvars: A9C
+start of initvars: A9C
+end of file: C50

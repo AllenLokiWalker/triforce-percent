@@ -11,7 +11,7 @@ During ACE context, s1 is global context 0x801C84A0*/
 lui   $v0,      %hi(0x801C84A0)
 addiu $v0, $v0, %lo(0x801C84A0)
 beq   $v0, $s1, in_ace_context
-lui   $gp,      0x0C00 /* First instruction of cache time below */
+lui   $gp,      0x0C00 /* First instruction of Cache Time below */
 
 /* If not in ACE context, return */
 jr $ra
@@ -19,7 +19,7 @@ lw $v0, -0x20($sp)
 
 in_ace_context:
 /*
-Cache time!
+Cache Time!
 Setting the 6 instructions at 800A2630 to:
 jal 0x80003440 (osWritebackDCache) = 0C000D10
 addiu $a1, $zero, 0x7FFF = 24057FFF
@@ -54,40 +54,44 @@ lui   $gp, 0x8040
 lui   $v0, %hi(0x801C800C)
 sw    $gp, %lo(0x801C800C)($v0)
 
-/*
-Turn off ACE
-Write jr $ra; instruction 0x03E00008 
-to seed rotation 0x801FC000
-Except currently using 0x801C8004 for "seed rotation"
-*/
+/* Stop ACE and return */
+
+/* Old shortcut via fake seed rotation 0x801C8004:
+Write jr $ra; instruction 0x03E00008
 lui   $gp, 0x03E0
 addiu $gp, $gp, 0x0008
-/*Real live seed rotation address
-lui   $v0, %hi(0x801FC000)
-sw    $gp, %lo(0x801FC000)($v0)
-Fake seed rotation address for shortcut:*/
 lui   $v0, %hi(0x801C8004)
 sw    $gp, %lo(0x801C8004)($v0)
-/*
-Write 0002 to 801f73c6 to fix the SRM'd wonder item
-and turn off the ACE
-(this address has been changed to branch to Link's rotation,
-this will restore the original code)
+Normal return (got here via jal)
+jr    $ra
+lw    $v0, -0x20($sp) */
 
+/* Old real live version via seed rotation 0x801FC000:
+Write jr $ra; instruction 0x03E00008
+lui   $gp, 0x03E0
+addiu $gp, $gp, 0x0008
+lui   $v0, %hi(0x801FC000)
+sw    $gp, %lo(0x801FC000)($v0) 
+Normal return (got here via jal)
+jr    $ra
+lw    $v0, -0x20($sp) */
+
+/* New shortcut:
+Write 0xA5 to global->lighting.pad_00_[1] to signal ACE done */
+addiu $gp, $zero, 0x00A5
+lui   $v0, %hi(0x801C84A0+0x7A8+0xF)
+sb    $gp, %lo(0x801C84A0+0x7A8+0xF)($v0) 
+/* Normal return (got here via jal) */
+jr    $ra
+lw    $v0, -0x20($sp)
+
+/* New real live version via wonder item:
+Write 0002 to 801f73c6. This was changed via SRM to a branch
+to Link's rotation, this restores the original code.
 addiu $gp, $zero, 0x0002
 lui   $v0, %hi(0x801f73c6)
-sh    $gp, %lo(0x801f73c6)($v0)
-*/
-/* 
-Jump back to safety
-Old version from slingshot:
- */
-jr $ra
-/*
-New version from wonder item: jump to the end of a function which
-restores the stack correctly (could do the restore manually,
-but this saves some instructions)
+sh    $gp, %lo(0x801f73c6)($v0) 
+Jump to the end of a function which restores the stack correctly
+(could do the restore manually, but this saves some instructions)
 j 0x80020850
-*/
-/*This is for both versions*/
-lw $v0, -0x20($sp)
+lw $v0, -0x20($sp) */
