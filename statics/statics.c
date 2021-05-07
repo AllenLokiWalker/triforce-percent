@@ -7,6 +7,8 @@
 #include "message.h"
 #include "anime.h"
 
+static u8 sIsLiveRun = 0;
+
 void Statics_ApplyCodePatches(){
     static u8 sCodePatched = 0;
     if(sCodePatched) return;
@@ -19,7 +21,7 @@ void Statics_ApplyCodePatches(){
     //
 	Statics_InterfaceCodePatches();
     Statics_MessageCodePatches();
-    Statics_AnimeCodePatches();
+    Statics_AnimeCodePatches(sIsLiveRun);
     osWritebackDCache(0, 0x4000);
     osInvalICache(0, 0x4000);
     sCodePatched = 1;
@@ -101,6 +103,7 @@ void Statics_Update(){
 
 __attribute__((section(".start"))) void Statics_Init(){
     fp_precmd = Statics_Update;
+    sIsLiveRun = 1;
 }
 
 void Statics_TimeTravel(){

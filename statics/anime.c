@@ -165,7 +165,7 @@ void Statics_Player_Init(){
 extern u32 anim_START;
 static DmaRequest animFileInfo = { 0xDEADBEEF, &anim_START, 0x04206969, 0, 0, 0, 0 };
 
-void Statics_AnimeCodePatches(){
+void Statics_AnimeCodePatches(u8 isLiveRun){
     //Patch Link animation loader
     *( (u32*)AnimationContext_SetLoadFrame   ) = JUMPINSTR(Patched_SetLoadFrame);
 	*(((u32*)AnimationContext_SetLoadFrame)+1) = 0;
@@ -177,9 +177,10 @@ void Statics_AnimeCodePatches(){
 	// *(((u32*)Animation_GetLength2   )+1) = 0x34050000; //ori a1, zero, 0x0000
     // *( (u32*)Animation_GetLastFrame2   ) = JUMPINSTR(Patched_GetLengthOrLastFrame);
 	// *(((u32*)Animation_GetLastFrame2)+1) = 0x34050001; //ori a1, zero, 0x0001
-    //Load animations from extra ROM file to RAM
-    //TODO romhack only
-    z_file_load(&animFileInfo);
+    if(!isLiveRun){
+        //Load animations from extra ROM file to RAM
+        z_file_load(&animFileInfo);
+    }
 }
 
 typedef s32 (*Player_SetUpCutscene_t)(z64_global_t *, z64_actor_t *, s32);

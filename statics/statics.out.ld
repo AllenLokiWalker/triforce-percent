@@ -1,9 +1,9 @@
 statics_START = 0x804043b0;
 Statics_Init = 0x804043b0;
-Statics_Update = 0x8040443c;
-Statics_TimeTravel = 0x80404628;
-Statics_Player_Init = 0x80405054;
-csActionToLinkActionPatchTable = 0x80405308;
-linkActionInitPatchTable = 0x80405730;
-linkActionRunPatchTable = 0x80405368;
-statics_END = 0x80405b20;
+Statics_Update = 0x80404440;
+Statics_TimeTravel = 0x8040462c;
+Statics_Player_Init = 0x80405058;
+csActionToLinkActionPatchTable = 0x80405318;
+linkActionInitPatchTable = 0x80405740;
+linkActionRunPatchTable = 0x80405378;
+statics_END = 0x80405b30;
