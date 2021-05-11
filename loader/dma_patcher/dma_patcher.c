@@ -156,6 +156,14 @@ void DmaPatcher_PatchAudio_Post()
     ".set at\n .set reorder");
 }
 
+void DmaPatcher_CopyRAM(void* dest, const void* source, u32 size)
+{
+    osSetThreadPri(NULL, 0x0A);
+    osYieldThread();
+    z_bcopy(source, dest, size);
+    osSetThreadPri(NULL, 0x10);
+}
+
 void DmaPatcher_ProcessMsg(DmaRequest* req)
 {
     u32 vrom = req->vromAddr;
@@ -164,8 +172,9 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
     u32 romStart, vromSize, copyStart, p;
     DmaEntry* iter = gDmaDataTable;
     if(vrom >= 0x04000000 && vrom < 0x04800000){
-        //Debugger_Printf("DMA %08X VROM RAM map", vrom);
-        _memcpy(ram, (void*)(0x80000000 + ((s32)vrom - 0x04000000)), size);
+        //New file not in ROM provided as injection
+        Debugger_Printf("DMA %08X VROM RAM map", vrom);
+        DmaPatcher_CopyRAM(ram, (const void*)(0x80000000 + ((s32)vrom - 0x04000000)), size);
         return;
     }
     while (iter->vromEnd) {
@@ -181,9 +190,9 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
             romStart = iter->romStart;
             copyStart = romStart + (vrom - iter->vromStart);
             if(romStart & 0x80000000){
-                //The file is actually in RAM, copy it
-                _memcpy(ram, (void*)copyStart, size);
-                Debugger_Printf("DMA @%08X replaced file", vrom);
+                //Replaced whole existing ROM file with injection
+                Debugger_Printf("DMA @%08X replacing file", vrom);
+                DmaPatcher_CopyRAM(ram, (const void*)copyStart, size);
                 return;
             }
             if (iter->romEnd == 0) {

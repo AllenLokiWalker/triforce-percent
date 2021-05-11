@@ -9,6 +9,15 @@
 
 static u8 sIsLiveRun = 0;
 
+/*
+void Statics_ActorVarsFail(z64_actor_init_t* actor_init){
+    *((u32*)0x807FFFF0) = actor_init->instance_size;
+    *((u32*)0x807FFFF4) = (u32)actor_init->init;
+    *((u32*)0x807FFFF8) = (u32)actor_init->main;
+    *((u32*)0x807FFFFC) = (u32)actor_init->draw;
+}
+*/
+
 void Statics_ApplyCodePatches(){
     static u8 sCodePatched = 0;
     if(sCodePatched) return;
@@ -18,6 +27,12 @@ void Statics_ApplyCodePatches(){
     //WRITE 8 0x800EFD8C 0x00 0x9C 0x02 0x00 0x02 0x00 0x01 0x30
     *((u32*)0x800EFD8C) = 0x009C0200;
     *((u32*)0x800EFD90) = 0x020002E4;
+    //TODO crash if actor fails to load, so we can see which part is failing
+    //*((u32*)0x800251F4) = 0x8C000001; //lw $zero, 0x0001($zero) (crash)
+    //*((u32*)0x8002529C) = 0x8C000001;
+    //*((u32*)0x800252C4) = 0x8C000001; <- it's this one
+    //*((u32*)0x800252BC) = JALINSTR(Statics_ActorVarsFail);
+    //*((u32*)0x800252C0) = 0x00032025; //or a0, $zero, v0
     //
 	Statics_InterfaceCodePatches();
     Statics_MessageCodePatches();

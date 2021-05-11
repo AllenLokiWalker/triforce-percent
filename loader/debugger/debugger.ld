@@ -4,10 +4,13 @@ OUTPUT_ARCH (mips)
 
 INCLUDE common/z_functions.ld
 INCLUDE fast_loader/fast_loader.out.ld
+INCLUDE ../statics/tables.ld
 
 sExceptionNames = 0x800FF320;
 __osFaultedThread = 0x80006344;
 padmgrth = 0x8011D580;
+
+gObjectContext = 0x801D9C44;
 
 ENTRY(Debugger_Init);
 

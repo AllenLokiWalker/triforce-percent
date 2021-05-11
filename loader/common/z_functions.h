@@ -15,6 +15,7 @@ extern void osWritebackDCache(void* addr, s32 size); //80003440
 //Set addr to 0 and size to >= 0x4000 to invalidate the whole cache.
 extern void osInvalICache(void* addr, s32 size); //800041A0
 
+extern void z_bcopy(const void *src, void *dst, u32 size); //80004DC0
 extern void bzero(void* addr, s32 size); //80002E80
 extern s32 _sprintf(char* dest, const char* format, ...); //800CE7B4
 
@@ -62,6 +63,7 @@ struct OSThread_s
 // msg = NULL, to_block = 1
 extern void osRecvMesg(void* queue, void* msg, u32 to_block); //80002030
 extern void osSetThreadPri(OSThread* thread, OSPri pri); //80004480
+extern void osYieldThread(); //800058B0
 
 //DMA
 

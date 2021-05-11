@@ -23,4 +23,4 @@ $(PROGRAM).ovl: $(PARTS)
 	touch $(ACTORDIR)/../../update.txt
 
 clean:
-	rm -fv $(PROGRAM).elf $(OVLOUT) $(PARTS)
+	rm -fv $(PROGRAM).elf $(OVLOUT) $(PARTS) *.i *.s *.map

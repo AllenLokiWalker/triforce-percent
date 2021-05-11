@@ -3,7 +3,7 @@
 #include "lighting.h"
 
 // Actor Information
-#define OBJ_ID 4 // primary object dependency (change if needed)
+#define OBJ_ID 4
 
 #define TRIFORCE_POWER 0
 #define TRIFORCE_WISDOM 1
@@ -128,6 +128,14 @@ static void dest(entity_t *en, z64_global_t *global) {
 }
 
 static void play(entity_t *en, z64_global_t *global) {
+	/*
+	z64_save_context_t *saveCtx = (void*)Z64GL_SAVE_CONTEXT;
+	if(saveCtx->rupees >= 99){
+		saveCtx->rupees = 0;
+	}else{
+		saveCtx->rupees++;
+	}
+	*/
 	float x, y, z, s, brightness, lastx, lasty, lastz, lasts, lastbrightness;
 	int16_t variable = en->actor.variable;
 	if(variable >= 3) variable = 0;
