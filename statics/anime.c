@@ -146,13 +146,13 @@ static void *PlayerVRAMtoRAM(void *ptr){
 
 void Statics_Player_Init(){
     static u32 alreadyrun = 0;
-    if(alreadyrun) return;
-    alreadyrun = 1;
     //Patch overwrote 
     //globalCtx->shootingGalleryStatus = globalCtx->bombchuBowlingStatus = 0;
     //so we have to do that
     ((u8*)&gGlobalContext)[0x11E5C] = 0;
     ((u8*)&gGlobalContext)[0x11E5D] = 0;
+    if(alreadyrun) return;
+    alreadyrun = 1;
     //Copy original, relocated, animation tables to patch tables in statics.
     bcopy(PlayerVRAMtoRAM(csActionToLinkActionTable), csActionToLinkActionPatchTable, 
         sizeof(s8) * NUM_ORIG_CS_ACTIONS);

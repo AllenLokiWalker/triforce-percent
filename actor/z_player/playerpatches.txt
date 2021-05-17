@@ -38,6 +38,13 @@
 80844E34 addiu v1, zero, 0xFFFF
 80844E38 nop
 
+# Patch Player_UpdateCommon to jump to Statics_Player_Update
+80847114 jal Statics_Player_Update
+80847118 nop
+8084711C addiu a1, s0, 0x0000
+80847120 nop
+80847124 nop
+
 # Patch action loading functions to use patched action tables
 # These are changing from relocatable addresses to non-relocatable
 !80847B00 lui   t9,     %hi(csActionToLinkActionPatchTable)
