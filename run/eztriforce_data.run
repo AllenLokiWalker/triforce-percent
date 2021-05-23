@@ -13,6 +13,7 @@ OBJECT 5 ../actor/TriforceChest/zobj.zobj
 ACTOR 3 ../actor/TriforceChest/triforcechest.zovl
 OBJECT 16 ../actor/TriforceLight/zobj.zobj
 ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
+ACTOR 6 ../actor/BetaGreatFairy/betagreatfairy.zovl
 
 //TriforceRoom scene
 SCENE 39 ../scene/TriforceRoom/TriforceRoom_scene.zscene
@@ -21,6 +22,11 @@ WRITE 16 0x800F9F00 0x27 0x00 0x02 0x01 0x27 0x00 0x02 0x01 0x27 0x00 0x02 0x01 
 //Entrance cutscene table 0x800EFD04 entry 17 (originally Inside Jabu)
 //Entrance 0x9C, age 2, flag 0, segment offset 0x020002E4 (from 0x17 cutscene command in scene)
 WRITE 8 0x800EFD8C 0x00 0x9C 0x02 0x00 0x02 0x00 0x02 0xE4
+
+//UnicornFountain scene
+SCENE 38 ../scene/UnicornFountain/UnicornFountain_scene.zscene
+//Entrance table 0x800F9C90 entries 0xC9-CC
+WRITE 16 0x800F9FB4 0x26 0x00 0x42 0x01 0x26 0x00 0x42 0x01 0x26 0x00 0x42 0x01 0x26 0x00 0x42 0x01
 
 //Old custom text
 //PATCH 0x92F120 ../text/triforcetext.pat

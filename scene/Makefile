@@ -1,11 +1,16 @@
 MAKESUBDIRS = spot07_scene
 OUTFILES = \
 	TriforceRoom/TriforceRoom_scene.zscene \
-	TriforceRoom/TriforceRoom_room_0.zmap
+	TriforceRoom/TriforceRoom_room_0.zmap \
+	UnicornFountain/UnicornFountain_scene.zscene \
+	UnicornFountain/UnicornFountain_room_0.zmap
 ROOMROMGOAWAY = \
 	-D_TriforceRoom_room_0SegmentRomStart=0xDEADBEEF \
-	-D_TriforceRoom_room_0SegmentRomEnd=0xDEADBEEF
+	-D_TriforceRoom_room_0SegmentRomEnd=0xDEADBEEF \
+	-D_UnicornFountain_room_0SegmentRomStart=0xDEADBEEF \
+	-D_UnicornFountain_room_0SegmentRomEnd=0xDEADBEEF
 TRIFORCEROOMDIR = ../build-romhack/scene/39
+UNICORNFOUNTAINDIR = ../build-romhack/scene/38
 
 .PHONY: default clean $(MAKESUBDIRS)
 
@@ -15,6 +20,9 @@ default: $(OUTFILES)
 	cp TriforceRoom/TriforceRoom_scene.zscene $(TRIFORCEROOMDIR)/scene.zscene
 	cp TriforceRoom/TriforceRoom_room_0.zmap $(TRIFORCEROOMDIR)/room_0.zmap
 	cp TriforceRoom/conf.txt $(TRIFORCEROOMDIR)/conf.txt
+	cp UnicornFountain/UnicornFountain_scene.zscene $(UNICORNFOUNTAINDIR)/scene.zscene
+	cp UnicornFountain/UnicornFountain_room_0.zmap $(UNICORNFOUNTAINDIR)/room_0.zmap
+	cp UnicornFountain/conf.txt $(TRIFORCEROOMDIR)/conf.txt
 
 $(MAKESUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)

@@ -1,4 +1,5 @@
 SUBDIRS = \
+BetaGreatFairy/ \
 TriforcePiece/ \
 TriforceChest/ \
 TriforceLight/ \
