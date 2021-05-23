@@ -22,7 +22,8 @@ default: $(OUTFILES)
 	cp TriforceRoom/conf.txt $(TRIFORCEROOMDIR)/conf.txt
 	cp UnicornFountain/UnicornFountain_scene.zscene $(UNICORNFOUNTAINDIR)/scene.zscene
 	cp UnicornFountain/UnicornFountain_room_0.zmap $(UNICORNFOUNTAINDIR)/room_0.zmap
-	cp UnicornFountain/conf.txt $(TRIFORCEROOMDIR)/conf.txt
+	cp UnicornFountain/title.png $(UNICORNFOUNTAINDIR)/title.png
+	cp UnicornFountain/conf.txt $(UNICORNFOUNTAINDIR)/conf.txt
 
 $(MAKESUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)

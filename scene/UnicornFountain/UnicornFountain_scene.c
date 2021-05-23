@@ -42,7 +42,7 @@ EntranceEntry UnicornFountain_scene_header00_entranceList[1] = {
 };
 
 LightSettings UnicornFountain_scene_header00_lightSettings[1] = {
-	{ 62, 99, 143, 73, 73, 73, 77, 36, 219, 183, 183, 183, 15, 133, 102, 184, 177, 196, 0x07e1, 12800 },
+	{ 62, 99, 143, 73, 73, 73, 219, 216, 170, 183, 183, 183, 21, 104, 133, 184, 177, 196, 0x07e1, 12800 },
 };
 
 u32 UnicornFountain_polygonTypes[] = {
