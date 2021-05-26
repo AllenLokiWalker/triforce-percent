@@ -7,8 +7,8 @@ extern SCmdObjectList UnicornFountain_room_0_header00_cmd05;
 extern SCmdActorList UnicornFountain_room_0_header00_cmd06;
 extern SCmdEndMarker UnicornFountain_room_0_header00_cmd07;
 
-extern s16 UnicornFountain_room_0_header00_objectList[1];
-extern ActorEntry UnicornFountain_room_0_header00_actorList[1];
+extern s16 UnicornFountain_room_0_header00_objectList[2];
+extern ActorEntry UnicornFountain_room_0_header00_actorList[3];
 extern MeshHeader0 UnicornFountain_room_0_meshHeader;
 extern MeshEntry0 UnicornFountain_room_0_meshDListEntry[1];
 extern Gfx UnicornFountain_room_0_entry_0_opaque[];

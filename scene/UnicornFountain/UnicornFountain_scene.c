@@ -26,7 +26,9 @@ SCmdSkyboxSettings UnicornFountain_scene_header00_cmd07 = { 0x11, 0x00, 0x00, 0x
 
 SCmdLightSettingList UnicornFountain_scene_header00_cmd08 = { 0x0F, 1, (u32)&UnicornFountain_scene_header00_lightSettings };
 
-SCmdEndMarker UnicornFountain_scene_header00_cmd09 = { 0x14, 0x00, 0x00 };
+SCmdCutsceneData UnicornFountain_scene_header00_cmd09 = { 0x17, 0x00, (u32)&UnicornFountain_scene_header00_cutscene };
+
+SCmdEndMarker UnicornFountain_scene_header00_cmd10 = { 0x14, 0x00, 0x00 };
 
 
 ActorEntry UnicornFountain_scene_header00_startPositionList[] = {
@@ -441,3 +443,24 @@ WaterBox UnicornFountain_waterBoxes[] = {
 
 CollisionHeader UnicornFountain_collisionHeader = { -372, -30, -1121, 370, 369, 567, 148, UnicornFountain_vertices, 232, UnicornFountain_polygons, UnicornFountain_polygonTypes, 0, 1, UnicornFountain_waterBoxes };
 
+s32 UnicornFountain_scene_header00_cutscene[] = {
+	CS_BEGIN_CUTSCENE(4, 180),
+	CS_TEXT_LIST(1),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0D20, 100, 110, 0x0000, 0x0000, 0x0000),
+	CS_CAM_POS_LIST(0, 121),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 7, 99, -459, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 106, 101, -496, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 200, 101, -564, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 264, 98, -631, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(0, 140),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 6, 70, -752, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 40, 0x42700000, 6, 70, -749, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 40, 0x42700000, 6, 70, -748, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 8, 70, -753, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_NPC_ACTION_LIST(55, 2),
+		CS_NPC_ACTION(1, 40, 130, 0x0, 0x0, 0x0, 15, 0, 10, 15, 0, 0, 0, 0, 0),
+		CS_NPC_ACTION(2, 130, 170, 0x0, 0x0, 0x0, 15, 0, 0, 15, 0, -10, 0, 0, 0),
+	CS_END(),
+};

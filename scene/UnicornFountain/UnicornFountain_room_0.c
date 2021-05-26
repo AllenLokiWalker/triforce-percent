@@ -19,18 +19,21 @@ SCmdTimeSettings UnicornFountain_room_0_header00_cmd03 = { 0x10, 0x00, 0x00, 0x0
 
 SCmdMesh UnicornFountain_room_0_header00_cmd04 = { 0x0A, 0x00, (u32)&UnicornFountain_room_0_meshHeader };
 
-SCmdObjectList UnicornFountain_room_0_header00_cmd05 = { 0x0B, 1, (u32)UnicornFountain_room_0_header00_objectList };
+SCmdObjectList UnicornFountain_room_0_header00_cmd05 = { 0x0B, 2, (u32)UnicornFountain_room_0_header00_objectList };
 
-SCmdActorList UnicornFountain_room_0_header00_cmd06 = { 0x01, 1, (u32)UnicornFountain_room_0_header00_actorList };
+SCmdActorList UnicornFountain_room_0_header00_cmd06 = { 0x01, 3, (u32)UnicornFountain_room_0_header00_actorList };
 
 SCmdEndMarker UnicornFountain_room_0_header00_cmd07 = { 0x14, 0x00, 0x00 };
 
 
-s16 UnicornFountain_room_0_header00_objectList[1] = {
+s16 UnicornFountain_room_0_header00_objectList[2] = {
 	0xA,
+	OBJECT_MJIN_OKA,
 };
 
-ActorEntry UnicornFountain_room_0_header00_actorList[1] = {
+ActorEntry UnicornFountain_room_0_header00_actorList[3] = {
+	{ ACTOR_EN_OKARINA_TAG, 0, -21, -583, 0, 0, 0, 0x1CA0 },
+	{ 23, 0, -28, -583, 0, 0, 0, 0x0000 },
 	{ 6, 0, 29, -760, 0, 0, 0, 0x0000 },
 };
 

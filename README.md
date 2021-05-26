@@ -24,30 +24,121 @@ clean:
 
 # Credits
 
-- Sauraen: concept, director, bootstrapper MIPS ASM programmer, DMA patcher C programmer, TAStm32 firmware mods, TAStm32 Z64TC mode Python frontend, actor design/programming, music arranging
-- Kargaroc: fast_loader and debugger C programmer
-- /zel/: map design: Triforce Room; rhstatics programmer
-- CDi-Fails: map design: Unicorn Fountain, Chamber of Sages
-- Savestate: live speedrun skills
+### TRIFORCE% OOT ACE SHOWCASE
 
-## Tools
+Director \
+SAURAEN
 
-- z64ovl: z64me, Skawo, CrookedPoe, Zel, ???
-- zzrtl: z64me
-- OoT decomp: a bunch of clever folks
-- SEQ64: Sauraen
+RTA Speedrunner \
+SAVESTATE
 
-## Technical Support
+### ASSET UNIT
 
-- Zel
-- z64me
-- CrookedPoe
-- mzxrules
-- Jack Walker
-- Ownasaurus
+Actor Design & Program \
+SAURAEN
 
-## Lore / Project Support
+Scene Design \
+CDI-FAILS \
+\/ZEL\/ \
+SAURAEN
 
-- dwangoAC
-- SwankyBox
-- RebeccaETripp
+Music \
+SAURAEN
+
+Animation \
+SAURAEN
+
+Textures \
+\/ZEL\/ \
+SAURAEN
+
+Scenario \
+SAURAEN /
+REBECCAETRIPP
+
+Screen Text Writer \
+KIM-SUKLEY
+
+Translator \
+???
+
+Voice Actor \
+???
+
+### PROGRAM UNIT
+
+Host Frontend \
+SAURAEN
+
+TAStm32 Firmware \
+OWNASAURUS \
+SAURAEN
+
+SRM / ACE Setup \
+MRCHEEZE
+
+Bootstrapper Chain \
+SAURAEN
+
+Hyperspeed Loader \
+TERUSTHEBIRD \
+SAURAEN
+
+System Patches \
+SAURAEN \
+\/ZEL\/
+
+Game / Actor Patches \
+SAURAEN
+
+### TOOL UNIT
+
+Build Toolchain \
+SAURAEN
+
+z64ovl \
+Z64ME \
+SKAWO \
+CROOKEDPOE \
+\/ZEL\/
+
+fast64 \
+KURETHEDEAD \
+SAURAEN \
+\/ZEL\/
+
+seq64 \
+SAURAEN
+
+OoT Decomp \
+A BUNCH OF CLEVER FOLKS
+
+### SUPPORT UNIT
+
+Technical Support \
+MZXRULES \
+Z64ME \
+JACK WALKER
+
+GDQ / TASbot Liaison \
+DWANGOAC
+
+YouTube Partner Channels \
+SWANKYBOX
+
+Special Thanks \
+ARIANA ALMANDOZ
+
+### PRESENTED AT
+
+Awesome Games Done Quick 2022
+
+### 
+
+Assets, Scenario, and Performance \
+Copyright (C) 2019-2022 \
+The Triforce% Team
+
+The Legend of ZELDA: Ocarina of Time \
+Copyright (C) 1998 \
+Nintendo

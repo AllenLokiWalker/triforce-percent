@@ -3,7 +3,8 @@ OUTFILES = \
 	TriforceRoom/TriforceRoom_scene.zscene \
 	TriforceRoom/TriforceRoom_room_0.zmap \
 	UnicornFountain/UnicornFountain_scene.zscene \
-	UnicornFountain/UnicornFountain_room_0.zmap
+	UnicornFountain/UnicornFountain_room_0.zmap \
+	UnicornFountain/UnicornFountain_scene.out.ld
 ROOMROMGOAWAY = \
 	-D_TriforceRoom_room_0SegmentRomStart=0xDEADBEEF \
 	-D_TriforceRoom_room_0SegmentRomEnd=0xDEADBEEF \
@@ -45,8 +46,11 @@ OCFLAGS = -R .MIPS.abiflags -O binary
 %_room_0.elf: %_room_0.o room.ld
 	$(LD) $(LDFLAGS) -T room.ld -o $@ $<
 
-%_scene.elf: %_scene.o scene.ld
-	$(LD) $(LDFLAGS) -T scene.ld -o $@ $<
+%_scene.elf %_scene.map: %_scene.o scene.ld
+	$(LD) $(LDFLAGS) -T scene.ld -Map $*_scene.map -o $@ $<
+
+%.out.ld: %.map
+	$(PYTHON3) ../toolchain/ldout.py $< $@
 
 %_room_0.zmap: %_room_0.elf
 	$(OC) $(OCFLAGS) $< $@
@@ -55,4 +59,4 @@ OCFLAGS = -R .MIPS.abiflags -O binary
 	$(OC) $(OCFLAGS) $< $@
 
 clean:
-	rm -f */*.o */*.elf
+	rm -f */*.o */*.elf */*.map */*.zscene */*.zmap

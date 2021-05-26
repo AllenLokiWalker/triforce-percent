@@ -17,7 +17,7 @@ DUMP = build-romhack/project.zzrpl
 
 default clean: $(SUBDIRS)
 
-actor/: toolchain/ $(DUMP) statics/
+actor/: toolchain/ $(DUMP) statics/ scene/
 
 scene/: $(DUMP)
 

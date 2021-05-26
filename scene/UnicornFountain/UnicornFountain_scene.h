@@ -7,7 +7,8 @@ extern SCmdSpecialFiles UnicornFountain_scene_header00_cmd05;
 extern SCmdSpawnList UnicornFountain_scene_header00_cmd06;
 extern SCmdSkyboxSettings UnicornFountain_scene_header00_cmd07;
 extern SCmdLightSettingList UnicornFountain_scene_header00_cmd08;
-extern SCmdEndMarker UnicornFountain_scene_header00_cmd09;
+extern SCmdCutsceneData UnicornFountain_scene_header00_cmd09;
+extern SCmdEndMarker UnicornFountain_scene_header00_cmd10;
 
 extern ActorEntry UnicornFountain_scene_header00_startPositionList[];
 extern RomFile UnicornFountain_scene_roomList[];
@@ -18,3 +19,4 @@ extern CollisionPoly UnicornFountain_polygons[];
 extern Vec3s UnicornFountain_vertices[148];
 extern WaterBox UnicornFountain_waterBoxes[];
 extern CollisionHeader UnicornFountain_collisionHeader;
+extern s32 UnicornFountain_scene_header00_cutscene[];
