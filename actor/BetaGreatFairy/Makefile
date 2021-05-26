@@ -15,7 +15,7 @@ NOVLFLAGS = -v -c -A $(ADDRESS) -o $(PROGRAM).zovl
 default: $(PROGRAM).ovl
 
 $(PROGRAM).ovl: $(PARTS) $(SCENELD)
-	$(LD) -o $(PROGRAM).elf $(PARTS) $(LDFLAGS)
+	$(LD) -o $(PROGRAM).elf $(PARTS) $(LDFLAGS) -Map $(PROGRAM).map
 	$(NOVL) $(NOVLFLAGS) $(PROGRAM).elf
 	rm -f $(ACTORDIR)/actor.zovl
 	cp $(PROGRAM).zovl conf.txt $(ACTORDIR)/

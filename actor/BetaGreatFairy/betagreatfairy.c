@@ -11,9 +11,10 @@ extern s32 UnicornFountain_scene_header00_cutscene[];
 
 #define RISE_FRAMES 40
 
-#define SPIRAL_ROTATIONS 5
+#define SPIRAL_ROTATIONS 4
 #define LEAN_FORWARD 0x1000
-#define LEAN_RATIO 0.1f
+#define LEAN_SHIFT_Z 30.0f
+#define LEAN_RATIO 0.15f
 #define CYCLE_PERIOD 60
 #define CYCLE_HEIGHT 10.0f
 #define FLOAT_CENTER_HEIGHT 60.0f
@@ -53,22 +54,22 @@ static void play(entity_t *en, z64_global_t *global) {
 		z_actor_set_scale(&en->actor, SCALE_TINY);
 		en->actor.pos.y -= 1000.0f;
 		if(CHECK_NPC_ACTION(1)){
-			++en->state;
 			en->frames = 0;
+			++en->state;
 		}
 	}else if(en->state == 2){
 		//Floating, waiting for NPC action
 		z_actor_set_scale(&en->actor, SCALE_MAIN);
 		float y = CYCLE_HEIGHT * z_sinf((float)en->frames * 
 			(2.0f * 3.14159f / (float)CYCLE_PERIOD));
-		en->actor.pos.z -= 30.0f;
+		en->actor.pos.z -= LEAN_SHIFT_Z;
 		en->actor.pos.y += y + FLOAT_CENTER_HEIGHT;
 		en->actor.rot.x = LEAN_FORWARD;
 		++en->frames;
 		if(en->frames >= CYCLE_PERIOD) en->frames = 0;
 		if(CHECK_NPC_ACTION(2)){
-			++en->state;
 			en->frames = 0;
+			++en->state;
 		}
 	}else if(en->state == 1 || en->state == 3){
 		//Rising or Falling
@@ -87,6 +88,7 @@ static void play(entity_t *en, z64_global_t *global) {
 		if(ratio < LEAN_RATIO){
 			float leanratio = 1.0f - (ratio / LEAN_RATIO);
 			en->actor.rot.x = (s16)((float)LEAN_FORWARD * ratio);
+			en->actor.pos.z -= ratio * LEAN_SHIFT_Z;
 		}
 		en->actor.pos.y = ratio * (en->actor.pos_init.y - FLOAT_CENTER_HEIGHT) + FLOAT_CENTER_HEIGHT;
 		++en->frames;
