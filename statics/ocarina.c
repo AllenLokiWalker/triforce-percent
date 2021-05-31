@@ -52,7 +52,7 @@ Instruments:
 4 - harp (0x59)
 5 - accordion (0x53)
 6 - pan flute (0x52)
-7 - hack - sparkle_bell (0x40)
+7 - hack - sparkle_bell (sounds awful) (0x40)
 8 - ocarina (0x34)
 Line 15739 in oot_1.0U_seq0.mus has the instrument IDs, and there's two extras
 set ocarina instrument = func_800C2C90 (1.0) = func_800ED858 (DBG)
@@ -62,5 +62,5 @@ void Statics_OcarinaCodePatches(){
     bcopy(&OvertureOfSages_Det, &DetectableSongs[1], sizeof(detectable_song_t));
     bcopy(&OvertureOfSages_Canon, &CanonSongs[1], sizeof(canon_song_t));
     //800DEF90: instruction for setting a0 to instrument for Sheik songs teach
-    *((u8*)0x800DEF93) = 0x07;
+    *((u8*)0x800DEF93) = 0x02;
 }
