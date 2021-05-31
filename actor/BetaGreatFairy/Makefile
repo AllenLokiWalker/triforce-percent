@@ -10,12 +10,12 @@ NOVL = novl
 
 CFLAGS = -G 0 -Os --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
 LDFLAGS = -T $(Z64OVLDIR)/z64ovl.ld -T $(SCENELD) --emit-relocs
-NOVLFLAGS = -v -c -A $(ADDRESS) -o $(PROGRAM).zovl
+NOVLFLAGS = -c -A $(ADDRESS) -o $(PROGRAM).zovl
 
 default: $(PROGRAM).ovl
 
 $(PROGRAM).ovl: $(PARTS) $(SCENELD)
-	$(LD) -o $(PROGRAM).elf $(PARTS) $(LDFLAGS) -Map $(PROGRAM).map
+	$(LD) -o $(PROGRAM).elf $(PARTS) $(LDFLAGS)
 	$(NOVL) $(NOVLFLAGS) $(PROGRAM).elf
 	rm -f $(ACTORDIR)/actor.zovl
 	cp $(PROGRAM).zovl conf.txt $(ACTORDIR)/

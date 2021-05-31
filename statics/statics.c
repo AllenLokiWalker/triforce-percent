@@ -62,6 +62,7 @@ void Statics_OneTime(){
 	Statics_InterfaceCodePatches();
     Statics_MessageCodePatches();
     Statics_AnimeCodePatches(sIsLiveRun);
+    Statics_OcarinaCodePatches();
     osWritebackDCache(0, 0x4000);
     osInvalICache(0, 0x4000);
 }

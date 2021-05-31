@@ -40,14 +40,10 @@ void Statics_LoadMsgInfoPatched(z64_global_t *global, u16 textId, s32 type){
     MessageTableEntry *tbl;
     const char *baseSeg, *thisSeg, *nextSeg;
     u8 found = 0;
-    if(textId >= 0x900 && textId < 0x1000){
-        tbl = hackMessageTable;
-        baseSeg = 0;
-    }else{
-        tbl = messageTableAddresses[type];
-        baseSeg = tbl->segment;
-    }
     
+    //Try hack table first, for new messages or overrides of existing ones
+    tbl = hackMessageTable;
+    baseSeg = 0;
     while(tbl->textId != 0xFFFF){
         if(tbl->textId == textId){
             found = 1;
@@ -55,12 +51,27 @@ void Statics_LoadMsgInfoPatched(z64_global_t *global, u16 textId, s32 type){
         }
         ++tbl;
     }
+    
     if(!found){
-        //Text not found, default to Frog
+        //Use real table
         tbl = messageTableAddresses[type];
         baseSeg = tbl->segment;
-        tbl += 0xE;
+        while(tbl->textId != 0xFFFF){
+            if(tbl->textId == textId){
+                found = 1;
+                break;
+            }
+            ++tbl;
+        }
+        
+        if(!found){
+            //Text not found, default to Frog
+            tbl = messageTableAddresses[type];
+            baseSeg = tbl->segment;
+            tbl += 0xE;
+        }
     }
+    
     thisSeg = tbl->segment;
     font->xy = tbl->typePos;
     ++tbl;

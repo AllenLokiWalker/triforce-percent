@@ -11,6 +11,7 @@ INCLUDE z64funcs.ld
 INCLUDE interface.ld
 INCLUDE message.ld
 INCLUDE anime.ld
+INCLUDE ocarina.ld
 
 SECTIONS {
 	. = dma_patcher_END;

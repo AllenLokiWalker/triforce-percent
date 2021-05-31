@@ -15,7 +15,7 @@ extern s32 UnicornFountain_scene_header00_cutscene[];
 #define LEAN_FORWARD 0x1000
 #define LEAN_SHIFT_Z 30.0f
 #define LEAN_RATIO 0.15f
-#define CYCLE_PERIOD 60
+#define CYCLE_PERIOD 60.0f
 #define CYCLE_HEIGHT 10.0f
 #define FLOAT_CENTER_HEIGHT 60.0f
 
@@ -31,6 +31,7 @@ typedef struct {
 	z64_actor_t actor;
 	u8 state;
 	u8 frames;
+	float last_float_y;
 } entity_t;
 
 static void init(entity_t *en, z64_global_t *global) {
@@ -53,6 +54,7 @@ static void play(entity_t *en, z64_global_t *global) {
 		//Away, waiting for NPC action
 		z_actor_set_scale(&en->actor, SCALE_TINY);
 		en->actor.pos.y -= 1000.0f;
+		en->last_float_y = FLOAT_CENTER_HEIGHT;
 		if(CHECK_NPC_ACTION(1)){
 			en->frames = 0;
 			++en->state;
@@ -61,9 +63,10 @@ static void play(entity_t *en, z64_global_t *global) {
 		//Floating, waiting for NPC action
 		z_actor_set_scale(&en->actor, SCALE_MAIN);
 		float y = CYCLE_HEIGHT * z_sinf((float)en->frames * 
-			(2.0f * 3.14159f / (float)CYCLE_PERIOD));
+			(2.0f * 3.14159f / CYCLE_PERIOD));
 		en->actor.pos.z -= LEAN_SHIFT_Z;
 		en->actor.pos.y += y + FLOAT_CENTER_HEIGHT;
+		en->last_float_y = en->actor.pos.y;
 		en->actor.rot.x = LEAN_FORWARD;
 		++en->frames;
 		if(en->frames >= CYCLE_PERIOD) en->frames = 0;
@@ -75,22 +78,22 @@ static void play(entity_t *en, z64_global_t *global) {
 		//Rising or Falling
 		if(en->frames == 0){
 			z_actor_play_sfx(&(en->actor), 0x6858);
-		}else if(en->state == 3 && en->frames == RISE_FRAMES - 1){
+		}else if(en->state == 3 && en->frames == 5){
 			z_actor_play_sfx(&(en->actor), 0x2880);
 		}
 		float ratio = (float)en->frames / (float)RISE_FRAMES;
 		if(en->state == 1) ratio = 1.0f - ratio;
 		float scale = ratio * (SCALE_TINY - SCALE_MAIN) + SCALE_MAIN;
 		z_actor_set_scale(&en->actor, scale);
+		en->actor.pos.y += (1.0f - ratio) * en->last_float_y;
 		float rot = (ratio * ratio) * SPIRAL_ROTATIONS * 0x10000;
 		en->actor.rot.y = (s16)((s32)rot & 0xFFFF);
 		if(en->state == 1) en->actor.rot.y = -en->actor.rot.y;
 		if(ratio < LEAN_RATIO){
 			float leanratio = 1.0f - (ratio / LEAN_RATIO);
-			en->actor.rot.x = (s16)((float)LEAN_FORWARD * ratio);
-			en->actor.pos.z -= ratio * LEAN_SHIFT_Z;
+			en->actor.rot.x = (s16)((float)LEAN_FORWARD * leanratio);
+			en->actor.pos.z -= leanratio * LEAN_SHIFT_Z;
 		}
-		en->actor.pos.y = ratio * (en->actor.pos_init.y - FLOAT_CENTER_HEIGHT) + FLOAT_CENTER_HEIGHT;
 		++en->frames;
 		if(en->frames == RISE_FRAMES){
 			en->frames = 0;

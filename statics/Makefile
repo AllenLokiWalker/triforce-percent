@@ -22,12 +22,15 @@ message.o: message.h ../text/messages.c
 
 anime.o: anime.h ../anim/anim.c
 
+ocarina.o: ocarina.h
+
 LINK_OBJS = \
 	statics.o \
 	interface.o \
 	message.o \
 	../text/build_messages_file.o \
-	anime.o
+	anime.o \
+	ocarina.o
 
 LD_SCRIPTS = \
 	statics.ld \
@@ -36,6 +39,7 @@ LD_SCRIPTS = \
 	interface.ld \
 	message.ld \
 	anime.ld \
+	ocarina.ld \
 	../loader/fast_loader/fast_loader.out.ld \
 	../loader/dma_patcher/dma_patcher.out.ld \
 	../anim/anim.out.ld
