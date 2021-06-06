@@ -164,8 +164,9 @@ void Statics_Player_Update(){
     Statics_LostWoods();
 }
 
+static u8 sOneTime = 0;
+
 void Statics_Update(){
-    static u8 sOneTime = 0;
     if(!sOneTime){
         Statics_OneTime();
         sOneTime = 1;
@@ -176,6 +177,7 @@ void Statics_Update(){
 
 __attribute__((section(".start"))) void Statics_Init(){
     fp_precmd = Statics_Update;
+    sOneTime = 0;
     sIsLiveRun = 1;
 }
 

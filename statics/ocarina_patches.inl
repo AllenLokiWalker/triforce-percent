@@ -34,7 +34,7 @@ OPAT(func_800ED458, 0x800C2ABC, 66,
     // t1 = &sCurOcarinaBtnVal = 80102210 (leave at end)
     // a1 = &sCurOcarinaBtnIdx
     // a2 = sCurOcarinaBtnPress
-    // a3 = 0x00FF (leave at end)
+    // a3 must be 0x00FF at end
     // at = 1.0f (can overwrite after use) //done
     // All other temp registers are fair game
     // 80102B54 = sOcaMode //done
@@ -43,6 +43,7 @@ OPAT(func_800ED458, 0x800C2ABC, 66,
     // 80102230 = sCurOcaVibrato //done
     // 80121F20 = sCurOcaStick.x //done
     // 80121F21 = sCurOcaStick.y
+    "ori   $a3, $zero, 0x00FF\n"
     "lbu   $t2, 0x0000($t1)\n" //sCurOcarinaBtnVal
     "sb    $t2, 0x0000($a1)\n" //sCurOcarinaBtnIdx
     "lui   $t0, 0x8010\n"
@@ -94,8 +95,8 @@ OPAT(func_800ED458, 0x800C2ABC, 66,
     "ori   $a3, $zero, 0x00FF\n" //restore a3
     "addiu $t1, $t1, 0x2210\n" //restore t1
 "plbl_done:\n"
-    //42 instructions above this, need 66: add 24
-    "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n"
-    "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n"
-    "nop\n nop\n nop\n nop\n"
+    //43 instructions above this, need 66: add 23
+    "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n "
+    "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n "
+    "nop\n nop\n nop\n"
 )
