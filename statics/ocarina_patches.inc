@@ -19,7 +19,7 @@ OPAT(func_800EE318_2, 0x800C37A4, 1,
 )
 
 OPAT(func_800EE5EC_1, 0x800C3A58, 1,
-    "addiu $t0, $zero, 0x0011\n"
+    "addiu $t0, $zero, 0x0012\n"
 )
 
 OPAT(func_800EE5EC_2, 0x800C3A8C, 1,
@@ -100,3 +100,68 @@ OPAT(func_800ED458, 0x800C2ABC, 66,
     "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n "
     "nop\n nop\n nop\n"
 )
+
+OPAT(func_8010C39C_1, 0x800E04AC, 18,
+    //0x140(sp) = gfx
+    //t3, t5, ra: magic values
+    //s0 = &static ctx
+    //v1 = counter
+    //going in t2 = x, coming out v0 = x (stored in s2)
+    //t4 = notes pointer (add 1)
+    "or $s1, $v1, $zero\n"
+    "or $s2, $t2, $zero\n"
+    "sw $t3, 0x0004($sp)\n"
+    "sw $t4, 0x0008($sp)\n"
+    "sw $t5, 0x000C($sp)\n"
+    "or $s3, $ra, $zero\n"
+    "lw $a0, 0x0140($sp)\n"
+    "addu $a1, $t4, $v1\n"
+    "lbu $a1, 0x0001($a1)\n"
+    "or $a2, $t2, $zero\n"
+    "jal PatchOcaButtons\n"
+    "ori $a3, $zero, 0x0001\n"
+    "sw $v0, 0x0140($sp)\n"
+    "or $v1, $s1, $zero\n"
+    "or $v0, $s2, $zero\n"
+    "lw $t3, 0x0004($sp)\n"
+    "lw $t4, 0x0008($sp)\n"
+    "lw $t5, 0x000C($sp)\n"
+    "j func_8010C39C_1_ret\n"
+    "or $ra, $s3, $zero\n"
+)
+
+OPAT(func_8010C39C_2, 0x800E084C, 11,
+    //going in t2 = x, coming out v0 = x (stored in s2)
+    //v1 = counter (stored in s1)
+    //s0 = &static ctx
+    //0x140(sp) = gfx
+    //going in v0 = gfx
+    //going in a3 = &sOcaBuff[i]
+    //s1, s2, s3 available
+    //stack 00-28 available
+    //Gfx* PatchOcaButtons(Gfx* gfx, u8 note, s16 x, u8 shadow)
+    "or $s1, $v1, $zero\n"
+    "or $s2, $t2, $zero\n"
+    "or $a0, $v0, $zero\n"
+    "lbu $a1, 0x0000($a3)\n"
+    "or $a2, $t2, $zero\n"
+    "jal PatchOcaButtons\n"
+    "ori $a3, $zero, 0x0000\n"
+    "sw $v0, 0x0140($sp)\n"
+    "or $v0, $s2, $zero\n"
+    "j func_8010C39C_2_ret\n"
+    "or $v1, $s1, $zero\n"
+)
+
+OPAT(func_8010C39C_3, 0x800E06F0, 2, //only copy two instrs
+    "slti $at, $t7, 0x0005\n"
+    "beq $at, $zero, plbl_color\n"
+    "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n "
+    "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n "
+    "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n "
+    "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n "
+    "nop\n nop\n nop\n nop\n"
+    "plbl_color:\n"
+    "nop\n"
+)
+    

@@ -23,12 +23,21 @@ typedef struct {
 
 extern canon_song_t CanonSongs[14]; //extra 2 are short scarecrow's song and minigame song
 
-// Overture of Sages
-static const detectable_song_t OvertureOfSages_Det = {
-    6,
-    4, 1, 0, 2, 3, 4,
-    -1, -1
+static const detectable_song_t PatchedDetectableSongs[12] = {
+    {6, 0x2, 0xE, 0xB, 0x9, 0xB, 0x9, -1, -1}, //Forest
+    {6, 0xE, 0x5, 0x2, 0x9, 0xB, 0xE, -1, -1}, //Sages
+    {5, 0x2, 0x5, 0x9, 0x9, 0xB, -1, -1, -1}, //Water
+    {6, 0x2, 0x5, 0x2, 0x9, 0x5, 0x2, -1, -1}, //Spirit
+    {7, 0xB, 0x9, 0x9, 0x2, 0xB, 0x9, 0x5, -1}, //Shadow
+    {6, 0xE, 0x9, 0xE, 0x9, 0xB, 0xE, -1, -1}, //Light
+    {6, 0x5, 0x9, 0xB, 0x5, 0x9, 0xB, -1, -1}, //Saria
+    {6, 0xE, 0xB, 0x9, 0xE, 0xB, 0x9, -1, -1}, //Epona
+    {6, 0xB, 0xE, 0x9, 0xB, 0xE, 0x9, -1, -1}, //Zelda
+    {6, 0x9, 0x5, 0xE, 0x9, 0x5, 0xE, -1, -1}, //Sun
+    {8, 0x9, 0xC, 0xB, 0x7, 0x5, 0x7, 0x9, 0x2}, //Time
+    {6, 0x2, 0x5, 0xE, 0x2, 0x5, 0xE, -1, -1} //Storms
 };
+
 static const canon_song_t OvertureOfSages_Canon = {{
     {0xE, 25, 100, 0, 0},
     {0xE, 35, 100, 4, 0},
@@ -41,6 +50,26 @@ static const canon_song_t OvertureOfSages_Canon = {{
     {0xE, 25, 100, 0, 0},
     {0xE, 35, 100, 4, 0},
     { -1, 60,   0, 0, 0}
+}};
+
+static const canon_song_t LongOfTime_Canon = {{
+    {0x9, 30, 100, 0, 0},
+    {0x2, 60, 100, 0, 0},
+    {0x5, 30, 100, 0, 0},
+    {0x9, 30, 100, 0, 0},
+    {0x2, 60, 100, 0, 0},
+    {0x5, 30, 100, 0, 0},
+    {0x9, 15, 100, 0, 0},
+    {0xC, 15, 100, 0, 0},
+    {0xB, 30, 100, 0, 0},
+    {0x7, 30, 100, 0, 0},
+    {0x5, 15, 100, 0, 0},
+    {0x7, 15, 100, 0, 0},
+    {0x9, 30, 100, 0, 0},
+    {0x2, 30, 100, 0, 0},
+    {0x0, 15, 100, 0, 0},
+    {0x4, 15, 100, 0, 0},
+    {0x2, 30, 100, 0, 0},
 }};
 
 /*
@@ -58,15 +87,75 @@ Line 15739 in oot_1.0U_seq0.mus has the instrument IDs, and there's two extras
 set ocarina instrument = func_800C2C90 (1.0) = func_800ED858 (DBG)
 */
 
+static const u64 TexDUp[] = {
+    #include "../textures/dup.ia8.inc"
+};
+static const u64 TexDDn[] = {
+    #include "../textures/ddn.ia8.inc"
+};
+
+extern void* sOcaButtonAddrs[5];
+
+static const u8 OcaNoteButtons[18] = {
+    0, 0, /*D*/0, 0, 0,
+    /*F*/1, 1, 
+    2, 2, /*A*/2, 2, 
+    /*B*/3, 3, 
+    4, /*D*/4, 4, 4, 4
+};
+//1: flat, 2: sharp, 0x10: down, 0x20: up
+static const u8 OcaNoteDecorations[18] = {
+    0x10, 0x01, 0x00, 0x02, 0x20,
+    0x00, 0x02,
+    0x10, 0x01, 0x00, 0x02,
+    0x00, 0x02,
+    0x01, 0x00, 0x02, 0x20, 0x22
+};
+
+#define LOAD_TILE_IA8(addr, sx, sy) \
+    gDPLoadTextureBlock(gfx++, addr, \
+        G_IM_FMT_IA, G_IM_SIZ_8b, sx, sy, 0, \
+        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, \
+        G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD)
+
+Gfx* PatchOcaButtons(Gfx* gfx, u8 note, s16 x, u8 shadow){
+    u8 mainButton = OcaNoteButtons[note];
+    u8 decoration = OcaNoteDecorations[note];
+    s16 y = (&VREG(45))[mainButton];
+    const void* addr;
+    s16 yoffset;
+    LOAD_TILE_IA8(sOcaButtonAddrs[mainButton], 16, 16);
+    gSPTextureRectangle(gfx++, 
+        x << 2, y << 2, (x + 0x10) << 2, (y + 0x10) << 2, 
+        G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+    if(decoration & 0x30){
+        gDPSetPrimColor(gfx++, 0, 0, 155, 155, 155, 255);
+        if(decoration & 0x10){
+            addr = &TexDDn;
+            yoffset = 0xB;
+        }else{
+            addr = &TexDUp;
+            yoffset = -4;
+        }
+        LOAD_TILE_IA8((s32)addr, 16, 8);
+        gSPTextureRectangle(gfx++, 
+            x << 2, (y + yoffset) << 2, (x + 0x10) << 2, (y + 0x10 + yoffset) << 2, 
+            G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+    }
+    return gfx;
+}
+
+extern void func_8010C39C_1_ret();
+extern void func_8010C39C_2_ret();
 
 static const s32 OcaPatchAddrs[] = {
 #define OPAT(n, a, l, c) a, 
-#include "ocarina_patches.inl"
+#include "ocarina_patches.inc"
 #undef OPAT
 };
 static const u32 OcaPatchLens[] = {
 #define OPAT(n, a, l, c) l, 
-#include "ocarina_patches.inl"
+#include "ocarina_patches.inc"
 #undef OPAT
 };
 #define OPAT(n, a, l, c) void Patch_##n() {\
@@ -74,17 +163,18 @@ asm(".set noat\n .set noreorder\n" \
     c \
     ".set at\n .set reorder"); \
 }
-#include "ocarina_patches.inl"
+#include "ocarina_patches.inc"
 #undef OPAT
 static const void* const OcaPatchContents[] = {
 #define OPAT(n, a, l, c) Patch_##n,
-#include "ocarina_patches.inl"
+#include "ocarina_patches.inc"
 #undef OPAT
 };
 
 void Statics_OcarinaCodePatches(){
-    bcopy(&OvertureOfSages_Det, &DetectableSongs[1], sizeof(detectable_song_t));
+    bcopy(&PatchedDetectableSongs, &DetectableSongs, sizeof(PatchedDetectableSongs));
     bcopy(&OvertureOfSages_Canon, &CanonSongs[1], sizeof(canon_song_t));
+    bcopy(&LongOfTime_Canon, &CanonSongs[10], sizeof(canon_song_t));
     //800DEF90: instruction for setting a0 to instrument for Sheik songs teach
     *((u8*)0x800DEF93) = 0x02;
     //Patches for chromatic Ocarina

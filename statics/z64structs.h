@@ -156,4 +156,27 @@ typedef struct {
 } ActorOverlay; // size = 0x20
 
 
+#define REG_GROUPS 29 // number of REG groups, i.e. REG, SREG, OREG, etc.
+#define REG_PAGES 6
+#define REG_PER_PAGE 16
+#define REG_PER_GROUP REG_PAGES * REG_PER_PAGE
+
+typedef struct {
+    /* 0x00 */ s32  regPage;   // 1 is first page
+    /* 0x04 */ s32  regGroup;  // "register" group (R, RS, RO, RP etc.)
+    /* 0x08 */ s32  regCur;    // selected register within page
+    /* 0x0C */ s32  dpadLast;
+    /* 0x10 */ s32  repeat;
+    /* 0x14 */ s16  data[REG_GROUPS * REG_PER_GROUP]; // 0xAE0 entries
+} GameInfo; // size = 0x15D4
+
+extern GameInfo* gGameInfo;
+
+#define BASE_REG(n, r) gGameInfo->data[n * REG_PER_GROUP + r]
+
+#define VREG(r) BASE_REG(20, r)
+
+
+
+
 #endif //__TF_Z64STRUCTS_H__

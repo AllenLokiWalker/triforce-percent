@@ -22,7 +22,7 @@ message.o: message.h ../text/messages.c
 
 anime.o: anime.h ../anim/anim.c
 
-ocarina.o: ocarina.h ocarina_patches.inl
+ocarina.o: ocarina.h ocarina_patches.inc
 
 LINK_OBJS = \
 	statics.o \

@@ -6,6 +6,7 @@
 #include "interface.h"
 #include "message.h"
 #include "anime.h"
+#include "ocarina.h"
 
 static u8 sIsLiveRun = 0;
 
