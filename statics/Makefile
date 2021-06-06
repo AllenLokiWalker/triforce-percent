@@ -22,7 +22,7 @@ message.o: message.h ../text/messages.c
 
 anime.o: anime.h ../anim/anim.c
 
-ocarina.o: ocarina.h
+ocarina.o: ocarina.h ocarina_patches.inl
 
 LINK_OBJS = \
 	statics.o \
@@ -63,4 +63,4 @@ ${CLEANLINKZOVL}:
 	cp ${ACTORDIR}/ovl_player_actor.zovl ${CLEANLINKZOVL}
 
 clean:
-	rm -rf *.o ../text/*.o *.map *.elf statics.bin
+	rm -rf *.i *.s *.o ../text/*.o *.map *.elf statics.bin
