@@ -1,14 +1,14 @@
 INFO:objex.OBJEX_OT_export.progress_report_print:   (  0.0001 sec |   0.0000 sec) Objex Export path: '/data2/Games/N64/Mods/triforce-dev/anim/linkcustomanim.objex'
-INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0014 sec |   0.0003 sec) Finished writing geometry of 'Link'.
+INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0010 sec |   0.0002 sec) Finished writing geometry of 'Link'.
 DEBUG:objex.ObjexWriter.write_object: Skipped triangulating riggedmesh.000, mesh only has triangles
-INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0481 sec |   0.0462 sec) Finished writing geometry of 'riggedmesh.000'.
+INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0186 sec |   0.0172 sec) Finished writing geometry of 'riggedmesh.000'.
 DEBUG:objex.ObjexWriter.write_object: Skipped triangulating Hat_Ragdoll_physic, mesh only has triangles
-INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0513 sec |   0.0027 sec) Finished writing geometry of 'Hat_Ragdoll_physic'.
-INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0527 sec |   0.0009 sec) Finished writing geometry of 'TrackPoint'.
-INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0535 sec |   0.0003 sec) Finished writing geometry of 'LinkEyes'.
-INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0543 sec |   0.0002 sec) Finished writing geometry of 'LinkMouth'.
-INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.0552 sec |   0.0544 sec) Finished exporting geometry, now exporting materials
-INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.0554 sec |   0.0547 sec) Finished exporting materials, now exporting skeletons/animations
+INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0209 sec |   0.0018 sec) Finished writing geometry of 'Hat_Ragdoll_physic'.
+INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0215 sec |   0.0002 sec) Finished writing geometry of 'TrackPoint'.
+INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0221 sec |   0.0002 sec) Finished writing geometry of 'LinkEyes'.
+INFO:objex.OBJEX_OT_export.progress_report_print:         (  0.0227 sec |   0.0002 sec) Finished writing geometry of 'LinkMouth'.
+INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.0234 sec |   0.0228 sec) Finished exporting geometry, now exporting materials
+INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.0236 sec |   0.0231 sec) Finished exporting materials, now exporting skeletons/animations
 INFO:objex.ObjexWriter.write: now exporting skeletons
 INFO:objex.ObjexWriter.write:  ... and animations
 INFO:objex.ObjexWriter.write:  ... and Link animation binaries
@@ -22,44 +22,27 @@ INFO:objex.anim.order_bones: Skipping non-deform bone Leg.IK.R (intended for eg 
 INFO:objex.anim.order_bones: Skipping non-deform bone Leg.01.track.R.001 (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone HeadIK (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone ROOT (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Bone (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Pelvis.track (intended for eg IK bones)
+INFO:objex.anim.order_bones: Skipping non-deform bone Pelvis (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone LegConnect.R (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Leg.01.R (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Leg.02.R (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Leg.03.R (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Leg.03.track.R (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Leg.02.track.R (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Leg.01.track.R (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone LegConnect.L (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Leg.01.L (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Leg.02.L (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Leg.03.L (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Leg.03.track.L (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Leg.02.track.L (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Leg.01.track.L (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Bone.001 (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Bone.002 (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Bone.003 (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Hat.Track (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Head.Track (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Neck.Track (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Bone.004 (intended for eg IK bones)
+INFO:objex.anim.order_bones: Skipping non-deform bone Spine (intended for eg IK bones)
+INFO:objex.anim.order_bones: Skipping non-deform bone Head (intended for eg IK bones)
+INFO:objex.anim.order_bones: Skipping non-deform bone Hat (intended for eg IK bones)
+INFO:objex.anim.order_bones: Skipping non-deform bone Shoulder.L (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Hand.01.L (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Hand.01.track.L (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Hand.02.L (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Hand.03.L (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Hand.03.track.L (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Hand.02.track.L (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Bone.005 (intended for eg IK bones)
+INFO:objex.anim.order_bones: Skipping non-deform bone Shoulder.R (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Hand.01.R (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Hand.02.R (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Hand.03.R (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Hand.03.track.R (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Hand.02.track.R (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Hand.01.track.R (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Bone.006 (intended for eg IK bones)
-INFO:objex.anim.order_bones: Skipping non-deform bone Seath.Tracker (intended for eg IK bones)
+INFO:objex.anim.order_bones: Skipping non-deform bone Sheath (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Eyes (intended for eg IK bones)
 INFO:objex.anim.order_bones: Skipping non-deform bone Mouth (intended for eg IK bones)
-INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.1289 sec |   0.1282 sec) Objex Export Finished
+INFO:objex.OBJEX_OT_export.progress_report_print:     (  0.1402 sec |   0.1396 sec) Objex Export Finished
