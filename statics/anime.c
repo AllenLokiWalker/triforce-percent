@@ -95,9 +95,10 @@ link_action_entry_t linkActionInitPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LI
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL},
     //Patched
     {3, &linkAnimPatchTable[0]},
+    {3, &linkAnimPatchTable[1]},
     {7, &testAnimHeader}, 
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
-    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL},
 };
 extern link_action_entry_t linkActionRunTable[NUM_ORIG_LINK_ACTIONS];
 link_action_entry_t linkActionRunPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_ACTIONS] = {
@@ -118,8 +119,9 @@ link_action_entry_t linkActionRunPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LIN
     //Patched
     {11, NULL},
     {11, NULL},
+    {11, NULL},
     {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
-    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, 
+    {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL}, {0, NULL},
 };
 
 #define NUM_ORIG_CS_ACTIONS 0x4E
@@ -133,7 +135,8 @@ s8 csActionToLinkActionPatchTable[NUM_ORIG_CS_ACTIONS+NUM_CUSTOM_CS_ACTIONS] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     //Custom
-    0x67,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    NUM_ORIG_LINK_ACTIONS,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,
 };
 
@@ -189,10 +192,10 @@ extern s32 Player_SetUpCutscene(z64_global_t *globalCtx, z64_actor_t *actor, s32
 void Statics_AnimeTest(s32 a){
     Player_SetUpCutscene_t fp = (Player_SetUpCutscene_t)PlayerVRAMtoRAM(&Player_SetUpCutscene);
     s32 action = 0;
-    if(a == 0){
+    if(a < 0){
         action = 13;
-    }else if(a == 1){
-        action = NUM_ORIG_LINK_ACTIONS;
+    }else{
+        action = a + NUM_ORIG_LINK_ACTIONS;
     }
     fp(&gGlobalContext, NULL, action);
 }
