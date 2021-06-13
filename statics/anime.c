@@ -32,7 +32,7 @@ static void Patched_SetLoadFrame(z64_global_t* globalCtx,
         osSendMesg(&entry->types.type0.msgQueue, (OSMesg)0, 0);
     }else{
         //Animation is in ROM
-        DmaMgr_SendRequest2(&entry->types.type0.req, frameTable,
+        DmaMgr_SendRequest2((DmaRequest*)&entry->types.type0.req, (u8*)frameTable,
             (u32)&_link_animetionSegmentRomStart
             + (linkAnimHeader->anim & 0x00FFFFFF)
             + (animStepSize * frame),
