@@ -22,7 +22,13 @@ message.o: message.h ../text/messages.c
 
 anime.o: anime.h ../anim/anim.c
 
-ocarina.o: ocarina.h ocarina_patches.inc
+ocarina.o: \
+	ocarina.h \
+	ocarina_patches.inc \
+	../textures/dup.ia8.inc \
+	../textures/ddn.ia8.inc \
+	../textures/flat.ia8.inc \
+	../textures/sharp.ia8.inc
 
 LINK_OBJS = \
 	statics.o \
