@@ -1,6 +1,16 @@
-# triforce-dev
+# Triforce%
 
-Reconstructing "lost beta elements" and "legitimately" obtaining the Triforce in Ocarina of Time via ACE / Total Control in a hybrid RTA/TAS run.
+Triforce% is a hybrid RTA/TAS "speedrun" of Ocarina of Time which uses Arbitrary
+Code Execution (ACE) to install a set of data loaders in system memory, enabling
+arbitrary assets (scenes, objects, music, etc.) in the game ROM to be seamlessly
+live-patched from the host PC. By modifying the game programming and assets,
+beta content cut from the final version of OoT is restored and brought to life
+on screen. A new plot is constructed based on this beta content and on urban
+legends from the late '90s, culminating in Link obtaining the Triforce.
+
+But, in front of thousands of live viewers, once we have the power of the
+Goddesses--and the power to make the game whatever we can imagine--what will we
+use this power for?
 
 
 # Setup

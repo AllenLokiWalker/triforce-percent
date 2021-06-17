@@ -101,18 +101,19 @@ OPAT(func_800ED458, 0x800C2ABC, 66,
     "nop\n nop\n nop\n"
 )
 
-OPAT(func_8010C39C_1, 0x800E04AC, 18,
+OPAT(func_8010C39C_1, 0x800E04AC, 20,
     //0x140(sp) = gfx
     //t3, t5, ra: magic values
     //s0 = &static ctx
     //v1 = counter
-    //going in t2 = x, coming out v0 = x (stored in s2)
+    //going in t2 = x, coming out v0 = x
     //t4 = notes pointer (add 1)
+    //s1, s3 free
     "or $s1, $v1, $zero\n"
-    "or $s2, $t2, $zero\n"
-    "sw $t3, 0x0004($sp)\n"
-    "sw $t4, 0x0008($sp)\n"
-    "sw $t5, 0x000C($sp)\n"
+    "sw $t2, 0x0004($sp)\n"
+    "sw $t3, 0x0008($sp)\n"
+    "sw $t4, 0x000C($sp)\n"
+    "sw $t5, 0x0010($sp)\n"
     "or $s3, $ra, $zero\n"
     "lw $a0, 0x0140($sp)\n"
     "addu $a1, $t4, $v1\n"
@@ -122,17 +123,18 @@ OPAT(func_8010C39C_1, 0x800E04AC, 18,
     "ori $a3, $zero, 0x0001\n"
     "sw $v0, 0x0140($sp)\n"
     "or $v1, $s1, $zero\n"
-    "or $v0, $s2, $zero\n"
-    "lw $t3, 0x0004($sp)\n"
-    "lw $t4, 0x0008($sp)\n"
-    "lw $t5, 0x000C($sp)\n"
+    "lw $v0, 0x0004($sp)\n"
+    "lw $t3, 0x0008($sp)\n"
+    "lw $t4, 0x000C($sp)\n"
+    "lw $t5, 0x0010($sp)\n"
     "j func_8010C39C_1_ret\n"
     "or $ra, $s3, $zero\n"
 )
 
-OPAT(func_8010C39C_2, 0x800E084C, 11,
+OPAT(func_8010C39C_2, 0x800E084C, 13,
     //going in t2 = x, coming out v0 = x (stored in s2)
     //v1 = counter (stored in s1)
+    //t3 = magic value (stored in s3)
     //s0 = &static ctx
     //0x140(sp) = gfx
     //going in v0 = gfx
@@ -142,12 +144,14 @@ OPAT(func_8010C39C_2, 0x800E084C, 11,
     //Gfx* PatchOcaButtons(Gfx* gfx, u8 note, s16 x, u8 shadow)
     "or $s1, $v1, $zero\n"
     "or $s2, $t2, $zero\n"
+    "or $s3, $t3, $zero\n"
     "or $a0, $v0, $zero\n"
     "lbu $a1, 0x0000($a3)\n"
     "or $a2, $t2, $zero\n"
     "jal PatchOcaButtons\n"
     "ori $a3, $zero, 0x0000\n"
     "sw $v0, 0x0140($sp)\n"
+    "or $t3, $s3, $zero\n"
     "or $v0, $s2, $zero\n"
     "j func_8010C39C_2_ret\n"
     "or $v1, $s1, $zero\n"

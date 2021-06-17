@@ -53,23 +53,6 @@ static const canon_song_t OvertureOfSages_Canon = {{
 }};
 
 static const canon_song_t LongOfTime_Canon = {{
-    {0x0, 90, 100, 0, 0},
-    {0x1, 90, 100, 0, 0},
-    {0x2, 90, 100, 0, 0},
-    {0x3, 90, 100, 0, 0},
-    {0x4, 90, 100, 0, 0},
-    {0x5, 90, 100, 0, 0},
-    {0x6, 90, 100, 0, 0},
-    {0x7, 90, 100, 0, 0},
-    {0x8, 90, 100, 0, 0},
-    {0x9, 90, 100, 0, 0},
-    {0xA, 90, 100, 0, 0},
-    {0xB, 90, 100, 0, 0},
-    {0xC, 90, 100, 0, 0},
-    {0xD, 90, 100, 0, 0},
-    {0xE, 90, 100, 0, 0},
-    {0xF, 90, 100, 0, 0},
-    /*
     {0x9, 30, 100, 0, 0},
     {0x2, 60, 100, 0, 0},
     {0x5, 30, 100, 0, 0},
@@ -87,7 +70,6 @@ static const canon_song_t LongOfTime_Canon = {{
     {0x0, 15, 100, 0, 0},
     {0x4, 15, 100, 0, 0},
     {0x2, 30, 100, 0, 0},
-    */
 }};
 
 /*
@@ -152,32 +134,36 @@ Gfx* PatchOcaButtons(Gfx* gfx, u8 note, s16 x, u8 shadow){
     gSPTextureRectangle(gfx++, 
         x << 2, y << 2, (x + 16) << 2, (y + 16) << 2, 
         G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-    gDPSetPrimColor(gfx++, 0, 0, 155, 155, 155, 255);
-    if(decoration & 0x30){
-        if(decoration & 0x10){
-            addr = &TexDDn;
-            yoffset = 0xB;
-        }else{
-            addr = &TexDUp;
-            yoffset = -4;
+    if(decoration){
+        u8 pc = shadow ? 155 : 190;
+        u8 al = shadow ? 150 : 255;
+        gDPSetPrimColor(gfx++, 0, 0, pc, pc, pc, al);
+        if(decoration & 0x30){
+            if(decoration & 0x10){
+                addr = &TexDDn;
+                yoffset = 0xB;
+            }else{
+                addr = &TexDUp;
+                yoffset = -4;
+            }
+            LOAD_TILE_IA8((s32)addr, 16, 8);
+            gSPTextureRectangle(gfx++, 
+                x << 2, (y + yoffset) << 2, (x + 16) << 2, (y + yoffset + 8) << 2, 
+                G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
         }
-        LOAD_TILE_IA8((s32)addr, 16, 8);
-        gSPTextureRectangle(gfx++, 
-            x << 2, (y + yoffset) << 2, (x + 16) << 2, (y + yoffset + 8) << 2, 
-            G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-    }
-    if(decoration & 0x3){
-        if(decoration & 1){
-            addr = &TexFlat;
-            yoffset = -1;
-        }else{
-            addr = &TexSharp;
-            yoffset = 0;
+        if(decoration & 0x3){
+            if(decoration & 1){
+                addr = &TexFlat;
+                yoffset = -1;
+            }else{
+                addr = &TexSharp;
+                yoffset = 0;
+            }
+            LOAD_TILE_IA8((s32)addr, 8, 16);
+            gSPTextureRectangle(gfx++, 
+                (x - 5) << 2, (y + yoffset) << 2, (x + 3) << 2, (y + yoffset + 16) << 2, 
+                G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
         }
-        LOAD_TILE_IA8((s32)addr, 8, 16);
-        gSPTextureRectangle(gfx++, 
-            (x - 5) << 2, (y + yoffset) << 2, (x + 3) << 2, (y + yoffset + 16) << 2, 
-            G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
     }
     return gfx;
 }
