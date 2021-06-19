@@ -33,7 +33,7 @@ CC = mips64-gcc
 LD = mips64-ld
 OC = mips64-objcopy
 
-CFLAGS = -I $(DECOMPINCLUDEDIR) -fno-toplevel-reorder -Wall -Wno-main -Wno-missing-braces -mno-gpopt -fomit-frame-pointer -G 0 --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
+CFLAGS = -I ../include/decomp -fno-toplevel-reorder -Wall -Wno-main -Wno-missing-braces -mno-gpopt -fomit-frame-pointer -G 0 --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
 LDFLAGS = --emit-relocs
 OCFLAGS = -R .MIPS.abiflags -O binary
 

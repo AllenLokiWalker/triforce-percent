@@ -3,5 +3,4 @@
 
 ZZRTL = "/home/your_name/n64/Tools/zzrtl-0.01-r4/zzrtl"
 Z64OVLDIR = "/home/your_name/n64/mips64/include/z64ovl"
-DECOMPINCLUDEDIR = "/home/your_name/n64/oot_decomp/include"
 PYTHON3 = python
