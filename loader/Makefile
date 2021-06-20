@@ -13,18 +13,10 @@ debugger/debugger.elf: fast_loader/fast_loader.out.ld
 dma_patcher/dma_patcher.o: debugger/debugger.h
 
 dma_patcher/dma_patcher.elf: debugger/debugger.out.ld
-	
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
 
 %.elf %.map: %.o %.ld
-	$(LD) $(LDFLAGS) -T $*.ld -Map $*.map -o $*.elf $*.o
-	
-%.bin: %.elf
-	$(OC) $(OCFLAGS) $< $@
+	$(LD) $(LDFLAGS) -T $*.ld -Map $*.map -o $*.elf $*.o 
 
-%.out.ld: %.map
-	$(PYTHON3) ../toolchain/ldout.py $< $@
+clean: cleansubdirs
 
-clean:
-	rm -rf */*.o */*.map */*.elf fast_loader/fast_loader.bin debugger/debugger.bin dma_patcher/dma_patcher.bin
+include ../toolchain/make/c.mk

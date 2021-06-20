@@ -44,17 +44,10 @@ LD_SCRIPTS = \
 	../loader/dma_patcher/dma_patcher.out.ld \
 	../anim/anim.out.ld
 
-%.o: %.c z64funcs.h z64structs.h
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: z64funcs.h z64structs.h
 
 statics.elf statics.map: $(LINK_OBJS) $(LD_SCRIPTS)
 	$(LD) $(LDFLAGS) -T statics.ld -Map statics.map -o statics.elf $(LINK_OBJS)
-
-%.bin: %.elf
-	$(OC) $(OCFLAGS) $< $@
-
-%.out.ld: %.map
-	$(PYTHON3) ../toolchain/ldout.py $< $@
 
 ACTORDIR=../build-romhack/system/overlay/ovl_player_actor
 CLEANLINKZOVL=${ACTORDIR}/ovl_player_actor.zovl.orig
@@ -62,5 +55,7 @@ CLEANLINKZOVL=${ACTORDIR}/ovl_player_actor.zovl.orig
 ${CLEANLINKZOVL}:
 	cp ${ACTORDIR}/ovl_player_actor.zovl ${CLEANLINKZOVL}
 
-clean:
-	rm -rf *.i *.s *.o ../text/*.o *.map *.elf statics.bin
+clean: cleandir
+	rm -rf *.s ../text/*.o
+
+include ../toolchain/make/c.mk

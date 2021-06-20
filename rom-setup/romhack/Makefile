@@ -20,18 +20,13 @@ $(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt $(LOCALBINFILES) ../../toolch
 	sed -i 's/build.z64/tf-romhack.z64/g' $(BUILDRTL)
 	$(ZZRTL) $(BUILDRTL)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
 %.o: %.s
 	$(AS) -Os -o $@ $<
 
 %.elf: %.o boot_load_statics.ld ../../statics/statics.out.ld
 	$(LD) $(LDFLAGS) -T boot_load_statics.ld -o $*.elf $*.o
 
-%.bin: %.elf
-	$(OC) $(OCFLAGS) $< $@
-
-clean:
-	rm -rf *.o *.elf *.bin
+clean: cleandir
 	find $(BUILDDIR) -mindepth 1 -maxdepth 1 ! -name 'oot_1.0U_uncomp.z64' -exec rm -rf {} +
+
+include ../../toolchain/make/c.mk

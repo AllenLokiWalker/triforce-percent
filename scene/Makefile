@@ -16,10 +16,9 @@ TRIFORCEROOMDIR = ../build-romhack/scene/39
 UNICORNFOUNTAINDIR = ../build-romhack/scene/38
 
 CFLAGS += -I ../include/decomp
+CFLAGS += $(ROOMROMGOAWAY)
 
 .PHONY: default clean $(MAKESUBDIRS)
-
-default clean: $(MAKESUBDIRS)
 
 default: $(OUTFILES)
 	cp TriforceRoom/TriforceRoom_scene.zscene $(TRIFORCEROOMDIR)/scene.zscene
@@ -30,15 +29,10 @@ default: $(OUTFILES)
 	cp UnicornFountain/title.png $(UNICORNFOUNTAINDIR)/title.png
 	cp UnicornFountain/conf.txt $(UNICORNFOUNTAINDIR)/conf.txt
 
+default clean: $(MAKESUBDIRS)
+
 $(MAKESUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
-	
-
-%_room_0.o: %_room_0.c %_room_0.h Makefile 
-	$(CC) $(CFLAGS) -c $< -o $@
-	
-%_scene.o: %_scene.c %_scene.h Makefile
-	$(CC) $(CFLAGS) $(ROOMROMGOAWAY) -c $< -o $@
 
 %_room_0.elf: %_room_0.o room.ld
 	$(LD) $(LDFLAGS) -T room.ld -o $@ $<
@@ -46,14 +40,6 @@ $(MAKESUBDIRS):
 %_scene.elf %_scene.map: %_scene.o scene.ld
 	$(LD) $(LDFLAGS) -T scene.ld -Map $*_scene.map -o $@ $<
 
-%.out.ld: %.map
-	$(PYTHON3) ../toolchain/ldout.py $< $@
+clean: cleansubdirs
 
-%_room_0.zmap: %_room_0.elf
-	$(OC) $(OCFLAGS) $< $@
-
-%_scene.zscene: %_scene.elf
-	$(OC) $(OCFLAGS) $< $@
-
-clean:
-	rm -f */*.o */*.elf */*.map */*.zscene */*.zmap
+include ../toolchain/make/c.mk
