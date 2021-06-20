@@ -1,3 +1,6 @@
 [submodule "toolchain/ZAP2"]
 	path = toolchain/ZAP2
 	url = https://github.com/NEstelami/ZAP2.git
+[submodule "include/libzelda64"]
+	path = include/libzelda64
+	url = https://github.com/hylian-modding/libzelda64

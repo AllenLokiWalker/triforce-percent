@@ -1,6 +1,4 @@
-ifeq ($(PYTHON3),"")
-	$(error Python3 command not defined or internal error)
-endif
+include ../../toolchain/make/main.mk
 
 SCENEDIR=../../build-romhack/scene/88
 SCENEORIGMD5=6f0fe11356db88532393c6b35ccd8be5

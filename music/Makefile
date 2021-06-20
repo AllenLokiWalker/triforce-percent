@@ -1,3 +1,5 @@
+include ../toolchain/make/main.mk
+
 .PHONY: default clean
 
 default: triforce.pat OvertureOfSages.pat

@@ -1,17 +1,12 @@
+include ../../toolchain/make/main.mk
+
 .PHONY: default clean
 
 BUILDDIR = ../../build-romhack
 PATCHDIR = $(BUILDDIR)/patch
 BUILDRTL = $(BUILDDIR)/oot_build.rtl
 
-CC = mips64-gcc
-LD = mips64-ld
-OC = mips64-objcopy
-
-CFLAGS = -G 0 -Os -fno-reorder-blocks -std=gnu99 -mtune=vr4300 -march=vr4300 -mabi=32 -c -mips3 -mno-explicit-relocs -mno-memcpy -mno-check-zero-division
-#-Wall -Wno-main -mno-gpopt -fomit-frame-pointer -G 0 -Os --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
-LDFLAGS = --emit-relocs
-OCFLAGS = -R .MIPS.abiflags -O binary
+CFLAGS += --save-temps
 
 default: $(BUILDDIR)/tf-romhack.z64
 
@@ -29,7 +24,7 @@ $(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt $(LOCALBINFILES) ../../toolch
 	$(CC) $(CFLAGS) -c $< -o $@
 
 %.o: %.s
-	mips64-as -Os -o $@ $<
+	$(AS) -Os -o $@ $<
 
 %.elf: %.o boot_load_statics.ld ../../statics/statics.out.ld
 	$(LD) $(LDFLAGS) -T boot_load_statics.ld -o $*.elf $*.o

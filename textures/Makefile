@@ -1,3 +1,5 @@
+include ../toolchain/make/main.mk
+
 TEXTURES = triforce.rgba32.pat ddn.ia8.inc dup.ia8.inc flat.ia8.inc sharp.ia8.inc
 
 ZAPD = ../toolchain/ZAP2/ZAPD.out

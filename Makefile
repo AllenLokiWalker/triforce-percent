@@ -1,13 +1,4 @@
-ifeq ("$(wildcard local.mk)","")
-    $(error You have not read README.md, please do so)
-endif
-
-include local.mk
-export
-
-ifeq ("$(and $(wildcard build-shortcut/oot_1.0U_comp.z64), $(wildcard build-romhack/oot_1.0U_uncomp.z64))","")
-    $(error Original ROMs not found, please read README.md)
-endif
+include toolchain/make/main.mk
 
 CONTENTS = actor/ anim/ music/ scene/ textures/
 SUBDIRS = toolchain/ $(CONTENTS) loader/ statics/ bootstrap/ rom-setup/

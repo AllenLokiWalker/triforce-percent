@@ -1,3 +1,5 @@
+include ../toolchain/make/main.mk
+
 MAKESUBDIRS = spot07_scene
 OUTFILES = \
 	TriforceRoom/TriforceRoom_scene.zscene \
@@ -12,6 +14,8 @@ ROOMROMGOAWAY = \
 	-D_UnicornFountain_room_0SegmentRomEnd=0xDEADBEEF
 TRIFORCEROOMDIR = ../build-romhack/scene/39
 UNICORNFOUNTAINDIR = ../build-romhack/scene/38
+
+CFLAGS += -I ../include/decomp
 
 .PHONY: default clean $(MAKESUBDIRS)
 
@@ -29,13 +33,6 @@ default: $(OUTFILES)
 $(MAKESUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 	
-CC = mips64-gcc
-LD = mips64-ld
-OC = mips64-objcopy
-
-CFLAGS = -I ../include/decomp -fno-toplevel-reorder -Wall -Wno-main -Wno-missing-braces -mno-gpopt -fomit-frame-pointer -G 0 --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
-LDFLAGS = --emit-relocs
-OCFLAGS = -R .MIPS.abiflags -O binary
 
 %_room_0.o: %_room_0.c %_room_0.h Makefile 
 	$(CC) $(CFLAGS) -c $< -o $@

@@ -1,21 +1,23 @@
-ifeq ($(PYTHON3),"")
-	$(error Python3 command not defined or internal error)
-endif
+include ../toolchain/make/main.mk
+include ../toolchain/make/assembly.mk
 
-.PHONY: default clean buildrunbs
+BOOTSTRAPPERS = bootstrapper2.bin bootstrapper4.bin
+FAST_LOADER = ../loader/fast_loader/fast_loader.bin
+BSM64 = ../run/bootstrap.m64
+BSTXT = ../run/bootstrap-inputlog.txt
 
-default: bootstrapper2.bin bootstrapper4.bin buildrunbs
+.PHONY: default clean
 
-%.o: %.s
-	mips64-as -Os -o $@ $<
+.PRECIOUS: $(BOOTSTRAPPERS)
 
-%.bin: %.o
-	mips64-objcopy -O binary -j .text -j .data $< $@
-	
-buildrunbs:
-	$(PYTHON3) ../toolchain/tas/ootbootstrap.py bootstrapper2.bin bootstrapper4.bin ../loader/fast_loader/fast_loader.bin ../run/bootstrap.m64
-	$(PYTHON3) ../toolchain/tas/m642bk2.py ../run/bootstrap.m64 ../run/bootstrap-inputlog.txt
+default: $(BSM64) $(BSTXT)
+
+$(BSM64): $(BOOTSTRAPPERS) $(FAST_LOADER)
+	$(PYTHON3) ../toolchain/tas/ootbootstrap.py $^ $@
+
+$(BSTXT): $(BSM64)
+	$(PYTHON3) ../toolchain/tas/m642bk2.py $< $@
 
 clean:
-	rm -f *.o *.bin ../run/bootstrap.m64 ../run/bootstrap-inputlog.txt
+	rm -f *.o *.bin $(BSM64) $(BSTXT)
 

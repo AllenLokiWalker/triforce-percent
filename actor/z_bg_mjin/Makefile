@@ -1,6 +1,4 @@
-ifeq ($(PYTHON3),"")
-	$(error Python3 command not defined or internal error)
-endif
+include ../../toolchain/make/main.mk
 
 INACTORDIR=../../build-romhack/actor/110
 OUTACTORDIR=../../build-romhack/actor/23

@@ -1,6 +1,4 @@
-ifeq ($(PYTHON3),"")
-	$(error Python3 command not defined or internal error)
-endif
+include ../../toolchain/make/main.mk
 
 # Must escape spaces ugh
 ACTORDIR=../../build-romhack/actor/394
