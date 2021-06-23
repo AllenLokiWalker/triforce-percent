@@ -27,6 +27,7 @@ $(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt $(LOCALBINFILES) ../../toolch
 	$(LD) $(LDFLAGS) -T boot_load_statics.ld -o $*.elf $*.o
 
 clean: cleandir
+	rm -f boot_load_statics.s
 	find $(BUILDDIR) -mindepth 1 -maxdepth 1 ! -name 'oot_1.0U_uncomp.z64' -exec rm -rf {} +
 
 include ../../toolchain/make/c.mk

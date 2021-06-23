@@ -5,6 +5,7 @@ backup/
 local.mk
 
 *.o
+*.i
 *.elf
 *.map
 *.xdat
