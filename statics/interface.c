@@ -1,5 +1,4 @@
-#include "z64structs.h"
-#include "z64funcs.h"
+#include "ootmain.h"
 #include "interface.h"
 
 extern void Interface_LoadItemIcon1(z64_global_t *globalCtx, u16 button);

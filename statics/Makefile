@@ -28,14 +28,12 @@ LINK_OBJS = \
 	statics.o \
 	interface.o \
 	message.o \
-	../text/build_messages_file.o \
 	anime.o \
-	ocarina.o
+	ocarina.o \
+	../text/build_messages_file.o
 
 LD_SCRIPTS = \
 	statics.ld \
-	z64structs.ld \
-	z64funcs.ld \
 	interface.ld \
 	message.ld \
 	anime.ld \
@@ -44,9 +42,7 @@ LD_SCRIPTS = \
 	../loader/dma_patcher/dma_patcher.out.ld \
 	../anim/anim.out.ld
 
-%.o: z64funcs.h z64structs.h
-
-statics.elf statics.map: $(LINK_OBJS) $(LD_SCRIPTS)
+statics.elf statics.map: $(LINK_OBJS) $(LD_SCRIPTS) $(OOTMAINLD)
 	$(LD) $(LDFLAGS) -T statics.ld -Map statics.map -o statics.elf $(LINK_OBJS)
 
 ACTORDIR=../build-romhack/system/overlay/ovl_player_actor

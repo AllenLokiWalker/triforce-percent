@@ -8,8 +8,8 @@ CC   = mips64-gcc
 LD   = mips64-ld
 NOVL = novl
 
-CFLAGS = -G 0 -Os --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
-LDFLAGS = -T $(Z64OVLDIR)/z64ovl.ld --emit-relocs
+CCFLAGS = -G 0 -Os --std=gnu99 -mtune=vr4300 -mabi=32 -mips3 -mno-check-zero-division -mno-explicit-relocs -mno-memcpy
+LDFLAGS = -T $(Z64OVLLD) --emit-relocs
 NOVLFLAGS = -v -c -A $(ADDRESS) -o $(OVLOUT)
 
 default: $(PROGRAM).ovl

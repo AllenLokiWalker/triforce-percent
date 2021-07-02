@@ -2,7 +2,6 @@
 OUTPUT_FORMAT("elf32-bigmips", "elf32-bigmips", "elf32-littlemips")
 OUTPUT_ARCH (mips)
 
-INCLUDE common/z_functions.ld
 INCLUDE debugger/debugger.out.ld
 
 gDmaDataTable = 0x8000B140;

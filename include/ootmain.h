@@ -1,31 +1,32 @@
-#ifndef __TF_Z64STRUCTS_H__
-#define __TF_Z64STRUCTS_H__
+#include "z64ovl_archived/oot/u10.h"
+#ifdef USE_Z64OVL_HELPERS
+#include "z64ovl_archived/z64ovl_helpers.h"
+#endif
 
-#include <z64ovl/oot/u10.h>
-#include <z64ovl/z64ovl_helpers.h>
+//Structs
 
 extern z64_global_t gGlobalContext;
 extern z64_save_context_t gSaveContext;
 
-#define CTRLR_RAW gGlobalContext.common.input[0].raw
-#define CTRLR_PRESS gGlobalContext.common.input[0].pad_pressed
-#define PLAYER ((z64_player_t*)gGlobalContext.actor_ctxt.actor_list[OVLTYPE_PLAYER].first)
-
-#define JUMPINSTR(func) (0x08000000 | ((((u32)func)>>2) & 0x03FFFFFF))
-#define JALINSTR(func)  (0x0C000000 | ((((u32)func)>>2) & 0x03FFFFFF))
-
-
-typedef struct {
+typedef struct
+{
     /* 0x00 */ u32      vromAddr; // VROM address (source)
     /* 0x04 */ void*    dramAddr; // DRAM address (destination)
     /* 0x08 */ u32      size;     // File Transfer size
-    /* 0x0C */ const char* filename; // Filename for debugging
+    /* 0x0C */ char*    filename; // Filename for debugging
     /* 0x10 */ s32      line;     // Line for debugging
     /* 0x14 */ s32      unk_14;
     /* 0x18 */ OSMesgQueue* notifyQueue; // Message queue for the notification message
     /* 0x1C */ OSMesg   notifyMsg;       // Completion notification message
 } DmaRequest; // size = 0x20
 
+typedef struct
+{
+    /* 0x00 */ u32 vromStart;
+    /* 0x04 */ u32 vromEnd;
+    /* 0x08 */ u32 romStart;
+    /* 0x0C */ u32 romEnd; 
+} DmaEntry;
 
 typedef struct {
     u8 dummy1[0x138];
@@ -39,7 +40,6 @@ typedef struct {
     u8 dummy3[0x270 - 0x1DC];
 } InterfaceContext; // size = 0x270
 // z64_if_ctxt_t is missing all the OS/memory structs
-
 
 typedef struct {
     /* 0x0000 */ u8 dummy[0x128];
@@ -110,7 +110,6 @@ typedef struct {
 } PauseContext; // size = 0x2C0
 // z64_pause_ctxt_t is missing stuff
 
-
 typedef enum {
     BOX_BLACK,
     BOX_WOODEN,
@@ -155,7 +154,6 @@ typedef struct {
     /* 0x1E */ s8 nbLoaded; // original name: "clients"
 } ActorOverlay; // size = 0x20
 
-
 #define REG_GROUPS 29 // number of REG groups, i.e. REG, SREG, OREG, etc.
 #define REG_PAGES 6
 #define REG_PER_PAGE 16
@@ -172,11 +170,30 @@ typedef struct {
 
 extern GameInfo* gGameInfo;
 
-#define BASE_REG(n, r) gGameInfo->data[n * REG_PER_GROUP + r]
+// Members
 
+#define BASE_REG(n, r) gGameInfo->data[n * REG_PER_GROUP + r]
 #define VREG(r) BASE_REG(20, r)
 
+#define CTRLR_RAW gGlobalContext.common.input[0].raw
+#define CTRLR_PRESS gGlobalContext.common.input[0].pad_pressed
+#define PLAYER ((z64_player_t*)gGlobalContext.actor_ctxt.actor_list[OVLTYPE_PLAYER].first)
 
+#define JUMPINSTR(func) (0x08000000 | ((((u32)func)>>2) & 0x03FFFFFF))
+#define JALINSTR(func)  (0x0C000000 | ((((u32)func)>>2) & 0x03FFFFFF))
 
+//Functions
 
-#endif //__TF_Z64STRUCTS_H__
+extern int32_t __osDisableInt(); //80005130
+extern void __osRestoreInt(int32_t i); //800051A0
+extern void osSetThreadPri(OSThread* thread, OSPri pri); //80004480
+extern void osYieldThread(); //800058B0
+
+extern void Yaz0_Decompress(uint32_t vrom_addr, void* vram_addr, uint32_t rom_size); //80001254
+extern void DmaMgr_DMARomToRam(uint32_t vrom_addr, void* vram_addr, uint32_t size); //8000085C
+extern void DmaMgr_SendRequest0(void* vram_addr, uint32_t vrom_addr, uint32_t size); //80001AA0
+extern void DmaMgr_SendRequest2(DmaRequest *req, u8 *dest, u32 rom, u32 size, 
+    s32 unk, OSMesgQueue *queue, s32 unk2);
+
+extern void Audio_FadeOut(u16 frames);
+extern void Audio_PlaySoundGeneral(u16 sfxId, void* a1, u8 a2, void* a3, void* a4, void* a5);

@@ -1,5 +1,3 @@
-include make/main.mk
-
 SUBDIRS = \
 ZAP2/ \
 yaz0/

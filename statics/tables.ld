@@ -1,3 +1,0 @@
-gObjectTable = 0x800F8FF0;
-gActorOverlayTable = 0x800E8530;
-gSceneTable = 0x800FB4E0;

@@ -1,5 +1,5 @@
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c $(OOTMAINH)
+	$(CC) $(CCFLAGS) -c $< -o $@
 
 %.out.ld: %.map
 	$(PYTHON3) ../toolchain/ldout.py $< $@

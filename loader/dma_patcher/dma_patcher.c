@@ -1,27 +1,6 @@
+#include "ootmain.h"
 #include "dma_patcher.h"
-#include "../common/z_functions.h"
 #include "../debugger/debugger.h"
-
-typedef u32 OSMesgQueue; typedef u32 OSMesg; //not using them
-typedef struct
-{
-    /* 0x00 */ u32      vromAddr; // VROM address (source)
-    /* 0x04 */ void*    dramAddr; // DRAM address (destination)
-    /* 0x08 */ u32      size;     // File Transfer size
-    /* 0x0C */ char*    filename; // Filename for debugging
-    /* 0x10 */ s32      line;     // Line for debugging
-    /* 0x14 */ s32      unk_14;
-    /* 0x18 */ OSMesgQueue* notifyQueue; // Message queue for the notification message
-    /* 0x1C */ OSMesg   notifyMsg;       // Completion notification message
-} DmaRequest; // size = 0x20
-
-typedef struct
-{
-    /* 0x00 */ u32 vromStart;
-    /* 0x04 */ u32 vromEnd;
-    /* 0x08 */ u32 romStart;
-    /* 0x0C */ u32 romEnd; 
-} DmaEntry;
 
 //Table starts in RAM 0x8000B140
 //First empty line after end of table 0x80010FA0 --i.e. 0x5E6 (1510) lines in table

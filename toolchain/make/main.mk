@@ -14,7 +14,6 @@ ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/ZAP2/Makefile)","")
 endif
 
 include $(PROJECT_DIR)/local.mk
-export
 
 ifeq ($(PYTHON3),"")
 	$(error Python3 command definition missing from local.mk)
@@ -23,6 +22,13 @@ endif
 # Disables built-in rules (e.g. how to make .o from .c)
 .SUFFIXES:
 #empty
+
+# Paths
+
+MAININCLUDEDIR := $(PROJECT_DIR)/include
+OOTMAINH := $(PROJECT_DIR)/include/ootmain.h
+OOTMAINLD := $(PROJECT_DIR)/include/ootmain.ld
+Z64OVLLD := $(PROJECT_DIR)/include/z64ovl_archived/z64ovl.ld
 
 # Main tools
 
@@ -33,12 +39,12 @@ OC = mips64-objcopy
 
 # Main flags
 
-CFLAGS = -mips3 -mabi=32 -mtune=vr4300 -mno-gpopt -fomit-frame-pointer \
+CCFLAGS := -mips3 -mabi=32 -mtune=vr4300 -mno-gpopt -fomit-frame-pointer \
 	-mno-check-zero-division -mno-explicit-relocs -mno-memcpy \
 	-fno-toplevel-reorder -fno-reorder-blocks \
 	--std=gnu99 -Wall -Wno-main -Wno-missing-braces \
-	-G 0 -Os
+	-G 0 -Os -I $(MAININCLUDEDIR)
 # loader and statics had -O2 instead of -Os
 
-LDFLAGS = --emit-relocs
-OCFLAGS = -R .MIPS.abiflags -O binary
+LDFLAGS := --emit-relocs -T $(OOTMAINLD)
+OCFLAGS := -R .MIPS.abiflags -O binary

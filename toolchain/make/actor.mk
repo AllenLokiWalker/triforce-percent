@@ -12,10 +12,10 @@ UPDATETXT = $(ZZRTLDIR)/update.txt
 .PRECIOUS: $(ACTORNAME).zovl
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CCFLAGS) -c $< -o $@
 	
 %.elf: %.o
-	$(LD) $(LDFLAGS) -T $(Z64OVLDIR)/z64ovl.ld -o $@ $< 
+	$(LD) $(LDFLAGS) -T $(Z64OVLLD) -o $@ $< 
 	
 %.zovl: %.elf
 	$(NOVL) -c -A $(BASEADDR) -o $@ $<

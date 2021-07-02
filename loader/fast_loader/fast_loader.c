@@ -1,7 +1,5 @@
+#include "ootmain.h"
 #include "fast_loader.h"
-
-#include "../common/common.h"
-#include "../common/z_functions.h"
 
 #define RUMBLE_CRCFAIL 1
 #define RUMBLE_Q_FALSE 2
@@ -10,6 +8,43 @@
 #define RUMBLE_NOP 5
 #define RUMBLE_VALID 6
 
+//Padmgr
+
+typedef union {
+	u8 bytes[6];
+	u16 halves[3];
+	struct {
+		u8 b1, b2, x, y;
+		u16 status;
+	};
+	struct {
+		s8 b1, b2, x, y;
+		u16 status;
+	} s;
+	struct {
+		u8 a :1;
+		u8 b :1;
+		u8 z :1;
+		u8 s :1;
+		u8 du:1;
+		u8 dd:1;
+		u8 dl:1;
+		u8 dr:1;
+		u8 reset:1;
+		u8 unused:1;
+		u8 l :1;
+		u8 r :1;
+		u8 cu:1;
+		u8 cd:1;
+		u8 cl:1;
+		u8 cr:1;
+		u8 x, y;
+		u16 status;
+	} buttons;
+} raw_input_t;
+
+extern s32 osContStartReadData(void* queue); //800D0160
+extern void osContGetReadData(void* input_data); //800D01E4
 
 typedef struct {
 	u8 unused1[656];
@@ -113,7 +148,7 @@ __attribute__((section(".start"))) void fl_init() {
 	}
 	
 	// patch padmgr to call run() every frame
-	*((u32*)0x800A2640) = 0x0C000000 | ((((u32)fl_run) >> 2) & 0x03FFFFFF); // construct jal to run() (also disable zeroing of pad 4)
+	*((u32*)0x800A2640) = JALINSTR(fl_run); // construct jal to run() (also disable zeroing of pad 4)
 	*((u32*)0x800A2644) = 0x8FA4002C; // first argument is address to queue
 	
 	// PadMgr_RumbleControl will only poll other controllers for rumble paks
@@ -161,6 +196,7 @@ static void fl_run(void* queue) {
 				//Wait until ready
 				osWritebackDCache(NULL, 0x4000); //busy wait, this should take a little time
 			}
+			// msg = NULL, to_block = 1
 			osRecvMesg(queue, NULL, 1);
 			osContGetReadData(p); // actually get the pad data
 		}
@@ -231,7 +267,10 @@ static void fl_run(void* queue) {
 			*/
 			
 			case 6: { // Treat command data as instructions and jump to them (can execute `2.5 * POLLS` instructions)
+				//Addr is weird, it's a cache line address not a normal address.
+				//Just set addr to 0 and size to >= 0x2000 to write back the whole cache.
 				osWritebackDCache(NULL, 0x4000);
+				//Set addr to 0 and size to >= 0x4000 to invalidate the whole cache.
 				osInvalICache(NULL, 0x4000);
 				((void(*)(void))&out_data.command.bytes)();
 			} break;

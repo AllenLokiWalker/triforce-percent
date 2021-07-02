@@ -1,5 +1,5 @@
-#include "z64structs.h"
-#include "z64funcs.h"
+#define USE_Z64OVL_HELPERS 1
+#include "ootmain.h"
 #include "anime.h"
 
 static void *MaybeSeg2RAM(void *ptr){

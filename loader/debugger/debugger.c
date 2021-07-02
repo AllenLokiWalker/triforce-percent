@@ -1,9 +1,11 @@
-#include "../common/common.h"
-#include "../common/z_functions.h"
+#include "ootmain.h"
 #include "debugger.h"
 #include "../fast_loader/fast_loader.h"
 
 //Screen text stuff
+
+extern volatile u16* volatile framebuffer16;
+extern volatile u64* volatile framebuffer64;
 
 #define COLOR_5551(r, g, b) ((u16)((((u16)(r))<<11)|(((u16)(g))<<6)|(((u16)(b))<<1)|1))
 #define COLOR_WHITE  (COLOR_5551(0x1F, 0x1F, 0x1F))
@@ -216,7 +218,7 @@ typedef struct
 static Debugger_t debugger;
 
 #define _printf(x, y, format...) { \
-	_sprintf(debugger.printf_buffer, format); \
+	z_sprintf(debugger.printf_buffer, format); \
 	print_string((x),(y),debugger.printf_buffer); \
 }
 

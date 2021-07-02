@@ -15,7 +15,7 @@ use this power for?
 
 # Setup
 
-- Make sure you got the Git submodules (ZAP2).
+- Make sure you got the Git submodules (ZAP2). You will need libpng (`libpng-dev`) for ZAPD to compile.
 - If you don't already have it, install the N64 toolchain from https://github.com/glankk/n64.
 - Clone, build, and copy novl to your toolchain folder (e.g. /opt/n64/bin/novl). If the autogen build system for novl gives you garbage, try this makefile from z64me (you still need the prereq packages):
 ```

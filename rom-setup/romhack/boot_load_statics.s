@@ -533,7 +533,7 @@
 	external_func_800A6888 = 0x8008E6BC
 	external_func_800A6E10 = 0x8008EC20
 	external_func_800A6EF4 = 0x8008ED08
-	external_func_800A6EF4 = 0x8008EDB8
+	z_skin_mtx_multiply = 0x8008EDB8
 	external_func_800A7B04 = 0x8008F890
 	external_func_800A7E70 = 0x8008FC98
 	external_func_800A9CD4 = 0x800912C4
@@ -569,32 +569,6 @@
 	external_func_800C0DB4 = 0x8009DBE4
 	external_func_800C0F08 = 0x8009DD44
 	external_func_800C3770 = 0x8009FDEC
- #NO_APP
-	.align	2
-	.set	nomips16
-	.set	nomicromips
-	.ent	graph_alloc
-	.type	graph_alloc, @function
-graph_alloc:
-	.frame	$sp,0,$31		# vars= 0, regs= 0/0, args= 0, gp= 0
-	.mask	0x00000000,0
-	.fmask	0x00000000,0
-	li	$2,8			# 0x8
-	div	$0,$5,$2
-	lw	$2,708($4)
-	mflo	$5
-	sll	$5,$5,3
-	subu	$2,$2,$5
-	.set	noreorder
-	.set	nomacro
-	jr	$31
-	sw	$2,708($4)
-	.set	macro
-	.set	reorder
-
-	.end	graph_alloc
-	.size	graph_alloc, .-graph_alloc
- #APP
 	external_func_800C6C20 = 0x800A1AA0
 	external_func_800C6C28 = 0x800A1AAC
 	external_func_800CA720 = 0x800A45FC
@@ -760,7 +734,7 @@ func_800005A0:
 	.set	macro
 	.set	reorder
 
-	la	$4,rhstaticsFile.6337
+	la	$4,rhstaticsFile.6339
 	jal	z_file_load
 	lw	$31,20($sp)
 	move	$4,$16
@@ -776,9 +750,9 @@ func_800005A0:
 	.size	func_800005A0, .-func_800005A0
 	.data
 	.align	2
-	.type	rhstaticsFile.6337, @object
-	.size	rhstaticsFile.6337, 12
-rhstaticsFile.6337:
+	.type	rhstaticsFile.6339, @object
+	.size	rhstaticsFile.6339, 12
+rhstaticsFile.6339:
 	.word	-559038737
 	.word	statics_START
 	.word	69233001

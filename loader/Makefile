@@ -14,7 +14,7 @@ dma_patcher/dma_patcher.o: debugger/debugger.h
 
 dma_patcher/dma_patcher.elf: debugger/debugger.out.ld
 
-%.elf %.map: %.o %.ld
+%.elf %.map: %.o %.ld $(OOTMAINLD)
 	$(LD) $(LDFLAGS) -T $*.ld -Map $*.map -o $*.elf $*.o 
 
 clean: cleansubdirs

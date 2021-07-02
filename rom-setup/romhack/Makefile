@@ -6,7 +6,7 @@ BUILDDIR = ../../build-romhack
 PATCHDIR = $(BUILDDIR)/patch
 BUILDRTL = $(BUILDDIR)/oot_build.rtl
 
-CFLAGS += --save-temps
+CCFLAGS += --save-temps
 
 default: $(BUILDDIR)/tf-romhack.z64
 
@@ -23,7 +23,7 @@ $(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt $(LOCALBINFILES) ../../toolch
 %.o: %.s
 	$(AS) -Os -o $@ $<
 
-%.elf: %.o boot_load_statics.ld ../../statics/statics.out.ld
+%.elf: %.o boot_load_statics.ld ../../statics/statics.out.ld $(OOTMAINLD)
 	$(LD) $(LDFLAGS) -T boot_load_statics.ld -o $*.elf $*.o
 
 clean: cleandir

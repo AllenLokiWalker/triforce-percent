@@ -2,10 +2,10 @@
 OUTPUT_FORMAT("elf32-bigmips", "elf32-bigmips", "elf32-littlemips")
 OUTPUT_ARCH (mips)
 
-INCLUDE common/z_functions.ld
 INCLUDE fast_loader/fast_loader.out.ld
-INCLUDE ../statics/tables.ld
 
+framebuffer16 = 0x8011F56C;
+framebuffer64 = 0x8011F56C;
 sExceptionNames = 0x800FF320;
 __osFaultedThread = 0x80006344;
 padmgrth = 0x8011D580;

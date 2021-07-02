@@ -2,9 +2,9 @@
 OUTPUT_FORMAT("elf32-bigmips", "elf32-bigmips", "elf32-littlemips")
 OUTPUT_ARCH (mips)
 
-INCLUDE common/z_functions.ld
-
 padmgr = 0x8011D500;
+osContStartReadData = 0x800D0160;
+osContGetReadData = 0x800D01E4;
 
 ENTRY(fl_init);
 

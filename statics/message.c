@@ -1,5 +1,4 @@
-#include "z64structs.h"
-#include "z64funcs.h"
+#include "ootmain.h"
 #include "message.h"
 
 extern void Message_LoadJpnMsgInfo();
