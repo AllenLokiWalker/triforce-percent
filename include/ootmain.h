@@ -8,6 +8,8 @@
 extern z64_global_t gGlobalContext;
 extern z64_save_context_t gSaveContext;
 
+typedef s32 OSPri;
+
 typedef struct
 {
     /* 0x00 */ u32      vromAddr; // VROM address (source)

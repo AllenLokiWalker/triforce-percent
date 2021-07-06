@@ -30,8 +30,8 @@ typedef struct
 static DmaPatcher_t patcher;
 
 void DmaPatcher_ProcessMsg(DmaRequest* req);
-void DmaPatcher_PatchAudio_Pre();
-void DmaPatcher_PatchAudio_Post();
+void DmaPatcher_AudioFastCopyPatch_Pre();
+void DmaPatcher_AudioFastCopyPatch_Post();
 
 __attribute__((section(".start"))) void DmaPatcher_Init()
 {
@@ -39,19 +39,12 @@ __attribute__((section(".start"))) void DmaPatcher_Init()
     s32 i = __osDisableInt();
     patcher.npatches = 0;
     // Patch DmaMgr_ProcessMsg to jump to DmaPatcher_ProcessMsg
-	*((u32*)0x80000B0C) = 0x08000000 | ( ( ((u32)DmaPatcher_ProcessMsg) >> 2 ) & 0x03FFFFFF );
+	*((u32*)0x80000B0C) = JUMPINSTR(DmaPatcher_ProcessMsg);
 	*((u32*)0x80000B10) = 0;
-	// Patch Sound_LoadFile to jump to DmaPatcher_PatchAudio_Pre and _Post
-	*((u32*)0x800B806C) = 0x08000000 | ( ( ((u32)DmaPatcher_PatchAudio_Pre) >> 2 ) & 0x03FFFFFF );
-	*((u32*)0x800B8184) = 0x08000000 | ( ( ((u32)DmaPatcher_PatchAudio_Post) >> 2 ) & 0x03FFFFFF );
-    /*
-	// Add another line to dmadata that maps 8 MiB of VROM after end to entire RAM
-	gDmaDataTable[N_DMADATA].vromStart   = 0x04000000;
-	gDmaDataTable[N_DMADATA].vromEnd     = 0x04800000;
-	gDmaDataTable[N_DMADATA].romStart    = 0x80000000;
-	gDmaDataTable[N_DMADATA+1].vromStart = 0x04800000;
-	gDmaDataTable[N_DMADATA+1].vromEnd   = 0;
-    */
+	// Patch Audio_DMAFastCopy / Sound_LoadFile
+	*((u32*)0x800B806C) = JUMPINSTR(DmaPatcher_AudioFastCopyPatch_Pre);
+	*((u32*)0x800B8184) = JUMPINSTR(DmaPatcher_AudioFastCopyPatch_Post);
+    // finally
     __osRestoreInt(i);
 }
 
@@ -99,20 +92,24 @@ static void DmaPatcher_ApplyPatch(u8* ram, u32 size, u8* patch)
     }
 }
 
-void DmaPatcher_PatchAudio_Impl(u32 vrom, void* ram, u32 size)
+void DmaPatcher_CheckApplyPatch(u32 vrom, void* ram, u32 size)
 {
 	u32 p;
-    //Debugger_Printf("Audio DMA %08X sz %04X", vrom, size);
 	for(p=0; p<patcher.npatches; ++p){
 		if(patcher.patches[p].vrom == vrom){
-			//Debugger_Printf("Audio DMA @%08X patching file", vrom);
+			//Debugger_Printf("DMA @%08X patching file", vrom);
 			DmaPatcher_ApplyPatch(ram, size, patcher.patches[p].patch);
 			return;
 		}
 	}
 }
 
-void DmaPatcher_PatchAudio_Pre()
+static inline const void* InjectRomRamMap(u32 rom)
+{
+    return (const void*)(0x80000000 + ((s32)rom - 0x04000000));
+}
+
+void DmaPatcher_AudioFastCopyPatch_Pre()
 {
 	asm(".set noat\n .set noreorder\n"
 	//a0 = romaddr, a1 = ramaddr, a2 = size
@@ -125,12 +122,12 @@ void DmaPatcher_PatchAudio_Pre()
     ".set at\n .set reorder");
 }
 
-void DmaPatcher_PatchAudio_Post()
+void DmaPatcher_AudioFastCopyPatch_Post()
 {
 	asm(".set noat\n .set noreorder\n"
     "lw      $a0, 0x0000($sp)\n"
     "lw      $a1, 0x0004($sp)\n"
-	"j       DmaPatcher_PatchAudio_Impl\n"
+	"j       DmaPatcher_CheckApplyPatch\n"
     "lw      $a2, 0x0008($sp)\n"
     ".set at\n .set reorder");
 }
@@ -148,12 +145,12 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
     u32 vrom = req->vromAddr;
     void* ram = req->dramAddr;
     u32 size = req->size;
-    u32 romStart, vromSize, copyStart, p;
+    u32 romStart, vromSize, copyStart;
     DmaEntry* iter = gDmaDataTable;
     if(vrom >= 0x04000000 && vrom < 0x04800000){
         //New file not in ROM provided as injection
         Debugger_Printf("DMA %08X VROM RAM map", vrom);
-        DmaPatcher_CopyRAM(ram, (const void*)(0x80000000 + ((s32)vrom - 0x04000000)), size);
+        DmaPatcher_CopyRAM(ram, InjectRomRamMap(vrom), size);
         return;
     }
     while (iter->vromEnd) {
@@ -189,16 +186,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
                 osSetThreadPri(NULL, 0x10);
             }
             //Patch file after loading
-            for(p=0; p<patcher.npatches; ++p){
-                if(patcher.patches[p].vrom == vrom){
-                    //Debugger_Printf("DMA @%08X patching file", vrom);
-                    DmaPatcher_ApplyPatch(ram, size, patcher.patches[p].patch);
-                    return;
-                }
-            }
-            // if(vrom >= 0x00BFAC30){ //first actor
-            //     Debugger_Printf("DMA @%08X normal", vrom);
-            // }
+            DmaPatcher_CheckApplyPatch(vrom, ram, size);
             return;
         }
         ++iter;

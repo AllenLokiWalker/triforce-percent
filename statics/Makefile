@@ -24,12 +24,15 @@ ocarina.o: \
 	../textures/flat.ia8.inc \
 	../textures/sharp.ia8.inc
 
+audio.o: audio.h
+
 LINK_OBJS = \
 	statics.o \
 	interface.o \
 	message.o \
 	anime.o \
 	ocarina.o \
+	audio.o \
 	../text/build_messages_file.o
 
 LD_SCRIPTS = \
@@ -38,6 +41,7 @@ LD_SCRIPTS = \
 	message.ld \
 	anime.ld \
 	ocarina.ld \
+	audio.ld \
 	../loader/fast_loader/fast_loader.out.ld \
 	../loader/dma_patcher/dma_patcher.out.ld \
 	../anim/anim.out.ld
