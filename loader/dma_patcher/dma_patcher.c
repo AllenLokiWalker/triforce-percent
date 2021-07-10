@@ -104,11 +104,6 @@ void DmaPatcher_CheckApplyPatch(u32 vrom, void* ram, u32 size)
 	}
 }
 
-static inline const void* InjectRomRamMap(u32 rom)
-{
-    return (const void*)(0x80000000 + ((s32)rom - 0x04000000));
-}
-
 void DmaPatcher_AudioFastCopyPatch_Pre()
 {
 	asm(".set noat\n .set noreorder\n"

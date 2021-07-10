@@ -199,3 +199,10 @@ extern void DmaMgr_SendRequest2(DmaRequest *req, u8 *dest, u32 rom, u32 size,
 
 extern void Audio_FadeOut(u16 frames);
 extern void Audio_PlaySoundGeneral(u16 sfxId, void* a1, u8 a2, void* a3, void* a4, void* a5);
+
+//Inline functions
+
+static inline const void* InjectRomRamMap(u32 rom)
+{
+    return (const void*)(0x80000000 + ((s32)rom - 0x04000000));
+}

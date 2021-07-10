@@ -10,6 +10,7 @@ INCLUDE interface.ld
 INCLUDE message.ld
 INCLUDE anime.ld
 INCLUDE ocarina.ld
+INCLUDE audio.ld
 
 SECTIONS {
 	. = dma_patcher_END;

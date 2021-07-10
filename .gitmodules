@@ -4,3 +4,6 @@
 [submodule "include/z64ovl_archived"]
 	path = include/z64ovl_archived
 	url = https://github.com/z64me/z64ovl_archived
+[submodule "toolchain/novl"]
+	path = toolchain/novl
+	url = https://github.com/z64me/novl

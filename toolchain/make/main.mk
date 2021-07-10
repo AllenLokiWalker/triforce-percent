@@ -48,3 +48,8 @@ CCFLAGS := -mips3 -mabi=32 -mtune=vr4300 -mno-gpopt -fomit-frame-pointer \
 
 LDFLAGS := --emit-relocs -T $(OOTMAINLD)
 OCFLAGS := -R .MIPS.abiflags -O binary
+
+# Other tools
+
+NOVL := $(PROJECT_DIR)/toolchain/novl/novl
+YAZ0 := $(PROJECT_DIR)/toolchain/yaz0/yaz0_encode

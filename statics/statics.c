@@ -65,7 +65,7 @@ void Statics_OneTime(){
     Statics_MessageCodePatches();
     Statics_AnimeCodePatches(sIsLiveRun);
     Statics_OcarinaCodePatches();
-    Statics_AudioCodePatches();
+    Statics_AudioCodePatches(sIsLiveRun);
     osWritebackDCache(0, 0x4000);
     osInvalICache(0, 0x4000);
 }

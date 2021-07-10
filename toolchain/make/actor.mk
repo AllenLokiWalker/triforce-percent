@@ -1,5 +1,3 @@
-NOVL = novl
-YAZ0 = ../../toolchain/yaz0/yaz0_encode
 BASEADDR ?= 0x80800000
 
 ZZRTLDIR = ../../build-romhack
