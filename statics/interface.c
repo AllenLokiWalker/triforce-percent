@@ -1,16 +1,13 @@
 #include "ootmain.h"
 #include "interface.h"
 
-extern void Interface_LoadItemIcon1(z64_global_t *globalCtx, u16 button);
-extern void Interface_LoadItemIcon2(z64_global_t *globalCtx, u16 button);
-
 extern void Construct_Icon_Start();
 extern void Construct_Icon_Target();
 
 extern void InterfaceEffectTex_Start();
 extern void InterfaceEffectTex_Target();
 
-extern void KaleidoScope_UpdateEquipAnim(z64_global_t *global);
+extern void KaleidoScope_UpdateEquipAnim(GlobalContext *global);
 
 extern s16 sEquipAnimState;
 extern s16 sEquipAnimTimer;
@@ -24,13 +21,13 @@ extern u8 sSubscreenButtonStates[30];
 
 extern s32 gItemIcons[100]; //size actually unknown, doesn't matter
 
-void Patched_LoadItemIconMain(z64_global_t *global, u16 button, u16 num){
-    InterfaceContext *interfaceCtx = (InterfaceContext*)&global->if_ctxt;
+void Patched_LoadItemIconMain(GlobalContext *global, u16 button, u16 num){
+    InterfaceContext *interfaceCtx = (InterfaceContext*)&global->interfaceCtx;
     u32 rom = 0x007BD000; //icon_item_static
     u8 *ram = interfaceCtx->iconItemSegment + button * 0x1000;
     u32 *image = (u32*)ram;
     u32 size = 0x1000;
-    u8 item = gSaveContext.equips.button_items[button];
+    u8 item = gSaveContext.equips.buttonItems[button];
     s8 x, y;
     
     if(item >= 0xF0){
@@ -76,11 +73,11 @@ void Patched_LoadAllItemIcons(){
     Patched_LoadItemIconMain(&gGlobalContext, 3, 0);
 }
 
-void Patched_LoadItemIcon1(z64_global_t *global, u16 button){
+void Patched_LoadItemIcon1(GlobalContext *global, u16 button){
     Patched_LoadItemIconMain(global, button, 1);
 }
 
-void Patched_LoadItemIcon2(z64_global_t *global, u16 button){
+void Patched_LoadItemIcon2(GlobalContext *global, u16 button){
     Patched_LoadItemIconMain(global, button, 2);
 }
 

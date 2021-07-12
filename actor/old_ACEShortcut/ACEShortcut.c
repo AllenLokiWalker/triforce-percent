@@ -1,5 +1,4 @@
-#include <z64ovl/oot/u10.h>
-#include <z64ovl/helpers.h>
+#include "ootmain.h"
 
 // Actor Information
 #define ACT_ID                  1
@@ -233,9 +232,9 @@ void print_color( u16 x, u16 y, u16 color ) {
 
 // Actor Structure
 typedef struct {
-	z64_actor_t actor;
+	Actor actor;
 	u8 printf_buffer[128];
-} entity_t;
+} Entity;
 
 #define QUOTEX(x) #x
 #define QUOTE(x) QUOTEX(x)
@@ -256,7 +255,7 @@ typedef struct {
 extern void seed_rotation( void );
 asm( ".equ seed_rotation, " QUOTE(SEED_ROTATION_ADDR) );
 
-static void create( entity_t* entity, z64_global_t* global ) {
+static void create( Entity* entity, GlobalContext* global ) {
 	*(u32*)SEED_ROTATION_ADDR = 0x080475E4; // seed angle = J 0x8011D790
 	/*
 	((u8*)SAVE_CONTEXT)[INVENTORY+7] = 0x08; //give Ocarina of Time
@@ -283,7 +282,7 @@ uint32_t read_register(OSThread *th, uint8_t reg){
 
 #define AOE 600.0f
 
-static void step( entity_t* entity, z64_global_t* global ) {
+static void step( Entity* entity, GlobalContext* global ) {
 	/*
 	*((u32*)(SAVE_CONTEXT + QUEST_STATUS)) = 0x00FFFFFFu; //give all Quest Status items
 	_printf(8, 40, "Link age next %d, SS flag %d", *(u8*)(LINK_AGE_NEXT), *(u16*)(SUN_SONG_FLAG));
@@ -359,26 +358,24 @@ static void step( entity_t* entity, z64_global_t* global ) {
 	//print_bytes(8+5*_letter_width, 128, (u8*)KARGAROC_PAYLOAD_ADDR, 16, 16);
 }
 
-static void draw( entity_t* entity, z64_global_t* global ) {
+static void draw( Entity* entity, GlobalContext* global ) {
 	if( entity->actor.dist_from_link_xz < AOE )
 		seed_rotation();
 }
 
-static void destroy( entity_t* entity, z64_global_t* global ) {
+static void destroy( Entity* entity, GlobalContext* global ) {
 	
 }
 
 /* .data */
-const z64_actor_init_t init_vars = {
-	.number = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
-	//.number = ACT_ID, .padding = 0x0000,
-	.type = 0x06, // type = stage prop
-	.room = 0x00,
+const ActorInit init_vars = {
+	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
+	.category = ACTORCAT_PROP,
 	.flags = 0x00000011, // enable Z targetting
-	.object = OBJ_ID,
-	.instance_size = sizeof(entity_t),
+	.objectId = OBJ_ID,
+	.instanceSize = sizeof(Entity),
 	.init = create,
-	.dest = destroy,
+	.destroy = destroy,
 	.main = step,
 	.draw = draw
 };

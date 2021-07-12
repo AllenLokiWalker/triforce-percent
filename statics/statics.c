@@ -1,4 +1,3 @@
-#define USE_Z64OVL_HELPERS 1
 #include "ootmain.h"
 #include "statics.h"
 
@@ -77,12 +76,12 @@ void Statics_InventoryEditor(){
     //Also, the game already has code to press L to turn OFF the inventory
     //editor, which conflicts with this. This is why this is convoluted.
     static u8 sLPress = 0;
-    static u8 sInvEditorLastState = 0;
+    static u16 sInvEditorLastState = 0;
     if(!sLPress){
         if(CTRLR_RAW.l){
             sLPress = 1;
-            if(!sInvEditorLastState && gGlobalContext.pause_ctxt.state){
-                gGlobalContext.pause_ctxt.unk_02_[1] = 1;
+            if(!sInvEditorLastState && gGlobalContext.pauseCtx.state){
+                gGlobalContext.pauseCtx.debugState = 1;
             }
         }
     }else{
@@ -90,7 +89,7 @@ void Statics_InventoryEditor(){
             sLPress = 0;
         }
     }
-    sInvEditorLastState = gGlobalContext.pause_ctxt.unk_02_[1];
+    sInvEditorLastState = gGlobalContext.pauseCtx.debugState;
 }
 
 void Statics_LostWoods(){
@@ -99,8 +98,8 @@ void Statics_LostWoods(){
     static const float sWoodsTargetZ[3] = {-530.0f, 546.0f, -795.0f};
     static const s8 sWoodsPath[4] = {0, 2, 1, 2};
     const float radius = 55.0f;
-    z64_player_t *player = PLAYER;
-    if(gGlobalContext.scene_index != 0x5B){ //not in Lost Woods
+    Player *player = PLAYER;
+    if(gGlobalContext.sceneNum != 0x5B){ //not in Lost Woods
         if(sWoodsState == 1 && sWoodsCount < 4){
              if(sWoodsTarget == sWoodsPath[sWoodsCount]){
                  ++sWoodsCount;
@@ -123,8 +122,8 @@ void Statics_LostWoods(){
         sWoodsState = 1;
     }
     sWoodsTarget = -1;
-    float x = player->actor.pos.x;
-    float z = player->actor.pos.z;
+    float x = player->actor.world.pos.x;
+    float z = player->actor.world.pos.z;
     for(s32 i=0; i<3; ++i){
         float tx = sWoodsTargetX[i] - x;
         float tz = sWoodsTargetZ[i] - z;
@@ -133,8 +132,10 @@ void Statics_LostWoods(){
             break;
         }
     }
+    /*
     zh_draw_debug_text(&gGlobalContext, 0xFF8000FF, 1, 1, "s %d t %d c %d %f %f", 
         sWoodsState, sWoodsTarget, sWoodsCount, x, z);
+    */
 }
 
 void Statics_TestShortcuts(){
@@ -157,11 +158,8 @@ void Statics_TestShortcuts(){
 }
 
 void Statics_Player_Update(){
-    //Patch overwrote
-    //if (this->unk_A73 != 0) this->unk_A73--; //A63 in 1.0
-    //so we have to do that
-    u8 *unk_A63 = ((u8*)PLAYER) + 0xA63;
-    if(*unk_A63 != 0) --*unk_A63;
+    //Patch overwrote this
+    if(PLAYER->unk_A73 != 0) PLAYER->unk_A73--;
     //Custom content
     Statics_TestShortcuts();
     Statics_LostWoods();
@@ -190,16 +188,16 @@ void Statics_TimeTravel(){
     //unk_E3F0 == ocarina_no == 0x104C8 == unk_15_2[2] except u16
     //unk_E40E == 0x104E6 == unk_104E4[2] except s16
     //if(*((u16*)&(gGlobalContext.unk_15_2[0])) >= 2) return;
-    if(gGlobalContext.scene_index == 0x43) return; //in Temple of Time
+    if(gGlobalContext.sceneNum == 0x43) return; //in Temple of Time
     //Time travel
-    gGlobalContext.link_age = gSaveContext.link_age ^ 1;
+    gGlobalContext.linkAgeOnLoad = gSaveContext.linkAgeOnLoad ^ 1;
     //gGlobalContext.unk_1D_ = 1; //unk_11DE9 not sure? next variable after link_age
-    gSaveContext.respawn_flag = -2;
-    gGlobalContext.scene_load_flag = 0x14;
-    gGlobalContext.entrance_index = gSaveContext.entrance_index;
+    gSaveContext.respawnFlag = -2;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gGlobalContext.nextEntranceIndex = gSaveContext.entranceIndex;
     //gSaveContext.next_day_time = gSaveContext.day_time;
-    gGlobalContext.fadeout_transition = 0x2C;
-    gSaveContext.next_transition = 5;
+    gGlobalContext.fadeTransition = 0x2C;
+    gSaveContext.nextTransition = 5;
     /*
     Audio_FadeOut(30);
     gSaveContext.seq_index = 0xFF;

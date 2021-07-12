@@ -4,9 +4,9 @@
 typedef struct {
     u8 num_notes;
     s8 notes[8];
-} detectable_song_t;
+} DetectableSong;
 
-extern detectable_song_t DetectableSongs[13]; //extra is short scarecrow's song
+extern DetectableSong DetectableSongs[13]; //extra is short scarecrow's song
 
 typedef struct {
     s8 note;
@@ -14,15 +14,15 @@ typedef struct {
     u8 volume;
     u8 vibrato;
     s8 pitch;
-} canon_song_cmd_t;
+} CanonSongCmd;
 
 typedef struct {
-    canon_song_cmd_t cmds[20];
-} canon_song_t;
+    CanonSongCmd cmds[20];
+} CanonSong;
 
-extern canon_song_t CanonSongs[14]; //extra 2 are short scarecrow's song and minigame song
+extern CanonSong CanonSongs[14]; //extra 2 are short scarecrow's song and minigame song
 
-static const detectable_song_t PatchedDetectableSongs[12] = {
+static const DetectableSong PatchedDetectableSongs[12] = {
     {6, 0x2, 0xE, 0xB, 0x9, 0xB, 0x9, -1, -1}, //Forest
     {6, 0xE, 0x5, 0x2, 0x9, 0xB, 0xE, -1, -1}, //Sages
     {5, 0x2, 0x5, 0x9, 0x9, 0xB, -1, -1, -1}, //Water
@@ -37,7 +37,7 @@ static const detectable_song_t PatchedDetectableSongs[12] = {
     {6, 0x2, 0x5, 0xE, 0x2, 0x5, 0xE, -1, -1} //Storms
 };
 
-static const canon_song_t OvertureOfSages_Canon = {{
+static const CanonSong OvertureOfSages_Canon = {{
     {0xE, 25, 100, 0, 0},
     {0xE, 35, 100, 4, 0},
     {0x5, 30, 100, 0, 0},
@@ -51,7 +51,7 @@ static const canon_song_t OvertureOfSages_Canon = {{
     { -1, 60,   0, 0, 0}
 }};
 
-static const canon_song_t LongOfTime_Canon = {{
+static const CanonSong LongOfTime_Canon = {{
     {0x9, 30, 100, 0, 0},
     {0x2, 60, 100, 0, 0},
     {0x5, 30, 100, 0, 0},
@@ -197,8 +197,8 @@ static const void* const OcaPatchContents[] = {
 
 void Statics_OcarinaCodePatches(){
     bcopy(&PatchedDetectableSongs, &DetectableSongs, sizeof(PatchedDetectableSongs));
-    bcopy(&OvertureOfSages_Canon, &CanonSongs[1], sizeof(canon_song_t));
-    bcopy(&LongOfTime_Canon, &CanonSongs[10], sizeof(canon_song_t));
+    bcopy(&OvertureOfSages_Canon, &CanonSongs[1], sizeof(CanonSong));
+    bcopy(&LongOfTime_Canon, &CanonSongs[10], sizeof(CanonSong));
     //800DEF90: instruction for setting a0 to instrument for Sheik songs teach
     *((u8*)0x800DEF93) = 0x02;
     //Patches for chromatic Ocarina

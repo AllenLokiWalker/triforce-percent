@@ -1,4 +1,4 @@
-#include <z64ovl/oot/u10.h>
+#include "ootmain.h"
 
 #define QUOTEX(x) #x
 #define QUOTE(x) QUOTEX(x)
@@ -14,19 +14,19 @@ asm(".equ ACE_Dest, " QUOTE(ACE_DEST_ADDR));
 
 #define AOE 600.0f
 
-static void HackWonderItem_Init(z64_actor_t* thisx, z64_global_t* global) {
+static void HackWonderItem_Init(Actor* thisx, GlobalContext* global) {
 	if((u8)GLOBAL_FLAG == FLAG_ACEDONE || thisx->variable != 0x0FE0 || thisx->dir.z != 1){
-		z_actor_kill(thisx);
+		Actor_Kill(thisx);
 	}
 }
 
-static void HackWonderItem_Destroy(z64_actor_t* thisx, z64_global_t* global) {
+static void HackWonderItem_Destroy(Actor* thisx, GlobalContext* global) {
 	
 }
 
-static void HackWonderItem_Update(z64_actor_t* thisx, z64_global_t* global) {
+static void HackWonderItem_Update(Actor* thisx, GlobalContext* global) {
 	if((u8)GLOBAL_FLAG == FLAG_ACEDONE){
-		z_actor_kill(thisx);
+		Actor_Kill(thisx);
 		return;
 	}
 	if((u8)GLOBAL_FLAG == FLAG_ACEHAPPENING || thisx->dist_from_link_xz < AOE){
@@ -46,14 +46,13 @@ static void HackWonderItem_Update(z64_actor_t* thisx, z64_global_t* global) {
 
 const char padding[0x95C] = {};
 
-const z64_actor_init_t init_vars = {
-    .number = 0x0112, 
-	.type = 0x06, // type = stage prop
-	.room = 0x00,
+const ActorInit init_vars = {
+    .id = 0x0112, 
+	.category = ACTORCAT_PROP,
 	.flags = 0x00000000,
-	.object = 1, //gameplay_keep
+	.objectId = 1, //gameplay_keep
 	.padding = 0x0000,
-	.instance_size = 0x01C0,
+	.instanceSize = 0x01C0,
 	.init = HackWonderItem_Init,
 	.dest = HackWonderItem_Destroy,
 	.main = HackWonderItem_Update,

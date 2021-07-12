@@ -1,5 +1,4 @@
-#include <z64ovl/oot/u10.h>
-#include <z64ovl/z64ovl_helpers.h>
+#include "ootmain.h"
 #include "obj.h"
 
 extern s32 UnicornFountain_scene_header00_cutscene[];
@@ -23,51 +22,51 @@ extern s32 UnicornFountain_scene_header00_cutscene[];
 #define SCALE_MAIN 0.085f
 
 #define CHECK_NPC_ACTION(num) \
-	(global->cutscene.state != 0) \
-	&& (global->cutscene.npc_action[NPC_ACTION_SLOT] != NULL) \
-	&& (global->cutscene.npc_action[NPC_ACTION_SLOT]->action == num)
+	(globalCtx->csCtx.state != 0) \
+	&& (globalCtx->csCtx.npcActions[NPC_ACTION_SLOT] != NULL) \
+	&& (globalCtx->csCtx.npcActions[NPC_ACTION_SLOT]->action == num)
 
 typedef struct {
-	z64_actor_t actor;
+	Actor actor;
 	u8 state;
 	u8 frames;
-	float last_float_y;
-} entity_t;
+	float lastFloatY;
+} Entity;
 
-static void init(entity_t *en, z64_global_t *global) {
+static void init(Entity *en, GlobalContext *globalCtx) {
 	en->state = 0;
 }
 
-static void dest(entity_t *en, z64_global_t *global) {
+static void destroy(Entity *en, GlobalContext *globalCtx) {
 	
 }
 
-static void play(entity_t *en, z64_global_t *global) {
-	if(z_flags_switch_get(global, SWITCH_FLAG)){
-		z_flags_switch_unset(global, SWITCH_FLAG);
-		global->cutscene.ptr = (void*)zh_seg2ram((u32)(&UnicornFountain_scene_header00_cutscene));
-		((z64_save_context_t*)(void*)Z64GL_SAVE_CONTEXT)->cutscene_trigger = 1;
+static void updateEntity *en, GlobalContext *globalCtx) {
+	if(Flags_GetSwitch(globalCtx, SWITCH_FLAG)){
+		Flags_UnsetSwitch(globalCtx, SWITCH_FLAG);
+		globalCtx->csCtx.segment = (void*)zh_seg2ram((u32)(&UnicornFountain_scene_header00_cutscene));
+		gSaveContext.cutsceneTrigger = 1;
 	}
-	en->actor.pos = en->actor.pos_init;
-	en->actor.rot.x = 0; en->actor.rot.y = 0; en->actor.rot.z = 0;
+	en->actor.world.pos = en->actor.world.pos_init;
+	en->actor.world.rot.x = 0; en->actor.world.rot.y = 0; en->actor.world.rot.z = 0;
 	if(en->state == 0){
 		//Away, waiting for NPC action
-		z_actor_set_scale(&en->actor, SCALE_TINY);
-		en->actor.pos.y -= 1000.0f;
-		en->last_float_y = FLOAT_CENTER_HEIGHT;
+		Actor_SetScale(&en->actor, SCALE_TINY);
+		en->actor.world.pos.y -= 1000.0f;
+		en->lastFloatY = FLOAT_CENTER_HEIGHT;
 		if(CHECK_NPC_ACTION(1)){
 			en->frames = 0;
 			++en->state;
 		}
 	}else if(en->state == 2){
 		//Floating, waiting for NPC action
-		z_actor_set_scale(&en->actor, SCALE_MAIN);
-		float y = CYCLE_HEIGHT * z_sinf((float)en->frames * 
+		Actor_SetScale(&en->actor, SCALE_MAIN);
+		float y = CYCLE_HEIGHT * sinf((float)en->frames * 
 			(2.0f * 3.14159f / CYCLE_PERIOD));
-		en->actor.pos.z -= LEAN_SHIFT_Z;
-		en->actor.pos.y += y + FLOAT_CENTER_HEIGHT;
-		en->last_float_y = en->actor.pos.y;
-		en->actor.rot.x = LEAN_FORWARD;
+		en->actor.world.pos.z -= LEAN_SHIFT_Z;
+		en->actor.world.pos.y += y + FLOAT_CENTER_HEIGHT;
+		en->lastFloatY = en->actor.world.pos.y;
+		en->actor.world.rot.x = LEAN_FORWARD;
 		++en->frames;
 		if(en->frames >= CYCLE_PERIOD) en->frames = 0;
 		if(CHECK_NPC_ACTION(2)){
@@ -77,22 +76,23 @@ static void play(entity_t *en, z64_global_t *global) {
 	}else if(en->state == 1 || en->state == 3){
 		//Rising or Falling
 		if(en->frames == 0){
-			z_actor_play_sfx(&(en->actor), 0x6858);
-		}else if(en->state == 3 && en->frames == 5){
-			z_actor_play_sfx(&(en->actor), 0x2880);
+			Audio_PlayActorSound2(&(en->actor), NA_SE_VO_FR_LAUGH_0);
+		}else if( && en->frames == 1){
+			Audio_PlayActorSound2(&(en->actor), en->state == 3 ? 
+				NA_SE_EV_GREAT_FAIRY_VANISH : NA_SE_EV_GREAT_FAIRY_APPEAR);
 		}
 		float ratio = (float)en->frames / (float)RISE_FRAMES;
 		if(en->state == 1) ratio = 1.0f - ratio;
 		float scale = ratio * (SCALE_TINY - SCALE_MAIN) + SCALE_MAIN;
-		z_actor_set_scale(&en->actor, scale);
-		en->actor.pos.y += (1.0f - ratio) * en->last_float_y;
+		Actor_SetScale(&en->actor, scale);
+		en->actor.world.pos.y += (1.0f - ratio) * en->lastFloatY;
 		float rot = (ratio * ratio) * SPIRAL_ROTATIONS * 0x10000;
-		en->actor.rot.y = (s16)((s32)rot & 0xFFFF);
-		if(en->state == 1) en->actor.rot.y = -en->actor.rot.y;
+		en->actor.world.rot.y = (s16)((s32)rot & 0xFFFF);
+		if(en->state == 1) en->actor.world.rot.y = -en->actor.world.rot.y;
 		if(ratio < LEAN_RATIO){
 			float leanratio = 1.0f - (ratio / LEAN_RATIO);
-			en->actor.rot.x = (s16)((float)LEAN_FORWARD * leanratio);
-			en->actor.pos.z -= leanratio * LEAN_SHIFT_Z;
+			en->actor.world.rot.x = (s16)((float)LEAN_FORWARD * leanratio);
+			en->actor.world.pos.z -= leanratio * LEAN_SHIFT_Z;
 		}
 		++en->frames;
 		if(en->frames == RISE_FRAMES){
@@ -102,20 +102,19 @@ static void play(entity_t *en, z64_global_t *global) {
 	}
 }
 
-static void draw(entity_t *en, z64_global_t *global) {
-	draw_dlist_opa(global, DL_BETAGREATFAIRY);
-	draw_dlist_xlu(global, DL_BETAGREATFAIRY_FLOWER);
+static void draw(Entity *en, GlobalContext *globalCtx) {
+	Gfx_DrawDListOpa(globalCtx, DL_BETAGREATFAIRY);
+	Gfx_DrawDListXlu(globalCtx, DL_BETAGREATFAIRY_FLOWER);
 }
 
-const z64_actor_init_t init_vars = {
-	.number = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
-	.type = OVLTYPE_PROP,
-	.room = 0x00,
+const ActorInit init_vars = {
+	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
+	.category = ACTORCAT_PROP,
 	.flags = 0x00000010,
-	.object = OBJ_ID,
-	.instance_size = sizeof(entity_t),
+	.objectId = OBJ_ID,
+	.instanceSize = sizeof(Entity),
 	.init = init,
-	.dest = dest,
-	.main = play,
+	.destroy = destroy,
+	.update = update,
 	.draw = draw
 };

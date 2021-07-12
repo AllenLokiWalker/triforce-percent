@@ -1,4 +1,4 @@
-#include <z64ovl/oot/u10.h>
+#include "ootmain.h"
 #include "obj.h"
 
 // Actor Information
@@ -8,26 +8,26 @@
 #define ANIM_LEN 50
 
 typedef struct {
-	z64_actor_t actor;
-	z64_skelanime_t skelanime;
+	Actor actor;
+	SkelAnime skelanime;
 	u8 state, frame;
-} entity_t;
+} Entity;
 
-static void init(entity_t *en, z64_global_t *global) {
-	z_actor_set_scale(&en->actor, 1.8f);
-	z_skelanime_init(global, false, &en->skelanime, SKEL_TRIFORCECHEST,
+static void init(Entity *en, GlobalContext *global) {
+	Actor_SetScale(&en->actor, 1.8f);
+	SkelAnime_Init(global, false, &en->skelanime, SKEL_TRIFORCECHEST,
 		ANIM_CHESTOPENING);
 	en->state = 0;
 	en->frame = 0;
 }
 
-static void dest(entity_t *en, z64_global_t *global) {
+static void destroy(Entity *en, GlobalContext *global) {
 	
 }
 
-static void play(entity_t *en, z64_global_t *global) {
+static void update(Entity *en, GlobalContext *global) {
     if(en->frame < OPEN_DELAY){
-        z_skelanime_change_anim(&en->skelanime, ANIM_CHESTOPENING, 1.0f,
+        Animation_Change(&en->skelanime, ANIM_CHESTOPENING, 1.0f,
 			0.0f, 0, 0, 0.0f);
 	}else if(en->frame == OPEN_DELAY){
 		en->state = 1;
@@ -37,22 +37,21 @@ static void play(entity_t *en, z64_global_t *global) {
 	if(en->state < 2) ++en->frame;
 }
 
-static void draw(entity_t *en, z64_global_t *global) {
+static void draw(Entity *en, GlobalContext *global) {
 	if(en->state < 2){
-		z_skelanime_update_anim(&en->skelanime);
+		SkelAnime_Update(&en->skelanime);
 	}
-	z_skelanime_draw(global, false, &en->actor, &en->skelanime, NULL, NULL);
+	SkelAnime_Draw(global, false, &en->actor, &en->skelanime, NULL, NULL);
 }
 
-const z64_actor_init_t init_vars = {
-	.number = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
-	.type = OVLTYPE_PROP,
-	.room = 0x00,
+const ActorInit init_vars = {
+	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
+	.category = ACTORCAT_PROP,
 	.flags = 0x00000010,
-	.object = OBJ_ID,
-	.instance_size = sizeof(entity_t),
+	.objectId = OBJ_ID,
+	.instanceSize = sizeof(Entity),
 	.init = init,
-	.dest = dest,
-	.main = play,
+	.destroy = destroy,
+	.update = update,
 	.draw = draw
 };

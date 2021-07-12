@@ -41,14 +41,11 @@ typedef union {
 		u8 x, y;
 		u16 status;
 	} buttons;
-} raw_input_t;
-
-extern s32 osContStartReadData(void* queue); //800D0160
-extern void osContGetReadData(void* input_data); //800D01E4
+} RawInput;
 
 typedef struct {
 	u8 unused1[656];
-	raw_input_t pads[4];
+	RawInput pads[4];
 	u8 unused2[10];
 	u8 rumble_enable[4];
 	u8 rumble_counter[4];
@@ -56,9 +53,9 @@ typedef struct {
 	u8 rumble_off_frames;
 	u8 rumble_on_frames;
 	u8 unused4[10];
-} __attribute__((packed)) padmgr_t;
+} __attribute__((packed)) FakePadMgr;
 
-extern padmgr_t padmgr;
+extern FakePadMgr padmgr;
 
 #define POLLS 8
 #define DATA_LEN (45 * ((POLLS) >> 2))
@@ -117,13 +114,13 @@ typedef union {
 	} __attribute__((packed)) command;
 	u8 bytes[DATA_LEN];
 	u16 halves[DATA_LEN>>1];
-} __attribute__((packed)) out_data_t;
+} __attribute__((packed)) OutData;
 
-static out_data_t out_data;
+static OutData out_data;
 
 //Other data
 
-static raw_input_t pad_data[4];
+static RawInput pad_data[4];
 static u32 crc_table[256]; // 1024 bytes
 void(*fp_precmd)(void);
 void(*fp_postcmd)(void);
@@ -131,7 +128,7 @@ void(*fp_postcmd)(void);
 //Function prototypes
 
 void fl_init();
-static void fl_run(void* queue);
+static void fl_run(OSMesgQueue* queue);
 static void fl_rumble_message(u32 bits);
 static u32 fl_crc_data(void* data, u32 size);
 
@@ -172,7 +169,7 @@ __attribute__((section(".start"))) void fl_init() {
 }
 
 // called by padmgr
-static void fl_run(void* queue) {
+static void fl_run(OSMesgQueue* queue) {
 	// Draw green bar in the corner
 	const u64 green64 = 0x7c107c107c107c1ULL;
 	(*((volatile u64**)0x8011F56C))[1286] = green64; // shifted two pixels to the right of the "real" one
@@ -182,7 +179,7 @@ static void fl_run(void* queue) {
 	u32 i;
 	
 	for(i = 0; i < (POLLS); ++i) {
-		raw_input_t* p;
+		RawInput* p;
 		
 		// Preserve the original pad input as polled by the original code
 		if(!i) { // the first time, use pad data from the original game poll
@@ -201,7 +198,7 @@ static void fl_run(void* queue) {
 			osContGetReadData(p); // actually get the pad data
 		}
 		
-		// We use halfwords, because two of the raw_input_t objects are 2-byte
+		// We use halfwords, because two of the RawInput objects are 2-byte
 		// aligned and two are 4-byte aligned.
 		u16* data_out = &out_data.halves[6*i];
 		data_out[0] = p[1].halves[0] & 0xFF3F;

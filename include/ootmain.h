@@ -1,3 +1,4 @@
+#include "z64hdr/oot_10.h"
 
 //Structs
 

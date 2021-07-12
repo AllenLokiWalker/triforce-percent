@@ -28,7 +28,7 @@ endif
 MAININCLUDEDIR := $(PROJECT_DIR)/include
 OOTMAINH := $(PROJECT_DIR)/include/ootmain.h
 OOTMAINLD := $(PROJECT_DIR)/include/ootmain.ld
-Z64OVLLD := $(PROJECT_DIR)/include/z64ovl_archived/z64ovl.ld
+ACTORLD := $(PROJECT_DIR)/include/z64hdr/z64hdr_actor.ld
 
 # Main tools
 

@@ -67,21 +67,21 @@ static const int16_t pieces_rot[] = {
 };
 
 typedef struct {
-	z64_actor_t actor;
+	Actor actor;
 	uint8_t state, frame, totalframes;
-	z64_light_node_t *lightnode;
-	z64_light_t light;
+	LightNode *lightnode;
+	LightInfo light;
 	//uint8_t initambient[3];
-} entity_t;
+} Entity;
 
-static void setpos(entity_t *en, float x, float y, float z){
-	en->actor.pos.x = x;
-	en->actor.pos.y = y;
-	en->actor.pos.z = z;
-	if(en->actor.variable == 0){
-		en->light.lightn.light2.x = (int16_t)x;
-		en->light.lightn.light2.y = (int16_t)y - 12;
-		en->light.lightn.light2.z = (int16_t)z + 4;
+static void setpos(Entity *en, float x, float y, float z){
+	en->actor.world.pos.x = x;
+	en->actor.world.pos.y = y;
+	en->actor.world.pos.z = z;
+	if(en->actor.params == 0){
+		en->light.params.point.x = (int16_t)x;
+		en->light.params.point.y = (int16_t)y - 12;
+		en->light.params.point.z = (int16_t)z + 4;
 	}
 }
 
@@ -107,10 +107,10 @@ static void rotcombine(int16_t *r, int16_t tbl, int32_t framesleft){
 // 		+ ((int32_t)tfcolor * (int32_t)brightness)) >> 7);
 // }
 
-static void init(entity_t *en, z64_global_t *global) {
-	if(en->actor.variable == 0){
-		z_lights_init_pos_0(&en->light, 0, 0, 0, TFCOLOR_R, TFCOLOR_G, TFCOLOR_B, 2000);
-		en->lightnode = z_lights_insert(global, &global->lighting, &en->light);
+static void init(Entity *en, GlobalContext *global) {
+	if(en->actor.params == 0){
+		Lights_PointNoGlowSetInfo(&en->light, 0, 0, 0, TFCOLOR_R, TFCOLOR_G, TFCOLOR_B, 2000);
+		en->lightnode = LightContext_InsertLight(global, &global->lightCtx, &en->light);
 		// en->initambient[0] = global->lighting.ambient[0];
 		// en->initambient[1] = global->lighting.ambient[1];
 		// en->initambient[2] = global->lighting.ambient[2];
@@ -121,13 +121,13 @@ static void init(entity_t *en, z64_global_t *global) {
 	setpos(en, 0.0f, 0.0f, 0.0f);
 }
 
-static void dest(entity_t *en, z64_global_t *global) {
-	if(en->actor.variable == 0){
-		z_lights_kill(global, &global->lighting, en->lightnode);
+static void destroy(Entity *en, GlobalContext *global) {
+	if(en->actor.params == 0){
+		LightContext_RemoveLight(global, &global->lightCtx, en->lightnode);
 	}
 }
 
-static void play(entity_t *en, z64_global_t *global) {
+static void update(Entity *en, GlobalContext *global) {
 	/*
 	z64_save_context_t *saveCtx = (void*)Z64GL_SAVE_CONTEXT;
 	if(saveCtx->rupees >= 99){
@@ -137,7 +137,7 @@ static void play(entity_t *en, z64_global_t *global) {
 	}
 	*/
 	float x, y, z, s, brightness, lastx, lasty, lastz, lasts, lastbrightness;
-	int16_t variable = en->actor.variable;
+	int16_t variable = en->actor.params;
 	if(variable >= 3) variable = 0;
 	uint8_t state = en->state;
 	uint8_t frame = en->frame;
@@ -182,7 +182,7 @@ static void play(entity_t *en, z64_global_t *global) {
 	brightness = (brightness - lastbrightness) * m + lastbrightness;
 	if(y < 40.0f || brightness < 0.0f) brightness = 0.0f;
 	setpos(en, x, y, z);
-	actor_set_scale(&en->actor, s * 2.5f * 0.0078125f); //1/128
+	Actor_SetScale(&en->actor, s * 2.5f * 0.0078125f); //1/128
 	if(variable == 0){
 		int16_t b16 = (int16_t)brightness;
 		// global->lighting.ambient[0] = 255; //interpambient(en->initambient[0], TFCOLOR_R, b16);
@@ -199,26 +199,26 @@ static void play(entity_t *en, z64_global_t *global) {
 		// galias->envCtx.screenfadeColor[1] = TFCOLOR_G;
 		// galias->envCtx.screenfadeColor[2] = TFCOLOR_B;
 		// galias->envCtx.screenfadeColor[3] = b16 >> 2;
-		en->light.lightn.light2.intensity = b16 << 4;
+		en->light.params.point.radius = b16 << 4;
 	}
 	//Rotation
 	const int16_t *rottable = &pieces_rot[3*variable];
 	if(state == STATE_RISE || state == STATE_WAIT0){
 		//Free rotation
-		en->actor.rot.x += *rottable++;
-		en->actor.rot.y += *rottable++;
-		en->actor.rot.z += *rottable;
+		en->actor.world.rot.x += *rottable++;
+		en->actor.world.rot.y += *rottable++;
+		en->actor.world.rot.z += *rottable;
 	}else if(state == STATE_COMBINE){
 		//Rotate back to upright
 		int32_t framesleft = frames - frame;
-		rotcombine(&en->actor.rot.x, *rottable++, framesleft);
-		rotcombine(&en->actor.rot.y, *rottable++, framesleft);
-		rotcombine(&en->actor.rot.z, *rottable, framesleft);
+		rotcombine(&en->actor.world.rot.x, *rottable++, framesleft);
+		rotcombine(&en->actor.world.rot.y, *rottable++, framesleft);
+		rotcombine(&en->actor.world.rot.z, *rottable, framesleft);
 	}else{
 		//No rotation
-		en->actor.rot.x = 0;
-		en->actor.rot.y = 0;
-		en->actor.rot.z = 0;
+		en->actor.world.rot.x = 0;
+		en->actor.world.rot.y = 0;
+		en->actor.world.rot.z = 0;
 	}
 	//Increment
 	if(mode != STATE_MODE_LAST){
@@ -232,19 +232,18 @@ static void play(entity_t *en, z64_global_t *global) {
 	++en->totalframes;
 }
 
-static void draw(entity_t *en, z64_global_t *global) {
-	draw_dlist_opa(global, DL_TFPIECE);
+static void draw(Entity *en, GlobalContext *global) {
+	Gfx_DrawDListOpa(global, DL_TFPIECE);
 }
 
-const z64_actor_init_t init_vars = {
-	.number = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
-	.type = 0x06, // type = stage prop
-	.room = 0x00,
+const ActorInit init_vars = {
+	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
+	.category = ACTORCAT_PROP,
 	.flags = 0x00000010,
-	.object = OBJ_ID,
-	.instance_size = sizeof(entity_t),
+	.objectId = OBJ_ID,
+	.instanceSize = sizeof(Entity),
 	.init = init,
-	.dest = dest,
-	.main = play,
+	.destroy = destroy,
+	.update = update,
 	.draw = draw
 };

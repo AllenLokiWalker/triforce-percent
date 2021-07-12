@@ -205,17 +205,17 @@ typedef struct
 {
     u8 timeout;
     char msg[DBG_MSG_LEN];
-} dbg_msg_t;
+} DebugMessage;
 
 #define N_DBG_MSGS 10
 typedef struct
 {
     char printf_buffer[256];
-    dbg_msg_t messages[N_DBG_MSGS];
+    DebugMessage messages[N_DBG_MSGS];
     u8 write_msg;
-} Debugger_t;
+} Debugger;
 
-static Debugger_t debugger;
+static Debugger debugger;
 
 #define _printf(x, y, format...) { \
 	z_sprintf(debugger.printf_buffer, format); \
@@ -266,61 +266,7 @@ static s32 is_thread_crashed(OSThread *th){
 	return 0;
 }
 
-extern OSThread *__osFaultedThread;
 extern OSThread padmgrth;
-
-#if 0
-typedef void* OSMesg;
-typedef struct OSMesgQueue {
-    /* 0x00 */ OSThread* mtqueue;
-    /* 0x04 */ OSThread* fullqueue;
-    /* 0x08 */ s32 validCount;
-    /* 0x0C */ s32 first;
-    /* 0x10 */ s32 msgCount;
-    /* 0x14 */ OSMesg* msg;
-} OSMesgQueue; // size = 0x18
-
-typedef struct
-{
-  /* file loading params */
-  u32          vrom_addr;                /* 0x0000 */
-  void             *dram_addr;                /* 0x0004 */
-  u32          size;                     /* 0x0008 */
-  /* debug stuff */
-  char             *filename;                 /* 0x000C */
-  s32           line;                     /* 0x0010 */
-  s32           unk_00_;                  /* 0x0014 */
-  /* completion notification params */
-  OSMesgQueue      *notify_mq;                /* 0x0018 */
-  OSMesg            notify_msg;               /* 0x001C */
-                                              /* 0x0020 */
-} z64_getfile_t;
-
-typedef struct
-{
-  s16           id;                       /* 0x0000 */
-  char              pad_00_[0x0002];          /* 0x0002 */
-  void             *data;                     /* 0x0004 */
-  z64_getfile_t     getfile;                  /* 0x0008 */
-  OSMesgQueue       load_mq;                  /* 0x0028 */
-  OSMesg            load_m;                   /* 0x0040 */
-                                              /* 0x0044 */
-} z64_mem_obj_t;
-
-typedef struct
-{
-  void             *obj_space_start;          /* 0x0000 */
-  void             *obj_space_end;            /* 0x0004 */
-  u8           n_objects;                /* 0x0008 */
-  u8           n_special;                /* 0x0009 */
-  u8           keep_index;               /* 0x000A */
-  u8           skeep_index;              /* 0x000B */
-  z64_mem_obj_t     objects[19];              /* 0x000C */
-                                              /* 0x0518 */
-} z64_obj_ctxt_t;
-
-extern z64_obj_ctxt_t gObjectContext;
-#endif
 
 extern u32 gActorOverlayTable[1000];
 
@@ -373,27 +319,6 @@ static void Debugger_Draw()
 				row += LETTER_HEIGHT;
 			}
 		}
-	}else{
-		/*
-		for(u8 i=0; i<gObjectContext.n_objects; ++i){
-			z64_mem_obj_t *obj = &gObjectContext.objects[i];
-			_printf(8, 8 + 8*i, "%3d %d %08X", 
-				obj->id, obj->load_mq.msgCount, obj->getfile.vrom_addr);
-		}
-		
-		_printf(8, 8, "%08X %08X %08X %08X", gActorOverlayTable[0x8], 
-			gActorOverlayTable[0x9], gActorOverlayTable[0xA], gActorOverlayTable[0xB]);
-		_printf(8, 16, "%08X %08X %08X %08X", gActorOverlayTable[0xC], 
-			gActorOverlayTable[0xD], gActorOverlayTable[0xE], gActorOverlayTable[0xF]);
-		
-		_printf(8, 24, "%08X %08X %08X %08X", gActorOverlayTable[0x18], 
-			gActorOverlayTable[0x19], gActorOverlayTable[0x1A], gActorOverlayTable[0x1B]);
-		_printf(8, 32, "%08X %08X %08X %08X", gActorOverlayTable[0x1C], 
-			gActorOverlayTable[0x1D], gActorOverlayTable[0x1E], gActorOverlayTable[0x1F]);
-		
-		_printf(8, 26, "%08X %08X %08X %08X", *((u32*)0x807FFFF0), *((u32*)0x807FFFF4),
-			*((u32*)0x807FFFF8), *((u32*)0x807FFFFC));
-		*/
 	}
 }
 

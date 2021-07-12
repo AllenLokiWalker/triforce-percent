@@ -15,7 +15,6 @@ ROOMROMGOAWAY = \
 TRIFORCEROOMDIR = ../build-romhack/scene/39
 UNICORNFOUNTAINDIR = ../build-romhack/scene/38
 
-CCFLAGS += -I ../include/decomp
 CCFLAGS += $(ROOMROMGOAWAY)
 
 .PHONY: default clean $(MAKESUBDIRS)
