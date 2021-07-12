@@ -72,7 +72,7 @@ void Statics_LoadMsgInfoPatched(z64_global_t *global, u16 textId, s32 type){
     }
     
     thisSeg = tbl->segment;
-    font->xy = tbl->typePos;
+    font->unk_8[0] = tbl->typePos;
     ++tbl;
     nextSeg = tbl->segment;
     font->msgOffset = thisSeg - baseSeg;

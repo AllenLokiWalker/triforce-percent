@@ -7,3 +7,6 @@
 [submodule "toolchain/novl"]
 	path = toolchain/novl
 	url = https://github.com/z64me/novl
+[submodule "include/z64hdr"]
+	path = include/z64hdr
+	url = https://github.com/turpaan64/z64hdr

@@ -27,7 +27,7 @@ extern s32 gItemIcons[100]; //size actually unknown, doesn't matter
 void Patched_LoadItemIconMain(z64_global_t *global, u16 button, u16 num){
     InterfaceContext *interfaceCtx = (InterfaceContext*)&global->if_ctxt;
     u32 rom = 0x007BD000; //icon_item_static
-    u8 *ram = interfaceCtx->icon_itemSegment + button * 0x1000;
+    u8 *ram = interfaceCtx->iconItemSegment + button * 0x1000;
     u32 *image = (u32*)ram;
     u32 size = 0x1000;
     u8 item = gSaveContext.equips.button_items[button];
@@ -134,7 +134,7 @@ void Statics_HandleEquipMedallionsToC(){
 		sSubscreenButtonStates[3*5+3] = 0;
 	}
     
-    if(pauseCtx->flag || pauseCtx->kscpPos != 2) return;
+    if(pauseCtx->debugState || pauseCtx->pageIndex != 2) return;
     
     u8 item = pauseCtx->cursorItem[2];
     if(item >= 0x66 && item <= 0x79 && //actually has item, not empty
