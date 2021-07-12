@@ -3,6 +3,7 @@
 #include "statics.h"
 
 #include "../loader/fast_loader/fast_loader.h"
+#include "../loader/debugger/debugger.h"
 #include "interface.h"
 #include "message.h"
 #include "anime.h"
@@ -48,7 +49,10 @@ void Statics_SetGameState(){
     gSaveContext.double_magic = 1;
 }
 
+void Statics_RomhackLoadAll();
+
 void Statics_OneTimeRomhackOnly(){
+    Statics_RomhackLoadAll();
     //Entrance cutscene table 0x800EFD04 entry 17 (originally Inside Jabu)
     //Entrance 0x9C, age 2, flag 0, segment offset 0x02000130 (from 0x17 cutscene command in scene)
     //WRITE 8 0x800EFD8C 0x00 0x9C 0x02 0x00 0x02 0x00 0x01 0x30
@@ -58,9 +62,6 @@ void Statics_OneTimeRomhackOnly(){
 
 void Statics_OneTime(){
     Statics_SetGameState();
-    if(!sIsLiveRun){
-        Statics_OneTimeRomhackOnly();
-    }
 	Statics_InterfaceCodePatches();
     Statics_MessageCodePatches();
     Statics_AnimeCodePatches(sIsLiveRun);
@@ -68,6 +69,9 @@ void Statics_OneTime(){
     Statics_AudioCodePatches(sIsLiveRun);
     osWritebackDCache(0, 0x4000);
     osInvalICache(0, 0x4000);
+    if(!sIsLiveRun){
+        Statics_OneTimeRomhackOnly();
+    }
 }
 
 void Statics_InventoryEditor(){
@@ -182,6 +186,60 @@ __attribute__((section(".start"))) void Statics_Init(){
     fp_precmd = Statics_Update;
     sOneTime = 0;
     sIsLiveRun = 1;
+}
+
+static void* malloc_addr = (void*)0x80410000;
+
+void* Statics_RomhackExpansionPakMalloc(u32 size){
+    void* ret = malloc_addr;
+    malloc_addr = (malloc_addr + size + 15) & ~15;
+    return ret;
+}
+
+void Statics_RegisterInjectedFile(void* injected_addr, s32 type_and_size, 
+        s32 data1, s32 data2){
+    u32 size = type_and_size & 0x00FFFFFF;
+    u8 type = type_and_size >> 24;
+    Debugger_Printf("Registering %08X size %d type %d", injected_addr, size, type);
+    if(type == 0){
+        Statics_AnimeRegisterFile(injected_addr);
+    }else if(type >= 1 && type <= 3){
+        Statics_AudioRegisterFile(injected_addr, size, type, data1, data2);
+    }
+}
+
+//Data here is the four parameters to RegisterInjectedFile
+#define MAX_NONLIVE_FILES 32
+static s32 romhackFileInfo[4*MAX_NONLIVE_FILES] = { 
+    0xDEADBEEF, 0x04206969, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+};
+
+void Statics_RomhackLoadAll(){
+    for(s32 i=0; i<MAX_NONLIVE_FILES; ++i){
+        s32 addr = romhackFileInfo[4*i];
+        if(addr == 0) break;
+        s32 type_and_size = romhackFileInfo[4*i+1];
+        u32 size = type_and_size & 0x00FFFFFF;
+        void* target = Statics_NonLiveExpansionPakMalloc(size);
+        DmaRequest req;
+        req.vromAddr = addr;
+        req.dramAddr = target;
+        req.size = size;
+        req.filename = NULL;
+        req.line = 0;
+        req.unk_14 = 0;
+        req.notifyQueue = NULL;
+        z_file_load(&req);
+        Statics_RegisterInjectedFile(target, type_and_size, 
+            romhackFileInfo[4*i+2], romhackFileInfo[4*i+3]);
+    }
 }
 
 void Statics_TimeTravel(){

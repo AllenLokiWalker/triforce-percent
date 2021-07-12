@@ -1,6 +1,7 @@
 #define USE_Z64OVL_HELPERS 1
 #include "ootmain.h"
 #include "anime.h"
+#include "statics.h"
 
 static void *MaybeSeg2RAM(void *ptr){
     if((u32)ptr & 0x80000000) return ptr;
@@ -165,8 +166,11 @@ void Statics_Player_Init(){
         sizeof(link_action_entry_t) * NUM_ORIG_LINK_ACTIONS);
 }
 
-extern u32 anim_START;
-static DmaRequest animFileInfo = { 0xDEADBEEF, &anim_START, 0x04206969, 0, 0, 0, 0 };
+void Statics_AnimeRegisterFile(void* injected_addr){
+    for(s32 i=0; i<(sizeof(linkAnimPatchTable)/sizeof(linkAnimPatchTable[0])); ++i){
+        linkAnimPatchTable[i].anim += injected_addr;
+    }
+}
 
 void Statics_AnimeCodePatches(u8 isLiveRun){
     //Patch Link animation loader
@@ -180,10 +184,6 @@ void Statics_AnimeCodePatches(u8 isLiveRun){
 	// *(((u32*)Animation_GetLength2   )+1) = 0x34050000; //ori a1, zero, 0x0000
     // *( (u32*)Animation_GetLastFrame2   ) = JUMPINSTR(Patched_GetLengthOrLastFrame);
 	// *(((u32*)Animation_GetLastFrame2)+1) = 0x34050001; //ori a1, zero, 0x0001
-    if(!isLiveRun){
-        //Load animations from extra ROM file to RAM
-        z_file_load(&animFileInfo);
-    }
 }
 
 typedef s32 (*Player_SetUpCutscene_t)(z64_global_t *, z64_actor_t *, s32);

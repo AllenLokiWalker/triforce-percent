@@ -2,26 +2,10 @@
 Concatenate animations from bin files according to anim.txt.
 Output:
 - a bin file containing all the animations
-- a .c file containing an animation header table of z64_animation_entry_link_t
-- a .out.ld file containing the end address
+- a .c file containing an animation header table of z64_animation_entry_link_t,
+  with addresses relative to 0 = beginning of file
 '''
 import sys, os, glob
-
-baseaddr = None
-with open('anim.out.ld', 'r') as ldfile:
-    for l in ldfile:
-        l = l.strip()
-        if not l: continue
-        if l[-1] != ';': continue
-        l = l[:-1]
-        toks = l.split(' ')
-        if len(toks) != 3: continue
-        if toks[1] != '=': continue
-        if toks[0] != 'anim_START': continue
-        baseaddr = int(toks[2], 0)
-        break
-if not baseaddr:
-    print('Could not find anim_START in anim.out.ld')
 
 class AnimInfo():
     def __init__(self, filepath, frames, addr):
@@ -29,7 +13,7 @@ class AnimInfo():
         print(hex(addr) + ': ' + str(self.frames) + ' frames: ' + self.filepath)
 
 animinfo = []
-curaddr = baseaddr
+curaddr = 0
 binfiles = glob.glob('*.bin')
 with open('anim.txt', 'r') as txtfile:
     for l in txtfile:
@@ -70,9 +54,5 @@ with open('anim.c', 'w') as cout:
     for a in animinfo:
         cout.write('    {' + str(a.frames) + ', 0, ' + hex(a.addr) + '},\n')
     cout.write('};\n')
-
-with open('anim.out.ld', 'w') as ldout:
-    ldout.write('anim_START = ' + hex(baseaddr) + ';\n')
-    ldout.write('anim_END = ' + hex(curaddr) + ';\n')
 
 print('animcat done')
