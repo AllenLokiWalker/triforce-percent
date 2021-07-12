@@ -115,7 +115,7 @@ void Statics_LostWoods(){
         if(sWoodsState < 20){
             ++sWoodsState;
         }else if(sWoodsState == 20){
-            z_actor_play_sfx(&(player->actor), 0x4802);
+            Audio_PlayActorSound2(&(player->actor), 0x4802);
             ++sWoodsState;
         }
     }else{

@@ -218,7 +218,7 @@ typedef struct
 static Debugger debugger;
 
 #define _printf(x, y, format...) { \
-	z_sprintf(debugger.printf_buffer, format); \
+	sprintf(debugger.printf_buffer, format); \
 	print_string((x),(y),debugger.printf_buffer); \
 }
 
@@ -235,7 +235,7 @@ char *Debugger_GetNextMessageBuffer(u8 timeout)
 
 void Debugger_ShowMessage(u8 timeout, const char *msg)
 {
-	z_bcopy(msg, Debugger_GetNextMessageBuffer(timeout), DBG_MSG_LEN);
+	bcopy(msg, Debugger_GetNextMessageBuffer(timeout), DBG_MSG_LEN);
 }
 
 //Crash debugger

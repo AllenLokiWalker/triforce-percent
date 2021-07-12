@@ -130,7 +130,7 @@ void DmaPatcher_CopyRAM(void* dest, const void* source, u32 size)
 {
     osSetThreadPri(NULL, 0x0A);
     osYieldThread();
-    z_bcopy(source, dest, size);
+    bcopy(source, dest, size);
     osSetThreadPri(NULL, 0x10);
 }
 

@@ -60,7 +60,7 @@ static s32 Patched_AudioDMA(OSIoMesg* mesg, u32 priority, s32 direction, u32 dev
     if(devAddr >= 0x04000000 && devAddr < 0x04800000){
         //Injected data
         osYieldThread();
-        z_bcopy(InjectRomRamMap(devAddr), ramAddr, size);
+        bcopy(InjectRomRamMap(devAddr), ramAddr, size);
         osSendMesg(reqQueue, NULL, OS_MESG_NOBLOCK);
         return 0;
     }

@@ -6,6 +6,6 @@ extern char *Debugger_GetNextMessageBuffer(u8 timeout);
 extern void Debugger_ShowMessage(u8 timeout, const char *msg);
 
 #define Debugger_Printf(format...) \
-    z_sprintf(Debugger_GetNextMessageBuffer(255), format)
+    sprintf(Debugger_GetNextMessageBuffer(255), format)
 
 #endif //__DEBUGGER_H__

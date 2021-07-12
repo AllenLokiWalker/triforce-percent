@@ -179,7 +179,7 @@ void Statics_AnimeCodePatches(u8 isLiveRun){
 	// *(((u32*)Animation_GetLastFrame2)+1) = 0x34050001; //ori a1, zero, 0x0001
     if(!isLiveRun){
         //Load animations from extra ROM file to RAM
-        z_file_load(&animFileInfo);
+        DmaMgr_ProcessMsg(&animFileInfo);
     }
 }
 

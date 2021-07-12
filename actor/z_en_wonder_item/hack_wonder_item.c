@@ -36,10 +36,10 @@ static void HackWonderItem_Update(Actor* thisx, GlobalContext* global) {
 		ACE_Dest();
 	}
 	/*if(thisx->dist_from_link_xz < AOE && GLOBAL_FLAG != 0xBD){
-		z_actor_play_sfx(thisx, 0x100E);
+		Audio_PlayActorSound2(thisx, 0x100E);
 		GLOBAL_FLAG = 0xBD;
 	}else if(thisx->dist_from_link_xz > AOE && GLOBAL_FLAG == 0xBD){
-		z_actor_play_sfx(thisx, 0x1039);
+		Audio_PlayActorSound2(thisx, 0x1039);
 		GLOBAL_FLAG = 0;
 	}*/
 }

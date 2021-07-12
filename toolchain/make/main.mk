@@ -26,6 +26,7 @@ endif
 # Paths
 
 MAININCLUDEDIR := $(PROJECT_DIR)/include
+Z64HDRINCLUDEDIR := $(PROJECT_DIR)/include/z64hdr/include
 OOTMAINH := $(PROJECT_DIR)/include/ootmain.h
 OOTMAINLD := $(PROJECT_DIR)/include/ootmain.ld
 ACTORLD := $(PROJECT_DIR)/include/z64hdr/z64hdr_actor.ld
@@ -41,9 +42,10 @@ OC = mips64-objcopy
 
 CCFLAGS := -mips3 -mabi=32 -mtune=vr4300 -mno-gpopt -fomit-frame-pointer \
 	-mno-check-zero-division -mno-explicit-relocs -mno-memcpy \
-	-fno-toplevel-reorder -fno-reorder-blocks \
-	--std=gnu99 -Wall -Wno-main -Wno-missing-braces \
-	-G 0 -Os -I $(MAININCLUDEDIR)
+	-fno-toplevel-reorder -fno-reorder-blocks -fno-builtin \
+	--std=gnu99 -Wall -Werror -Wno-main -Wno-missing-braces \
+	-Wbuiltin-declaration-mismatch -Wbuiltin-macro-redefined \
+	-G 0 -Os -I $(MAININCLUDEDIR) -I $(Z64HDRINCLUDEDIR)
 # loader and statics had -O2 instead of -Os
 
 LDFLAGS := --emit-relocs -T $(OOTMAINLD)
