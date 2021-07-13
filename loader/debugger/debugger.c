@@ -268,8 +268,6 @@ static s32 is_thread_crashed(OSThread *th){
 
 extern OSThread padmgrth;
 
-extern u32 gActorOverlayTable[1000];
-
 static void Debugger_Draw()
 {
 	u8 msg;

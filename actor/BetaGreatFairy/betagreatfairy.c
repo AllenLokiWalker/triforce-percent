@@ -41,13 +41,13 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 	
 }
 
-static void updateEntity *en, GlobalContext *globalCtx) {
+static void update(Entity *en, GlobalContext *globalCtx) {
 	if(Flags_GetSwitch(globalCtx, SWITCH_FLAG)){
 		Flags_UnsetSwitch(globalCtx, SWITCH_FLAG);
-		globalCtx->csCtx.segment = (void*)zh_seg2ram((u32)(&UnicornFountain_scene_header00_cutscene));
+		globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&UnicornFountain_scene_header00_cutscene);
 		gSaveContext.cutsceneTrigger = 1;
 	}
-	en->actor.world.pos = en->actor.world.pos_init;
+	en->actor.world.pos = en->actor.home.pos;
 	en->actor.world.rot.x = 0; en->actor.world.rot.y = 0; en->actor.world.rot.z = 0;
 	if(en->state == 0){
 		//Away, waiting for NPC action
@@ -77,7 +77,7 @@ static void updateEntity *en, GlobalContext *globalCtx) {
 		//Rising or Falling
 		if(en->frames == 0){
 			Audio_PlayActorSound2(&(en->actor), NA_SE_VO_FR_LAUGH_0);
-		}else if( && en->frames == 1){
+		}else if(en->frames == 1){
 			Audio_PlayActorSound2(&(en->actor), en->state == 3 ? 
 				NA_SE_EV_GREAT_FAIRY_VANISH : NA_SE_EV_GREAT_FAIRY_APPEAR);
 		}
@@ -103,8 +103,8 @@ static void updateEntity *en, GlobalContext *globalCtx) {
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
-	Gfx_DrawDListOpa(globalCtx, DL_BETAGREATFAIRY);
-	Gfx_DrawDListXlu(globalCtx, DL_BETAGREATFAIRY_FLOWER);
+	Gfx_DrawDListOpa(globalCtx, (Gfx*)DL_BETAGREATFAIRY);
+	Gfx_DrawDListXlu(globalCtx, (Gfx*)DL_BETAGREATFAIRY_FLOWER);
 }
 
 const ActorInit init_vars = {
@@ -113,8 +113,8 @@ const ActorInit init_vars = {
 	.flags = 0x00000010,
 	.objectId = OBJ_ID,
 	.instanceSize = sizeof(Entity),
-	.init = init,
-	.destroy = destroy,
-	.update = update,
-	.draw = draw
+	.init = (ActorFunc)init,
+	.destroy = (ActorFunc)destroy,
+	.update = (ActorFunc)update,
+	.draw = (ActorFunc)draw
 };

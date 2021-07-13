@@ -53,7 +53,7 @@ typedef struct {
 	u8 rumble_off_frames;
 	u8 rumble_on_frames;
 	u8 unused4[10];
-} __attribute__((packed)) FakePadMgr;
+} FakePadMgr;
 
 extern FakePadMgr padmgr;
 
@@ -90,7 +90,7 @@ typedef union {
 			// Command 4: DMA uncompressed data
 			// Command 5: DMA compressed data
 			struct {
-				void* vram;
+				u32 vram;
 				u32 vrom;
 				u32 size;
 				u8  padding[COMMAND_LEN - 12];
@@ -109,12 +109,15 @@ typedef union {
 				u8  padding[COMMAND_LEN - 20];
 			} __attribute__((packed)) cmd07;
 			
-		} __attribute__((packed));
+		};
 		u8 id;
 	} __attribute__((packed)) command;
 	u8 bytes[DATA_LEN];
 	u16 halves[DATA_LEN>>1];
-} __attribute__((packed)) OutData;
+} OutData;
+
+#define STATIC_ASSERT(COND,MSG) typedef char static_assertion_##MSG[(COND)?1:-1]
+STATIC_ASSERT(sizeof(OutData) == DATA_LEN, OutDataSize);
 
 static OutData out_data;
 
@@ -195,7 +198,7 @@ static void fl_run(OSMesgQueue* queue) {
 			}
 			// msg = NULL, to_block = 1
 			osRecvMesg(queue, NULL, 1);
-			osContGetReadData(p); // actually get the pad data
+			osContGetReadData((OSContPad*)p); // actually get the pad data
 		}
 		
 		// We use halfwords, because two of the RawInput objects are 2-byte

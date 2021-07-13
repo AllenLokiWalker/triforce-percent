@@ -8,8 +8,6 @@ static void *MaybeSeg2RAM(void *ptr){
 
 extern AnimationEntry* AnimationContext_AddEntry(AnimationContext *animCtx, s32 type);
 
-extern u32 _link_animetionSegmentRomStart[1];
-
 static void Patched_SetLoadFrame(GlobalContext* globalCtx, 
     LinkAnimationHeader* animation, s32 frame, s32 limbCount, Vec3s* frameTable) 
 {
@@ -22,16 +20,16 @@ static void Patched_SetLoadFrame(GlobalContext* globalCtx,
     
     osCreateMesgQueue(&entry->data.load.msgQueue, &entry->data.load.msg, 1);
     
-    if(linkAnimHeader->anim & 0x80000000){
+    if(linkAnimHeader->segment & 0x80000000){
         //Animation is in RAM
-        bcopy((void*)(((s32)linkAnimHeader->anim | 0x80000000) + (animStepSize * frame)), 
+        bcopy((void*)(((s32)linkAnimHeader->segment | 0x80000000) + (animStepSize * frame)), 
             frameTable, animStepSize);
         osSendMesg(&entry->data.load.msgQueue, (OSMesg)0, 0);
     }else{
         //Animation is in ROM
-        DmaMgr_SendRequest2((DmaRequest*)&entry->data.load.req, (u8*)frameTable,
+        DmaMgr_SendRequest2((DmaRequest*)&entry->data.load.req, (u32)frameTable,
             (u32)&_link_animetionSegmentRomStart
-            + (linkAnimHeader->anim & 0x00FFFFFF)
+            + (linkAnimHeader->segment & 0x00FFFFFF)
             + (animStepSize * frame),
             animStepSize, 0, &entry->data.load.msgQueue, 0);
     }
@@ -52,7 +50,7 @@ static s16 Patched_GetLengthOrLastFrame(AnimationHeaderCommon *animation, s16 mi
 #include "../anim/anim.c"
 
 //Testing
-LinkAnimationHeader testAnimHeader = { { 40, 0 }, 0x0701E340 };
+LinkAnimationHeader testAnimHeader = { { 40 }, 0x0701E340 };
 
 typedef struct {
     //If positive, passes ptr to function in table D_80854AA4 (debug) indexed

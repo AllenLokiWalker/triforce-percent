@@ -272,8 +272,8 @@ const ActorInit init_vars = {
 	.flags = 0x00000011, // enable Z targetting
 	.objectId = OBJ_ID,
 	.instanceSize = sizeof(Entity),
-	.init = create,
-	.destroy = destroy,
-	.main = step,
-	.draw = draw
+	.init = (ActorFunc)create,
+	.destroy = (ActorFunc)destroy,
+	.main = (ActorFunc)step,
+	.draw = (ActorFunc)draw
 };

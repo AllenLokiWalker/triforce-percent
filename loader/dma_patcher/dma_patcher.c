@@ -166,7 +166,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
                 return;
             }
             if (iter->romEnd == 0) {
-                DmaMgr_DMARomToRam(copyStart, ram, size);
+                DmaMgr_DMARomToRam(copyStart, (u32)ram, size);
             }else{
                 if(copyStart != romStart){
                     Debugger_Printf("!! DMA @%08X middle of compressed file %08X", copyStart, romStart);
@@ -186,5 +186,5 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
         ++iter;
     }
     Debugger_Printf("!! DMA @%08X not found", vrom);
-    DmaMgr_DMARomToRam(vrom, ram, size);
+    DmaMgr_DMARomToRam(vrom, (u32)ram, size);
 }

@@ -44,7 +44,7 @@ typedef struct {
 static AudioIndex NewAudioseqIndex;
 static AudioIndex NewAudiobankIndex;
 
-extern FakeAudioContext gAudioContext;
+extern FakeAudioContext gFakeAudioContext;
 
 extern s32 (*sDmaHandler)(OSPiHandle* handle, OSIoMesg* mb, s32 direction);
 
@@ -53,7 +53,7 @@ extern void Audio_DMA();
 static s32 Patched_AudioDMA(OSIoMesg* mesg, u32 priority, s32 direction, u32 devAddr,
     void* ramAddr, u32 size, OSMesgQueue* reqQueue, s32 handleType)
 {
-    if(gAudioContext.resetTimer > 0x10) return -1;
+    if(gFakeAudioContext.resetTimer > 0x10) return -1;
     
     size = (size + 0xF) & ~0xF;
     
@@ -66,8 +66,8 @@ static s32 Patched_AudioDMA(OSIoMesg* mesg, u32 priority, s32 direction, u32 dev
     }
     
     OSPiHandle* handle;
-    if(handleType == 2) handle = gAudioContext.cartHandle;
-    else if(handleType == 3) handle = gAudioContext.unk_1E1C;
+    if(handleType == 2) handle = gFakeAudioContext.cartHandle;
+    else if(handleType == 3) handle = gFakeAudioContext.unk_1E1C;
     else return 0;
     
     mesg->hdr.pri = priority;
@@ -89,8 +89,8 @@ static inline void CopyReplaceIndex(AudioIndex** origIdx, AudioIndex* newIdx, u3
 
 void Statics_AudioCodePatches(u8 isLiveRun)
 {
-    CopyReplaceIndex(&gAudioContext.audioseqIndex, &NewAudioseqIndex, NUM_ORIG_SEQS);
-    CopyReplaceIndex(&gAudioContext.audiobankIndex, &NewAudiobankIndex, NUM_ORIG_BANKS);
+    CopyReplaceIndex(&gFakeAudioContext.audioseqIndex, &NewAudioseqIndex, NUM_ORIG_SEQS);
+    CopyReplaceIndex(&gFakeAudioContext.audiobankIndex, &NewAudiobankIndex, NUM_ORIG_BANKS);
     s32 i = __osDisableInt();
     // Patch Audio_DMA
     *( (u32*)Audio_DMA   ) = JUMPINSTR(Patched_AudioDMA);

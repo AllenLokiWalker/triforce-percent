@@ -27,8 +27,8 @@ typedef struct {
 
 // Members
 
-#define CTRLR_RAW gGlobalContext.common.input[0].raw
-#define CTRLR_PRESS gGlobalContext.common.input[0].pad_pressed
+#define CTRLR_RAW gGlobalContext.state.input[0].cur.button
+#define CTRLR_PRESS gGlobalContext.state.input[0].press.button
 #undef PLAYER
 #define PLAYER ((Player*)gGlobalContext.actorCtx.actorLists[ACTORCAT_PLAYER].head)
 

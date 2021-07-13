@@ -13,13 +13,11 @@ extern s16 sEquipAnimState;
 extern s16 sEquipAnimTimer;
 extern s16 sEquipAnimNumFrames;
 
-extern u32 sSoundParam1;
+extern Vec3f sSoundParam1;
 extern float sSoundParam34;
 extern float sSoundParam5;
 
 extern u8 sSubscreenButtonStates[30];
-
-extern s32 gItemIcons[100]; //size actually unknown, doesn't matter
 
 void Patched_LoadItemIconMain(GlobalContext *global, u16 button, u16 num){
     InterfaceContext *interfaceCtx = (InterfaceContext*)&global->interfaceCtx;
@@ -44,11 +42,11 @@ void Patched_LoadItemIconMain(GlobalContext *global, u16 button, u16 num){
     rom += item * size;
     
     if(num == 0){
-        DmaMgr_SendRequest1(ram, rom, size, 0);
+        DmaMgr_SendRequest1(ram, rom, size);
     }else{
         DmaRequest *request = ((num == 1) ? &interfaceCtx->dmaRequest_160 : &interfaceCtx->dmaRequest_180);
         osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
-        DmaMgr_SendRequest2(request, ram, rom, size, 0, &interfaceCtx->loadQueue, 0);
+        DmaMgr_SendRequest2(request, (u32)ram, rom, size, 0, &interfaceCtx->loadQueue, 0);
         osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
     }
     
@@ -97,7 +95,7 @@ s32 *Patched_EquipEffectTexLoad(s32 *dl, s32 dummy, PauseContext *pauseCtx){
     }
     //gDPSetTextureImage
     dl[0x0] = 0xFD180000;
-    dl[0x1] = gItemIcons[item];
+    dl[0x1] = (s32)gItemIcons[item];
     //gDPSetTile
     dl[0x2] = 0xF5180000;
     dl[0x3] = 0x07000000;
@@ -120,7 +118,7 @@ s32 *Patched_EquipEffectTexLoad(s32 *dl, s32 dummy, PauseContext *pauseCtx){
 }
 
 void Statics_HandleEquipMedallionsToC(){
-    PauseContext *pauseCtx = &gGlobalContext.pause_ctxt;
+    PauseContext *pauseCtx = &gGlobalContext.pauseCtx;
     if(!pauseCtx->state) return;
     
     //Enable C buttons on Quest Status subscreen
@@ -135,11 +133,11 @@ void Statics_HandleEquipMedallionsToC(){
     
     u8 item = pauseCtx->cursorItem[2];
     if(item >= 0x66 && item <= 0x79 && //actually has item, not empty
-            (CTRLR_PRESS & (INPUT_C_LEFT | INPUT_C_DOWN | INPUT_C_RIGHT))){
+            (CTRLR_PRESS & (BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT))){
         //Equipping a Quest Status item
-        if(CTRLR_PRESS & INPUT_C_LEFT){
+        if((CTRLR_PRESS & BTN_CLEFT)){
             pauseCtx->equipTargetCBtn = 0;
-        }else if(CTRLR_PRESS & INPUT_C_DOWN){
+        }else if((CTRLR_PRESS & BTN_CDOWN)){
             pauseCtx->equipTargetCBtn = 1;
         }else{
             pauseCtx->equipTargetCBtn = 2;
@@ -153,7 +151,7 @@ void Statics_HandleEquipMedallionsToC(){
         sEquipAnimTimer = 0;
         sEquipAnimState = 3;
         sEquipAnimNumFrames = 10;
-        Audio_PlaySoundGeneral(0x4808, //NA_SE_SY_DECIDE
+        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE,
             &sSoundParam1, 4, &sSoundParam34, &sSoundParam34, &sSoundParam5);
     }
 }
