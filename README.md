@@ -15,18 +15,11 @@ use this power for?
 
 # Setup
 
-- Make sure you got the Git submodules (ZAP2). You will need libpng (`libpng-dev`) for ZAPD to compile.
+- Install Linux (Debian / Ubuntu / other Debian derivative), either directly or through WSL/WSL2 if you're on Windows.
+- Make sure you got the Git submodules (ZAP2/ZAPD, novl, z64hdr). You will need libpng (`libpng-dev`, `libelf-dev`, and `libglib2.0-dev` for these to compile.
 - If you don't already have it, install the N64 toolchain from https://github.com/glankk/n64.
-- Clone, build, and copy novl to your toolchain folder (e.g. /opt/n64/bin/novl). If the autogen build system for novl gives you garbage, try this makefile from z64me (you still need the prereq packages):
-```
-default:
-	gcc -o novl -s -Os -DNDEBUG -flto src/*.c `pkg-config --cflags --libs libelf glib-2.0`
-
-clean:
-	rm -f novl
-```
-- Get https://github.com/z64me/z64ovl_archived, and make sure this is the z64ovl version used below.
-- Copy local.mk.example to local.mk and edit the paths defined there to point to the relevant tools on your computer, e.g. zzrtl(.exe), etc. (This should go without saying, but do not copy these tools to the toolchain folder!)
+- Get a copy of zzrtl which is stable enough to work on Linux with the default (i.e. non-Jared Johnson) scripts, e.g. 0.01r4. Put this somewhere outside the Git repo (i.e. not in the `toolchain` folder).
+- Copy local.mk.example to local.mk and edit the paths defined there to point to the relevant tools on your computer, i.e. zzrtl and python 3.
 - Make a `build-shortcut` folder and paste the OoT 1.0U compressed ROM into it, with the name `oot_1.0U_comp.z64`.
 - Make a `build-romhack` and paste the OoT 1.0U uncompressed ROM into it, with the name `oot_1.0U_uncomp.z64`.
 - `make`

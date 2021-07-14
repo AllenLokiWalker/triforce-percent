@@ -20,7 +20,7 @@ $(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt $(LOCALBINFILES) ../../toolch
 	sed -i 's/build.z64/tf-romhack.z64/g' $(BUILDRTL)
 	$(ZZRTL) $(BUILDRTL)
 
-%.o: %.s
+padmgr_call_statics.o: padmgr_call_statics.s
 	$(AS) -Os -o $@ $<
 
 %.elf: %.o boot_load_statics.ld ../../statics/statics.out.ld $(OOTMAINLD)

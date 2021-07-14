@@ -9,8 +9,8 @@ typedef struct {
 } FakeDmaRequest;
 
 #define _codeSegmentStart (void*)0x800110A0
-#define _codeSegmentRomStart (void*)0x00A87000
-#define _codeSegmentRomEnd (void*)0x00B8AD30
+#define _codeSegmentRomStart 0x00A87000
+#define _codeSegmentRomEnd 0x00B8AD30
 #define _codeSegmentBssStart (void*)0x80114DD0
 #define _codeSegmentBssEnd (void*)0x8012BE30
 
@@ -19,8 +19,8 @@ void func_800005A0(void* arg0) {
     static FakeDmaRequest rhstaticsFile = { (void*)0xDEADBEEF, &statics_START, 0x04206969 };
     
     DmaMgr_Init();
-    DmaMgr_SendRequest1(_codeSegmentStart, _codeSegmentRomStart, _codeSegmentRomEnd - _codeSegmentRomStart, "");
+    DmaMgr_SendRequest1(_codeSegmentStart, _codeSegmentRomStart, _codeSegmentRomEnd - _codeSegmentRomStart);
     bzero(_codeSegmentBssStart, _codeSegmentBssEnd - _codeSegmentBssStart);
-    DmaMgr_ProcessMsg(&rhstaticsFile);
+    DmaMgr_ProcessMsg((DmaRequest*)&rhstaticsFile);
     Main(arg0);
 }

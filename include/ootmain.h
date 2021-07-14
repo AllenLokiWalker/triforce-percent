@@ -1,4 +1,5 @@
 #include "z64hdr/oot_10.h"
+#include "audiobank.h"
 
 //Structs
 
