@@ -172,20 +172,20 @@ static void update(Entity *en, GlobalContext *global) {
 	const s16 *rottable = &pieces_rot[3*variable];
 	if(state == STATE_RISE || state == STATE_WAIT0){
 		//Free rotation
-		en->actor.world.rot.x += *rottable++;
-		en->actor.world.rot.y += *rottable++;
-		en->actor.world.rot.z += *rottable;
+		en->actor.shape.rot.x += *rottable++;
+		en->actor.shape.rot.y += *rottable++;
+		en->actor.shape.rot.z += *rottable;
 	}else if(state == STATE_COMBINE){
 		//Rotate back to upright
 		s32 framesleft = frames - frame;
-		rotcombine(&en->actor.world.rot.x, *rottable++, framesleft);
-		rotcombine(&en->actor.world.rot.y, *rottable++, framesleft);
-		rotcombine(&en->actor.world.rot.z, *rottable, framesleft);
+		rotcombine(&en->actor.shape.rot.x, *rottable++, framesleft);
+		rotcombine(&en->actor.shape.rot.y, *rottable++, framesleft);
+		rotcombine(&en->actor.shape.rot.z, *rottable, framesleft);
 	}else{
 		//No rotation
-		en->actor.world.rot.x = 0;
-		en->actor.world.rot.y = 0;
-		en->actor.world.rot.z = 0;
+		en->actor.shape.rot.x = 0;
+		en->actor.shape.rot.y = 0;
+		en->actor.shape.rot.z = 0;
 	}
 	//Increment
 	if(mode != STATE_MODE_LAST){

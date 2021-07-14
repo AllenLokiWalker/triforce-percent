@@ -48,7 +48,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		gSaveContext.cutsceneTrigger = 1;
 	}
 	en->actor.world.pos = en->actor.home.pos;
-	en->actor.world.rot.x = 0; en->actor.world.rot.y = 0; en->actor.world.rot.z = 0;
+	en->actor.shape.rot.x = 0; en->actor.shape.rot.y = 0; en->actor.shape.rot.z = 0;
 	if(en->state == 0){
 		//Away, waiting for NPC action
 		Actor_SetScale(&en->actor, SCALE_TINY);
@@ -66,7 +66,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		en->actor.world.pos.z -= LEAN_SHIFT_Z;
 		en->actor.world.pos.y += y + FLOAT_CENTER_HEIGHT;
 		en->lastFloatY = en->actor.world.pos.y;
-		en->actor.world.rot.x = LEAN_FORWARD;
+		en->actor.shape.rot.x = LEAN_FORWARD;
 		++en->frames;
 		if(en->frames >= CYCLE_PERIOD) en->frames = 0;
 		if(CHECK_NPC_ACTION(2)){
@@ -87,11 +87,11 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		Actor_SetScale(&en->actor, scale);
 		en->actor.world.pos.y += (1.0f - ratio) * en->lastFloatY;
 		float rot = (ratio * ratio) * SPIRAL_ROTATIONS * 0x10000;
-		en->actor.world.rot.y = (s16)((s32)rot & 0xFFFF);
-		if(en->state == 1) en->actor.world.rot.y = -en->actor.world.rot.y;
+		en->actor.shape.rot.y = (s16)((s32)rot & 0xFFFF);
+		if(en->state == 1) en->actor.shape.rot.y = -en->actor.shape.rot.y;
 		if(ratio < LEAN_RATIO){
 			float leanratio = 1.0f - (ratio / LEAN_RATIO);
-			en->actor.world.rot.x = (s16)((float)LEAN_FORWARD * leanratio);
+			en->actor.shape.rot.x = (s16)((float)LEAN_FORWARD * leanratio);
 			en->actor.world.pos.z -= leanratio * LEAN_SHIFT_Z;
 		}
 		++en->frames;

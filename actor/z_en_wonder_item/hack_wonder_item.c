@@ -44,12 +44,12 @@ static void HackWonderItem_Update(Actor* thisx, GlobalContext* global) {
 	}*/
 }
 
-const char padding[0x95C] = {};
+const char padding[0x9DC] = {};
 
 const ActorInit init_vars = {
     .id = 0x0112, 
 	.category = ACTORCAT_PROP,
-	.flags = 0x00000000,
+	.flags = 0x00000030, //Always run update and draw functions
 	.objectId = 1, //gameplay_keep
 	.padding = 0x0000,
 	.instanceSize = 0x01C0,

@@ -30,7 +30,7 @@ static void destroy(Entity *en, GlobalContext *global) {
 static void update(Entity *en, GlobalContext *global) {
     if(en->frame < OPEN_DELAY){
         Animation_Change(&en->skelanime, (AnimationHeader*)ANIM_LIGHTANIM,
-			1.0f, 0.0f, 0, 0, 0.0f);
+			1.0f, 0.0f, 0.0f, 0, 0.0f);
 	}else if(en->frame == OPEN_DELAY){
 		en->state = 1;
 	}else if(en->frame == OPEN_DELAY + ANIM_LEN - 1){
