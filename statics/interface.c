@@ -7,7 +7,7 @@ extern void Construct_Icon_Target();
 extern void InterfaceEffectTex_Start();
 extern void InterfaceEffectTex_Target();
 
-extern void KaleidoScope_UpdateEquipAnim(GlobalContext *global);
+extern void KaleidoScope_UpdateEquipAnim(GlobalContext *globalCtx);
 
 extern s16 sEquipAnimState;
 extern s16 sEquipAnimTimer;
@@ -19,8 +19,8 @@ extern float sSoundParam5;
 
 extern u8 sSubscreenButtonStates[30];
 
-void Patched_LoadItemIconMain(GlobalContext *global, u16 button, u16 num){
-    InterfaceContext *interfaceCtx = (InterfaceContext*)&global->interfaceCtx;
+void Patched_LoadItemIconMain(GlobalContext *globalCtx, u16 button, u16 num){
+    InterfaceContext *interfaceCtx = (InterfaceContext*)&globalCtx->interfaceCtx;
     u32 rom = 0x007BD000; //icon_item_static
     u8 *ram = interfaceCtx->iconItemSegment + button * 0x1000;
     u32 *image = (u32*)ram;
@@ -71,12 +71,12 @@ void Patched_LoadAllItemIcons(){
     Patched_LoadItemIconMain(&gGlobalContext, 3, 0);
 }
 
-void Patched_LoadItemIcon1(GlobalContext *global, u16 button){
-    Patched_LoadItemIconMain(global, button, 1);
+void Patched_LoadItemIcon1(GlobalContext *globalCtx, u16 button){
+    Patched_LoadItemIconMain(globalCtx, button, 1);
 }
 
-void Patched_LoadItemIcon2(GlobalContext *global, u16 button){
-    Patched_LoadItemIconMain(global, button, 2);
+void Patched_LoadItemIcon2(GlobalContext *globalCtx, u16 button){
+    Patched_LoadItemIconMain(globalCtx, button, 2);
 }
 
 s32 *Patched_EquipEffectTexLoad(s32 *dl, s32 dummy, PauseContext *pauseCtx){

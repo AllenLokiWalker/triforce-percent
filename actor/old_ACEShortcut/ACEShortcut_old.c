@@ -242,13 +242,13 @@ typedef struct {
 extern void seed_rotation( void );
 asm( ".equ seed_rotation, " QUOTE(SEED_ROTATION_ADDR) );
 
-static void create( Entity* entity, GlobalContext* global ) {
+static void create( Entity* entity, GlobalContext *globalCtx) {
 	*(u32*)SEED_ROTATION_ADDR = 0x080475E4; // seed angle = J 0x8011D790
 }
 
 #define AOE 600.0f
 
-static void step( Entity* entity, GlobalContext* global ) {
+static void step( Entity* entity, GlobalContext *globalCtx) {
 	_printf( 16, 56, "Distance to AOE:%.3f", (entity->actor.dist_from_link_xz) - AOE );
 	_printf( 16, 64, "Seed angle:%08X", *(u32*)SEED_ROTATION_ADDR ); // big endian :)
 	_printf( 16, 72, "Pads:%08X - %08X -", *(u32*)0x8011D790, *(u32*)0x8011D79C);
@@ -257,11 +257,11 @@ static void step( Entity* entity, GlobalContext* global ) {
 		seed_rotation();
 }
 
-static void draw( Entity* entity, GlobalContext* global ) {
+static void draw( Entity* entity, GlobalContext *globalCtx) {
 	
 }
 
-static void destroy( Entity* entity, GlobalContext* global ) {
+static void destroy( Entity* entity, GlobalContext *globalCtx) {
 	
 }
 

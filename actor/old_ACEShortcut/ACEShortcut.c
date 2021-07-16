@@ -255,7 +255,7 @@ typedef struct {
 extern void seed_rotation( void );
 asm( ".equ seed_rotation, " QUOTE(SEED_ROTATION_ADDR) );
 
-static void create( Entity* entity, GlobalContext* global ) {
+static void create( Entity* entity, GlobalContext *globalCtx) {
 	*(u32*)SEED_ROTATION_ADDR = 0x080475E4; // seed angle = J 0x8011D790
 	/*
 	((u8*)SAVE_CONTEXT)[INVENTORY+7] = 0x08; //give Ocarina of Time
@@ -282,7 +282,7 @@ uint32_t read_register(OSThread *th, uint8_t reg){
 
 #define AOE 600.0f
 
-static void step( Entity* entity, GlobalContext* global ) {
+static void step( Entity* entity, GlobalContext *globalCtx) {
 	/*
 	*((u32*)(SAVE_CONTEXT + QUEST_STATUS)) = 0x00FFFFFFu; //give all Quest Status items
 	_printf(8, 40, "Link age next %d, SS flag %d", *(u8*)(LINK_AGE_NEXT), *(u16*)(SUN_SONG_FLAG));
@@ -358,12 +358,12 @@ static void step( Entity* entity, GlobalContext* global ) {
 	//print_bytes(8+5*_letter_width, 128, (u8*)KARGAROC_PAYLOAD_ADDR, 16, 16);
 }
 
-static void draw( Entity* entity, GlobalContext* global ) {
+static void draw( Entity* entity, GlobalContext *globalCtx) {
 	if( entity->actor.dist_from_link_xz < AOE )
 		seed_rotation();
 }
 
-static void destroy( Entity* entity, GlobalContext* global ) {
+static void destroy( Entity* entity, GlobalContext *globalCtx) {
 	
 }
 

@@ -100,10 +100,10 @@ static void rotcombine(s16 *r, s16 tbl, s32 framesleft){
 	*r -= d;
 }
 
-static void init(Entity *en, GlobalContext *global) {
+static void init(Entity *en, GlobalContext *globalCtx) {
 	if(en->actor.params == 0){
 		Lights_PointNoGlowSetInfo(&en->light, 0, 0, 0, TFCOLOR_R, TFCOLOR_G, TFCOLOR_B, 2000);
-		en->lightnode = LightContext_InsertLight(global, &global->lightCtx, &en->light);
+		en->lightnode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &en->light);
 	}
 	en->state = 0;
 	en->frame = 0;
@@ -111,13 +111,13 @@ static void init(Entity *en, GlobalContext *global) {
 	setpos(en, 0.0f, 0.0f, 0.0f);
 }
 
-static void destroy(Entity *en, GlobalContext *global) {
+static void destroy(Entity *en, GlobalContext *globalCtx) {
 	if(en->actor.params == 0){
-		LightContext_RemoveLight(global, &global->lightCtx, en->lightnode);
+		LightContext_RemoveLight(globalCtx, &globalCtx->lightCtx, en->lightnode);
 	}
 }
 
-static void update(Entity *en, GlobalContext *global) {
+static void update(Entity *en, GlobalContext *globalCtx) {
 	float x, y, z, s, brightness, lastx, lasty, lastz, lasts, lastbrightness;
 	s16 variable = en->actor.params;
 	if(variable >= 3) variable = 0;
@@ -199,8 +199,8 @@ static void update(Entity *en, GlobalContext *global) {
 	++en->totalframes;
 }
 
-static void draw(Entity *en, GlobalContext *global) {
-	Gfx_DrawDListOpa(global, (Gfx*)DL_TFPIECE);
+static void draw(Entity *en, GlobalContext *globalCtx) {
+	Gfx_DrawDListOpa(globalCtx, (Gfx*)DL_TFPIECE);
 }
 
 const ActorInit init_vars = {

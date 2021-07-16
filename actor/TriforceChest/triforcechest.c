@@ -13,19 +13,19 @@ typedef struct {
 	u8 state, frame;
 } Entity;
 
-static void init(Entity *en, GlobalContext *global) {
+static void init(Entity *en, GlobalContext *globalCtx) {
 	Actor_SetScale(&en->actor, 1.8f);
-	SkelAnime_Init(global, &en->skelanime, (SkeletonHeader*)SKEL_TRIFORCECHEST,
+	SkelAnime_Init(globalCtx, &en->skelanime, (SkeletonHeader*)SKEL_TRIFORCECHEST,
 		(AnimationHeader*)ANIM_CHESTOPENING, NULL, NULL, 0);
 	en->state = 0;
 	en->frame = 0;
 }
 
-static void destroy(Entity *en, GlobalContext *global) {
+static void destroy(Entity *en, GlobalContext *globalCtx) {
 	
 }
 
-static void update(Entity *en, GlobalContext *global) {
+static void update(Entity *en, GlobalContext *globalCtx) {
     if(en->frame < OPEN_DELAY){
         Animation_Change(&en->skelanime, (AnimationHeader*)ANIM_CHESTOPENING,
 			1.0f, 0.0f, 0.0f, 0, 0.0f);
@@ -37,11 +37,11 @@ static void update(Entity *en, GlobalContext *global) {
 	if(en->state < 2) ++en->frame;
 }
 
-static void draw(Entity *en, GlobalContext *global) {
+static void draw(Entity *en, GlobalContext *globalCtx) {
 	if(en->state < 2){
 		SkelAnime_Update(&en->skelanime);
 	}
-	SkelAnime_DrawOpa(global, en->skelanime.skeleton, en->skelanime.jointTable,
+	SkelAnime_DrawOpa(globalCtx, en->skelanime.skeleton, en->skelanime.jointTable,
 		NULL, NULL, &en->actor);
 }
 

@@ -8,23 +8,23 @@ extern void ACE_Dest(void);
 asm(".equ ACE_Dest, " QUOTE(ACE_DEST_ADDR));
 
 //Using this to signal ACE done
-#define GLOBAL_FLAG ((u8*)&global->lightCtx.unk_0C)[3]
+#define GLOBAL_FLAG ((u8*)&globalCtx->lightCtx.unk_0C)[3]
 #define FLAG_ACEDONE 0xA5
 #define FLAG_ACEHAPPENING 0xEB
 
 #define AOE 600.0f
 
-static void HackWonderItem_Init(Actor* thisx, GlobalContext* global) {
+static void HackWonderItem_Init(Actor* thisx, GlobalContext *globalCtx) {
 	if(GLOBAL_FLAG == FLAG_ACEDONE || thisx->params != 0x0FE0 || thisx->world.rot.z != 1){
 		Actor_Kill(thisx);
 	}
 }
 
-static void HackWonderItem_Destroy(Actor* thisx, GlobalContext* global) {
+static void HackWonderItem_Destroy(Actor* thisx, GlobalContext *globalCtx) {
 	
 }
 
-static void HackWonderItem_Update(Actor* thisx, GlobalContext* global) {
+static void HackWonderItem_Update(Actor* thisx, GlobalContext *globalCtx) {
 	if(GLOBAL_FLAG == FLAG_ACEDONE){
 		Actor_Kill(thisx);
 		return;

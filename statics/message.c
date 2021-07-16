@@ -34,8 +34,8 @@ MessageTableEntry hackMessageTable[] = {
 //     0x008EB000, 0x0092D000, 0x00966000 //JP, US, staff
 // };
 
-void Statics_LoadMsgInfoPatched(GlobalContext *global, u16 textId, s32 type){
-    Font *font = (Font*)((u8*)global + 0x2200);
+void Statics_LoadMsgInfoPatched(GlobalContext *globalCtx, u16 textId, s32 type){
+    Font *font = &globalCtx->msgCtx.font;
     MessageTableEntry *tbl;
     const char *baseSeg, *thisSeg, *nextSeg;
     u8 found = 0;

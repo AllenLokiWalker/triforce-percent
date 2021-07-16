@@ -36,6 +36,11 @@ typedef struct {
 #define JUMPINSTR(func) (0x08000000 | ((((u32)func)>>2) & 0x03FFFFFF))
 #define JALINSTR(func)  (0x0C000000 | ((((u32)func)>>2) & 0x03FFFFFF))
 
+#undef POLY_OPA_DISP
+#undef POLY_XLU_DISP
+#define POLY_OPA_DISP gGlobalContext.state.gfxCtx->polyOpa.p
+#define POLY_XLU_DISP gGlobalContext.state.gfxCtx->polyXlu.p
+
 //Functions
 
 extern void Audio_FadeOut(u16 frames);
