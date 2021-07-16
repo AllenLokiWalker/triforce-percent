@@ -1,5 +1,4 @@
-#include <z64ovl/oot/u10.h>
-#include <z64ovl/helpers.h>
+#include "ootmain.h"
 
 // Actor Information
 #define ACT_ID                  1
@@ -232,8 +231,8 @@ void print_color( u16 x, u16 y, u16 color ) {
 
 // Actor Structure
 typedef struct {
-	z64_actor_t actor;
-} entity_t;
+	Actor actor;
+} Entity;
 
 #define QUOTEX(x) #x
 #define QUOTE(x) QUOTEX(x)
@@ -243,13 +242,13 @@ typedef struct {
 extern void seed_rotation( void );
 asm( ".equ seed_rotation, " QUOTE(SEED_ROTATION_ADDR) );
 
-static void create( entity_t* entity, z64_global_t* global ) {
+static void create( Entity* entity, GlobalContext *globalCtx) {
 	*(u32*)SEED_ROTATION_ADDR = 0x080475E4; // seed angle = J 0x8011D790
 }
 
 #define AOE 600.0f
 
-static void step( entity_t* entity, z64_global_t* global ) {
+static void step( Entity* entity, GlobalContext *globalCtx) {
 	_printf( 16, 56, "Distance to AOE:%.3f", (entity->actor.dist_from_link_xz) - AOE );
 	_printf( 16, 64, "Seed angle:%08X", *(u32*)SEED_ROTATION_ADDR ); // big endian :)
 	_printf( 16, 72, "Pads:%08X - %08X -", *(u32*)0x8011D790, *(u32*)0x8011D79C);
@@ -258,25 +257,23 @@ static void step( entity_t* entity, z64_global_t* global ) {
 		seed_rotation();
 }
 
-static void draw( entity_t* entity, z64_global_t* global ) {
+static void draw( Entity* entity, GlobalContext *globalCtx) {
 	
 }
 
-static void destroy( entity_t* entity, z64_global_t* global ) {
+static void destroy( Entity* entity, GlobalContext *globalCtx) {
 	
 }
 
 /* .data */
-const z64_actor_init_t init_vars = {
-	.number = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
-	//.number = ACT_ID, .padding = 0x0000,
-	.type = 0x06, // type = stage prop
-	.room = 0x00,
+const ActorInit init_vars = {
+	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
+	.category = ACTORCAT_PROP,
 	.flags = 0x00000011, // enable Z targetting
-	.object = OBJ_ID,
-	.instance_size = sizeof(entity_t),
-	.init = create,
-	.dest = destroy,
-	.main = step,
-	.draw = draw
+	.objectId = OBJ_ID,
+	.instanceSize = sizeof(Entity),
+	.init = (ActorFunc)create,
+	.destroy = (ActorFunc)destroy,
+	.main = (ActorFunc)step,
+	.draw = (ActorFunc)draw
 };

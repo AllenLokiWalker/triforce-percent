@@ -34,8 +34,8 @@ MessageTableEntry hackMessageTable[] = {
 //     0x008EB000, 0x0092D000, 0x00966000 //JP, US, staff
 // };
 
-void Statics_LoadMsgInfoPatched(z64_global_t *global, u16 textId, s32 type){
-    Font *font = (Font*)((u8*)global + 0x2200);
+void Statics_LoadMsgInfoPatched(GlobalContext *globalCtx, u16 textId, s32 type){
+    Font *font = &globalCtx->msgCtx.font;
     MessageTableEntry *tbl;
     const char *baseSeg, *thisSeg, *nextSeg;
     u8 found = 0;
@@ -72,7 +72,7 @@ void Statics_LoadMsgInfoPatched(z64_global_t *global, u16 textId, s32 type){
     }
     
     thisSeg = tbl->segment;
-    font->xy = tbl->typePos;
+    font->unk_8[0] = tbl->typePos;
     ++tbl;
     nextSeg = tbl->segment;
     font->msgOffset = thisSeg - baseSeg;
@@ -87,7 +87,7 @@ s32 Statics_N64DDTextCallback(Font *message){
                            - messageTableAddresses[1][0x0].segment;
         message->msgLength = messageTableAddresses[1][0xD].segment 
                            - messageTableAddresses[1][0xC].segment;
-        message->xy = messageTableAddresses[1][0xC].typePos;
+        message->unk_8[0] = messageTableAddresses[1][0xC].typePos;
         return 0;
     }
     bcopy((const void*)message->msgOffset, message->msgBuf, message->msgLength);

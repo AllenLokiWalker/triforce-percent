@@ -5,7 +5,6 @@
 //Table starts in RAM 0x8000B140
 //First empty line after end of table 0x80010FA0 --i.e. 0x5E6 (1510) lines in table
 //Next data after empty space 0x800110A0--i.e. 16 blank lines
-extern DmaEntry gDmaDataTable[];
 #define N_DMADATA 0x5E6
 
 // DmaPatcher RAM
@@ -25,9 +24,9 @@ typedef struct
     u32 dummy2;
     u32 dummy3;
     DmaPatchEntry patches[DMAPATCHER_MAXPATCHES];
-} DmaPatcher_t;
+} DmaPatcher;
 
-static DmaPatcher_t patcher;
+static DmaPatcher patcher;
 
 void DmaPatcher_ProcessMsg(DmaRequest* req);
 void DmaPatcher_AudioFastCopyPatch_Pre();
@@ -131,7 +130,7 @@ void DmaPatcher_CopyRAM(void* dest, const void* source, u32 size)
 {
     osSetThreadPri(NULL, 0x0A);
     osYieldThread();
-    z_bcopy(source, dest, size);
+    bcopy(source, dest, size);
     osSetThreadPri(NULL, 0x10);
 }
 
@@ -167,7 +166,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
                 return;
             }
             if (iter->romEnd == 0) {
-                DmaMgr_DMARomToRam(copyStart, ram, size);
+                DmaMgr_DMARomToRam(copyStart, (u32)ram, size);
             }else{
                 if(copyStart != romStart){
                     Debugger_Printf("!! DMA @%08X middle of compressed file %08X", copyStart, romStart);
@@ -187,5 +186,5 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
         ++iter;
     }
     Debugger_Printf("!! DMA @%08X not found", vrom);
-    DmaMgr_DMARomToRam(vrom, ram, size);
+    DmaMgr_DMARomToRam(vrom, (u32)ram, size);
 }

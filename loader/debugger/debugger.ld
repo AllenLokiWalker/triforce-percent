@@ -7,10 +7,7 @@ INCLUDE fast_loader/fast_loader.out.ld
 framebuffer16 = 0x8011F56C;
 framebuffer64 = 0x8011F56C;
 sExceptionNames = 0x800FF320;
-__osFaultedThread = 0x80006344;
 padmgrth = 0x8011D580;
-
-gObjectContext = 0x801D9C44;
 
 ENTRY(Debugger_Init);
 

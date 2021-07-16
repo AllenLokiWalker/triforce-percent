@@ -26,9 +26,10 @@ endif
 # Paths
 
 MAININCLUDEDIR := $(PROJECT_DIR)/include
+Z64HDRINCLUDEDIR := $(PROJECT_DIR)/include/z64hdr/include
 OOTMAINH := $(PROJECT_DIR)/include/ootmain.h
 OOTMAINLD := $(PROJECT_DIR)/include/ootmain.ld
-Z64OVLLD := $(PROJECT_DIR)/include/z64ovl_archived/z64ovl.ld
+ACTORLD := $(PROJECT_DIR)/include/z64hdr/z64hdr_actor.ld
 
 # Main tools
 
@@ -41,12 +42,13 @@ OC = mips64-objcopy
 
 CCFLAGS := -mips3 -mabi=32 -mtune=vr4300 -mno-gpopt -fomit-frame-pointer \
 	-mno-check-zero-division -mno-explicit-relocs -mno-memcpy \
-	-fno-toplevel-reorder -fno-reorder-blocks \
-	--std=gnu99 -Wall -Wno-main -Wno-missing-braces \
-	-G 0 -Os -I $(MAININCLUDEDIR)
+	-fno-toplevel-reorder -fno-reorder-blocks -fno-builtin \
+	--std=gnu99 -Wall -Werror -Wno-main \
+	-Wbuiltin-declaration-mismatch -Wbuiltin-macro-redefined \
+	-G 0 -Os -I $(MAININCLUDEDIR) -I $(Z64HDRINCLUDEDIR)
 # loader and statics had -O2 instead of -Os
 
-LDFLAGS := --emit-relocs -T $(OOTMAINLD)
+LDFLAGS := --emit-relocs -L $(MAININCLUDEDIR) -T $(OOTMAINLD)
 OCFLAGS := -R .MIPS.abiflags -O binary
 
 # Other tools

@@ -15,8 +15,7 @@ ROOMROMGOAWAY = \
 TRIFORCEROOMDIR = ../build-romhack/scene/39
 UNICORNFOUNTAINDIR = ../build-romhack/scene/38
 
-CCFLAGS += -I ../include/decomp
-CCFLAGS += $(ROOMROMGOAWAY)
+CCFLAGS += $(ROOMROMGOAWAY) -Wno-incompatible-pointer-types -Wno-missing-braces
 
 .PHONY: default clean $(MAKESUBDIRS)
 

@@ -13,7 +13,7 @@ UPDATETXT = $(ZZRTLDIR)/update.txt
 	$(CC) $(CCFLAGS) -c $< -o $@
 	
 %.elf: %.o
-	$(LD) $(LDFLAGS) -T $(Z64OVLLD) -o $@ $< 
+	$(LD) $(LDFLAGS) -T $(ACTORLD) -o $@ $< 
 	
 %.zovl: %.elf
 	$(NOVL) -c -A $(BASEADDR) -o $@ $<

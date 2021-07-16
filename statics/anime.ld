@@ -1,12 +1,11 @@
 AnimationContext_AddEntry = 0x8008B48C;
-AnimationContext_SetLoadFrame = 0x8008B4C4;
 
 _link_animetionSegmentRomStart = 0x00557000;
 
-Animation_GetLength = 0x8008A158;
-Animation_GetLastFrame = 0x8008A194;
+/*
 Animation_GetLength2 = 0x8008AF34;
 Animation_GetLastFrame2 = 0x8008AF70;
+*/
 
 Player_RAM_START = 0x80388B60; /* Loaded/reloc'd RAM addr of start of Link overlay */
 Player_START = 0x808301C0; /* VRAM addr of start of Link overlay */

@@ -49,10 +49,10 @@ with open('anim.bin', 'wb') as binout:
         binout.write(bytes([0] * (curaddr - oldcuraddr)))
     
 with open('anim.c', 'w') as cout:
-    cout.write('z64_animation_entry_link_t linkAnimPatchTable[' 
+    cout.write('LinkAnimationHeader linkAnimPatchTable[' 
         + str(len(animinfo)) + '] = {\n')
     for a in animinfo:
-        cout.write('    {' + str(a.frames) + ', 0, ' + hex(a.addr) + '},\n')
+        cout.write('    {{' + str(a.frames) + '}, ' + hex(a.addr) + '},\n')
     cout.write('};\n')
 
 print('animcat done')

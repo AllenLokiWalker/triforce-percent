@@ -1,36 +1,31 @@
 #include "ootmain.h"
 #include "interface.h"
 
-extern void Interface_LoadItemIcon1(z64_global_t *globalCtx, u16 button);
-extern void Interface_LoadItemIcon2(z64_global_t *globalCtx, u16 button);
-
 extern void Construct_Icon_Start();
 extern void Construct_Icon_Target();
 
 extern void InterfaceEffectTex_Start();
 extern void InterfaceEffectTex_Target();
 
-extern void KaleidoScope_UpdateEquipAnim(z64_global_t *global);
+extern void KaleidoScope_UpdateEquipAnim(GlobalContext *globalCtx);
 
 extern s16 sEquipAnimState;
 extern s16 sEquipAnimTimer;
 extern s16 sEquipAnimNumFrames;
 
-extern u32 sSoundParam1;
+extern Vec3f sSoundParam1;
 extern float sSoundParam34;
 extern float sSoundParam5;
 
 extern u8 sSubscreenButtonStates[30];
 
-extern s32 gItemIcons[100]; //size actually unknown, doesn't matter
-
-void Patched_LoadItemIconMain(z64_global_t *global, u16 button, u16 num){
-    InterfaceContext *interfaceCtx = (InterfaceContext*)&global->if_ctxt;
+void Patched_LoadItemIconMain(GlobalContext *globalCtx, u16 button, u16 num){
+    InterfaceContext *interfaceCtx = (InterfaceContext*)&globalCtx->interfaceCtx;
     u32 rom = 0x007BD000; //icon_item_static
-    u8 *ram = interfaceCtx->icon_itemSegment + button * 0x1000;
+    u8 *ram = interfaceCtx->iconItemSegment + button * 0x1000;
     u32 *image = (u32*)ram;
     u32 size = 0x1000;
-    u8 item = gSaveContext.equips.button_items[button];
+    u8 item = gSaveContext.equips.buttonItems[button];
     s8 x, y;
     
     if(item >= 0xF0){
@@ -47,11 +42,11 @@ void Patched_LoadItemIconMain(z64_global_t *global, u16 button, u16 num){
     rom += item * size;
     
     if(num == 0){
-        DmaMgr_SendRequest1(ram, rom, size, 0);
+        DmaMgr_SendRequest1(ram, rom, size);
     }else{
         DmaRequest *request = ((num == 1) ? &interfaceCtx->dmaRequest_160 : &interfaceCtx->dmaRequest_180);
         osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
-        DmaMgr_SendRequest2(request, ram, rom, size, 0, &interfaceCtx->loadQueue, 0);
+        DmaMgr_SendRequest2(request, (u32)ram, rom, size, 0, &interfaceCtx->loadQueue, 0);
         osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
     }
     
@@ -76,12 +71,12 @@ void Patched_LoadAllItemIcons(){
     Patched_LoadItemIconMain(&gGlobalContext, 3, 0);
 }
 
-void Patched_LoadItemIcon1(z64_global_t *global, u16 button){
-    Patched_LoadItemIconMain(global, button, 1);
+void Patched_LoadItemIcon1(GlobalContext *globalCtx, u16 button){
+    Patched_LoadItemIconMain(globalCtx, button, 1);
 }
 
-void Patched_LoadItemIcon2(z64_global_t *global, u16 button){
-    Patched_LoadItemIconMain(global, button, 2);
+void Patched_LoadItemIcon2(GlobalContext *globalCtx, u16 button){
+    Patched_LoadItemIconMain(globalCtx, button, 2);
 }
 
 s32 *Patched_EquipEffectTexLoad(s32 *dl, s32 dummy, PauseContext *pauseCtx){
@@ -100,7 +95,7 @@ s32 *Patched_EquipEffectTexLoad(s32 *dl, s32 dummy, PauseContext *pauseCtx){
     }
     //gDPSetTextureImage
     dl[0x0] = 0xFD180000;
-    dl[0x1] = gItemIcons[item];
+    dl[0x1] = (s32)gItemIcons[item];
     //gDPSetTile
     dl[0x2] = 0xF5180000;
     dl[0x3] = 0x07000000;
@@ -123,7 +118,7 @@ s32 *Patched_EquipEffectTexLoad(s32 *dl, s32 dummy, PauseContext *pauseCtx){
 }
 
 void Statics_HandleEquipMedallionsToC(){
-    PauseContext *pauseCtx = &gGlobalContext.pause_ctxt;
+    PauseContext *pauseCtx = &gGlobalContext.pauseCtx;
     if(!pauseCtx->state) return;
     
     //Enable C buttons on Quest Status subscreen
@@ -134,15 +129,15 @@ void Statics_HandleEquipMedallionsToC(){
 		sSubscreenButtonStates[3*5+3] = 0;
 	}
     
-    if(pauseCtx->flag || pauseCtx->kscpPos != 2) return;
+    if(pauseCtx->debugState || pauseCtx->pageIndex != 2) return;
     
     u8 item = pauseCtx->cursorItem[2];
     if(item >= 0x66 && item <= 0x79 && //actually has item, not empty
-            (CTRLR_PRESS & (INPUT_C_LEFT | INPUT_C_DOWN | INPUT_C_RIGHT))){
+            (CTRLR_PRESS & (BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT))){
         //Equipping a Quest Status item
-        if(CTRLR_PRESS & INPUT_C_LEFT){
+        if((CTRLR_PRESS & BTN_CLEFT)){
             pauseCtx->equipTargetCBtn = 0;
-        }else if(CTRLR_PRESS & INPUT_C_DOWN){
+        }else if((CTRLR_PRESS & BTN_CDOWN)){
             pauseCtx->equipTargetCBtn = 1;
         }else{
             pauseCtx->equipTargetCBtn = 2;
@@ -156,7 +151,7 @@ void Statics_HandleEquipMedallionsToC(){
         sEquipAnimTimer = 0;
         sEquipAnimState = 3;
         sEquipAnimNumFrames = 10;
-        Audio_PlaySoundGeneral(0x4808, //NA_SE_SY_DECIDE
+        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE,
             &sSoundParam1, 4, &sSoundParam34, &sSoundParam34, &sSoundParam5);
     }
 }

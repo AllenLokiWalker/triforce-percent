@@ -1,6 +1,5 @@
-#include <z64ovl/oot/u10.h>
+#include "ootmain.h"
 #include "obj.h"
-#include "lighting.h"
 
 // Actor Information
 #define OBJ_ID 4
@@ -27,72 +26,71 @@
 #define STATE_MODE_LAST 0
 #define STATE_MODE_IMM 1
 #define STATE_MODE_SMOOTH 2
-static const uint8_t states_mode[] = {
+static const u8 states_mode[] = {
 	   1,   2,   2,   2,   2,  2,   2,  1,  0
 };
 // -- ST  RIS   W0  CMB   W1  SNK  W2  DS  LK
-static const uint8_t states_frames[] = {
+static const u8 states_frames[] = {
 	  57,  88,  95,  60,  10,  60, 10, 57,  0
 };
 //These have an extra value at the beginning so we can interpolate from last
 //to current without worrying about crashes
-static const uint8_t states_highpiece_y[] = {
+static const u8 states_highpiece_y[] = {
 	0, 0, 125, 125, 117, 117,  82, 82,  0, 76
 };
-static const uint8_t states_lowpieces_y[] = {
+static const u8 states_lowpieces_y[] = {
 	0, 0,  85,  85,  95,  95,  65, 65,  0, 65
 };
 // -- ST  RIS   W0  CMB   W1  SNK  W2  DS  LK
-static const uint8_t states_lowpieces_x[] = {
+static const u8 states_lowpieces_x[] = {
 	0, 0,  25,  25,  12,  12,  10, 10, 10,  6
 };
-static const uint8_t states_z[] = {
+static const u8 states_z[] = {
 	0, 0,   0,   0,  13,  13,  13, 13,  0, 50
 };
 // -- ST  RIS   W0  CMB   W1  SNK  W2  DS  LK
-static const uint8_t states_scale[] = {
+static const u8 states_scale[] = {
    64,64, 128, 128, 128, 128, 100,100,  1, 64
 };
-static const int8_t states_brightness[] = {
+static const s8 states_brightness[] = {
   -30,-30, 60,  60,  60,  60,  60, 60,  0, 60
 };
 
-static const uint8_t smoothtable[] = {
+static const u8 smoothtable[] = {
 	0x00, 0x0A, 0x1C, 0x48, 0x80, 0xB8, 0xE4, 0xF6, 0xFF
 };
-static const int16_t pieces_rot[] = {
+static const s16 pieces_rot[] = {
 	1200, -870, 0,
 	-580, 0, 1107,
 	0, 1337, 420
 };
 
 typedef struct {
-	z64_actor_t actor;
-	uint8_t state, frame, totalframes;
-	z64_light_node_t *lightnode;
-	z64_light_t light;
-	//uint8_t initambient[3];
-} entity_t;
+	Actor actor;
+	u8 state, frame, totalframes;
+	LightNode *lightnode;
+	LightInfo light;
+} Entity;
 
-static void setpos(entity_t *en, float x, float y, float z){
-	en->actor.pos.x = x;
-	en->actor.pos.y = y;
-	en->actor.pos.z = z;
-	if(en->actor.variable == 0){
-		en->light.lightn.light2.x = (int16_t)x;
-		en->light.lightn.light2.y = (int16_t)y - 12;
-		en->light.lightn.light2.z = (int16_t)z + 4;
+static void setpos(Entity *en, float x, float y, float z){
+	en->actor.world.pos.x = x;
+	en->actor.world.pos.y = y;
+	en->actor.world.pos.z = z;
+	if(en->actor.params == 0){
+		en->light.params.point.x = (s16)x;
+		en->light.params.point.y = (s16)y - 12;
+		en->light.params.point.z = (s16)z + 4;
 	}
 }
 
-static void rotcombine(int16_t *r, int16_t tbl, int32_t framesleft){
-	int32_t rremain = (int32_t)(*r);
+static void rotcombine(s16 *r, s16 tbl, s32 framesleft){
+	s32 rremain = (s32)(*r);
 	if(tbl > 0 && rremain > 0){
 		rremain = -0x10000 + rremain;
 	}else if(tbl < 0 && rremain < 0){
 		rremain = 0x10000 + rremain;
 	}
-	int32_t d = rremain / framesleft;
+	s32 d = rremain / framesleft;
 	if(framesleft > 3){
 		//Do a little more than needed; will automatically slow down the
 		//last few frames.
@@ -102,18 +100,10 @@ static void rotcombine(int16_t *r, int16_t tbl, int32_t framesleft){
 	*r -= d;
 }
 
-// static uint8_t interpambient(uint8_t init, uint8_t tfcolor, int16_t brightness){
-// 	return (uint8_t)((((int32_t)init * (int32_t)(128 - brightness)) 
-// 		+ ((int32_t)tfcolor * (int32_t)brightness)) >> 7);
-// }
-
-static void init(entity_t *en, z64_global_t *global) {
-	if(en->actor.variable == 0){
-		z_lights_init_pos_0(&en->light, 0, 0, 0, TFCOLOR_R, TFCOLOR_G, TFCOLOR_B, 2000);
-		en->lightnode = z_lights_insert(global, &global->lighting, &en->light);
-		// en->initambient[0] = global->lighting.ambient[0];
-		// en->initambient[1] = global->lighting.ambient[1];
-		// en->initambient[2] = global->lighting.ambient[2];
+static void init(Entity *en, GlobalContext *globalCtx) {
+	if(en->actor.params == 0){
+		Lights_PointNoGlowSetInfo(&en->light, 0, 0, 0, TFCOLOR_R, TFCOLOR_G, TFCOLOR_B, 2000);
+		en->lightnode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &en->light);
 	}
 	en->state = 0;
 	en->frame = 0;
@@ -121,29 +111,21 @@ static void init(entity_t *en, z64_global_t *global) {
 	setpos(en, 0.0f, 0.0f, 0.0f);
 }
 
-static void dest(entity_t *en, z64_global_t *global) {
-	if(en->actor.variable == 0){
-		z_lights_kill(global, &global->lighting, en->lightnode);
+static void destroy(Entity *en, GlobalContext *globalCtx) {
+	if(en->actor.params == 0){
+		LightContext_RemoveLight(globalCtx, &globalCtx->lightCtx, en->lightnode);
 	}
 }
 
-static void play(entity_t *en, z64_global_t *global) {
-	/*
-	z64_save_context_t *saveCtx = (void*)Z64GL_SAVE_CONTEXT;
-	if(saveCtx->rupees >= 99){
-		saveCtx->rupees = 0;
-	}else{
-		saveCtx->rupees++;
-	}
-	*/
+static void update(Entity *en, GlobalContext *globalCtx) {
 	float x, y, z, s, brightness, lastx, lasty, lastz, lasts, lastbrightness;
-	int16_t variable = en->actor.variable;
+	s16 variable = en->actor.params;
 	if(variable >= 3) variable = 0;
-	uint8_t state = en->state;
-	uint8_t frame = en->frame;
-	uint8_t frames = states_frames[state];
+	u8 state = en->state;
+	u8 frame = en->frame;
+	u8 frames = states_frames[state];
 	if(frames == 0) frames = 1;
-	uint8_t mode = states_mode[state];
+	u8 mode = states_mode[state];
 	//Position, Scale, Brightness
 	lastx = (float)states_lowpieces_x[state];
 	lasty = (float)states_lowpieces_y[state];
@@ -167,8 +149,8 @@ static void play(entity_t *en, z64_global_t *global) {
 	float m = 1.0f;
 	if(mode >= STATE_MODE_SMOOTH){
 		//Interpolate parameters
-		m = (float)((uint32_t)frame << 3) / (float)frames;
-		uint32_t smoothidx = (uint32_t)m;
+		m = (float)((u32)frame << 3) / (float)frames;
+		u32 smoothidx = (u32)m;
 		m -= (float)smoothidx; //fpart
 		float smoothstart = (float)smoothtable[smoothidx];
 		float smoothend = (float)smoothtable[smoothidx+1];
@@ -182,43 +164,28 @@ static void play(entity_t *en, z64_global_t *global) {
 	brightness = (brightness - lastbrightness) * m + lastbrightness;
 	if(y < 40.0f || brightness < 0.0f) brightness = 0.0f;
 	setpos(en, x, y, z);
-	actor_set_scale(&en->actor, s * 2.5f * 0.0078125f); //1/128
+	Actor_SetScale(&en->actor, s * 2.5f * 0.0078125f); //1/128
 	if(variable == 0){
-		int16_t b16 = (int16_t)brightness;
-		// global->lighting.ambient[0] = 255; //interpambient(en->initambient[0], TFCOLOR_R, b16);
-		// global->lighting.ambient[1] = 0; //interpambient(en->initambient[1], TFCOLOR_G, b16);
-		// global->lighting.ambient[2] = 0; //interpambient(en->initambient[2], TFCOLOR_B, b16);
-		// GlobalContext_Env_t *galias = (GlobalContext_Env_t*)global;
-		// if(galias->envCtx.numLightSettings > 0){
-		// 	galias->envCtx.lightSettingsList[0].ambientClrR = 255;
-		// 	galias->envCtx.lightSettingsList[0].ambientClrG = 0;
-		// 	galias->envCtx.lightSettingsList[0].ambientClrB = 0;
-		// }
-		// galias->envCtx.screenfadeEnable = 1;
-		// galias->envCtx.screenfadeColor[0] = TFCOLOR_R;
-		// galias->envCtx.screenfadeColor[1] = TFCOLOR_G;
-		// galias->envCtx.screenfadeColor[2] = TFCOLOR_B;
-		// galias->envCtx.screenfadeColor[3] = b16 >> 2;
-		en->light.lightn.light2.intensity = b16 << 4;
+		en->light.params.point.radius = (s16)brightness << 4;
 	}
 	//Rotation
-	const int16_t *rottable = &pieces_rot[3*variable];
+	const s16 *rottable = &pieces_rot[3*variable];
 	if(state == STATE_RISE || state == STATE_WAIT0){
 		//Free rotation
-		en->actor.rot.x += *rottable++;
-		en->actor.rot.y += *rottable++;
-		en->actor.rot.z += *rottable;
+		en->actor.shape.rot.x += *rottable++;
+		en->actor.shape.rot.y += *rottable++;
+		en->actor.shape.rot.z += *rottable;
 	}else if(state == STATE_COMBINE){
 		//Rotate back to upright
-		int32_t framesleft = frames - frame;
-		rotcombine(&en->actor.rot.x, *rottable++, framesleft);
-		rotcombine(&en->actor.rot.y, *rottable++, framesleft);
-		rotcombine(&en->actor.rot.z, *rottable, framesleft);
+		s32 framesleft = frames - frame;
+		rotcombine(&en->actor.shape.rot.x, *rottable++, framesleft);
+		rotcombine(&en->actor.shape.rot.y, *rottable++, framesleft);
+		rotcombine(&en->actor.shape.rot.z, *rottable, framesleft);
 	}else{
 		//No rotation
-		en->actor.rot.x = 0;
-		en->actor.rot.y = 0;
-		en->actor.rot.z = 0;
+		en->actor.shape.rot.x = 0;
+		en->actor.shape.rot.y = 0;
+		en->actor.shape.rot.z = 0;
 	}
 	//Increment
 	if(mode != STATE_MODE_LAST){
@@ -232,19 +199,18 @@ static void play(entity_t *en, z64_global_t *global) {
 	++en->totalframes;
 }
 
-static void draw(entity_t *en, z64_global_t *global) {
-	draw_dlist_opa(global, DL_TFPIECE);
+static void draw(Entity *en, GlobalContext *globalCtx) {
+	Gfx_DrawDListOpa(globalCtx, (Gfx*)DL_TFPIECE);
 }
 
-const z64_actor_init_t init_vars = {
-	.number = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
-	.type = 0x06, // type = stage prop
-	.room = 0x00,
+const ActorInit init_vars = {
+	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
+	.category = ACTORCAT_PROP,
 	.flags = 0x00000010,
-	.object = OBJ_ID,
-	.instance_size = sizeof(entity_t),
-	.init = init,
-	.dest = dest,
-	.main = play,
-	.draw = draw
+	.objectId = OBJ_ID,
+	.instanceSize = sizeof(Entity),
+	.init = (ActorFunc)init,
+	.destroy = (ActorFunc)destroy,
+	.update = (ActorFunc)update,
+	.draw = (ActorFunc)draw
 };
