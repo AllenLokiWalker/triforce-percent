@@ -188,27 +188,27 @@ __attribute__((section(".start"))) void Statics_Init(){
 
 static void* malloc_addr = (void*)0x80410000;
 
-void* Statics_RomhackExpansionPakMalloc(u32 size){
+void* Statics_StaticDataMalloc(u32 size){
     void* ret = malloc_addr;
-    malloc_addr = (malloc_addr + size + 15) & ~15;
+    malloc_addr = (void*)(((u32)malloc_addr + size + 15) & ~15);
     return ret;
 }
 
-void Statics_RegisterInjectedFile(void* injected_addr, s32 type_and_size, 
+void Statics_RegisterStaticData(void* ram_addr, s32 type_and_size, 
         s32 data1, s32 data2){
     u32 size = type_and_size & 0x00FFFFFF;
     u8 type = type_and_size >> 24;
-    Debugger_Printf("Registering %08X size %d type %d", injected_addr, size, type);
+    Debugger_Printf("Registering %08X size %d type %d", ram_addr, size, type);
     if(type == 0){
-        Statics_AnimeRegisterFile(injected_addr);
+        Statics_AnimeRegisterStaticData(ram_addr);
     }else if(type >= 1 && type <= 3){
-        Statics_AudioRegisterFile(injected_addr, size, type, data1, data2);
+        Statics_AudioRegisterStaticData(ram_addr, size, type, data1, data2);
     }
 }
 
 //Data here is the four parameters to RegisterInjectedFile
-#define MAX_NONLIVE_FILES 32
-static s32 romhackFileInfo[4*MAX_NONLIVE_FILES] = { 
+#define MAX_STATICDATA 32
+static s32 romhackFileInfo[4*MAX_STATICDATA] = { 
     0xDEADBEEF, 0x04206969, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -220,12 +220,12 @@ static s32 romhackFileInfo[4*MAX_NONLIVE_FILES] = {
 };
 
 void Statics_RomhackLoadAll(){
-    for(s32 i=0; i<MAX_NONLIVE_FILES; ++i){
+    for(s32 i=0; i<MAX_STATICDATA; ++i){
         s32 addr = romhackFileInfo[4*i];
         if(addr == 0) break;
         s32 type_and_size = romhackFileInfo[4*i+1];
         u32 size = type_and_size & 0x00FFFFFF;
-        void* target = Statics_NonLiveExpansionPakMalloc(size);
+        void* target = Statics_StaticDataMalloc(size);
         DmaRequest req;
         req.vromAddr = addr;
         req.dramAddr = target;
@@ -234,8 +234,8 @@ void Statics_RomhackLoadAll(){
         req.line = 0;
         req.unk_14 = 0;
         req.notifyQueue = NULL;
-        z_file_load(&req);
-        Statics_RegisterInjectedFile(target, type_and_size, 
+        DmaMgr_ProcessMsg(&req);
+        Statics_RegisterStaticData(target, type_and_size, 
             romhackFileInfo[4*i+2], romhackFileInfo[4*i+3]);
     }
 }

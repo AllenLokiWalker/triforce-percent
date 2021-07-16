@@ -1,0 +1,3 @@
+statics_START = 0x80403fa0;
+Statics_Init = 0x80403fa0;
+Statics_Update = 0x80404410;

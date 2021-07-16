@@ -47,9 +47,10 @@ typedef struct {
 #define SEQ_AWAKENINGTHESAGES     (NUM_ORIG_SEQS+2)
 #define SEQ_OBTAINTHETRIFORCE     (NUM_ORIG_SEQS+3)
 #define SEQ_POWEROFTHEGODS        (NUM_ORIG_SEQS+4)
-#define SEQ_INITSPEECH            (NUM_ORIG_SEQS+5)
-#define SEQ_AVOICETOTHEHEAVENS    (NUM_ORIG_SEQS+6)
-#define SEQ_STAFFROLL             (NUM_ORIG_SEQS+7)
+#define SEQ_INITSPEECH1           (NUM_ORIG_SEQS+5)
+#define SEQ_INITSPEECH2           (NUM_ORIG_SEQS+6)
+#define SEQ_AVOICETOTHEHEAVENS    (NUM_ORIG_SEQS+7)
+#define SEQ_STAFFROLL             (NUM_ORIG_SEQS+8)
 
 static AudioIndex NewAudioseqIndex;
 static AudioIndex NewAudiobankIndex;
@@ -109,8 +110,8 @@ void Statics_AudioCodePatches(u8 isLiveRun)
     __osRestoreInt(i);
 }
 
-void Statics_AudioRegisterFile(void* injected_addr, s32 size, 
-    u8 type, s32 data1, s32 data2);
+void Statics_AudioRegisterStaticData(void* ram_addr, s32 size, 
+    u8 type, s32 data1, s32 data2)
 {
     AudioIndex* index;
     if(type == 1) index = &NewAudioseqIndex;
@@ -123,8 +124,8 @@ void Statics_AudioRegisterFile(void* injected_addr, s32 size,
     u8 numInst       = (data2 >> 24) & 0xFF;
     u8 numDrum       = (data2 >> 16) & 0xFF;
     u8 numSfx        = (data2 >>  8) & 0xFF;
-    AudioIndexEntry* entry = &index->entries[data1 >> 24];
-    entry->addr = injected_addr;
+    AudioIndexEntry* entry = &index->entries[idx];
+    entry->addr = (u32)ram_addr;
     entry->size = size;
     entry->loadLocation = loadLocation;
     entry->seqPlayerIdx = seqPlayerIdx;

@@ -3,6 +3,7 @@ OUTPUT_FORMAT("elf32-bigmips", "elf32-bigmips", "elf32-littlemips")
 OUTPUT_ARCH (mips)
 
 INCLUDE ../loader/fast_loader/fast_loader.out.ld
+INCLUDE ../loader/debugger/debugger.out.ld
 INCLUDE ../loader/dma_patcher/dma_patcher.out.ld
 
 INCLUDE interface.ld

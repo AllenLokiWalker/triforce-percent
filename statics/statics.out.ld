@@ -1,7 +1,7 @@
 statics_START = 0x80403fa0;
 Statics_Init = 0x80403fa0;
 Statics_Update = 0x80405608;
-Statics_RegisterInjectedFile = 0;
+Statics_RegisterStaticData = 0;
 Statics_TimeTravel = 0x80405644;
 Statics_Player_Init = 0x80407158;
 Statics_Player_Update = 0x804055d4;

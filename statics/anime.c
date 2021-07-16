@@ -161,9 +161,9 @@ void Statics_Player_Init(){
         sizeof(LinkActionEntry) * NUM_ORIG_LINK_ACTIONS);
 }
 
-void Statics_AnimeRegisterFile(void* injected_addr){
+void Statics_AnimeRegisterStaticData(void* ram_addr){
     for(s32 i=0; i<(sizeof(linkAnimPatchTable)/sizeof(linkAnimPatchTable[0])); ++i){
-        linkAnimPatchTable[i].anim += injected_addr;
+        linkAnimPatchTable[i].segment += (u32)ram_addr;
     }
 }
 

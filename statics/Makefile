@@ -43,8 +43,8 @@ LD_SCRIPTS = \
 	ocarina.ld \
 	audio.ld \
 	../loader/fast_loader/fast_loader.out.ld \
-	../loader/dma_patcher/dma_patcher.out.ld \
-	../anim/anim.out.ld
+	../loader/debugger/debugger.out.ld \
+	../loader/dma_patcher/dma_patcher.out.ld
 
 statics.elf statics.map: $(LINK_OBJS) $(LD_SCRIPTS) $(OOTMAINLD)
 	$(LD) $(LDFLAGS) -T statics.ld -Map statics.map -o statics.elf $(LINK_OBJS)
