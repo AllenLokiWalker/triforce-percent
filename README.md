@@ -64,7 +64,7 @@ Screen Text Writer \
 KIM-SUKLEY
 
 Translator \
-???
+YUKLOJ
 
 Voice Actor \
 ???
