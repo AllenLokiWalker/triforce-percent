@@ -54,4 +54,6 @@ OCFLAGS := -R .MIPS.abiflags -O binary
 # Other tools
 
 NOVL := $(PROJECT_DIR)/toolchain/novl/novl
+ZAPD := $(PROJECT_DIR)/toolchain/ZAP2/ZAPD.out
 YAZ0 := $(PROJECT_DIR)/toolchain/yaz0/yaz0_encode
+CREATE_PATCH := $(PYTHON3) $(PROJECT_DIR)/toolchain/create_patch.py

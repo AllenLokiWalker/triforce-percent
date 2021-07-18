@@ -2,9 +2,6 @@ include ../toolchain/make/main.mk
 
 TEXTURES = triforce.rgba32.pat ddn.ia8.inc dup.ia8.inc flat.ia8.inc sharp.ia8.inc
 
-ZAPD = ../toolchain/ZAP2/ZAPD.out
-CREATE_PATCH = $(PYTHON3) ../toolchain/create_patch.py
-
 .PHONY: default clean
 
 .PRECIOUS: %.rgba32.inc %.rgb5a1.inc %.ia8.inc %.ci8.inc %.i4.inc %.ia4.inc
