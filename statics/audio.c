@@ -17,6 +17,11 @@
 #define SEQ_AVOICETOTHEHEAVENS    (NUM_ORIG_SEQS+7)
 #define SEQ_STAFFROLL             (NUM_ORIG_SEQS+8)
 
+// For normal seqs: 2 bytes for u16 offset, 1 byte for length (1), 1 byte for bank
+// Some seqs have 2 banks, so add a bit after that
+// Original size is 0x1C0
+#define NEW_SEQBANKSMAP_SIZE (4 * MAX_SEQS + 32)
+
 typedef struct {
     /* 0x0000 */ s16 entryCnt;
     /* 0x0002 */ s16 unk_02;
@@ -51,7 +56,7 @@ typedef struct {
     AudioIndex* audioseqIndex;
     AudioIndex* audiobankIndex;
     AudioIndex* audiotableIndex;
-    void* unk_283C;
+    u8* seqBanksMap;
     u16 seqTabEntCnt;
     CtlEntry* gCtlEntries;
     u8 dummy3[(0x2984-0x2848)];
@@ -61,6 +66,8 @@ typedef struct {
 static AudioIndex NewAudioseqIndex;
 static AudioIndex NewAudiobankIndex;
 static CtlEntry NewCtlEntries[MAX_BANKS];
+static u8 NewSeqBanksMap[NEW_SEQBANKSMAP_SIZE];
+static u16 SeqBanksMapWriteOffset;
 
 extern FakeAudioContext gFakeAudioContext;
 
@@ -118,6 +125,22 @@ void Statics_AudioCodePatches(u8 isLiveRun)
     // This is originally allocated from the audio pool, but we need to make it bigger
     bcopy(gFakeAudioContext.gCtlEntries, NewCtlEntries, sizeof(CtlEntry) * NUM_ORIG_BANKS);
     gFakeAudioContext.gCtlEntries = NewCtlEntries;
+    // Copy and expand seqBanksMap
+    SeqBanksMapWriteOffset = 2 * MAX_SEQS;
+    s32 seq = 0;
+    for(; seq<NUM_ORIG_SEQS; ++seq){
+        u16 readoffset = ((u16*)gFakeAudioContext.seqBanksMap)[seq];
+        u8 numBanks = gFakeAudioContext.seqBanksMap[readoffset++];
+        ((u16*)&NewSeqBanksMap)[seq] = SeqBanksMapWriteOffset;
+        NewSeqBanksMap[SeqBanksMapWriteOffset++] = numBanks;
+        for(u8 b=0; b<numBanks; ++b){
+            NewSeqBanksMap[SeqBanksMapWriteOffset++] = gFakeAudioContext.seqBanksMap[readoffset++];
+        }
+    }
+    for(; seq<MAX_SEQS; ++seq){
+        ((u16*)&NewSeqBanksMap)[seq] = 0;
+    }
+    gFakeAudioContext.seqBanksMap = NewSeqBanksMap;
     // Patch Audio_DMA
     *( (u32*)Audio_DMA   ) = JUMPINSTR(Patched_AudioDMA);
     *(((u32*)Audio_DMA)+1) = 0;
@@ -131,13 +154,7 @@ void Statics_AudioRegisterStaticData(void* ram_addr, s32 size,
     if(type == 1) index = &NewAudioseqIndex;
     else if(type == 2) index = &NewAudiobankIndex;
     else return;
-    u8 idx           = (data1 >> 24) & 0xFF;
-    u8 loadLocation  = (data1 >> 16) & 0xFF;
-    u8 seqPlayerIdx  = (data1 >>  8) & 0xFF;
-    u8 audiotableIdx = (data1      ) & 0xFF;
-    u8 numInst       = (data2 >> 24) & 0xFF;
-    u8 numDrum       = (data2 >> 16) & 0xFF;
-    u8 numSfx        = (data2 >>  8) & 0xFF;
+    u8 idx = (data1 >> 24) & 0xFF;
     //Fix counts
     if(index->header.entryCnt <= idx){
         index->header.entryCnt = idx + 1;
@@ -149,18 +166,36 @@ void Statics_AudioRegisterStaticData(void* ram_addr, s32 size,
     AudioIndexEntry* entry = &index->entries[idx];
     entry->addr = InjectRamRomMap(ram_addr);
     entry->size = size;
-    entry->loadLocation = loadLocation;
-    entry->seqPlayerIdx = seqPlayerIdx;
-    if(type == 2){
-        entry->audiotableIdx = audiotableIdx;
+    entry->loadLocation = (data1 >> 16) & 0xFF;
+    entry->seqPlayerIdx = (data1 >>  8) & 0xFF;
+    if(type == 1){
+        u8 numBanks = data1 & 0xFF;
+        u8 oldNumBanks = 0x69;
+        u16 offset = ((u16*)NewSeqBanksMap)[idx];
+        if(offset != 0){
+            oldNumBanks = NewSeqBanksMap[offset++];
+        }
+        if(numBanks == oldNumBanks){
+            for(u8 b=0; b<numBanks; ++b){
+                NewSeqBanksMap[offset++] = (data2 >> 24) & 0xFF;
+                data2 <<= 8;
+            }
+        }else{
+            ((u16*)NewSeqBanksMap)[idx] = SeqBanksMapWriteOffset;
+            NewSeqBanksMap[SeqBanksMapWriteOffset++] = numBanks;
+            for(u8 b=0; b<numBanks; ++b){
+                NewSeqBanksMap[SeqBanksMapWriteOffset++] = (data2 >> 24) & 0xFF;
+                data2 <<= 8;
+            }
+        }
+    }else if(type == 2){
+        entry->audiotableIdx = data1 & 0xFF;
         entry->unk_0B = 0xFF;
-        entry->numInst = numInst;
-        entry->numDrum = numDrum;
+        entry->numInst = (data2 >> 24) & 0xFF;
+        entry->numDrum = (data2 >> 16) & 0xFF;
         entry->unk_0E = 0;
-        entry->numSfx = numSfx;
-    }
-    //If this is a bank, need to update the copy of metadata in gCtlEntries
-    if(type == 2){
+        entry->numSfx = (data2 >>  8) & 0xFF;
+        //Need to update the copy of metadata in gCtlEntries
         func_800E3034(idx);
     }
 }

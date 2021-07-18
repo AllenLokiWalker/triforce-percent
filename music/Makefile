@@ -16,10 +16,10 @@ SDIR_SEQ8 := $(STATICDATADIR)/9
 default: OvertureOfSages.aseq triforce.aseq
 	mkdir -p                                             $(SDIR_SEQ0)
 	cp OvertureOfSages.aseq                              $(SDIR_SEQ0)/staticdata.bin
-	echo "dtype 1\ndata1 0x6E020200\ndata2 0x00000000" > $(SDIR_SEQ0)/conf.txt
+	echo "dtype 1\ndata1 0x6E020201\ndata2 0x09000000" > $(SDIR_SEQ0)/conf.txt
 	mkdir -p                                             $(SDIR_SEQ3)
 	cp triforce.aseq                                     $(SDIR_SEQ3)/staticdata.bin
-	echo "dtype 1\ndata1 0x71020200\ndata2 0x00000000" > $(SDIR_SEQ3)/conf.txt
+	echo "dtype 1\ndata1 0x71020201\ndata2 0x03000000" > $(SDIR_SEQ3)/conf.txt
 	
 
 # %.pat: %.aseq

@@ -1,19 +1,7 @@
-extern SCmdSoundSettings UnicornFountain_scene_header00_cmd00;
-extern SCmdRoomList UnicornFountain_scene_header00_cmd01;
-extern SCmdMiscSettings UnicornFountain_scene_header00_cmd02;
-extern SCmdColHeader UnicornFountain_scene_header00_cmd03;
-extern SCmdEntranceList UnicornFountain_scene_header00_cmd04;
-extern SCmdSpecialFiles UnicornFountain_scene_header00_cmd05;
-extern SCmdSpawnList UnicornFountain_scene_header00_cmd06;
-extern SCmdSkyboxSettings UnicornFountain_scene_header00_cmd07;
-extern SCmdExitList UnicornFountain_scene_header00_cmd08;
-extern SCmdLightSettingList UnicornFountain_scene_header00_cmd09;
-extern SCmdCutsceneData UnicornFountain_scene_header00_cmd10;
-extern SCmdEndMarker UnicornFountain_scene_header00_cmd11;
-
+extern SCmdBase UnicornFountain_scene_header00[];
 extern ActorEntry UnicornFountain_scene_header00_startPositionList[];
 extern RomFile UnicornFountain_scene_roomList[];
-extern EntranceEntry UnicornFountain_scene_header00_entranceList[1];
+extern EntranceEntry UnicornFountain_scene_header00_entranceList[];
 extern u16 UnicornFountain_scene_header00_exitList[1];
 extern LightSettings UnicornFountain_scene_header00_lightSettings[1];
 extern u32 UnicornFountain_polygonTypes[];

@@ -1,12 +1,4 @@
-extern SCmdEchoSettings UnicornFountain_room_0_header00_cmd00;
-extern SCmdRoomBehavior UnicornFountain_room_0_header00_cmd01;
-extern SCmdSkyboxDisables UnicornFountain_room_0_header00_cmd02;
-extern SCmdTimeSettings UnicornFountain_room_0_header00_cmd03;
-extern SCmdMesh UnicornFountain_room_0_header00_cmd04;
-extern SCmdObjectList UnicornFountain_room_0_header00_cmd05;
-extern SCmdActorList UnicornFountain_room_0_header00_cmd06;
-extern SCmdEndMarker UnicornFountain_room_0_header00_cmd07;
-
+extern SCmdBase UnicornFountain_room_0_header00[];
 extern s16 UnicornFountain_room_0_header00_objectList[2];
 extern ActorEntry UnicornFountain_room_0_header00_actorList[3];
 extern MeshHeader0 UnicornFountain_room_0_meshHeader;

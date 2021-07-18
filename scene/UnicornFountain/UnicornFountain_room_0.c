@@ -9,22 +9,16 @@
 #include "variables.h"
 #include "UnicornFountain_scene.h"
 
-SCmdEchoSettings UnicornFountain_room_0_header00_cmd00 = { 0x16, 0x00, {0x00}, 0x00 };
-
-SCmdRoomBehavior UnicornFountain_room_0_header00_cmd01 = { 0x08, 0x00, 0x00000000 };
-
-SCmdSkyboxDisables UnicornFountain_room_0_header00_cmd02 = { 0x12, 0x00, 0x00, 0x00, 0x01, 0x01 };
-
-SCmdTimeSettings UnicornFountain_room_0_header00_cmd03 = { 0x10, 0x00, 0x00, 0x00, 0xFF, 0xFF, 10 };
-
-SCmdMesh UnicornFountain_room_0_header00_cmd04 = { 0x0A, 0x00, (u32)&UnicornFountain_room_0_meshHeader };
-
-SCmdObjectList UnicornFountain_room_0_header00_cmd05 = { 0x0B, 2, (u32)UnicornFountain_room_0_header00_objectList };
-
-SCmdActorList UnicornFountain_room_0_header00_cmd06 = { 0x01, 3, (u32)UnicornFountain_room_0_header00_actorList };
-
-SCmdEndMarker UnicornFountain_room_0_header00_cmd07 = { 0x14, 0x00, 0x00 };
-
+SCmdBase UnicornFountain_room_0_header00[] = {
+	SCENE_CMD_ECHO_SETTINGS(0x00),
+	SCENE_CMD_ROOM_BEHAVIOR(0x00, 0x00, false, false),
+	SCENE_CMD_SKYBOX_DISABLES(true, true),
+	SCENE_CMD_TIME_SETTINGS(0xFF, 0xFF, 10),
+	SCENE_CMD_MESH(&UnicornFountain_room_0_meshHeader),
+	SCENE_CMD_OBJECT_LIST(2, &UnicornFountain_room_0_header00_objectList),
+	SCENE_CMD_ACTOR_LIST(3, &UnicornFountain_room_0_header00_actorList),
+	SCENE_CMD_END(),
+};
 
 s16 UnicornFountain_room_0_header00_objectList[2] = {
 	0xA,
