@@ -198,7 +198,9 @@ void Statics_RegisterStaticData(void* ram_addr, s32 type_and_size,
         s32 data1, s32 data2){
     u32 size = type_and_size & 0x00FFFFFF;
     u8 type = type_and_size >> 24;
-    Debugger_Printf("Registering %08X size %d type %d", ram_addr, size, type);
+    if(sIsLiveRun){
+        Debugger_Printf("Registering %08X size %d type %d", ram_addr, size, type);
+    }
     if(type == 0){
         Statics_AnimeRegisterStaticData(ram_addr);
     }else if(type >= 1 && type <= 3){

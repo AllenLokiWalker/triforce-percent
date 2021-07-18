@@ -51,3 +51,8 @@ static inline const void* InjectRomRamMap(u32 rom)
 {
     return (const void*)(0x80000000 + ((s32)rom - 0x04000000));
 }
+
+static inline const u32 InjectRamRomMap(const void* ram)
+{
+    return ((u32)ram & 0x7FFFFFFFu) + 0x04000000u;
+}

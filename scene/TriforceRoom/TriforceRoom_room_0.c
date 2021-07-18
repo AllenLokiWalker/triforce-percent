@@ -35,8 +35,8 @@ s16 TriforceRoom_room_0_header00_objectList[3] = {
 ActorEntry TriforceRoom_room_0_header00_actorList[5] = {
 	{ 5, 0, 0, 0, 0, 0, 0, 0x0000 },
 	{ 1, 0, 0, 0, 0, 0, 0, 0x0001 },
-	{ 3, 0, 0, 0, 0, 0, 0, 0x0000 },
 	{ 1, 0, 0, 0, 0, 0, 0, 0x0000 },
+	{ 3, 0, 0, 0, 0, 0, 0, 0x0000 },
 	{ 1, 0, 0, 0, 0, 0, 0, 0x0002 },
 };
 

@@ -1,6 +1,22 @@
 #include "ootmain.h"
 #include "audio.h"
 
+//These max values come from the sizes of the LoadStatus fields in AudioContext
+#define MAX_SEQS 0x80
+#define MAX_BANKS 0x30
+#define NUM_ORIG_SEQS 0x6E
+#define NUM_ORIG_BANKS 0x26
+
+#define SEQ_OVERTUREOFSAGES_LEARN (NUM_ORIG_SEQS+0)
+#define SEQ_OVERTUREOFSAGES_WARP  (NUM_ORIG_SEQS+1)
+#define SEQ_AWAKENINGTHESAGES     (NUM_ORIG_SEQS+2)
+#define SEQ_OBTAINTHETRIFORCE     (NUM_ORIG_SEQS+3)
+#define SEQ_POWEROFTHEGODS        (NUM_ORIG_SEQS+4)
+#define SEQ_INITSPEECH1           (NUM_ORIG_SEQS+5)
+#define SEQ_INITSPEECH2           (NUM_ORIG_SEQS+6)
+#define SEQ_AVOICETOTHEHEAVENS    (NUM_ORIG_SEQS+7)
+#define SEQ_STAFFROLL             (NUM_ORIG_SEQS+8)
+
 typedef struct {
     /* 0x0000 */ s16 entryCnt;
     /* 0x0002 */ s16 unk_02;
@@ -24,7 +40,7 @@ typedef struct {
 
 typedef struct {
     AudioIndexHeader header;
-    AudioIndexEntry entries[0x80];
+    AudioIndexEntry entries[MAX_SEQS];
 } AudioIndex;
 
 typedef struct {
@@ -35,25 +51,16 @@ typedef struct {
     AudioIndex* audioseqIndex;
     AudioIndex* audiobankIndex;
     AudioIndex* audiotableIndex;
-    u8 dummy3[(0x2984-0x283C)];
+    void* unk_283C;
+    u16 seqTabEntCnt;
+    CtlEntry* gCtlEntries;
+    u8 dummy3[(0x2984-0x2848)];
     volatile s32 resetTimer;
 } FakeAudioContext;
 
-#define NUM_ORIG_SEQS 0x6E
-#define NUM_ORIG_BANKS 0x26
-
-#define SEQ_OVERTUREOFSAGES_LEARN (NUM_ORIG_SEQS+0)
-#define SEQ_OVERTUREOFSAGES_WARP  (NUM_ORIG_SEQS+1)
-#define SEQ_AWAKENINGTHESAGES     (NUM_ORIG_SEQS+2)
-#define SEQ_OBTAINTHETRIFORCE     (NUM_ORIG_SEQS+3)
-#define SEQ_POWEROFTHEGODS        (NUM_ORIG_SEQS+4)
-#define SEQ_INITSPEECH1           (NUM_ORIG_SEQS+5)
-#define SEQ_INITSPEECH2           (NUM_ORIG_SEQS+6)
-#define SEQ_AVOICETOTHEHEAVENS    (NUM_ORIG_SEQS+7)
-#define SEQ_STAFFROLL             (NUM_ORIG_SEQS+8)
-
 static AudioIndex NewAudioseqIndex;
 static AudioIndex NewAudiobankIndex;
+static CtlEntry NewCtlEntries[MAX_BANKS];
 
 extern FakeAudioContext gFakeAudioContext;
 
@@ -98,15 +105,22 @@ static inline void CopyReplaceIndex(AudioIndex** origIdx, AudioIndex* newIdx, u3
     *origIdx = newIdx;
 }
 
+extern void func_800E3034(s32 bank);
+
 void Statics_AudioCodePatches(u8 isLiveRun)
 {
+    s32 i = __osDisableInt();
     CopyReplaceIndex(&gFakeAudioContext.audioseqIndex, &NewAudioseqIndex, NUM_ORIG_SEQS);
     CopyReplaceIndex(&gFakeAudioContext.audiobankIndex, &NewAudiobankIndex, NUM_ORIG_BANKS);
-    s32 i = __osDisableInt();
+    // Banks have metadata copied to gCtlEntries, by func_800E3034 / InitCtlTable
+    // This is probably a holdover of the older audio subsystem where the bank metadata
+    // was stored at the beginning of the bank (i.e. needs DMA), not in a table in code
+    // This is originally allocated from the audio pool, but we need to make it bigger
+    bcopy(gFakeAudioContext.gCtlEntries, NewCtlEntries, sizeof(CtlEntry) * NUM_ORIG_BANKS);
+    gFakeAudioContext.gCtlEntries = NewCtlEntries;
     // Patch Audio_DMA
     *( (u32*)Audio_DMA   ) = JUMPINSTR(Patched_AudioDMA);
     *(((u32*)Audio_DMA)+1) = 0;
-    // finally
     __osRestoreInt(i);
 }
 
@@ -124,8 +138,16 @@ void Statics_AudioRegisterStaticData(void* ram_addr, s32 size,
     u8 numInst       = (data2 >> 24) & 0xFF;
     u8 numDrum       = (data2 >> 16) & 0xFF;
     u8 numSfx        = (data2 >>  8) & 0xFF;
+    //Fix counts
+    if(index->header.entryCnt <= idx){
+        index->header.entryCnt = idx + 1;
+    }
+    if(type == 1 && gFakeAudioContext.seqTabEntCnt <= idx){
+        gFakeAudioContext.seqTabEntCnt = idx + 1;
+    }
+    //Write data to index
     AudioIndexEntry* entry = &index->entries[idx];
-    entry->addr = (u32)ram_addr;
+    entry->addr = InjectRamRomMap(ram_addr);
     entry->size = size;
     entry->loadLocation = loadLocation;
     entry->seqPlayerIdx = seqPlayerIdx;
@@ -136,5 +158,9 @@ void Statics_AudioRegisterStaticData(void* ram_addr, s32 size,
         entry->numDrum = numDrum;
         entry->unk_0E = 0;
         entry->numSfx = numSfx;
+    }
+    //If this is a bank, need to update the copy of metadata in gCtlEntries
+    if(type == 2){
+        func_800E3034(idx);
     }
 }

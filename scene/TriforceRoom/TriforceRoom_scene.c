@@ -8,7 +8,7 @@
 #include "z64cutscene_commands.h"
 #include "variables.h"
 
-SCmdSoundSettings TriforceRoom_scene_header00_cmd00 = { 0x15, 0x00, 0x00, 0x00, 0x00, 0x00, 0x13, 0x1F };
+SCmdSoundSettings TriforceRoom_scene_header00_cmd00 = { 0x15, 0x00, 0x00, 0x00, 0x00, 0x00, 0x13, 0x71 };
 
 SCmdRoomList TriforceRoom_scene_header00_cmd01 = { 0x04, 1, (u32)&TriforceRoom_scene_roomList };
 

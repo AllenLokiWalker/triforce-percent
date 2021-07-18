@@ -1030,24 +1030,72 @@ void update_rom_pointer(char *file, int filesz, int romfilestart, int romfilesz)
 
 enum statics_patch_info {
     BOOT_LOAD_STATICS_PATCH_START = 0x000011A0,
-	PADMGR_CALL_STATICS_PATCH_START = 0x00B18598
+	PADMGR_CALL_STATICS_PATCH_START = 0x00B18598,
+	MAX_STATICDATA = 32
 };
 
 void mods(struct rom* rom) {
+	struct folder *list;
+	struct conf *conf;
 	char *file;
+	char *staticdatatable;
+	char *name;
+	char *ovl;
 	int filesz;
+	int index;
+	int dtype;
+	int data1;
+	int data2;
 	
 	dir_enter("patch");
-	
-	/* Inject Link animation */
-	rom.align(0x10);
-	rom.inject("anim.bin", false);
-	
-    /* Load statics and patch animation pointer */
 	file = loadfile("statics.bin", &filesz, false);
-	update_rom_pointer(file, filesz, rom.file_start(), rom.file_sz());
-    rom.align(0x10);
-    rom.inject_raw(file, filesz, true);
+	staticdatatable = find_bytes_stride(file, filesz, "DEADBEEF04206969", 4, true);
+	if(!staticdatatable)
+		die("could not find magic number in statics");
+	dir_leave();
+	
+	dir_enter("staticdata");
+	list = list.new(0);
+	if(!list.count())
+		die("staticdata folder is empty!");
+	while(list.remaining())
+	{
+		index = list.index();
+		name = list.name();
+		printf("\r""staticdata %d/%d: ", index, list.max());
+		if(index >= MAX_STATICDATA)
+			die("staticdata limit exceeded");
+		
+		dir_enter(name);
+		rom.align(0x10);
+		ovl = rom.inject("staticdata.bin", true);
+		if(!ovl)
+			die("failed to inject staticdata %d", index);
+		
+		conf = conf.new("conf.txt", "list");
+		dtype = conf.get_int("dtype");
+		data1 = conf.get_int("data1");
+		data2 = conf.get_int("data2");
+		conf.free();
+		
+		put32(staticdatatable, rom.file_start());
+		staticdatatable = staticdatatable + 4;
+		put32(staticdatatable, (dtype << 24) | rom.file_sz());
+		staticdatatable = staticdatatable + 4;
+		put32(staticdatatable, data1);
+		staticdatatable = staticdatatable + 4;
+		put32(staticdatatable, data2);
+		staticdatatable = staticdatatable + 4;
+		
+		dir_leave();
+		list.next();
+	}
+	dir_leave();
+	list.free();
+	
+	dir_enter("patch");
+	rom.align(0x10);
+	rom.inject_raw(file, filesz, true);
 	
     /* Patch func_800005A0 in boot to load statics */
     file = loadfile("boot_load_statics.bin", &filesz, false);
@@ -1070,6 +1118,7 @@ void mods(struct rom* rom) {
 	rom.write(file, filesz);
 	
 	dir_leave();
+	printf("success!\n");
 }
 
 int

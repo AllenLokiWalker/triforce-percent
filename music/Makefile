@@ -2,10 +2,28 @@ include ../toolchain/make/main.mk
 
 .PHONY: default clean
 
-default: triforce.pat OvertureOfSages.pat
+STATICDATADIR := ../build-romhack/staticdata
+SDIR_SEQ0 := $(STATICDATADIR)/1
+SDIR_SEQ1 := $(STATICDATADIR)/2
+SDIR_SEQ2 := $(STATICDATADIR)/3
+SDIR_SEQ3 := $(STATICDATADIR)/4
+SDIR_SEQ4 := $(STATICDATADIR)/5
+SDIR_SEQ5 := $(STATICDATADIR)/6
+SDIR_SEQ6 := $(STATICDATADIR)/7
+SDIR_SEQ7 := $(STATICDATADIR)/8
+SDIR_SEQ8 := $(STATICDATADIR)/9
 
-%.pat: %.aseq
-	$(PYTHON3) ../toolchain/create_patch.py --full $< $@
+default: OvertureOfSages.aseq triforce.aseq
+	mkdir -p                                             $(SDIR_SEQ0)
+	cp OvertureOfSages.aseq                              $(SDIR_SEQ0)/staticdata.bin
+	echo "dtype 1\ndata1 0x6E020200\ndata2 0x00000000" > $(SDIR_SEQ0)/conf.txt
+	mkdir -p                                             $(SDIR_SEQ3)
+	cp triforce.aseq                                     $(SDIR_SEQ3)/staticdata.bin
+	echo "dtype 1\ndata1 0x71020200\ndata2 0x00000000" > $(SDIR_SEQ3)/conf.txt
+	
+
+# %.pat: %.aseq
+# 	$(PYTHON3) ../toolchain/create_patch.py --full $< $@
 
 clean:
 	rm -f *.pat
