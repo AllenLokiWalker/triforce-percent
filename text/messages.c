@@ -82,6 +82,26 @@ DECLARE_MESSAGE(0x0D23, BOX_BLACK, POS_MIDDLE,
 
 
 
+// Trailer
+
+DECLARE_MESSAGE(0x109D, BOX_NONE_BOTTOM, POS_VARIABLE,
+    SHIFT("\x18") "If you were really good" NEWLINE
+    SHIFT("\x20") "at pressing buttons," NEWLINE
+    SHIFT("\x1E") "what would you do?" BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x10") "Would you play a game really" NEWLINE
+    SHIFT("\x0C") "skillfully, but within the bounds" NEWLINE
+    SHIFT("\x14") "intended by the developers?" BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x12") "Would you perform difficult," NEWLINE
+    SHIFT("\x08") "elaborate glitches to skip large" NEWLINE
+    SHIFT("\x20") "portions of the game?" BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x12") "Or would you get a robot," BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x1C") "build on two decades of" NEWLINE
+    SHIFT("\x18") "reverse engineering work," BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x1E") "and glitch your way into" NEWLINE
+    SHIFT("\x18") "changing the game's code?" FADE("\x46")
+)
+    
+
 //This one needs to come at the end
 DECLARE_MESSAGE(0xFFFF, BOX_BLUE, POS_MIDDLE,
     "Dummy"
