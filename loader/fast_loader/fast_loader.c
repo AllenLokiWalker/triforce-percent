@@ -127,6 +127,7 @@ static RawInput pad_data[4];
 static u32 crc_table[256]; // 1024 bytes
 void(*fp_precmd)(void);
 void(*fp_postcmd)(void);
+s32 fl_disable_green_bar;
 
 //Function prototypes
 
@@ -168,15 +169,17 @@ __attribute__((section(".start"))) void fl_init() {
 		out_data.bytes[i] = 0xA5;
 	}
 	
-	return;
+	fl_disable_green_bar = 0;
 }
 
 // called by padmgr
 static void fl_run(OSMesgQueue* queue) {
 	// Draw green bar in the corner
 	const u64 green64 = 0x7c107c107c107c1ULL;
-	(*((volatile u64**)0x8011F56C))[1286] = green64; // shifted two pixels to the right of the "real" one
-	(*((volatile u64**)0x8011F56C))[1287] = green64; // due to longword alignment
+	if(!fl_disable_green_bar){
+		(*((volatile u64**)0x8011F56C))[1286] = green64; // shifted two pixels to the right of the "real" one
+		(*((volatile u64**)0x8011F56C))[1287] = green64; // due to longword alignment
+	}
 	
 	// Poll controllers
 	u32 i;

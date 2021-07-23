@@ -22,11 +22,12 @@ in_ace_context:
 Cache Time!
 Setting the 6 instructions at 800A2630 to:
 jal 0x80003440 (osWritebackDCache) = 0C000D10
-addiu $a1, $zero, 0x7FFF = 24057FFF
-jal 0x800041A0 (osInvalICache) = 0C001068
-addiu $a1, $zero, 0x7FFF = 24057FFF (not needed, a1 is not touched by osWritebackDCache)
-jal 0x8011D790 (pad 1) = 0C0475E4
-nop
+addiu $a1, $zero, 0x7FFF           = 24057FFF
+jal 0x800041A0 (osInvalICache)     = 0C001068
+addiu $a1, $zero, 0x7FFF           = 24057FFF (actually not needed, a1 is not touched
+    by osWritebackDCache, but we have to put something in the branch delay slot)
+jal 0x8011D790 (pad 1)             = 0C0475E4
+lui $a0, 0x8070                    = 3C048070
 */
 lui   $v0,      0x800A
 
@@ -44,11 +45,14 @@ sw    $gp,      0x263C($v0)
 lui   $gp,      0x0C04
 addiu $gp, $gp, 0x75E4
 sw    $gp,      0x2640($v0)
-sw    $zero,    0x2644($v0)
+
+lui   $gp,      %hi(0x3C048070)
+addiu $gp, $gp, %lo(0x3C048070)
+sw    $gp,      0x2644($v0)
 
 /*
-Write 0x80400000 (address of start of Kargarocs payload--to jal here, instruction 0C100000)
-to address counter 0x801C800C
+Write 0x80400000 (address of start of TerusTheBird's fast_loader payload--to
+jal here, instruction 0C100000) to address counter 0x801C800C
 */
 lui   $gp, 0x8040
 lui   $v0, %hi(0x801C800C)

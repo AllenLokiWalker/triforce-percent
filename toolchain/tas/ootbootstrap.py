@@ -20,11 +20,10 @@ def bootstrapper1and3(bsidx, smart, data, regstartoffset, jrraaddr):
     
     def sh_cmd(offset):
         ob = offset.to_bytes(2, byteorder='big')
-        #print('    sh $gp, 0x' + ob.hex() + '(s' + ('0' if bsidx == 3 else '1') + ')')
+        #print('    sh $gp, 0x' + ob.hex() + '(' + ('a0' if bsidx == 3 else 's1') + ')')
         #10100110 00111100 KKKKKKKK KKKKKKKK for bs1
-        #10100110 00011100 KKKKKKKK KKKKKKKK for bs3
-        byte2 = b'\x1C' if bsidx == 3 else b'\x3C'
-        return b'\xA6' + byte2 + ob
+        #10100100 10011100 KKKKKKKK KKKKKKKK for bs3
+        return ( b'\xA4\x9C' if bsidx == 3 else b'\xA6\x3C') + ob
     
     def write_frame(c1data):
         frame = c1data + bytes([0]*4) + jumpcmd(jrraaddr) + bytes([0]*4)
@@ -101,8 +100,8 @@ def ootbootstraprun(bs2data, bs4data, maindata):
     jstackrestore = 0x80020850
     bs1s1 = 0x801C84A0 #global context
     bs2loc = 0x801C8010 #must be within 0x8000 of global context
-    bs3s0 = 0x8011D500 #padmgr
-    bs4loc = 0x8011CBC0 #must be within 0x8000 of padmgr
+    bs3a0 = 0x80700000 #set by patched padmgr code
+    bs4loc = 0x80700000 #must be within 0x8000 of a0
     kargaroc_loader_entry = 0x80400000
     ret = bytearray()
     slingshot_or_shortcut = True
@@ -116,7 +115,7 @@ def ootbootstraprun(bs2data, bs4data, maindata):
         ret.extend(holdr_nop(jstackrestore) * 3)
         ret.extend(bootstrapper1and3(1, True, bs2data, bs2loc - bs1s1, jstackrestore))
     ret.extend(jumpsingle3(bs2loc) * 3)
-    ret.extend(bootstrapper1and3(3, True, bs4data, bs4loc - bs3s0, jrraaddr))
+    ret.extend(bootstrapper1and3(3, True, bs4data, bs4loc - bs3a0, jrraaddr))
     ret.extend(dataforbootstrapper4(maindata, bs4loc))
     ret.extend(jumpsingle3(kargaroc_loader_entry) * 3) #frames of running K's loader--should get overwritten on first frame
     return m64.create_header(4, len(ret) // 16) + ret
