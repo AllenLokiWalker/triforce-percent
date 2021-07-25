@@ -15,6 +15,7 @@ OBJECT 16 ../actor/TriforceLight/zobj.zobj
 ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
 ACTOR 6 ../actor/BetaGreatFairy/betagreatfairy.zovl
 ACTOR 23 ../actor/z_bg_mjin/actor.zovl
+ACTOR 312 ../actor/z_en_ge1/z_en_ge1.zovl
 
 //TriforceRoom scene
 SCENE 39 ../scene/TriforceRoom/TriforceRoom_scene.zscene
