@@ -39,7 +39,7 @@ $(MAKESUBDIRS):
 	$(LD) $(LDFLAGS) -T room.ld -o $@ $<
 
 %_scene.elf %_scene.map: %_scene.o scene.ld
-	$(LD) $(LDFLAGS) -T scene.ld -Map $*_scene.map -o $@ $<
+	$(LD) $(LDFLAGS) -T scene.ld -Map $*_scene.map -o $*_scene.elf $<
 
 %.ia8.c: %.ia8.png
 	$(ZAPD) btex -tt ia8 -i $< -o temp.inc
