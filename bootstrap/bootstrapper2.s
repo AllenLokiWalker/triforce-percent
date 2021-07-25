@@ -37,13 +37,13 @@ sw    $gp,      0x2630($v0)
 addiu $gp, $gp, (0x1068 - 0x0D10)
 sw    $gp,      0x2638($v0)
 
-lui   $gp,      0x2405
-addiu $gp, $gp, 0x7FFF
+lui   $gp,      %hi(0x24057FFF)
+addiu $gp, $gp, %lo(0x24057FFF)
 sw    $gp,      0x2634($v0)
 sw    $gp,      0x263C($v0)
 
-lui   $gp,      0x0C04
-addiu $gp, $gp, 0x75E4
+lui   $gp,      %hi(0x0C0475E4)
+addiu $gp, $gp, %lo(0x0C0475E4)
 sw    $gp,      0x2640($v0)
 
 lui   $gp,      %hi(0x3C048070)
@@ -51,12 +51,12 @@ addiu $gp, $gp, %lo(0x3C048070)
 sw    $gp,      0x2644($v0)
 
 /*
-Write 0x80400000 (address of start of TerusTheBird's fast_loader payload--to
-jal here, instruction 0C100000) to address counter 0x801C800C
+Write 0x80400000 (address of start of TerusTheBird's fast_loader payload)
+to address counter 0x80700000
 */
 lui   $gp, 0x8040
-lui   $v0, %hi(0x801C800C)
-sw    $gp, %lo(0x801C800C)($v0)
+lui   $v0, %hi(0x80700000)
+sw    $gp, %lo(0x80700000)($v0)
 
 /* Stop ACE and return */
 

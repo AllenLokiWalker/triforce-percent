@@ -144,20 +144,23 @@ void Statics_LostWoods(){
 
 void Statics_TestShortcuts(){
     //Test/Debugging
-    if((CTRLR_RAW & BTN_L) && (CTRLR_PRESS & BTN_DDOWN)){
-        //Press L+DD for...
-        //clip below the ice in Zora's Domain
-        //PLAYER->actor.pos.y -= 80.0f;
-        //animation test
-        Statics_AnimeTest(1);
-    }
-    if((CTRLR_RAW & BTN_L) && (CTRLR_PRESS & BTN_DLEFT)){
-        //Press L+DL for frog
-        func_8010B680(&gGlobalContext, 0x0901, NULL); //textbox_begin
-    }
-    if((CTRLR_RAW & BTN_L) && (CTRLR_PRESS & BTN_DRIGHT)){
-        //Press L+DR for animation test
-        Statics_AnimeTest(0);
+    if((CTRLR_RAW & BTN_L)){
+        if((CTRLR_PRESS & BTN_DDOWN)){
+            //Press L+DD for...
+            //clip below the ice in Zora's Domain
+            //PLAYER->actor.pos.y -= 80.0f;
+            //animation test
+            Statics_AnimeTest(1);
+        }else if((CTRLR_PRESS & BTN_DLEFT)){
+            //Press L+DL for frog
+            func_8010B680(&gGlobalContext, 0x0901, NULL); //textbox_begin
+        }else if((CTRLR_PRESS & BTN_DRIGHT)){
+            //Press L+DR for animation test
+            Statics_AnimeTest(0);
+        }else if((CTRLR_PRESS & BTN_DUP)){
+            //Kill Link (sorry)
+            gSaveContext.health = 0;
+        }
     }
 }
 
@@ -184,6 +187,10 @@ __attribute__((section(".start"))) void Statics_Init(){
     fp_precmd = Statics_Update;
     sOneTime = 0;
     sIsLiveRun = 1;
+    //Zero bootstrapper 3/4 data at 0x80700000 in case the bss section of some
+    //static code ends up there and needs to assume it's zeroed (probably won't
+    //happen). Bootstrapper 4 is currently 88 bytes plus 4 for address counter.
+    bzero((void*)0x80700000, 256);
 }
 
 static void* malloc_addr = (void*)0x80410000;

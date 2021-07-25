@@ -30,7 +30,10 @@ def bootstrapper1and3(bsidx, smart, data, regstartoffset, jrraaddr):
         ret.extend(frame if bsidx == 3 else frame * 3)
     
     if(regstartoffset < 0):
+        assert regstartoffset >= -0x8000
         regstartoffset += 0x10000
+    else:
+        assert regstartoffset <= 0x7FFF
     ret = bytearray()
     
     if smart:
@@ -99,9 +102,9 @@ def ootbootstraprun(bs2data, bs4data, maindata):
     jrraaddr = 0x80000490
     jstackrestore = 0x80020850
     bs1s1 = 0x801C84A0 #global context
-    bs2loc = 0x801C8010 #must be within 0x8000 of global context
+    bs2loc = 0x801CA7A0 #must be within 0x8000 of global context
     bs3a0 = 0x80700000 #set by patched padmgr code
-    bs4loc = 0x80700000 #must be within 0x8000 of a0
+    bs4loc = 0x80700004 #must be within 0x8000 of a0
     kargaroc_loader_entry = 0x80400000
     ret = bytearray()
     slingshot_or_shortcut = True

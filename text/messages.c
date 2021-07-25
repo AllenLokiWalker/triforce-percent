@@ -84,39 +84,60 @@ DECLARE_MESSAGE(0x0D23, BOX_BLACK, POS_MIDDLE,
 
 // Trailer
 
+/*
 DECLARE_MESSAGE(0x109D, BOX_NONE_BOTTOM, POS_VARIABLE,
     SHIFT("\x1B") "If you were really good" NEWLINE
     SHIFT("\x24") "at pressing buttons," NEWLINE
     SHIFT("\x23") "what would you do?" BOX_BREAK_DELAYED("\x28")
     SHIFT("\x10") "Would you play a game really" NEWLINE
-    SHIFT("\x0C") "skillfully, but within the bounds" NEWLINE
+    SHIFT("\x0B") "skillfully, but within the bounds" NEWLINE
     SHIFT("\x14") "intended by the developers?" BOX_BREAK_DELAYED("\x28")
     SHIFT("\x12") "Would you perform difficult," NEWLINE
     SHIFT("\x08") "elaborate glitches to skip large" NEWLINE
     SHIFT("\x20") "portions of the game?" BOX_BREAK_DELAYED("\x28")
     SHIFT("\x13") "Or would you get a robot," BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x1C") "build on two decades of" NEWLINE
-    SHIFT("\x19") "reverse engineering work," BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x1C") "and glitch your way into" NEWLINE
-    SHIFT("\x18") "changing the game's code?" BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x1B") "build on two decades of" NEWLINE
+    SHIFT("\x18") "reverse engineering work," BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x1B") "and glitch your way into" NEWLINE
+    SHIFT("\x17") "changing the game's code?" BOX_BREAK_DELAYED("\x28")
     
-    SHIFT("\x1E") "If you had the ability" NEWLINE
-    SHIFT("\x09") "to rewrite the laws of reality," NEWLINE
-    SHIFT("\x23") "what would you do?" BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x02") "Would you just achieve your goals" NEWLINE
-    SHIFT("\x1E") "as quickly as possible?" BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x14") "Would you erase everything" NEWLINE
-    SHIFT("\x0A") "and make something brand new?" BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x0C") "Or would you make the dreams" BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x1E") "of millions of players" BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x24") "finally come true?" BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x21") "If you had the ability" NEWLINE
+    SHIFT("\x0A") "to rewrite the laws of reality," NEWLINE
+    SHIFT("\x24") "what would you do?" BOX_BREAK_DELAYED("\x28")
+                  "Would you just achieve your goals" NEWLINE
+    SHIFT("\x1F") "as quickly as possible?" BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x15") "Would you erase everything" NEWLINE
+    SHIFT("\x09") "and make something brand new?" BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x09") "Or would you make the dreams" BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x20") "of millions of players" BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x27") "finally come true?" BOX_BREAK_DELAYED("\x28")
     
-    SHIFT("\x10") "If you had the power to make" NEWLINE
-    SHIFT("\x0A") "Hyrule however you dreamed it..." BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x0D") "If you had the power to make" NEWLINE
+    SHIFT("\x07") "Hyrule however you dreamed it..." BOX_BREAK_DELAYED("\x28")
                   "the attention of thousands of viewers..." BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x0A") "and one wish to the Goddesses..." BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x04") "would you create something great?" FADE("\x50")
-    
+    SHIFT("\x08") "and one wish to the Goddesses..." BOX_BREAK_DELAYED("\x28")
+    SHIFT("\x02") "would you create something great?" FADE("\x50")
+)
+*/
+
+DECLARE_MESSAGE(0x109D, BOX_CREDITS, POS_VARIABLE,
+    QUICKTEXT_ENABLE NEWLINE NEWLINE NEWLINE NEWLINE NEWLINE
+    SHIFT("\x42") "Triforce%" NEWLINE NEWLINE
+    SHIFT("\x28") "OoT ACE Showcase" 
+    QUICKTEXT_DISABLE BOX_BREAK_DELAYED("\x28")
+    QUICKTEXT_ENABLE NEWLINE NEWLINE NEWLINE
+    SHIFT("\x18")   "Sauraen"    SHIFT("\x36") "Savestate"     NEWLINE
+    SHIFT("\x20")    "/zel/"     SHIFT("\x40") "CDi-Fails"     NEWLINE
+    SHIFT("\x14")  "rankaisija"  SHIFT("\x3A") "z64me"         NEWLINE
+    SHIFT("\x0D") "TerusTheBird" SHIFT("\x25") "Kim-SukLey"    NEWLINE
+    SHIFT("\x15")   "MrCheeze"   SHIFT("\x26") "RebeccaETripp" NEWLINE
+    SHIFT("\x1E")    "Yukloj"    SHIFT("\x48") "Zero"          NEWLINE
+    SHIFT("\x0B")  "AeroArtwork" SHIFT("\x26") "musket012"
+    QUICKTEXT_DISABLE BOX_BREAK_DELAYED("\x28")
+    QUICKTEXT_ENABLE NEWLINE NEWLINE NEWLINE NEWLINE NEWLINE NEWLINE
+    SHIFT("\x3E") "AGDQ 2022"
+    QUICKTEXT_DISABLE BOX_BREAK_DELAYED("\x28")
+    "dummy"
 )
     
 

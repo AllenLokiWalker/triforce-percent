@@ -38,7 +38,10 @@ SAVESTATE
 ### ASSET UNIT
 
 Actor Design & Program \
-SAURAEN
+SAURAEN \
+RANKAISIJA \
+Z64ME \
+\/ZEL\/
 
 Scene Design \
 CDI-FAILS \
@@ -46,9 +49,14 @@ CDI-FAILS \
 SAURAEN
 
 Music \
-SAURAEN
+SAURAEN \
+REBECCAETRIPP
 
 Animation \
+AEROARTWORK \
+SAURAEN
+
+Cinema Scenes \
 SAURAEN
 
 Textures \
@@ -57,17 +65,18 @@ KIM-SUKLEY \
 SAURAEN
 
 Scenario \
-SAURAEN /
+SAURAEN \
 REBECCAETRIPP
 
-Screen Text Writer \
-KIM-SUKLEY
+Screen Text \
+KIM-SUKLEY \
+SAURAEN
 
 Translator \
 YUKLOJ
 
 Voice Actor \
-???
+ZERO
 
 ### PROGRAM UNIT
 
@@ -79,7 +88,8 @@ OWNASAURUS \
 SAURAEN
 
 SRM / ACE Setup \
-MRCHEEZE
+MRCHEEZE \
+SAVESTATE
 
 Bootstrapper Chain \
 SAURAEN
@@ -100,11 +110,10 @@ SAURAEN
 Build Toolchain \
 SAURAEN
 
-z64ovl \
+z64hdr \
+RANKAISIJA \
 Z64ME \
-SKAWO \
-CROOKEDPOE \
-\/ZEL\/
+SAURAEN
 
 fast64 \
 KURETHEDEAD \
@@ -122,10 +131,14 @@ A BUNCH OF CLEVER FOLKS
 Technical Support \
 MZXRULES \
 Z64ME \
+THARO \
 JACK WALKER
 
 GDQ / TASbot Liaison \
 DWANGOAC
+
+Video Editing \
+MUSKET012
 
 YouTube Partner Channels \
 SWANKYBOX
