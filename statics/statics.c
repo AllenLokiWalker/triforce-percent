@@ -25,21 +25,18 @@ void Statics_SetGameState(){
     gSaveContext.event_chk_inf[0xC] |= 1 << 0x1; //Spoke to Saria on Lost Woods Bridge
     gSaveContext.inf_table    [0x0] |= 1 << 0x0; //Greeted by Saria
     */
+    gSaveContext.eventChkInf[0x9] |= 0xF; //Rescued carpenters (not get arrested by Gerudos)
     //Set up Adult Link inventory to not have the Master Sword
-    //if(gSaveContext.adultEquips.buttonItems[0] == 0xFF){
-        //Adult has empty B button, so this was not run yet
-        gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
-        gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
-        gSaveContext.adultEquips.buttonItems[2] = 0x02; //ITEM_BOMB
-        gSaveContext.adultEquips.buttonItems[3] = 0x08; //ITEM_OCARINA_TIME
-        gSaveContext.adultEquips.cButtonSlots[0] = 0xFF; //SLOT_NONE
-        gSaveContext.adultEquips.cButtonSlots[1] = 0x02; //SLOT_BOMB
-        gSaveContext.adultEquips.cButtonSlots[2] = 0x07; //SLOT_OCARINA
-        gSaveContext.adultEquips.equipment = 0x1103;
-        //Giant's Knife -> Biggoron Sword
-        gSaveContext.bgsFlag = 1;
-        gSaveContext.swordHealth = 8;
-    //}
+    gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
+    gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
+    gSaveContext.adultEquips.buttonItems[2] = 0x02; //ITEM_BOMB
+    gSaveContext.adultEquips.buttonItems[3] = 0x08; //ITEM_OCARINA_TIME
+    gSaveContext.adultEquips.cButtonSlots[0] = 0xFF; //SLOT_NONE
+    gSaveContext.adultEquips.cButtonSlots[1] = 0x02; //SLOT_BOMB
+    gSaveContext.adultEquips.cButtonSlots[2] = 0x07; //SLOT_OCARINA
+    gSaveContext.adultEquips.equipment = 0x1103;
+    gSaveContext.bgsFlag = 1; //Giant's Knife -> Biggoron Sword
+    gSaveContext.swordHealth = 8;
     //Give magic
     gSaveContext.magicAcquired = 1;
     gSaveContext.magicLevel = 2;
