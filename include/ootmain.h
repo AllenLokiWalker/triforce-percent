@@ -1,3 +1,5 @@
+#ifndef _OOTMAIN_H_INCLUDED_
+#define _OOTMAIN_H_INCLUDED_
 #include "z64hdr/oot_10.h"
 #include "audiobank.h"
 
@@ -56,3 +58,5 @@ static inline const u32 InjectRamRomMap(const void* ram)
 {
     return ((u32)ram & 0x7FFFFFFFu) + 0x04000000u;
 }
+#endif /* ! _OOTMAIN_H_INCLUDED_ */
+
