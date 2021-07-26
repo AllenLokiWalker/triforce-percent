@@ -12,6 +12,8 @@ INCLUDE anime.ld
 INCLUDE ocarina.ld
 INCLUDE audio.ld
 
+linkJumpYSpeed = 0x808514A8;
+
 SECTIONS {
 	. = dma_patcher_END;
 	.start ALIGN(16): { *(.start) }

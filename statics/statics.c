@@ -26,6 +26,11 @@ void Statics_SetGameState(){
     gSaveContext.inf_table    [0x0] |= 1 << 0x0; //Greeted by Saria
     */
     gSaveContext.eventChkInf[0x9] |= 0xF; //Rescued carpenters (not get arrested by Gerudos)
+    gSaveContext.itemGetInf[0x2] |= 0x0478; //Obtained Mask of Truth, all trading masks
+    gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
+    //TODO remove for final version
+    WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+    WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
@@ -137,6 +142,30 @@ void Statics_LostWoods(){
     zh_draw_debug_text(&gGlobalContext, 0xFF8000FF, 1, 1, "s %d t %d c %d %f %f", 
         sWoodsState, sWoodsTarget, sWoodsCount, x, z);
     */
+}
+
+void Statics_Player_PatchedRunning(Player* this, f32 arg1, s16 arg2){
+    u16 speed = 0x0226;
+    if(WearingWorkingBunnyHood()){
+        speed = 0x044C;
+        arg1 *= 1.5f;
+    }
+    R_RUN_SPEED_LIMIT = speed;
+    Math_AsymStepToF(&this->linearVelocity, arg1, REG(19) / 100.0f, 1.5f);
+    Math_ScaledStepToS(&this->currentYaw, arg2, REG(27));
+}
+
+extern float linkJumpYSpeed; //D_808535E8 == 808514A8
+
+void Statics_Player_BunnyHood_YSpeed(){
+    Player *player = PLAYER;
+    if(player->stateFlags1 & 0x8000000) {
+        linkJumpYSpeed = 0.5f;
+    }else if(WearingWorkingBunnyHood()){
+        linkJumpYSpeed = 1.25f;
+    }else{
+        linkJumpYSpeed = 1.0f;
+    }
 }
 
 void Statics_TestShortcuts(){

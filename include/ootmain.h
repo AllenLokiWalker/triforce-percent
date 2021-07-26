@@ -58,5 +58,21 @@ static inline const u32 InjectRamRomMap(const void* ram)
 {
     return ((u32)ram & 0x7FFFFFFFu) + 0x04000000u;
 }
-#endif /* ! _OOTMAIN_H_INCLUDED_ */
 
+#define WORKING_BUNNYHOOD_VAR gSaveContext.itemGetInf[0x2]
+#define WORKING_BUNNYHOOD_BIT 0x0001
+#define WORKING_GERUDOMASK_VAR gSaveContext.itemGetInf[0x2]
+#define WORKING_GERUDOMASK_BIT 0x0002
+
+static inline s32 WearingWorkingBunnyHood(){
+    return (Player_GetMask(&gGlobalContext) == PLAYER_MASK_BUNNY) 
+        && (WORKING_BUNNYHOOD_VAR & WORKING_BUNNYHOOD_BIT);
+}
+
+static inline s32 WearingWorkingGerudoMask(){
+    return (Player_GetMask(&gGlobalContext) == PLAYER_MASK_GERUDO) 
+        && (WORKING_GERUDOMASK_VAR & WORKING_GERUDOMASK_BIT);
+}
+
+
+#endif /* ! _OOTMAIN_H_INCLUDED_ */

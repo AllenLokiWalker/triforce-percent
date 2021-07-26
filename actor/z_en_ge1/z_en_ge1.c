@@ -312,7 +312,7 @@ static void EnGe1_SetNormalText(EnGe1* this, GlobalContext* globalCtx) {
 	/* Triforce% spaghetti: talking to Triforce fence Gerudo without
 	 * Gerudo Mask after opening it
 	 */
-	if (Player_GetMask(globalCtx) != PLAYER_MASK_GERUDO && this->fence && TRIFORCE_FENCE_GET)
+	if (!WearingWorkingGerudoMask() && this->fence && TRIFORCE_FENCE_GET)
 		text = 0x6069;
 	EnGe1_SetTalkAction(this, globalCtx, text, 100.0f, EnGe1_ChooseActionFromTextId);
 }
@@ -342,7 +342,7 @@ static void EnGe1_GetReaction_ValleyFloor(EnGe1* this, GlobalContext* globalCtx)
 		/* Triforce% spaghetti: talking to Triforce fence Gerudo without
 		 * Gerudo Mask after opening it
 		 */
-		if (Player_GetMask(globalCtx) != PLAYER_MASK_GERUDO)
+		if (!WearingWorkingGerudoMask())
 			reactionText = 0x6069;
 		
 		/* Triforce% special reaction text: reroute "You've got guts coming
@@ -507,7 +507,7 @@ static void EnGe1_Talk_GateGuard(EnGe1* this, GlobalContext* globalCtx) {
 		this->actionFunc = EnGe1_GetReaction_GateGuard;
 		EnGe1_SetAnimationIdle(this);
 		/* Triforce% Gerudo Mask functionality */
-		if (Player_GetMask(globalCtx) == PLAYER_MASK_GERUDO)
+		if (WearingWorkingGerudoMask())
 		{
 			EnGe1_SetupOpen_Mask(this, globalCtx);
 		}
@@ -993,4 +993,3 @@ static void EnGe1_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
 	//CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ge1.c", 1459);
 }
-
