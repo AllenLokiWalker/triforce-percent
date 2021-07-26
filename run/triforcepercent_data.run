@@ -16,6 +16,7 @@ ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
 ACTOR 6 ../actor/BetaGreatFairy/betagreatfairy.zovl
 ACTOR 23 ../actor/z_bg_mjin/actor.zovl
 ACTOR 312 ../actor/z_en_ge1/z_en_ge1.zovl
+ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl
 
 //TriforceRoom scene
 SCENE 39 ../scene/TriforceRoom/TriforceRoom_scene.zscene
