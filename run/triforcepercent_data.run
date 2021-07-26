@@ -31,6 +31,10 @@ SCENE 38 ../scene/UnicornFountain/UnicornFountain_scene.zscene
 //Entrance table 0x800F9C90 entries 0xC9-CC
 WRITE 16 0x800F9FB4 0x26 0x00 0x42 0x01 0x26 0x00 0x42 0x01 0x26 0x00 0x42 0x01 0x26 0x00 0x42 0x01
 
+//Patched Zora's Domain scene
+PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat
+PATCH 0x2103000 ../scene/spot07_scene/zoras_room1.pat
+
 //Old custom text
 //PATCH 0x92F120 ../text/triforcetext.pat
 //Edit message entry
