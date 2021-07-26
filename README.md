@@ -144,6 +144,7 @@ YouTube Partner Channels \
 SWANKYBOX
 
 Special Thanks \
+KAZE EMANUAR \
 ARIANA ALMANDOZ
 
 ### PRESENTED AT

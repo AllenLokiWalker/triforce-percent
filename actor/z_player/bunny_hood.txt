@@ -1,0 +1,83 @@
+// Original patch by Kaze Emanuar
+// Moved from The Missing Link to Triforce% by zel
+// Reimplemented as asm/C patches by Sauraen
+
+//walkspeed
+.org 0xc0ce08
+!main:
+ADDIU SP, SP, $FFE8
+LUI T6, $8016
+LW T6, $FA90 (T6)
+SW RA, $0014 (SP)
+//SW A0, $0018 (SP)
+SW A2, $0020 (SP)
+LH T7, $003A (T6)
+LUI AT, $42C8
+MTC1 AT, F8
+MTC1 T7, F4
+
+or t2, r0, r0
+lbu t1, $015f (a0)  //mask
+addiu at, r0, $4    //bunny
+bne t1, at, !ok     //
+addiu t0, r0, $0226 //no bunny
+lui t2, $0040       //bunny
+addiu t0, r0, $044c //bunny
+!ok:
+//lui t5, $8016
+//lw t5, $fa90 (T5)
+//sh t0, $006e (T5)
+jal $606ba0
+ADDIU A0, A0, $0838
+CVT.S.W F6, F4
+
+LUI A3, $3FC0        //1.5
+MFC1 A2, F10
+//add a1, a1, t0
+//lui t1, $8017
+//sw a1, $82cc (t1)	//803DE214
+JAL $00077C6C        // Math_AsymStepToF
+DIV.S F10, F6, F8
+
+//LUI T8, $8016
+//LW T8, $FA90 (T8)
+//LW A0, $0018 (SP)
+addiu a0, a0, $0004
+LH A1, $0022 (SP)
+//ADDIU A0, A0, $083C
+JAL $000778AC        // Math_ScaledStepToS
+LH A2, $004A (T6)
+lw ra, $14 (SP)
+jr ra
+addiu sp, sp, $0018
+
+//had to branch out for jump speed 
+.org 0x3ff6ba0
+!side:
+lui t5, $8016
+lw t5, $fa90 (T5)
+sh t0, $006e (T5) //0226 no bunny, 044c bunny, REG(45)==R_RUN_SPEED_LIMIT
+beq a1, r0, !we   //if arg1 == 0, don't add
+nop
+add a1, a1, t2    //add 0x00400000 to float a1
+!we:
+jr ra
+nop
+
+//jump Y speed 3F3788
+.org 0xc189e8
+!hookmeup:
+jal $606bc8
+lui at, $3f80
+
+.org 0x3ff6bc8
+!yspeed:
+lui v0, $8022
+lbu v0, $470f (v0)
+addiu at, r0, $4
+bne v0, at, !oki
+lui at, $3f80
+lui at, $3fa0     //1.25 if bunny
+!oki:
+jr ra
+mtc1 at, f18

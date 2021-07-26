@@ -61,3 +61,10 @@
 !80850CB8 addiu t9, t9, %lo(linkActionRunPatchTable)
 !80850D50 lui   t2,     %hi(linkActionRunPatchTable)
 !80850D54 addiu t2, t2, %lo(linkActionRunPatchTable)
+
+# Patch run speed
+8083C028 j Statics_Player_PatchedRunning
+
+# Patch jump height
+80847C4C jal Statics_Player_BunnyHood_YSpeed
+80847C64 nop
