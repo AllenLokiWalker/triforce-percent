@@ -8,6 +8,7 @@
 #include "anime.h"
 #include "ocarina.h"
 #include "audio.h"
+#include "gfx.h"
 
 static u8 sIsLiveRun = 0;
 
@@ -68,6 +69,7 @@ void Statics_OneTime(){
     Statics_AnimeCodePatches(sIsLiveRun);
     Statics_OcarinaCodePatches();
     Statics_AudioCodePatches(sIsLiveRun);
+    Statics_GfxCodePatches();
     osWritebackDCache(0, 0x4000);
     osInvalICache(0, 0x4000);
     if(!sIsLiveRun){

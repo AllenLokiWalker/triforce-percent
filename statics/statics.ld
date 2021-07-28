@@ -11,6 +11,7 @@ INCLUDE message.ld
 INCLUDE anime.ld
 INCLUDE ocarina.ld
 INCLUDE audio.ld
+INCLUDE gfx.ld
 
 linkJumpYSpeed = 0x808514A8;
 

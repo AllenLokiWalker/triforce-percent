@@ -26,6 +26,8 @@ ocarina.o: \
 
 audio.o: audio.h
 
+gfx.o: gfx.h
+
 LINK_OBJS = \
 	statics.o \
 	interface.o \
@@ -33,6 +35,7 @@ LINK_OBJS = \
 	anime.o \
 	ocarina.o \
 	audio.o \
+	gfx.o \
 	../text/build_messages_file.o
 
 LD_SCRIPTS = \
@@ -42,6 +45,7 @@ LD_SCRIPTS = \
 	anime.ld \
 	ocarina.ld \
 	audio.ld \
+	gfx.ld \
 	../loader/fast_loader/fast_loader.out.ld \
 	../loader/debugger/debugger.out.ld \
 	../loader/dma_patcher/dma_patcher.out.ld
