@@ -1,0 +1,13 @@
+extern SCmdBase TestVAlpha_room_0_header00[];
+extern MeshHeader0 TestVAlpha_room_0_meshHeader;
+extern MeshEntry0 TestVAlpha_room_0_meshDListEntry[1];
+extern Gfx TestVAlpha_room_0_entry_0_opaque[];
+extern Gfx TestVAlpha_room_0_entry_0_transparent[];
+extern Vtx TestVAlpha_dl_Floor_mesh_layer_Opaque_vtx_0[143];
+extern Gfx TestVAlpha_dl_Floor_mesh_layer_Opaque_tri_0[];
+extern Vtx TestVAlpha_dl_Walls_mesh_layer_Transparent_vtx_0[44];
+extern Gfx TestVAlpha_dl_Walls_mesh_layer_Transparent_tri_0[];
+extern Gfx mat_TestVAlpha_dl_floor_mat_layerOpaque[];
+extern Gfx mat_TestVAlpha_dl_f3d_material_layerTransparent[];
+extern Gfx TestVAlpha_dl_Floor_mesh_layer_Opaque[];
+extern Gfx TestVAlpha_dl_Walls_mesh_layer_Transparent[];

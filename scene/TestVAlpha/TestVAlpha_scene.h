@@ -1,0 +1,9 @@
+extern SCmdBase TestVAlpha_scene_header00[];
+extern ActorEntry TestVAlpha_scene_header00_startPositionList[];
+extern RomFile TestVAlpha_scene_roomList[];
+extern EntranceEntry TestVAlpha_scene_header00_entranceList[];
+extern LightSettings TestVAlpha_scene_header00_lightSettings[1];
+extern u32 TestVAlpha_polygonTypes[];
+extern CollisionPoly TestVAlpha_polygons[];
+extern Vec3s TestVAlpha_vertices[81];
+extern CollisionHeader TestVAlpha_collisionHeader;

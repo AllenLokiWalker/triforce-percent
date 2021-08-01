@@ -108,6 +108,9 @@ extern Gfx ChamberOfSages_dl_G_BackgroundPlatformSides_mesh_layer_Transparent_tr
 extern Vtx ChamberOfSages_dl_H_CentralPlatformSides_mesh_layer_Transparent_vtx_cull[8];
 extern Vtx ChamberOfSages_dl_H_CentralPlatformSides_mesh_layer_Transparent_vtx_0[24];
 extern Gfx ChamberOfSages_dl_H_CentralPlatformSides_mesh_layer_Transparent_tri_0[];
+extern Vtx ChamberOfSages_dl_Z_SariaStair_mesh_layer_Transparent_vtx_cull[8];
+extern Vtx ChamberOfSages_dl_Z_SariaStair_mesh_layer_Transparent_vtx_0[121];
+extern Gfx ChamberOfSages_dl_Z_SariaStair_mesh_layer_Transparent_tri_0[];
 extern Gfx mat_ChamberOfSages_dl_f3d_material_031_layerTransparent[];
 extern Gfx mat_ChamberOfSages_dl_f3d_material_016_layerOpaque[];
 extern Gfx mat_ChamberOfSages_dl_f3d_material_017_layerOpaque[];
@@ -141,6 +144,7 @@ extern Gfx mat_ChamberOfSages_dl_f3d_material_040_layerTransparent[];
 extern Gfx mat_ChamberOfSages_dl_f3d_material_041_layerTransparent[];
 extern Gfx mat_ChamberOfSages_dl_f3d_material_029_layerTransparent[];
 extern Gfx mat_ChamberOfSages_dl_f3d_material_030_layerTransparent[];
+extern Gfx mat_ChamberOfSages_dl_StairsLight_layerTransparent[];
 extern Gfx ChamberOfSages_dl_A_Background_mesh_layer_Transparent[];
 extern Gfx ChamberOfSages_dl_C_PlatformsAndPedestals_mesh_layer_Opaque[];
 extern Gfx ChamberOfSages_dl_D_TriforceDoor_mesh_layer_Opaque[];
@@ -150,3 +154,4 @@ extern Gfx ChamberOfSages_dl_E_TriforceAndPedestalSides_mesh_layer_Transparent[]
 extern Gfx ChamberOfSages_dl_F_LightRays_mesh_layer_Transparent[];
 extern Gfx ChamberOfSages_dl_G_BackgroundPlatformSides_mesh_layer_Transparent[];
 extern Gfx ChamberOfSages_dl_H_CentralPlatformSides_mesh_layer_Transparent[];
+extern Gfx ChamberOfSages_dl_Z_SariaStair_mesh_layer_Transparent[];

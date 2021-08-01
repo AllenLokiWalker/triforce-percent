@@ -22,6 +22,11 @@ ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl
 PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat
 PATCH 0x2103000 ../scene/spot07_scene/zoras_room1.pat
 
+//TestVAlpha scene
+//SCENE 41 ../scene/TestVAlpha/TestVAlpha_scene.zscene
+//Entrance table 0x800F9C90 entries 0x437-43A
+//WRITE 16 0x800F9FB4 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
+
 //ChamberOfSages scene
 SCENE 41 ../scene/ChamberOfSages/ChamberOfSages_scene.zscene
 //Entrance table 0x800F9C90 entries 0x437-43A
