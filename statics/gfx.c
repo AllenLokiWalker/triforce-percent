@@ -35,12 +35,12 @@ void Patched_CoSSceneDrawConfig(GlobalContext* globalCtx) {
         static Gfx rayDL[6 * 2];
         // Position of each light ray
         static Vec3s rayPos[] = {
-            { -419, 250, -725 }, // Saria
-            { 419, 424, -725 },  // Darunia
-            { 838, 599, 0 },     // Ruto
-            { 419, 773, 725 },   // Nabooru
-            { -419, 948, 725 },  // Impa
-            { 0, 0, 0 },         // Sheik
+            { -419, 215, -725 }, // Saria
+            { 419, 394, -725 },  // Darunia
+            { 838, 569, 0 },     // Ruto
+            { 419, 744, 725 },   // Nabooru
+            { -419, 918, 725 },  // Impa
+            { -840, 1092, 0 },   // Sheik
         };
         Player* player = PLAYER;
         s32 i; // used for indexing the loop

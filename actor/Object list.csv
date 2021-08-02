@@ -1,157 +1,157 @@
-000,0,[Unset],,
-001,1,gameplay_keep,Global Gameplay Objects,K
-002,2,gameplay_field_keep,Global Field Objects,K
-003,3,gameplay_dangeon_keep,Global Dungeon Objects,K
-004,4,triforcepiece,Triforce Piece,HACK
-005,5,triforcechest,Triforce Chest,HACK
-006,6,object_human,Aria,BETA
-007,7,object_okuta,Octorok,K
-008,8,object_crow,Guay,K
-009,9,object_poh,Poe,K
+0,0,[Unset],,
+1,1,gameplay_keep,Global Gameplay Objects,K
+2,2,gameplay_field_keep,Global Field Objects,K
+3,3,gameplay_dangeon_keep,Global Dungeon Objects,K
+4,4,triforcepiece,Triforce Piece,HACK
+5,5,triforcechest,Triforce Chest,HACK
+6,6,object_human,Aria,BETA
+7,7,object_okuta,Octorok,K
+8,8,object_crow,Guay,K
+9,9,object_poh,Poe,K
 00A,10,object_dy_obj,Great Fairy,K
 00B,11,object_wallmaster,Floormaster & Wallmaster,K
 00C,12,object_dodongo,Dodongo,K
 00D,13,object_firefly,Keese,K
 00E,14,object_box,Treasure Chest,K
 00F,15,object_fire,Dancing Flame,BETA
-010,16,triforcelight,Triforce Light,HACK
-011,17,[Removed],,
-012,18,object_bubble,Shabom,K
-013,19,object_niw,Cucco,K
-014,20,object_link_boy,Adult Link,K
-015,21,object_link_child,Child Link,K
-016,22,object_tite,Tektites,K
-017,23,object_reeba,Leever,K
-018,24,object_peehat,Peahat,K
-019,25,object_kingdodongo,King Dodongo,K
+10,16,triforcelight,Triforce Light,HACK
+11,17,cosstaircasesobj,Chamber of Sages Staircases,HACK
+12,18,object_bubble,Shabom,K
+13,19,object_niw,Cucco,K
+14,20,object_link_boy,Adult Link,K
+15,21,object_link_child,Child Link,K
+16,22,object_tite,Tektites,K
+17,23,object_reeba,Leever,K
+18,24,object_peehat,Peahat,K
+19,25,object_kingdodongo,King Dodongo,K
 01A,26,object_horse,Epona,K
 01B,27,object_zf,Lizalfos & Dinolfos,K
 01C,28,object_goma,Gohma,K
 01D,29,object_zl1,Child Zelda,K
 01E,30,object_gol,Gohma Larva,K
 01F,31,object_dodojr,Baby Dodongo,K
-020,32,object_torch2,Dark Link,K
-021,33,object_bl,Biri,K
-022,34,object_tp,Tailpasaran,K
-023,35,object_oA1,Kakariko Rooftop Man,BETA
-024,36,object_st,Skulltulas,K
-025,37,object_bw,Torch Slug,K
-026,38,object_ei,Stingers,K
-027,39,object_horse_normal,Generic Horse,K
-028,40,object_ob1,Bazaar Proprietor,BETA
-029,41,object_o_anime,NPC Animations I,K
+20,32,object_torch2,Dark Link,K
+21,33,object_bl,Biri,K
+22,34,object_tp,Tailpasaran,K
+23,35,object_oA1,Kakariko Rooftop Man,BETA
+24,36,object_st,Skulltulas,K
+25,37,object_bw,Torch Slug,K
+26,38,object_ei,Stingers,K
+27,39,object_horse_normal,Generic Horse,K
+28,40,object_ob1,Bazaar Proprietor,BETA
+29,41,object_o_anime,NPC Animations I,K
 02A,42,object_spot04_objects,Kokiri Forest Objects,K
 02B,43,object_ddan_objects,Dodongo's Cavern Objects,K
 02C,44,object_hidan_objects,Fire Temple Objects,K
 02D,45,object_horse_ganon,Ganondorf's Horse,K
 02E,46,object_oA2,Zora [Early],BETA
 02F,47,object_spot00_objects,Hyrule Field Objects (Child),K
-030,48,object_mb,Moblins,K
-031,49,object_bombf,Bomb Flower,K
-032,50,object_sk2,Stalfos,K
-033,51,object_oE1,Mido I [Early],BETA
-034,52,object_oE_anime,NPC Animations II,K
-035,53,object_oE2,Red-Haired Kokiri Girl [Early],BETA
-036,54,object_ydan_objects,Inside the Deku Tree Objects,K
-037,55,object_gnd,Phantom Ganon,K
-038,56,object_am,Armos,K
-039,57,object_dekubaba,Deku Babas,K
+30,48,object_mb,Moblins,K
+31,49,object_bombf,Bomb Flower,K
+32,50,object_sk2,Stalfos,K
+33,51,object_oE1,Mido I [Early],BETA
+34,52,object_oE_anime,NPC Animations II,K
+35,53,object_oE2,Red-Haired Kokiri Girl [Early],BETA
+36,54,object_ydan_objects,Inside the Deku Tree Objects,K
+37,55,object_gnd,Phantom Ganon,K
+38,56,object_am,Armos,K
+39,57,object_dekubaba,Deku Babas,K
 03A,58,[Removed],,
 03B,59,object_oA3,Impa's Masked Head [Early],BETA
 03C,60,object_oA4,Laughing Man [Early],BETA
 03D,61,object_oA5,Hylian Woman in Purple Dress,BETA
 03E,62,object_oA6,Hylian Man in Blue Shirt & Orange Pants,BETA
 03F,63,object_oA7,Hylian Woman in White Shirt & Orange Pants,BETA
-040,64,object_jj,Jabu-Jabu,K
-041,65,object_oA8,Old Hylian Man [Early],BETA
-042,66,object_oA9,Old Hylian Man's Head [Early],BETA
-043,67,object_ob2,Hylian Man in Purple Shirt & Green Pants,BETA
-044,68,object_ob3,Carpenter Boss's Wife [Early],BETA
-045,69,object_ob4,Hylian Woman in Blue Shirt & White Dress,BETA
-046,70,object_horse_zelda,Zelda's Horse,K
-047,71,object_opening_demo1,Opening Cutscene Animations,K
-048,72,object_warp1,Warp Circle & Rupee Prism,K
-049,73,object_b_heart,Heart Container [Early],BETA
+40,64,object_jj,Jabu-Jabu,K
+41,65,object_oA8,Old Hylian Man [Early],BETA
+42,66,object_oA9,Old Hylian Man's Head [Early],BETA
+43,67,object_ob2,Hylian Man in Purple Shirt & Green Pants,BETA
+44,68,object_ob3,Carpenter Boss's Wife [Early],BETA
+45,69,object_ob4,Hylian Woman in Blue Shirt & White Dress,BETA
+46,70,object_horse_zelda,Zelda's Horse,K
+47,71,object_opening_demo1,Opening Cutscene Animations,K
+48,72,object_warp1,Warp Circle & Rupee Prism,K
+49,73,object_b_heart,Heart Container [Early],BETA
 04A,74,object_dekunuts,Mad Scrub,K
 04B,75,object_oE3,Saria [Early],BETA
 04C,76,object_oE4,Red-Haired Kokiri Boy I [Early],BETA
 04D,77,object_menkuri_objects,Gerudo Training Ground Objects,K
 04E,78,object_oE5,Fado [Early],BETA
 04F,79,object_oE6,Kokiri Girl in Brown Band's Head,BETA
-050,80,object_oE7,Kokiri Boy in Green Cap's Head,BETA
-051,81,object_oE8,Kokiri Girl in Green Band's Head,BETA
-052,82,object_oE9,Kokiri Boy in Mint Cap's Head,BETA
-053,83,object_oE10,Kokiri Shop Proprietor's Head [Early],BETA
-054,84,object_oE11,Kokiri Girl in Green Cap's Head,BETA
-055,85,object_oE12,Fado's Head [Early],BETA
-056,86,object_vali,Bari,K
-057,87,object_oA10,Soldier [Early],BETA
-058,88,object_oA11,Soldier (Courtyard) [Early],BETA
-059,89,object_mizu_objects,Water Temple Objects,K
+50,80,object_oE7,Kokiri Boy in Green Cap's Head,BETA
+51,81,object_oE8,Kokiri Girl in Green Band's Head,BETA
+52,82,object_oE9,Kokiri Boy in Mint Cap's Head,BETA
+53,83,object_oE10,Kokiri Shop Proprietor's Head [Early],BETA
+54,84,object_oE11,Kokiri Girl in Green Cap's Head,BETA
+55,85,object_oE12,Fado's Head [Early],BETA
+56,86,object_vali,Bari,K
+57,87,object_oA10,Soldier [Early],BETA
+58,88,object_oA11,Soldier (Courtyard) [Early],BETA
+59,89,object_mizu_objects,Water Temple Objects,K
 05A,90,object_fhg,Phantom Ganon's Horse & Objects,K
 05B,91,object_ossan,Shooting Gallery & Bazaar Proprietors,K
 05C,92,object_mori_hineri1,Forest Temple Room 13 (Twisted),K
 05D,93,object_Bb,Bubbles,K
 05E,94,object_toki_objects,Temple of Time Objects,K
 05F,95,object_yukabyun,Flying Floor Tile,K
-060,96,object_zl2,Adult Zelda,K
-061,97,object_mjin,Warp Pad Base,K
-062,98,object_mjin_flash,Light Warp Pad,K
-063,99,object_mjin_dark,Shadow Warp Pad,K
-064,100,object_mjin_flame,Fire Warp Pad,K
-065,101,object_mjin_ice,Water Warp Pad,K
-066,102,object_mjin_soul,Spirit Warp Pad,K
-067,103,object_mjin_wind,Forest Warp Pad,K
-068,104,object_mjin_oka,Ocarina Pedestal,BETA
-069,105,object_haka_objects,Shadow Temple Objects,K
+60,96,object_zl2,Adult Zelda,K
+61,97,object_mjin,Warp Pad Base,K
+62,98,object_mjin_flash,Light Warp Pad,K
+63,99,object_mjin_dark,Shadow Warp Pad,K
+64,100,object_mjin_flame,Fire Warp Pad,K
+65,101,object_mjin_ice,Water Warp Pad,K
+66,102,object_mjin_soul,Spirit Warp Pad,K
+67,103,object_mjin_wind,Forest Warp Pad,K
+68,104,object_mjin_oka,Ocarina Pedestal,BETA
+69,105,object_haka_objects,Shadow Temple Objects,K
 06A,106,object_spot06_objects,Lake Hylia Objects,K
 06B,107,object_ice_objects,Ice Cavern Objects,K
 06C,108,object_relay_objects,Dampé's Relay Race Objects,K
 06D,109,object_po_field,Big Poe & Poe Guide,K
 06E,110,object_po_composer,Sharp & Flat,K
 06F,111,object_mori_hineri1a,Forest Temple Room 13 (Straight),K
-070,112,object_mori_hineri2,Forest Temple Room 14 (Straight),K
-071,113,object_mori_hineri2a,Forest Temple Room 14 (Twisted),K
-072,114,object_mori_objects,Forest Temple Objects,K
-073,115,object_mori_tex,Forest Temple Textures,K
-074,116,object_spot08_obj,Zora's Fountain Objects,K
-075,117,object_warp2,[Blank],BETA
-076,118,object_hata,Flagpole,K
-077,119,object_bird,Brown Bird,BETA
-078,120,[Removed],,
-079,121,[Removed],,
+70,112,object_mori_hineri2,Forest Temple Room 14 (Straight),K
+71,113,object_mori_hineri2a,Forest Temple Room 14 (Twisted),K
+72,114,object_mori_objects,Forest Temple Objects,K
+73,115,object_mori_tex,Forest Temple Textures,K
+74,116,object_spot08_obj,Zora's Fountain Objects,K
+75,117,object_warp2,[Blank],BETA
+76,118,object_hata,Flagpole,K
+77,119,object_bird,Brown Bird,BETA
+78,120,[Removed],,
+79,121,[Removed],,
 07A,122,[Removed],,
 07B,123,[Removed],,
 07C,124,object_wood02,Bushes & Trees,K
 07D,125,[Removed],,
 07E,126,[Removed],,
 07F,127,[Removed],,
-080,128,[Removed],,
-081,129,object_lightbox,Rectangular Stone Blocks (Light Grey),BETA
-082,130,object_pu_box,Rectangular Stone Blocks (Dark Grey),BETA
-083,131,[Removed],,
-084,132,[Removed],,
-085,133,object_trap,Blade Trap,K
-086,134,object_vase,Orange Pot,BETA
-087,135,object_im,Impa,K
-088,136,object_ta,Talon,K
-089,137,object_tk,Dampé & Ghost,K
+80,128,[Removed],,
+81,129,object_lightbox,Rectangular Stone Blocks (Light Grey),BETA
+82,130,object_pu_box,Rectangular Stone Blocks (Dark Grey),BETA
+83,131,[Removed],,
+84,132,[Removed],,
+85,133,object_trap,Blade Trap,K
+86,134,object_vase,Orange Pot,BETA
+87,135,object_im,Impa,K
+88,136,object_ta,Talon,K
+89,137,object_tk,Dampé & Ghost,K
 08A,138,object_xc,Sheik,K
 08B,139,object_vm,Beamos,K
 08C,140,object_bv,Barinade,K
 08D,141,object_hakach_objects,Bottom of the Well Objects,K
 08E,142,object_efc_crystal_light,[?], ?
 08F,143,object_efc_fire_ball,Goddesses' Flame of Creation,K
-090,144,object_efc_flash,[Blank],BETA
-091,145,object_efc_lgt_shower,Goddess Light Dome,K
-092,146,object_efc_star_field,Light Beam & Rubble,K
-093,147,object_god_lgt,Golden Goddesses,K
-094,148,object_light_ring,Jagged-Edged Light Ring,K
-095,149,object_triforce_spot,Triforce & Beam of Light,K
-096,150,object_bdan_objects,Inside Jabu-Jabu's Belly Objects,K
-097,151,object_sd,Soldiers,K
-098,152,object_rd,Redead & Gibdo,K
-099,153,object_po_sisters,Poe Sisters & Objects,K
+90,144,object_efc_flash,[Blank],BETA
+91,145,object_efc_lgt_shower,Goddess Light Dome,K
+92,146,object_efc_star_field,Light Beam & Rubble,K
+93,147,object_god_lgt,Golden Goddesses,K
+94,148,object_light_ring,Jagged-Edged Light Ring,K
+95,149,object_triforce_spot,Triforce & Beam of Light,K
+96,150,object_bdan_objects,Inside Jabu-Jabu's Belly Objects,K
+97,151,object_sd,Soldiers,K
+98,152,object_rd,Redead & Gibdo,K
+99,153,object_po_sisters,Poe Sisters & Objects,K
 09A,154,object_heavy_object,Golden Gauntlets Boulder,K
 09B,155,object_gndd,Ganondorf (Cutscenes),K
 09C,156,object_fd,Volvagia (Flying),K
@@ -222,16 +222,16 @@
 0DD,221,object_gi_hookshot,Item Model - Hookshot & Longshot,K
 0DE,222,object_gi_ocarina,Item Model - Ocarina of Time,K
 0DF,223,object_gi_milk,Item Model - Lon Lon Milk,K
-0E0,224,object_ma1,Child Malon,K
-0E1,225,object_ganon,Ganondorf (Boss),K
-0E2,226,object_sst,Bongo Bongo,K
-0E3,227,object_ny,Spike Trap [Duplicate],BETA
-0E4,228,[Removed],,
-0E5,229,object_ny,Spike Trap,K
-0E6,230,object_fr,Frog,K
-0E7,231,object_gi_pachinko,Item Model - Fairy Slingshot,K
-0E8,232,object_gi_boomerang,Item Model - Boomerang,K
-0E9,233,object_gi_bow,Item Model - Fairy Bow,K
+0,224,object_ma1,Child Malon,K
+0,225,object_ganon,Ganondorf (Boss),K
+0,226,object_sst,Bongo Bongo,K
+0,227,object_ny,Spike Trap [Duplicate],BETA
+0,228,[Removed],,
+0,229,object_ny,Spike Trap,K
+0,230,object_fr,Frog,K
+0,231,object_gi_pachinko,Item Model - Fairy Slingshot,K
+0,232,object_gi_boomerang,Item Model - Boomerang,K
+0,233,object_gi_bow,Item Model - Fairy Bow,K
 0EA,234,object_gi_glasses,Item Model - Lens of Truth,K
 0EB,235,object_gi_liquid,Item Model - Potions,K
 0EC,236,object_ani,Kakariko Rooftop Man,K

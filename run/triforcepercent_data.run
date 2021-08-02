@@ -17,6 +17,8 @@ ACTOR 6 ../actor/BetaGreatFairy/betagreatfairy.zovl
 ACTOR 23 ../actor/z_bg_mjin/actor.zovl
 ACTOR 312 ../actor/z_en_ge1/z_en_ge1.zovl
 ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl
+OBJECT 17 ../actor/CoSStaircases/zobj.zobj
+ACTOR 26 ../actor/CoSStaircases/cosstaircases.zovl
 
 //Patched Zora's Domain scene
 PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat

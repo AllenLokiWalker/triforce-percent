@@ -1,0 +1,5 @@
+extern Vtx DaruniaStair_Z_DaruniaStair_mesh_layer_Transparent_vtx_cull[8];
+extern Vtx DaruniaStair_Z_DaruniaStair_mesh_layer_Transparent_vtx_0[252];
+extern Gfx DaruniaStair_Z_DaruniaStair_mesh_layer_Transparent_tri_0[];
+extern Gfx mat_DaruniaStair_StairsLight_layerTransparent[];
+extern Gfx DaruniaStair[];

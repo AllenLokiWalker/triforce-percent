@@ -1,0 +1,5 @@
+extern Vtx TriforceStair_Z_TriforceStair_mesh_layer_Transparent_vtx_cull[8];
+extern Vtx TriforceStair_Z_TriforceStair_mesh_layer_Transparent_vtx_0[504];
+extern Gfx TriforceStair_Z_TriforceStair_mesh_layer_Transparent_tri_0[];
+extern Gfx mat_TriforceStair_StairsLight_layerTransparent[];
+extern Gfx TriforceStair[];

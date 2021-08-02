@@ -9,6 +9,7 @@ OUTFILES = \
 	TestVAlpha/TestVAlpha_room_0.zmap \
 	ChamberOfSages/ChamberOfSages_scene.zscene \
 	ChamberOfSages/ChamberOfSages_room_0.zmap \
+	ChamberOfSages/ChamberOfSages_scene.out.ld \
 	TriforceRoom/TriforceRoom_scene.zscene \
 	TriforceRoom/TriforceRoom_room_0.zmap
 ROOMROMGOAWAY = \
@@ -41,6 +42,7 @@ default: $(OUTFILES) $(TITLEFILES)
 	#cp TestVAlpha/TestVAlpha_room_0.zmap $(TESTVALPHADIR)/room_0.zmap
 	cp ChamberOfSages/ChamberOfSages_scene.zscene $(CHAMBEROFSAGESDIR)/scene.zscene
 	cp ChamberOfSages/ChamberOfSages_room_0.zmap $(CHAMBEROFSAGESDIR)/room_0.zmap
+	cp ChamberOfSages/title.ia8.png $(CHAMBEROFSAGESDIR)/title.png
 	cp ChamberOfSages/conf.txt $(CHAMBEROFSAGESDIR)/conf.txt
 	cp TriforceRoom/TriforceRoom_scene.zscene $(TRIFORCEROOMDIR)/scene.zscene
 	cp TriforceRoom/TriforceRoom_room_0.zmap $(TRIFORCEROOMDIR)/room_0.zmap
@@ -71,5 +73,6 @@ $(MAKESUBDIRS):
 	cp $< $@
 
 clean: cleansubdirs
+	rm -f */title.ia8
 
 include ../toolchain/make/c.mk

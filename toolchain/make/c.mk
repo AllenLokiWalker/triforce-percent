@@ -2,7 +2,7 @@
 	$(CC) $(CCFLAGS) -c $< -o $@
 
 %.out.ld: %.map
-	$(PYTHON3) ../toolchain/ldout.py $< $@
+	$(PYTHON3) $(PROJECT_DIR)/toolchain/ldout.py $< $@
 
 %.bin: %.elf
 	$(OC) $(OCFLAGS) $< $@

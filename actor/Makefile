@@ -1,5 +1,6 @@
 SUBDIRS = \
 BetaGreatFairy/ \
+CoSStaircases/ \
 TriforcePiece/ \
 TriforceChest/ \
 TriforceLight/ \
