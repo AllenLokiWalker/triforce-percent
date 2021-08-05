@@ -6,7 +6,7 @@ extern s32 UnicornFountain_scene_header00_cutscene[];
 // Actor Information
 #define OBJ_ID 0x00A // primary object dependency (change if needed)
 #define SWITCH_FLAG 0x20
-#define NPC_ACTION_SLOT 5
+#define FAIRY_SLOT 5
 
 #define RISE_FRAMES 40
 
@@ -20,11 +20,6 @@ extern s32 UnicornFountain_scene_header00_cutscene[];
 
 #define SCALE_TINY 0.001f
 #define SCALE_MAIN 0.085f
-
-#define CHECK_NPC_ACTION(num) \
-	(globalCtx->csCtx.state != 0) \
-	&& (globalCtx->csCtx.npcActions[NPC_ACTION_SLOT] != NULL) \
-	&& (globalCtx->csCtx.npcActions[NPC_ACTION_SLOT]->action == num)
 
 typedef struct {
 	Actor actor;
@@ -54,7 +49,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		Actor_SetScale(&en->actor, SCALE_TINY);
 		en->actor.world.pos.y -= 1000.0f;
 		en->lastFloatY = FLOAT_CENTER_HEIGHT;
-		if(CHECK_NPC_ACTION(1)){
+		if(CHECK_NPC_ACTION(FAIRY_SLOT, 1)){
 			en->frames = 0;
 			++en->state;
 		}
@@ -69,7 +64,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		en->actor.shape.rot.x = LEAN_FORWARD;
 		++en->frames;
 		if(en->frames >= CYCLE_PERIOD) en->frames = 0;
-		if(CHECK_NPC_ACTION(2)){
+		if(CHECK_NPC_ACTION(FAIRY_SLOT, 2)){
 			en->frames = 0;
 			++en->state;
 		}

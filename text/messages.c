@@ -80,7 +80,68 @@ DECLARE_MESSAGE(0x0D23, BOX_BLACK, POS_MIDDLE,
 
 // 0xA00: Ending Sequence (so we can have 0xACE be significant)
 
+DECLARE_MESSAGE(0x0A10, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "Welcome, Link. I'm Rauru, the" NEWLINE
+    "ancient Sage of Light." BOX_BREAK
+    "Now that you hold the keys to the" NEWLINE
+    "three sacred virtues, your heart" NEWLINE
+    "is in perfect balance."
+)
 
+DECLARE_MESSAGE(0x0A11, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "The song you just played has" NEWLINE
+    "awoken the other Sages, and they" NEWLINE
+    "are on their way to joining us here." BOX_BREAK
+    "You must receive a blessing from" NEWLINE
+    "each of us." BOX_BREAK
+    "Together, we will open the way to" NEWLINE
+    "your goal."
+)
+
+DECLARE_MESSAGE(0x0A20, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE COLOR(GREEN)
+    "Link, the promise I made to you" NEWLINE
+    "stays true. I will always be your" NEWLINE
+    "friend." COLOR(WHITE)
+)
+
+DECLARE_MESSAGE(0x0A30, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE COLOR(RED)
+    "The bond between the Goron race" NEWLINE
+    "and the Royal Family is rock" NEWLINE
+    "solid! Let's go, brother!" COLOR(WHITE)
+)
+
+DECLARE_MESSAGE(0x0A40, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE COLOR(BLUE)
+    "I knew the hero would turn out" NEWLINE
+    "to be a handsome man!" BOX_BREAK
+    "Once this is all over, you must" NEWLINE
+    "come visit me, all right?" COLOR(WHITE)
+)
+
+DECLARE_MESSAGE(0x0A50, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE COLOR(TYPE1_ORANGE)
+    "Nice work! It looks like our" NEWLINE
+    "song worked for you. From all the" NEWLINE
+    "Gerudos, you have our support!" COLOR(WHITE)
+)
+
+DECLARE_MESSAGE(0x0A60, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE COLOR(TYPE1_PURPLE)
+    "Undoubtedly, you are the boy" NEWLINE
+    "from the forest who appeared" NEWLINE
+    "in Princess Zelda's dreams." BOX_BREAK
+    "I am glad my charm found its" NEWLINE
+    "way into your hands." BOX_BREAK
+    "I wish you well in fulfilling" NEWLINE
+    "the great destiny that is" NEWLINE
+    "before you." COLOR(WHITE)
+)
+
+//  "text text text text text text te"
 
 // Trailer
 

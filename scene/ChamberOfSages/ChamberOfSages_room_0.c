@@ -15,24 +15,37 @@ SCmdBase ChamberOfSages_room_0_header00[] = {
 	SCENE_CMD_SKYBOX_DISABLES(false, false),
 	SCENE_CMD_TIME_SETTINGS(0xFF, 0xFF, 10),
 	SCENE_CMD_MESH(&ChamberOfSages_room_0_meshHeader),
-	SCENE_CMD_OBJECT_LIST(1, &ChamberOfSages_room_0_header00_objectList),
-	SCENE_CMD_ACTOR_LIST(8, &ChamberOfSages_room_0_header00_actorList),
+	SCENE_CMD_OBJECT_LIST(8, &ChamberOfSages_room_0_header00_objectList),
+	SCENE_CMD_ACTOR_LIST(14, &ChamberOfSages_room_0_header00_actorList),
 	SCENE_CMD_END(),
 };
 
-s16 ChamberOfSages_room_0_header00_objectList[1] = {
+s16 ChamberOfSages_room_0_header00_objectList[8] = {
 	17,
+	0xA7,
+	0xBC,
+	0x9D,
+	0xCA,
+	0xB3,
+	0x87,
+	0x8A,
 };
 
-ActorEntry ChamberOfSages_room_0_header00_actorList[8] = {
-	{ 26, 419, 394, -725, 0, 54613, 0, 0x0002 },
-	{ 26, -419, 215, -725, 0, 0, 0, 0x0001 },
-	{ 26, 419, 744, 725, 0, 27307, 0, 0x0004 },
-	{ 26, -419, 918, 725, 0, 16384, 0, 0x0005 },
-	{ ACTOR_EN_RIVER_SOUND, -94, 574, -105, 0, 0, 0, 0x0010 },
-	{ 26, 838, 569, 0, 0, 38229, 0, 0x0003 },
-	{ 26, 0, 115, 0, 0, 0, 0, 0x0000 },
+ActorEntry ChamberOfSages_room_0_header00_actorList[14] = {
+	{ 26, 838, 569, 0, 0, 43691, 0, 0x0003 },
+	{ 26, 419, 744, 725, 0, 32768, 0, 0x0004 },
 	{ 26, -840, 1092, 0, 0, 0, 0, 0x0006 },
+	{ ACTOR_EN_RU2, 926, 579, 0, 0, 32768, 0, 0 },
+	{ ACTOR_DEMO_SA, -468, 230, -806, 0, 54613, 0, 0 },
+	{ 26, -419, 215, -725, 0, 0, 0, 0x0001 },
+	{ 26, 0, 118, 0, 0, 0, 0, 0x0000 },
+	{ ACTOR_DEMO_IM, -466, 928, 804, 0, 10923, 0, 0 },
+	{ 26, 419, 394, -725, 0, 54613, 0, 0x0002 },
+	{ ACTOR_EN_NB, 465, 753, 806, 0, 21845, 0, 0 },
+	{ ACTOR_EN_RIVER_SOUND, -94, 574, -105, 0, 0, 0, 0x0010 },
+	{ 26, -419, 918, 725, 0, 21845, 0, 0x0005 },
+	{ ACTOR_DEMO_DU, 465, 404, -805, 0, 43691, 0, 0 },
+	{ ACTOR_EN_RL, -196, 126, 1, 0, 0, 0, 0 },
 };
 
 MeshHeader0 ChamberOfSages_room_0_meshHeader = { {0}, 1, (u32)&ChamberOfSages_room_0_meshDListEntry, (u32)&(ChamberOfSages_room_0_meshDListEntry) + sizeof(ChamberOfSages_room_0_meshDListEntry) };
@@ -3673,7 +3686,6 @@ Gfx mat_ChamberOfSages_dl_SariaLight_layerTransparent[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_MIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPDisplayList(0x0B000000),
 	gsSPEndDisplayList(),
 };
 
@@ -3694,7 +3706,6 @@ Gfx mat_ChamberOfSages_dl_DaruniaLight_layerTransparent[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_MIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPDisplayList(0x0B000010),
 	gsSPEndDisplayList(),
 };
 
@@ -3715,7 +3726,6 @@ Gfx mat_ChamberOfSages_dl_RutoLight_layerTransparent[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_MIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPDisplayList(0x0B000020),
 	gsSPEndDisplayList(),
 };
 
@@ -3736,7 +3746,6 @@ Gfx mat_ChamberOfSages_dl_NabooruLight_layerTransparent[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_MIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPDisplayList(0x0B000030),
 	gsSPEndDisplayList(),
 };
 
@@ -3757,7 +3766,6 @@ Gfx mat_ChamberOfSages_dl_ImpaLight_layerTransparent[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_MIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPDisplayList(0x0B000040),
 	gsSPEndDisplayList(),
 };
 
@@ -3778,7 +3786,6 @@ Gfx mat_ChamberOfSages_dl_SheikLight_layerTransparent[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_MIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPDisplayList(0x0B000050),
 	gsSPEndDisplayList(),
 };
 

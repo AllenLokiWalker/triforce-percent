@@ -34,7 +34,7 @@ void Patched_CoSSceneDrawConfig(GlobalContext* globalCtx) {
         // Displaylist containg the color sets for each light ray
         static Gfx rayDL[6 * 2];
         // Position of each light ray
-        static Vec3s rayPos[] = {
+        static const Vec3s rayPos[] = {
             { -419, 215, -725 }, // Saria
             { 419, 394, -725 },  // Darunia
             { 838, 569, 0 },     // Ruto

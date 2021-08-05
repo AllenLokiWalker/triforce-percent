@@ -7,10 +7,10 @@ DUMP = build-romhack/project.zzrpl
 .PHONY: default clean $(SUBDIRS)
 
 default: $(SUBDIRS)
-	@echo "Done building"
+	@echo -e "=============\nDone building\n============="
 
 clean: $(SUBDIRS)
-	@echo "Done cleaning"
+	@echo -e "=============\nDone cleaning\n============="
 
 actor/: toolchain/ $(DUMP) statics/ scene/
 

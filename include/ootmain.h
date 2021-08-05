@@ -43,6 +43,11 @@ typedef struct {
 #define POLY_OPA_DISP gGlobalContext.state.gfxCtx->polyOpa.p
 #define POLY_XLU_DISP gGlobalContext.state.gfxCtx->polyXlu.p
 
+#define CHECK_NPC_ACTION(slot, num) \
+	(globalCtx->csCtx.state != 0) \
+	&& (globalCtx->csCtx.npcActions[slot] != NULL) \
+	&& (globalCtx->csCtx.npcActions[slot]->action == num)
+
 //Functions
 
 extern void Audio_FadeOut(u16 frames);
