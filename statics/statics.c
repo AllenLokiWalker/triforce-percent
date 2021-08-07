@@ -15,6 +15,8 @@ static u8 sIsLiveRun = 0;
 void Statics_SetGameState(){
     //Set some event flags
     //TODO disable Kaepora Gaebora in Lost Woods (or everywhere)
+    //TODO set flags for have picked up item drops before (magic jar, deku
+    //seeds/nuts, etc.)
     /*
     gSaveContext.event_chk_inf[0x0] |= 1 << 0x7; //Obtained Kokiri's Emerald & Deku Tree Dead
     gSaveContext.event_chk_inf[0x1] |= 1 << 0x7; //Great Deku Tree is Dead

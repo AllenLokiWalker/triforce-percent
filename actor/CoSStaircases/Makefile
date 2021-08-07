@@ -2,7 +2,6 @@ include ../../toolchain/make/main.mk
 
 ACTORNAME = cosstaircases
 ACTORNUM = 26
-ACTORLDFLAGS += -T ../../scene/ChamberOfSages/ChamberOfSages_scene.out.ld
 
 OBJECTNAME = cosstaircasesobj
 OBJECTNUM = 17
@@ -15,15 +14,16 @@ OBJECTOBJS = \
 	SheikStairCollision.o \
 	TriforceFadeWall.o \
 	TriforceHallway.o \
-	TriforceHallwayCollision.o \
 	TriforceDoor.o \
 	TriforceDoorCollision.o
 
+SCENEOUTLD = ../../scene/ChamberOfSages/ChamberOfSages_scene.out.ld
+
 default: copyactor copyobject
 
-$(ACTORNAME).elf: $(OBJECTNAME).out.ld
+$(ACTORNAME).elf: $(OBJECTNAME).out.ld $(SCENEOUTLD)
 
-ACTORLDFLAGS += -T $(OBJECTNAME).out.ld
+ACTORLDFLAGS += -T $(OBJECTNAME).out.ld -T $(SCENEOUTLD)
 
 include ../../toolchain/make/object.mk
 include ../../toolchain/make/actor.mk

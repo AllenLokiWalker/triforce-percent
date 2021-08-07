@@ -6,6 +6,5 @@ SheikStair = 0x6004740;
 SheikStairCollision_collisionHeader = 0x6004f58;
 TriforceFadeWall = 0x6005c38;
 TriforceHallway = 0x60077b0;
-TriforceHallwayCollision_collisionHeader = 0x600824c;
 TriforceDoor = 0x60081b8;
 TriforceDoorCollision_collisionHeader = 0x6008220;

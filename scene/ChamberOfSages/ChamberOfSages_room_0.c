@@ -16,7 +16,7 @@ SCmdBase ChamberOfSages_room_0_header00[] = {
 	SCENE_CMD_TIME_SETTINGS(0xFF, 0xFF, 10),
 	SCENE_CMD_MESH(&ChamberOfSages_room_0_meshHeader),
 	SCENE_CMD_OBJECT_LIST(8, &ChamberOfSages_room_0_header00_objectList),
-	SCENE_CMD_ACTOR_LIST(13, &ChamberOfSages_room_0_header00_actorList),
+	SCENE_CMD_ACTOR_LIST(17, &ChamberOfSages_room_0_header00_actorList),
 	SCENE_CMD_END(),
 };
 
@@ -31,20 +31,24 @@ s16 ChamberOfSages_room_0_header00_objectList[8] = {
 	OBJECT_XC,
 };
 
-ActorEntry ChamberOfSages_room_0_header00_actorList[13] = {
-	{ 26, -419, 918, 725, 0, 21845, 0, 0x0005 },
-	{ ACTOR_DEMO_SA, -468, 230, -806, 0, 54613, 0, 0 },
-	{ 26, 838, 569, 0, 0, 43691, 0, 0x0003 },
-	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0007 },
-	{ 26, 419, 744, 725, 0, 32768, 0, 0x0004 },
-	{ ACTOR_EN_RIVER_SOUND, -94, 574, -105, 0, 0, 0, 0x0010 },
-	{ ACTOR_EN_RL, -196, 126, 1, 0, 0, 0, 0 },
-	{ 26, -840, 1092, 0, 0, 0, 0, 0x0006 },
-	{ 26, -419, 215, -725, 0, 0, 0, 0x0001 },
-	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0008 },
-	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0009 },
-	{ 26, 0, 118, 0, 0, 0, 0, 0x0000 },
+ActorEntry ChamberOfSages_room_0_header00_actorList[17] = {
+	{ ACTOR_DEMO_DU, 465, 404, -805, 0, 60075, 0, 0 },
+	{ ACTOR_EN_NB, 465, 753, 806, 0, 38229, 0, 0 },
 	{ 26, 419, 394, -725, 0, 54613, 0, 0x0002 },
+	{ 26, -419, 215, -725, 0, 0, 0, 0x0001 },
+	{ ACTOR_EN_RIVER_SOUND, -94, 574, -105, 0, 0, 0, 0x0010 },
+	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0009 },
+	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0008 },
+	{ ACTOR_EN_RU2, 926, 579, 0, 0, 49152, 0, 0 },
+	{ ACTOR_DEMO_IM, -466, 928, 804, 0, 27307, 0, 0 },
+	{ 26, 419, 744, 725, 0, 32768, 0, 0x0004 },
+	{ 26, 838, 569, 0, 0, 43691, 0, 0x0003 },
+	{ 26, -840, 1092, 0, 0, 0, 0, 0x0006 },
+	{ ACTOR_DEMO_SA, -468, 230, -806, 0, 5461, 0, 0 },
+	{ 26, -419, 918, 725, 0, 21845, 0, 0x0005 },
+	{ 26, 0, 118, 0, 0, 0, 0, 0x0000 },
+	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0007 },
+	{ ACTOR_EN_RL, -196, 126, 1, 0, 16384, 0, 0 },
 };
 
 MeshHeader0 ChamberOfSages_room_0_meshHeader = { {0}, 1, (u32)&ChamberOfSages_room_0_meshDListEntry, (u32)&(ChamberOfSages_room_0_meshDListEntry) + sizeof(ChamberOfSages_room_0_meshDListEntry) };

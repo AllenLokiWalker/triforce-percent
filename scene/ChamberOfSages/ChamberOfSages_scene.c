@@ -18,6 +18,7 @@ SCmdBase ChamberOfSages_scene_header00[] = {
 	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
 	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header00_startPositionList),
 	SCENE_CMD_SKYBOX_SETTINGS(0x1D, 0x00, 0x01),
+	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header00_exitList),
 	SCENE_CMD_ENV_LIGHT_SETTINGS(1, &ChamberOfSages_scene_header00_lightSettings),
 	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header00_cutscene),
 	SCENE_CMD_END(),
@@ -36,7 +37,7 @@ SCmdBase* ChamberOfSages_scene_alternateHeaders[] = {
 };
 
 ActorEntry ChamberOfSages_scene_header00_startPositionList[] = {
-	{ ACTOR_PLAYER, 0, 127, 0, 0, 49152, 0, 0x0FFF },
+	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
 };
 
 RomFile ChamberOfSages_scene_roomList[] = {
@@ -47,6 +48,10 @@ EntranceEntry ChamberOfSages_scene_header00_entranceList[] = {
 	{ 0, 0 },
 };
 
+u16 ChamberOfSages_scene_header00_exitList[1] = {
+	0x0000,
+};
+
 LightSettings ChamberOfSages_scene_header00_lightSettings[1] = {
 	{ 0x51, 0x42, 0x5E, 0xF5, 0x7A, 0x1D, 0xA2, 0x8F, 0xFF, 0x03, 0x08, 0x82, 0xFF, 0xBD, 0xE1, 0x00, 0x00, 0x00, 0xFFE0, 0x3200 },
 };
@@ -54,8 +59,9 @@ LightSettings ChamberOfSages_scene_header00_lightSettings[1] = {
 u32 ChamberOfSages_polygonTypes[] = {
 	 0x00000000, 0x0000000c,
 	 0x00000000, 0x00000002,
-	 0x30000000, 0x00000000,
 	 0x00000000, 0x00000002,
+	 0x00000100, 0x00000000,
+	 0x30000000, 0x00000000,
 };
 
 CollisionPoly ChamberOfSages_polygons[] = {
@@ -357,29 +363,41 @@ CollisionPoly ChamberOfSages_polygons[] = {
 	{ 0x0001, 0x00f2, 0x00f1, 0x008a, 0xa55d, 0x4883, 0x35f4, 0xfb62 },
 	{ 0x0001, 0x00ee, 0x0086, 0x008b, 0x0000, 0x4967, 0x68dd, 0xfdad },
 	{ 0x0001, 0x00ee, 0x00f2, 0x008b, 0x0000, 0x4967, 0x68dd, 0xfdad },
-	{ 0x0002, 0x00f3, 0x00f4, 0x00f5, 0x0000, 0x7fff, 0x0000, 0x010d },
-	{ 0x0002, 0x00f3, 0x00f5, 0x00f6, 0x0000, 0x7fff, 0x0000, 0x010d },
-	{ 0x0003, 0x20f7, 0x00f8, 0x00f9, 0x6e32, 0xeeb7, 0x3ec9, 0x009e },
-	{ 0x0003, 0x20f7, 0x00fa, 0x00fb, 0x91ce, 0xeeb7, 0x3ec9, 0xff4e },
-	{ 0x0003, 0x20fa, 0x00f8, 0x00fc, 0x0000, 0xfc13, 0x800f, 0xffe7 },
-	{ 0x0003, 0x20f8, 0x00f9, 0x00fc, 0x6e9c, 0x0b1b, 0xc08c, 0x0081 },
-	{ 0x0003, 0x20fa, 0x00fb, 0x00fc, 0x9164, 0x0b1b, 0xc08c, 0xff30 },
-	{ 0x0003, 0x20f7, 0x00f9, 0x00fb, 0x0000, 0xfdb6, 0x7ffb, 0xffe8 },
-	{ 0x0003, 0x20fd, 0x00fe, 0x00ff, 0x7d19, 0x0000, 0x1b18, 0x0261 },
-	{ 0x0003, 0x20fd, 0x0100, 0x00ff, 0xd27a, 0x0000, 0x77a2, 0x0238 },
-	{ 0x0003, 0x2101, 0x0102, 0x0103, 0x218c, 0x0000, 0x7b86, 0x0107 },
-	{ 0x0003, 0x2104, 0x0105, 0x0106, 0xa77c, 0x0000, 0xa38a, 0x0268 },
-	{ 0x0003, 0x2107, 0x0108, 0x0109, 0x820b, 0x0000, 0xe937, 0x023b },
-	{ 0x0003, 0x210a, 0x010b, 0x010c, 0xdf74, 0x0000, 0x8435, 0x0276 },
-	{ 0x0003, 0x210d, 0x010e, 0x010f, 0x1fc6, 0x0000, 0x7bfe, 0x0276 },
-	{ 0x0003, 0x2104, 0x0110, 0x0106, 0xac9d, 0x0000, 0x611c, 0x0243 },
-	{ 0x0003, 0x2101, 0x0111, 0x0103, 0x81cb, 0x0000, 0x1557, 0xfce6 },
-	{ 0x0003, 0x210d, 0x0112, 0x010f, 0x8180, 0x0000, 0x1388, 0x022a },
-	{ 0x0003, 0x2107, 0x0113, 0x0109, 0x22f6, 0x0000, 0x84de, 0x026c },
-	{ 0x0003, 0x210a, 0x0114, 0x010c, 0x7e61, 0x0000, 0xebaf, 0x022f },
+	{ 0x0002, 0x20f3, 0x00f4, 0x00f5, 0x0000, 0x7fff, 0x0000, 0xfa76 },
+	{ 0x0002, 0x20f3, 0x00f6, 0x00f4, 0x0000, 0x7fff, 0x0000, 0xfa76 },
+	{ 0x0002, 0x20f4, 0x00f7, 0x00f5, 0x0000, 0x7fff, 0x0000, 0xfa76 },
+	{ 0x0002, 0x20f4, 0x00f8, 0x00f7, 0x0000, 0x7fff, 0x0000, 0xfa76 },
+	{ 0x0002, 0x20f4, 0x00f8, 0x00f9, 0x0000, 0x0000, 0x7fff, 0x0076 },
+	{ 0x0002, 0x20f7, 0x00f5, 0x00fa, 0x0000, 0x0000, 0x8000, 0x0076 },
+	{ 0x0002, 0x20f4, 0x00fb, 0x00f9, 0x0000, 0x0000, 0x7fff, 0x0076 },
+	{ 0x0002, 0x20f7, 0x00fc, 0x00fa, 0x0000, 0x0000, 0x8000, 0x0076 },
+	{ 0x0002, 0x20fd, 0x00f3, 0x00f6, 0x7fff, 0x0000, 0x0000, 0x06fe },
+	{ 0x0002, 0x20fe, 0x00fd, 0x00f3, 0x7fff, 0x0000, 0x0000, 0x06fe },
+	{ 0x0002, 0x20ff, 0x0100, 0x0101, 0x6e32, 0xeeb7, 0x3ec9, 0x009e },
+	{ 0x0002, 0x20ff, 0x0102, 0x0103, 0x91ce, 0xeeb7, 0x3ec9, 0xff4e },
+	{ 0x0002, 0x2102, 0x0100, 0x0104, 0x0000, 0xfc13, 0x800f, 0xffe7 },
+	{ 0x0002, 0x2100, 0x0101, 0x0104, 0x6e9c, 0x0b1b, 0xc08c, 0x0081 },
+	{ 0x0002, 0x2102, 0x0103, 0x0104, 0x9164, 0x0b1b, 0xc08c, 0xff30 },
+	{ 0x0002, 0x20ff, 0x0101, 0x0103, 0x0000, 0xfdb6, 0x7ffb, 0xffe8 },
+	{ 0x0002, 0x2105, 0x0106, 0x0107, 0x7d19, 0x0000, 0x1b18, 0x0261 },
+	{ 0x0002, 0x2105, 0x0108, 0x0107, 0xd27a, 0x0000, 0x77a2, 0x0238 },
+	{ 0x0002, 0x2109, 0x010a, 0x010b, 0x218c, 0x0000, 0x7b86, 0x0107 },
+	{ 0x0002, 0x210c, 0x010d, 0x010e, 0xa77c, 0x0000, 0xa38a, 0x0268 },
+	{ 0x0002, 0x210f, 0x0110, 0x0111, 0x820b, 0x0000, 0xe937, 0x023b },
+	{ 0x0002, 0x2112, 0x0113, 0x0114, 0xdf74, 0x0000, 0x8435, 0x0276 },
+	{ 0x0002, 0x2115, 0x0116, 0x0117, 0x1fc6, 0x0000, 0x7bfe, 0x0276 },
+	{ 0x0002, 0x210c, 0x0118, 0x010e, 0xac9d, 0x0000, 0x611c, 0x0243 },
+	{ 0x0002, 0x2109, 0x0119, 0x010b, 0x81cb, 0x0000, 0x1557, 0xfce6 },
+	{ 0x0002, 0x2115, 0x011a, 0x0117, 0x8180, 0x0000, 0x1388, 0x022a },
+	{ 0x0002, 0x210f, 0x011b, 0x0111, 0x22f6, 0x0000, 0x84de, 0x026c },
+	{ 0x0002, 0x2112, 0x011c, 0x0114, 0x7e61, 0x0000, 0xebaf, 0x022f },
+	{ 0x0003, 0x00f8, 0x011d, 0x00f7, 0x0000, 0x7fff, 0x0000, 0xfa76 },
+	{ 0x0003, 0x00f8, 0x011e, 0x011d, 0x0000, 0x7fff, 0x0000, 0xfa76 },
+	{ 0x0004, 0x011f, 0x0120, 0x0121, 0x0000, 0x7fff, 0x0000, 0x010d },
+	{ 0x0004, 0x011f, 0x0121, 0x0122, 0x0000, 0x7fff, 0x0000, 0x010d },
 };
 
-Vec3s ChamberOfSages_vertices[277] = {
+Vec3s ChamberOfSages_vertices[291] = {
 	{ 280, 116, 0 },
 	{ 0, 116, 0 },
 	{ 140, 116, 242 },
@@ -623,10 +641,18 @@ Vec3s ChamberOfSages_vertices[277] = {
 	{ -819, 1091, -122 },
 	{ -844, 1091, -80 },
 	{ -819, 1091, -38 },
-	{ -2862, -269, 2871 },
-	{ 2902, -269, 2871 },
-	{ 2902, -269, -2893 },
-	{ -2862, -269, -2893 },
+	{ -1790, 1418, 118 },
+	{ -1897, 1418, -118 },
+	{ -1897, 1418, 118 },
+	{ -1790, 1418, -118 },
+	{ -2000, 1418, 118 },
+	{ -2000, 1418, -118 },
+	{ -2000, 1673, -118 },
+	{ -1897, 1673, 118 },
+	{ -1897, 1673, -118 },
+	{ -2000, 1673, 118 },
+	{ -1790, 1286, -118 },
+	{ -1790, 1286, 118 },
 	{ -195, 17, 24 },
 	{ -166, 20, -25 },
 	{ -159, 259, 29 },
@@ -657,9 +683,15 @@ Vec3s ChamberOfSages_vertices[277] = {
 	{ 417, 432, -931 },
 	{ 574, 779, 808 },
 	{ -420, 950, 904 },
+	{ -2285, 1418, 118 },
+	{ -2285, 1418, -118 },
+	{ -2862, -269, 2871 },
+	{ 2902, -269, 2871 },
+	{ 2902, -269, -2893 },
+	{ -2862, -269, -2893 },
 };
 
-CollisionHeader ChamberOfSages_collisionHeader = { -2862, -269, -2893, 2902, 1195, 2871, 277, ChamberOfSages_vertices, 318, ChamberOfSages_polygons, ChamberOfSages_polygonTypes, 0, 0, 0 };
+CollisionHeader ChamberOfSages_collisionHeader = { -2862, -269, -2893, 2902, 1673, 2871, 291, ChamberOfSages_vertices, 330, ChamberOfSages_polygons, ChamberOfSages_polygonTypes, 0, 0, 0 };
 
 s32 ChamberOfSages_scene_header00_cutscene[] = {
 	CS_BEGIN_CUTSCENE(6, 260),
@@ -682,8 +714,8 @@ s32 ChamberOfSages_scene_header00_cutscene[] = {
 	CS_PLAYER_ACTION_LIST(1),
 		CS_PLAYER_ACTION(0x0005, 0, 1000, 0x0, 0xffffc000, 0x0, 0, 127, 0, 0, 127, 0, 0, 0, 0),
 	CS_NPC_ACTION_LIST(39, 2),
-		CS_NPC_ACTION(2, 0, 210, 0x0, 0xffff8000, 0x0, -196, 126, 1, -196, 126, 1, 0, 0, 0),
-		CS_NPC_ACTION(3, 210, 1000, 0x0, 0xffff8000, 0x0, -196, 126, 1, -196, 126, 1, 0, 0, 0),
+		CS_NPC_ACTION(2, 0, 210, 0x0, 0xffffc000, 0x0, -196, 126, 1, -196, 126, 1, 0, 0, 0),
+		CS_NPC_ACTION(3, 210, 1000, 0x0, 0xffffc000, 0x0, -196, 126, 1, -196, 126, 1, 0, 0, 0),
 	CS_NPC_ACTION_LIST(143, 2),
 		CS_NPC_ACTION(0, 0, 230, 0x0, 0x0, 0x0, 67, 0, 100, 67, 0, 0, 0, 0, 0),
 		CS_NPC_ACTION(0x0001, 230, 1000, 0x0, 0x0, 0x0, 67, 0, 0, 67, 0, -100, 0, 0, 0),
@@ -698,17 +730,22 @@ SCmdBase ChamberOfSages_scene_header04[] = {
 	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
 	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header04_startPositionList),
 	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
+	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header04_exitList),
 	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
 	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header04_cutscene),
 	SCENE_CMD_END(),
 };
 
 ActorEntry ChamberOfSages_scene_header04_startPositionList[] = {
-	{ ACTOR_PLAYER, 0, 127, 0, 0, 49152, 0, 0x0FFF },
+	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
 };
 
 EntranceEntry ChamberOfSages_scene_header04_entranceList[] = {
 	{ 0, 0 },
+};
+
+u16 ChamberOfSages_scene_header04_exitList[1] = {
+	0x0000,
 };
 
 s32 ChamberOfSages_scene_header04_cutscene[] = {
@@ -728,12 +765,12 @@ s32 ChamberOfSages_scene_header04_cutscene[] = {
 		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -557, 282, -608, 0),
 		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
 	CS_PLAYER_ACTION_LIST(2),
-		CS_PLAYER_ACTION(0x0001, 0, 10, 0x0, 0xffffeaab, 0x0, -369, 220, -637, -395, 220, -682, 0, 0, 0),
-		CS_PLAYER_ACTION(0x0005, 10, 1000, 0x0, 0xffffeaab, 0x0, -395, 220, -682, -395, 220, -682, 0, 0, 0),
+		CS_PLAYER_ACTION(0x0001, 0, 10, 0x0, 0x2aab, 0x0, -369, 220, -637, -395, 220, -682, 0, 0, 0),
+		CS_PLAYER_ACTION(0x0005, 10, 1000, 0x0, 0x2aab, 0x0, -395, 220, -682, -395, 220, -682, 0, 0, 0),
 	CS_NPC_ACTION_LIST(43, 3),
-		CS_NPC_ACTION(1, 0, 10, 0x0, 0x6aab, 0x0, -468, 230, -806, -468, 230, -806, 0, 0, 0),
-		CS_NPC_ACTION(2, 10, 120, 0x0, 0x6aab, 0x0, -468, 230, -806, -468, 230, -806, 0, 0, 0),
-		CS_NPC_ACTION(3, 120, 1000, 0x0, 0x6aab, 0x0, -468, 230, -806, -468, 230, -806, 0, 0, 0),
+		CS_NPC_ACTION(1, 0, 1, 0x0, 0xffffeaab, 0x0, -468, 230, -806, -468, 230, -806, 0, 0, 0),
+		CS_NPC_ACTION(2, 1, 120, 0x0, 0xffffeaab, 0x0, -468, 230, -806, -468, 230, -806, 0, 0, 0),
+		CS_NPC_ACTION(3, 120, 1000, 0x0, 0xffffeaab, 0x0, -468, 230, -806, -468, 230, -806, 0, 0, 0),
 	CS_NPC_ACTION_LIST(143, 2),
 		CS_NPC_ACTION(0, 0, 140, 0x0, 0x0, 0x0, 67, 0, 100, 67, 0, 0, 0, 0, 0),
 		CS_NPC_ACTION(2, 140, 1000, 0x0, 0x0, 0x0, 67, 0, 0, 67, 0, -100, 0, 0, 0),
@@ -748,21 +785,50 @@ SCmdBase ChamberOfSages_scene_header05[] = {
 	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
 	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header05_startPositionList),
 	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
+	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header05_exitList),
 	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
 	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header05_cutscene),
 	SCENE_CMD_END(),
 };
 
 ActorEntry ChamberOfSages_scene_header05_startPositionList[] = {
-	{ ACTOR_PLAYER, 0, 127, 0, 0, 49152, 0, 0x0FFF },
+	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
 };
 
 EntranceEntry ChamberOfSages_scene_header05_entranceList[] = {
 	{ 0, 0 },
 };
 
+u16 ChamberOfSages_scene_header05_exitList[1] = {
+	0x0000,
+};
+
 s32 ChamberOfSages_scene_header05_cutscene[] = {
-	CS_BEGIN_CUTSCENE(0, 100),
+	CS_BEGIN_CUTSCENE(6, 200),
+	CS_TEXT_LIST(1),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0A30, 0, 100, 0x0000, 0x0000, 0x0000),
+	CS_CAM_POS_LIST(0, 241),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 283, 449, -936, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 248, 449, -893, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 212, 449, -849, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 176, 449, -806, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(0, 260),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 305, 449, -874, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 100, 0x42700000, 269, 449, -831, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 100, 0x42700000, 274, 449, -837, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 239, 449, -794, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_PLAYER_ACTION_LIST(2),
+		CS_PLAYER_ACTION(0x0001, 0, 10, 0x0, 0x55f1, 0x0, 364, 395, -631, 391, 395, -675, 0, 0, 0),
+		CS_PLAYER_ACTION(0x0005, 10, 1000, 0x0, 0x55f1, 0x0, 391, 395, -675, 391, 395, -675, 0, 0, 0),
+	CS_NPC_ACTION_LIST(41, 3),
+		CS_NPC_ACTION(1, 0, 1, 0x0, 0x1555, 0x0, 465, 404, -805, 465, 404, -805, 0, 0, 0),
+		CS_NPC_ACTION(2, 1, 120, 0x0, 0x1555, 0x0, 465, 404, -805, 465, 404, -805, 0, 0, 0),
+		CS_NPC_ACTION(3, 120, 1000, 0x0, 0x1555, 0x0, 465, 404, -805, 465, 404, -805, 0, 0, 0),
+	CS_NPC_ACTION_LIST(143, 2),
+		CS_NPC_ACTION(0, 0, 140, 0x0, 0x0, 0x0, 67, 0, 100, 67, 0, 0, 0, 0, 0),
+		CS_NPC_ACTION(3, 140, 1000, 0x0, 0x0, 0x0, 67, 0, 0, 67, 0, -100, 0, 0, 0),
 	CS_END(),
 };
 SCmdBase ChamberOfSages_scene_header06[] = {
@@ -774,21 +840,50 @@ SCmdBase ChamberOfSages_scene_header06[] = {
 	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
 	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header06_startPositionList),
 	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
+	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header06_exitList),
 	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
 	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header06_cutscene),
 	SCENE_CMD_END(),
 };
 
 ActorEntry ChamberOfSages_scene_header06_startPositionList[] = {
-	{ ACTOR_PLAYER, 0, 127, 0, 0, 49152, 0, 0x0FFF },
+	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
 };
 
 EntranceEntry ChamberOfSages_scene_header06_entranceList[] = {
 	{ 0, 0 },
 };
 
+u16 ChamberOfSages_scene_header06_exitList[1] = {
+	0x0000,
+};
+
 s32 ChamberOfSages_scene_header06_cutscene[] = {
-	CS_BEGIN_CUTSCENE(0, 100),
+	CS_BEGIN_CUTSCENE(6, 200),
+	CS_TEXT_LIST(1),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0A40, 0, 100, 0x0000, 0x0000, 0x0000),
+	CS_CAM_POS_LIST(0, 241),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 945, 625, -252, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 889, 625, -260, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 834, 625, -267, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 778, 625, -275, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(0, 260),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 904, 625, -201, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 100, 0x42700000, 848, 625, -209, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 100, 0x42700000, 856, 625, -208, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 800, 625, -215, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_PLAYER_ACTION_LIST(2),
+		CS_PLAYER_ACTION(0x0001, 0, 10, 0x0, 0xffff808c, 0x0, 728, 569, -1, 780, 569, 0, 0, 0, 0),
+		CS_PLAYER_ACTION(0x0005, 10, 1000, 0x0, 0xffff808c, 0x0, 780, 569, 0, 780, 569, 0, 0, 0, 0),
+	CS_NPC_ACTION_LIST(42, 3),
+		CS_NPC_ACTION(1, 0, 1, 0x0, 0x4000, 0x0, 926, 579, 0, 926, 579, 0, 0, 0, 0),
+		CS_NPC_ACTION(2, 1, 120, 0x0, 0x4000, 0x0, 926, 579, 0, 926, 579, 0, 0, 0, 0),
+		CS_NPC_ACTION(3, 120, 1000, 0x0, 0x4000, 0x0, 926, 579, 0, 926, 579, 0, 0, 0, 0),
+	CS_NPC_ACTION_LIST(143, 2),
+		CS_NPC_ACTION(0, 0, 140, 0x0, 0x0, 0x0, 67, 0, 100, 67, 0, 0, 0, 0, 0),
+		CS_NPC_ACTION(4, 140, 1000, 0x0, 0x0, 0x0, 67, 0, 0, 67, 0, -100, 0, 0, 0),
 	CS_END(),
 };
 SCmdBase ChamberOfSages_scene_header07[] = {
@@ -800,21 +895,50 @@ SCmdBase ChamberOfSages_scene_header07[] = {
 	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
 	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header07_startPositionList),
 	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
+	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header07_exitList),
 	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
 	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header07_cutscene),
 	SCENE_CMD_END(),
 };
 
 ActorEntry ChamberOfSages_scene_header07_startPositionList[] = {
-	{ ACTOR_PLAYER, 0, 127, 0, 0, 49152, 0, 0x0FFF },
+	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
 };
 
 EntranceEntry ChamberOfSages_scene_header07_entranceList[] = {
 	{ 0, 0 },
 };
 
+u16 ChamberOfSages_scene_header07_exitList[1] = {
+	0x0000,
+};
+
 s32 ChamberOfSages_scene_header07_cutscene[] = {
-	CS_BEGIN_CUTSCENE(0, 100),
+	CS_BEGIN_CUTSCENE(6, 200),
+	CS_TEXT_LIST(1),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0A50, 0, 100, 0x0001, 0x0000, 0x0000),
+	CS_CAM_POS_LIST(0, 241),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 656, 789, 725, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 637, 789, 672, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 619, 789, 619, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 600, 789, 567, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(0, 260),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 592, 789, 712, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 100, 0x42700000, 573, 789, 659, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 100, 0x42700000, 576, 789, 666, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 557, 789, 613, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_PLAYER_ACTION_LIST(2),
+		CS_PLAYER_ACTION(0x0001, 0, 10, 0x0, 0xffffab22, 0x0, 366, 744, 630, 392, 744, 675, 0, 0, 0),
+		CS_PLAYER_ACTION(0x0005, 10, 1000, 0x0, 0xffffab22, 0x0, 392, 744, 675, 392, 744, 675, 0, 0, 0),
+	CS_NPC_ACTION_LIST(40, 3),
+		CS_NPC_ACTION(1, 0, 1, 0x0, 0x6aac, 0x0, 465, 754, 806, 465, 754, 806, 0, 0, 0),
+		CS_NPC_ACTION(2, 1, 120, 0x0, 0x6aac, 0x0, 465, 754, 806, 465, 754, 806, 0, 0, 0),
+		CS_NPC_ACTION(3, 120, 1000, 0x0, 0x6aac, 0x0, 465, 754, 806, 465, 754, 806, 0, 0, 0),
+	CS_NPC_ACTION_LIST(143, 2),
+		CS_NPC_ACTION(0, 0, 140, 0x0, 0x0, 0x0, 67, 0, 100, 67, 0, 0, 0, 0, 0),
+		CS_NPC_ACTION(5, 140, 1000, 0x0, 0x0, 0x0, 67, 0, 0, 67, 0, -100, 0, 0, 0),
 	CS_END(),
 };
 SCmdBase ChamberOfSages_scene_header08[] = {
@@ -826,21 +950,50 @@ SCmdBase ChamberOfSages_scene_header08[] = {
 	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
 	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header08_startPositionList),
 	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
+	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header08_exitList),
 	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
 	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header08_cutscene),
 	SCENE_CMD_END(),
 };
 
 ActorEntry ChamberOfSages_scene_header08_startPositionList[] = {
-	{ ACTOR_PLAYER, 0, 127, 0, 0, 49152, 0, 0x0FFF },
+	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
 };
 
 EntranceEntry ChamberOfSages_scene_header08_entranceList[] = {
 	{ 0, 0 },
 };
 
+u16 ChamberOfSages_scene_header08_exitList[1] = {
+	0x0000,
+};
+
 s32 ChamberOfSages_scene_header08_cutscene[] = {
-	CS_BEGIN_CUTSCENE(0, 100),
+	CS_BEGIN_CUTSCENE(6, 200),
+	CS_TEXT_LIST(1),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0A60, 0, 100, 0x0001, 0x0000, 0x0000),
+	CS_CAM_POS_LIST(0, 241),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -300, 961, 931, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -263, 961, 888, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -227, 961, 846, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -191, 961, 803, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(0, 260),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -320, 961, 869, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 100, 0x42700000, -284, 961, 826, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 100, 0x42700000, -289, 961, 832, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -253, 961, 789, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_PLAYER_ACTION_LIST(2),
+		CS_PLAYER_ACTION(0x0001, 0, 10, 0x0, 0xffffd5cc, 0x0, -362, 918, 632, -388, 918, 677, 0, 0, 0),
+		CS_PLAYER_ACTION(0x0005, 10, 1000, 0x0, 0xffffd5cc, 0x0, -388, 918, 677, -388, 918, 677, 0, 0, 0),
+	CS_NPC_ACTION_LIST(44, 3),
+		CS_NPC_ACTION(1, 0, 1, 0x0, 0xffff9557, 0x0, -466, 928, 804, -466, 928, 804, 0, 0, 0),
+		CS_NPC_ACTION(2, 1, 120, 0x0, 0xffff9557, 0x0, -466, 928, 804, -466, 928, 804, 0, 0, 0),
+		CS_NPC_ACTION(3, 120, 1000, 0x0, 0xffff9557, 0x0, -466, 928, 804, -466, 928, 804, 0, 0, 0),
+	CS_NPC_ACTION_LIST(143, 2),
+		CS_NPC_ACTION(0, 0, 140, 0x0, 0x0, 0x0, 67, 0, 100, 67, 0, 0, 0, 0, 0),
+		CS_NPC_ACTION(6, 140, 1000, 0x0, 0x0, 0x0, 67, 0, 0, 67, 0, -100, 0, 0, 0),
 	CS_END(),
 };
 SCmdBase ChamberOfSages_scene_header09[] = {
@@ -852,20 +1005,73 @@ SCmdBase ChamberOfSages_scene_header09[] = {
 	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
 	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header09_startPositionList),
 	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
+	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header09_exitList),
 	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
 	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header09_cutscene),
 	SCENE_CMD_END(),
 };
 
 ActorEntry ChamberOfSages_scene_header09_startPositionList[] = {
-	{ ACTOR_PLAYER, 0, 127, 0, 0, 49152, 0, 0x0FFF },
+	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
 };
 
 EntranceEntry ChamberOfSages_scene_header09_entranceList[] = {
 	{ 0, 0 },
 };
 
+u16 ChamberOfSages_scene_header09_exitList[1] = {
+	0x0000,
+};
+
 s32 ChamberOfSages_scene_header09_cutscene[] = {
-	CS_BEGIN_CUTSCENE(0, 100),
+	CS_BEGIN_CUTSCENE(6, 450),
+	CS_CAM_POS_LIST(0, 241),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -629, 1135, 114, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -676, 1137, 141, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -724, 1135, 173, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -787, 1136, 211, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_POS_LIST(200, 521),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -394, 1175, 1, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -595, 1142, 1, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -882, 1195, 1, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -1399, 1414, 1, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -1307, 1301, 1, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -1044, 1181, 1, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -597, 1085, 1, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -424, 1298, 1, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -882, 1447, 1, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -1469, 1520, 1, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -1551, 1559, 1, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, -1546, 1562, 1, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(0, 260),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -688, 1138, 82, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 100, 0x42700000, -734, 1140, 109, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 100, 0x42700000, -741, 1139, 115, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -780, 1137, 140, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(200, 540),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -564, 1139, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 25, 0x42700000, -726, 1145, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 25, 0x42700000, -1043, 1243, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 25, 0x42700000, -1621, 1492, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -1460, 1306, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -1200, 1189, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 30, 0x42700000, -727, 1093, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 35, 0x42700000, -554, 1305, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 30, 0x42700000, -1012, 1445, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -1598, 1518, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 50, 0x42700000, -1682, 1553, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -1678, 1556, 1, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_PLAYER_ACTION_LIST(2),
+		CS_PLAYER_ACTION(0x0001, 0, 10, 0x0, 0x5554, 0x0, -896, 1093, 96, -870, 1093, 51, 0, 0, 0),
+		CS_PLAYER_ACTION(0x0005, 10, 1000, 0x0, 0x5554, 0x0, -870, 1093, 51, -870, 1093, 51, 0, 0, 0),
+	CS_NPC_ACTION_LIST(143, 4),
+		CS_NPC_ACTION(0, 0, 210, 0x0, 0x0, 0x0, 67, 0, 100, 67, 0, 0, 0, 0, 0),
+		CS_NPC_ACTION(8, 210, 240, 0x0, 0x0, 0x0, 67, 0, 0, 67, 0, -100, 0, 0, 0),
+		CS_NPC_ACTION(7, 240, 370, 0x0, 0x0, 0x0, 67, 0, -100, 67, 0, -100, 0, 0, 0),
+		CS_NPC_ACTION(9, 370, 1000, 0x0, 0x0, 0x0, 67, 0, -100, 67, 0, -100, 0, 0, 0),
 	CS_END(),
 };

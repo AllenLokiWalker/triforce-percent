@@ -7,7 +7,6 @@
 #include "SheikStairCollision.h"
 #include "TriforceFadeWall.h"
 #include "TriforceHallway.h"
-#include "TriforceHallwayCollision.h"
 #include "TriforceDoor.h"
 #include "TriforceDoorCollision.h"
 
@@ -41,8 +40,8 @@ Total plus a bit extra: 1220 KiB -> 1250000
 #define STAIRS_SLOT 9 //actor number 0x8F
 
 #define CS_ACTIVATE_RADIUS 120.0f
-#define DOOR_OPEN_DIST 230.0f
-#define DOOR_OPEN_SPEED 8.0f
+#define DOOR_OPEN_DIST 255.0f
+#define DOOR_OPEN_SPEED 4.0f
 
 typedef struct {
 	DynaPolyActor dyna;
@@ -82,7 +81,7 @@ static CollisionHeader * const ColHeaders[] = {
 	&SariaStairCollision_collisionHeader,
 	&SheikStairCollision_collisionHeader,
 	NULL,
-	&TriforceHallwayCollision_collisionHeader,
+	NULL,
 	&TriforceDoorCollision_collisionHeader,
 };
 
@@ -147,9 +146,12 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	s32 fade_speed;
 	if(en->dyna.actor.params <= 6){
 		target_action = en->dyna.actor.params + 1;
-		fade_speed = 4;
 	}else{
 		target_action = 8;
+	}
+	if(en->dyna.actor.params <= 5){
+		fade_speed = 4;
+	}else{
 		fade_speed = 3;
 	}
 	//Fade in or out, handle collision
@@ -187,13 +189,14 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	if(en->dyna.actor.params == 9){
 		if(en->state == 0 && CHECK_NPC_ACTION(STAIRS_SLOT, 9)){
 			en->state = 3;
-			Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_BUYODOOR_OPEN);
+			Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_STONE_STATUE_OPEN - SFX_FLAG);
 		}
 		if(en->state == 3){
-			en->dyna.actor.world.pos.z += DOOR_OPEN_SPEED;
-			if(en->dyna.actor.world.pos.z - en->dyna.actor.home.pos.z >= DOOR_OPEN_DIST){
+			en->dyna.actor.world.pos.y += DOOR_OPEN_SPEED;
+			if(en->dyna.actor.world.pos.y - en->dyna.actor.home.pos.y >= DOOR_OPEN_DIST){
 				en->state = 4;
 				Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_STONEDOOR_STOP);
+				Actor_Kill(&en->dyna.actor);
 			}
 		}
 	}

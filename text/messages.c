@@ -104,41 +104,40 @@ DECLARE_MESSAGE(0x0A20, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(GREEN)
     "Link, the promise I made to you" NEWLINE
     "stays true. I will always be your" NEWLINE
-    "friend." COLOR(WHITE)
+    "friend."
 )
 
 DECLARE_MESSAGE(0x0A30, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(RED)
     "The bond between the Goron race" NEWLINE
-    "and the Royal Family is rock" NEWLINE
-    "solid! Let's go, brother!" COLOR(WHITE)
+    "and the Royal Family is rock solid!" NEWLINE
+    "Let's go, brother!"
 )
 
 DECLARE_MESSAGE(0x0A40, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(BLUE)
     "I knew the hero would turn out" NEWLINE
-    "to be a handsome man!" BOX_BREAK UNSKIPPABLE
+    "to be a handsome man!" BOX_BREAK UNSKIPPABLE COLOR(BLUE)
     "Once this is all over, you must" NEWLINE
-    "come visit me, all right?" COLOR(WHITE)
+    "come visit me, all right?"
 )
 
 DECLARE_MESSAGE(0x0A50, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(TYPE1_ORANGE)
     "Nice work! It looks like our" NEWLINE
     "song worked for you. From all the" NEWLINE
-    "Gerudos, you have our support!" COLOR(WHITE)
+    "Gerudos, you have our support!"
 )
 
 DECLARE_MESSAGE(0x0A60, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(TYPE1_PURPLE)
     "Undoubtedly, you are the boy" NEWLINE
     "from the forest who appeared" NEWLINE
-    "in Princess Zelda's dreams." BOX_BREAK UNSKIPPABLE
+    "in Princess Zelda's dreams." BOX_BREAK UNSKIPPABLE COLOR(TYPE1_PURPLE)
     "I am glad my charm found its" NEWLINE
-    "way into your hands." BOX_BREAK UNSKIPPABLE
-    "I wish you well in fulfilling" NEWLINE
-    "the great destiny that is" NEWLINE
-    "before you." COLOR(WHITE)
+    "way into your hands." BOX_BREAK UNSKIPPABLE COLOR(TYPE1_PURPLE)
+    "I wish you well in fulfilling the" NEWLINE
+    "great destiny that is before you."
 )
 
 //  "text text text text text text te"
