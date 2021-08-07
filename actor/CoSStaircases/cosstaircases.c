@@ -1,10 +1,15 @@
 #include "ootmain.h"
+#include "RauruStair.h"
+#include "RauruStairCollision.h"
 #include "SariaStair.h"
 #include "SariaStairCollision.h"
-#include "DaruniaStair.h"
-#include "DaruniaStairCollision.h"
-#include "TriforceStair.h"
-#include "TriforceStairCollision.h"
+#include "SheikStair.h"
+#include "SheikStairCollision.h"
+#include "TriforceFadeWall.h"
+#include "TriforceHallway.h"
+#include "TriforceHallwayCollision.h"
+#include "TriforceDoor.h"
+#include "TriforceDoorCollision.h"
 
 // Actor Information
 #define OBJ_ID 17 // primary object dependency
@@ -17,10 +22,27 @@
  * a 0xC3 o 0xB3 En_Nb:   slot 1 (number 40). Same
  * a 0xA9 o 0x87 Demo_Im: slot 5 (number 44). Same
  * a 0x48 o 0x8A En_Xc:   slots 0 and 4
+ 
+spaceSize for Object_InitBank calculations:
+Adult Link object: 222 KiB
+gameplay_keep: 368 KiB
+gameplay_field_keep: 53 KiB
+rl: 31 KiB
+sa: 85 KiB
+du: 74 KiB
+ru2: 63 KiB
+nb: 97 KiB
+im: 73 KiB
+xc: 115 KiB
+Total without stairs: 1181 KiB
+Stairs: currently 33 KiB
+Total plus a bit extra: 1220 KiB -> 1250000
 */
-#define STAIRS_SLOT 9
+#define STAIRS_SLOT 9 //actor number 0x8F
 
 #define CS_ACTIVATE_RADIUS 120.0f
+#define DOOR_OPEN_DIST 230.0f
+#define DOOR_OPEN_SPEED 8.0f
 
 typedef struct {
 	DynaPolyActor dyna;
@@ -30,20 +52,38 @@ typedef struct {
 	u8 cutscene_activated;
 } Entity;
 
+/*
+Actor parameter:
+0: Rauru stairs
+1-5: Saria stairs (Saria, Darunia, Ruto, Nabooru, Impa)
+6: Sheik stairs
+7: Triforce fade wall
+8: Triforce hallway
+9: Triforce door
+*/
+
 static Gfx * const DLists[] = {
-	SariaStair,
-	DaruniaStair, DaruniaStair, DaruniaStair, DaruniaStair, DaruniaStair, 
-	TriforceStair
+	RauruStair,
+	SariaStair, SariaStair, SariaStair, SariaStair, SariaStair, 
+	SheikStair,
+	TriforceFadeWall, TriforceHallway, TriforceDoor
+};
+
+static const u8 DListsTransparent[] = {
+	1, 1, 1, 1, 1, 1, 1, 0, 0, 0
 };
 
 static CollisionHeader * const ColHeaders[] = {
-	SariaStairCollision_collisionHeader,
-	DaruniaStairCollision_collisionHeader,
-	DaruniaStairCollision_collisionHeader,
-	DaruniaStairCollision_collisionHeader,
-	DaruniaStairCollision_collisionHeader,
-	DaruniaStairCollision_collisionHeader,
-	TriforceStairCollision_collisionHeader
+	&RauruStairCollision_collisionHeader,
+	&SariaStairCollision_collisionHeader,
+	&SariaStairCollision_collisionHeader,
+	&SariaStairCollision_collisionHeader,
+	&SariaStairCollision_collisionHeader,
+	&SariaStairCollision_collisionHeader,
+	&SheikStairCollision_collisionHeader,
+	NULL,
+	&TriforceHallwayCollision_collisionHeader,
+	&TriforceDoorCollision_collisionHeader,
 };
 
 extern s32 ChamberOfSages_scene_header00_cutscene[];
@@ -61,15 +101,18 @@ static s32 * const Cutscenes[] = {
 	ChamberOfSages_scene_header06_cutscene,
 	ChamberOfSages_scene_header07_cutscene,
 	ChamberOfSages_scene_header08_cutscene,
-	ChamberOfSages_scene_header09_cutscene
-}
+	ChamberOfSages_scene_header09_cutscene,
+	NULL,
+	NULL,
+	NULL
+};
 
 //#define COLLISION_OFF() func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, en->dyna.bgId)
 //#define COLLISION_ON()  func_8003EC50(globalCtx, &globalCtx->colCtx.dyna, en->dyna.bgId)
 
 static void CreateCollision(Entity *en, GlobalContext *globalCtx){
+	if(ColHeaders[en->dyna.actor.params] == NULL) return;
 	CollisionHeader* colHeaderVRAM;
-	DynaPolyActor_Init(&en->dyna, DPM_UNK);
 	CollisionHeader_GetVirtual(ColHeaders[en->dyna.actor.params], &colHeaderVRAM);
     en->dyna.bgId = DynaPoly_SetBgActor(globalCtx, 
 		&globalCtx->colCtx.dyna, &en->dyna.actor, colHeaderVRAM);
@@ -86,14 +129,12 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	en->alpha = 0;
 	en->collision = 0;
 	en->cutscene_activated = 0;
-	if((u16)en->dyna.actor.params >= 7){
+	if((u16)en->dyna.actor.params > 9){
 		Actor_Kill(&en->dyna.actor);
 		return;
 	}
+	DynaPolyActor_Init(&en->dyna, DPM_UNK);
 	Actor_SetScale(&en->dyna.actor, 0.1f);
-	if(en->dyna.actor.params == 0){
-		CreateCollision(en, globalCtx);
-	}
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
@@ -101,7 +142,18 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void update(Entity *en, GlobalContext *globalCtx) {
-	if(!en->collision && CHECK_NPC_ACTION(STAIRS_SLOT, en->dyna.actor.params + 1)){
+	//Actor specific parameters
+	u16 target_action;
+	s32 fade_speed;
+	if(en->dyna.actor.params <= 6){
+		target_action = en->dyna.actor.params + 1;
+		fade_speed = 4;
+	}else{
+		target_action = 8;
+		fade_speed = 3;
+	}
+	//Fade in or out, handle collision
+	if(!en->collision && CHECK_NPC_ACTION(STAIRS_SLOT, target_action)){
 		CreateCollision(en, globalCtx);
 		en->state = 1;
 	}else if(en->collision && CHECK_NPC_ACTION(STAIRS_SLOT, 0)){
@@ -110,30 +162,52 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	}
 	s32 temp = en->alpha;
 	if(en->state == 1){
-		temp += 4;
+		temp += fade_speed;
 		if(temp >= 255){
 			temp = 255;
 			en->state = 0;
 		}
 	}else if(en->state == 2){
-		temp -= 4;
+		temp -= fade_speed;
 		if(temp <= 0){
 			temp = 0;
 			en->state = 0;
 		}
 	}
 	en->alpha = temp;
-	if(!en->cutscene_activated && en->dyna.actor.xzDistToPlayer < CS_ACTIVATE_RADIUS){
+	//Trigger cutscenes
+	if(Cutscenes[en->dyna.actor.params] != NULL
+			&& !en->cutscene_activated 
+			&& en->dyna.actor.xzDistToPlayer < CS_ACTIVATE_RADIUS){
 		globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(Cutscenes[en->dyna.actor.params]);
 		gSaveContext.cutsceneTrigger = 1;
 		en->cutscene_activated = 1;
+	}
+	//Open Triforce door
+	if(en->dyna.actor.params == 9){
+		if(en->state == 0 && CHECK_NPC_ACTION(STAIRS_SLOT, 9)){
+			en->state = 3;
+			Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_BUYODOOR_OPEN);
+		}
+		if(en->state == 3){
+			en->dyna.actor.world.pos.z += DOOR_OPEN_SPEED;
+			if(en->dyna.actor.world.pos.z - en->dyna.actor.home.pos.z >= DOOR_OPEN_DIST){
+				en->state = 4;
+				Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_STONEDOOR_STOP);
+			}
+		}
 	}
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
 	if(en->alpha == 0) return;
-	gDPSetEnvColor(POLY_XLU_DISP++, 0xFF, 0xFF, 0xFF, en->alpha);
-	Gfx_DrawDListXlu(globalCtx, DLists[en->dyna.actor.params]);
+	if(DListsTransparent[en->dyna.actor.params]){
+		gDPSetEnvColor(POLY_XLU_DISP++, 0xFF, 0xFF, 0xFF, en->alpha);
+		Gfx_DrawDListXlu(globalCtx, DLists[en->dyna.actor.params]);
+	}else{
+		gDPSetEnvColor(POLY_OPA_DISP++, 0xFF, 0xFF, 0xFF, en->alpha);
+		Gfx_DrawDListOpa(globalCtx, DLists[en->dyna.actor.params]);
+	}
 }
 
 const ActorInit init_vars = {

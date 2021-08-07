@@ -1,7 +1,7 @@
 CCFLAGS += -Wno-incompatible-pointer-types -Wno-missing-braces
 
-$(OBJECTNAME).elf: $(OBJECTOBJS)
-	$(LD) $(LDFLAGS) -T $(PROJECT_DIR)/actor/object.ld -Map $(OBJECTNAME).map -o $@ $^
+$(OBJECTNAME).elf $(OBJECTNAME).map: $(OBJECTOBJS)
+	$(LD) $(LDFLAGS) -T $(PROJECT_DIR)/actor/object.ld -Map $(OBJECTNAME).map -o $(OBJECTNAME).elf $^
 
 zobj.zobj: $(OBJECTNAME).elf
 	$(OC) $(OCFLAGS) $< $@

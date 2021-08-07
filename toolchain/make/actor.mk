@@ -31,4 +31,4 @@ copyobject: zobj.zobj
 	touch $(UPDATETXT)
 	
 clean:
-	rm -fv $(ACTORNAME).o $(ACTORNAME).elf $(ACTORNAME).zovl *.i *.s *.map
+	rm -fv *.o *.elf $(ACTORNAME).zovl *.i *.s *.map

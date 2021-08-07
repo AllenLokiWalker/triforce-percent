@@ -6,7 +6,7 @@ extern EntranceEntry ChamberOfSages_scene_header00_entranceList[];
 extern LightSettings ChamberOfSages_scene_header00_lightSettings[1];
 extern u32 ChamberOfSages_polygonTypes[];
 extern CollisionPoly ChamberOfSages_polygons[];
-extern Vec3s ChamberOfSages_vertices[281];
+extern Vec3s ChamberOfSages_vertices[277];
 extern CollisionHeader ChamberOfSages_collisionHeader;
 extern s32 ChamberOfSages_scene_header00_cutscene[];
 extern SCmdBase ChamberOfSages_scene_header04[];

@@ -79,10 +79,44 @@ void Patched_CoSSceneDrawConfig(GlobalContext* globalCtx) {
     //CLOSE_DISPS(globalCtx->state.gfxCtx, "", 0);
 }
 
+u32 Patched_GetSpaceSize(GlobalContext* globalCtx){
+    if (globalCtx->sceneNum == SCENE_GANON_DEMO
+            && gSaveContext.sceneSetupIndex != 4) {
+        return 1177600;
+    } else if (globalCtx->sceneNum == SCENE_JYASINBOSS
+            || globalCtx->sceneNum == SCENE_GANON_BOSS) {
+        return 1075200;
+    } else if (globalCtx->sceneNum == SCENE_KENJYANOMA
+            || globalCtx->sceneNum == SCENE_KOKIRI_HOME5){
+        //Chamber of Sages or testing CoS
+        return 1250000;
+    }
+    return 1024000;
+}
+
+extern void Object_InitBank(GlobalContext* globalCtx, ObjectContext* objectCtx);
+extern void Object_InitBank_AfterSpaceSize();
+
+void Patched_ObjectInitBank(){
+    asm(".set noat\n .set noreorder\n"
+	//Starting at 800813D4 + 0x10
+    //a0 = globalCtx, a1 = objectCtx
+    "jal     Patched_GetSpaceSize\n"
+    "sw      $a1, 0x0004($sp)\n"
+    "lw      $a2, 0x0004($sp)\n"
+    "or      $a3, $v0, $zero\n"
+    "addiu   $a0, $zero, 0x0013\n"
+    "j       Object_InitBank_AfterSpaceSize\n"
+    "addiu   $v1, $zero, 0x0003\n"
+    //Requirements after: a2 = objectCtx, v1 = 3, a0 = 0x13, a3 = spaceSize
+    ".set at\n .set reorder");
+}
+
 typedef void (*SceneDrawConfig)(GlobalContext* globalCtx);
 
 extern SceneDrawConfig sceneDrawConfigJumpTable[0x35];
 
 void Statics_GfxCodePatches(){
     sceneDrawConfigJumpTable[0x20] = Patched_CoSSceneDrawConfig;
+    bcopy((void*)Patched_ObjectInitBank, (void*)Object_InitBank + 4*4, 7*4);
 }

@@ -83,7 +83,7 @@ DECLARE_MESSAGE(0x0D23, BOX_BLACK, POS_MIDDLE,
 DECLARE_MESSAGE(0x0A10, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Welcome, Link. I'm Rauru, the" NEWLINE
-    "ancient Sage of Light." BOX_BREAK
+    "ancient Sage of Light." BOX_BREAK UNSKIPPABLE
     "Now that you hold the keys to the" NEWLINE
     "three sacred virtues, your heart" NEWLINE
     "is in perfect balance."
@@ -93,11 +93,11 @@ DECLARE_MESSAGE(0x0A11, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "The song you just played has" NEWLINE
     "awoken the other Sages, and they" NEWLINE
-    "are on their way to joining us here." BOX_BREAK
+    "are on their way to joining us here." BOX_BREAK UNSKIPPABLE
     "You must receive a blessing from" NEWLINE
-    "each of us." BOX_BREAK
+    "each of us." BOX_BREAK UNSKIPPABLE
     "Together, we will open the way to" NEWLINE
-    "your goal."
+    "your goal!"
 )
 
 DECLARE_MESSAGE(0x0A20, BOX_BLACK, POS_MIDDLE,
@@ -117,7 +117,7 @@ DECLARE_MESSAGE(0x0A30, BOX_BLACK, POS_MIDDLE,
 DECLARE_MESSAGE(0x0A40, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(BLUE)
     "I knew the hero would turn out" NEWLINE
-    "to be a handsome man!" BOX_BREAK
+    "to be a handsome man!" BOX_BREAK UNSKIPPABLE
     "Once this is all over, you must" NEWLINE
     "come visit me, all right?" COLOR(WHITE)
 )
@@ -133,9 +133,9 @@ DECLARE_MESSAGE(0x0A60, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(TYPE1_PURPLE)
     "Undoubtedly, you are the boy" NEWLINE
     "from the forest who appeared" NEWLINE
-    "in Princess Zelda's dreams." BOX_BREAK
+    "in Princess Zelda's dreams." BOX_BREAK UNSKIPPABLE
     "I am glad my charm found its" NEWLINE
-    "way into your hands." BOX_BREAK
+    "way into your hands." BOX_BREAK UNSKIPPABLE
     "I wish you well in fulfilling" NEWLINE
     "the great destiny that is" NEWLINE
     "before you." COLOR(WHITE)

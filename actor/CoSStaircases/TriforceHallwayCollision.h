@@ -1,0 +1,1 @@
+extern CollisionHeader TriforceHallwayCollision_collisionHeader;

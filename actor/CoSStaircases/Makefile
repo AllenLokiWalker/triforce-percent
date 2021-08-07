@@ -7,12 +7,17 @@ ACTORLDFLAGS += -T ../../scene/ChamberOfSages/ChamberOfSages_scene.out.ld
 OBJECTNAME = cosstaircasesobj
 OBJECTNUM = 17
 OBJECTOBJS = \
+	RauruStair.o \
+	RauruStairCollision.o \
 	SariaStair.o \
 	SariaStairCollision.o \
-	DaruniaStair.o \
-	DaruniaStairCollision.o \
-	TriforceStair.o \
-	TriforceStairCollision.o
+	SheikStair.o \
+	SheikStairCollision.o \
+	TriforceFadeWall.o \
+	TriforceHallway.o \
+	TriforceHallwayCollision.o \
+	TriforceDoor.o \
+	TriforceDoorCollision.o
 
 default: copyactor copyobject
 

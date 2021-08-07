@@ -1,4 +1,0 @@
-extern u32 TriforceStairCollision_polygonTypes[];
-extern CollisionPoly TriforceStairCollision_polygons[];
-extern Vec3s TriforceStairCollision_vertices[144];
-extern CollisionHeader TriforceStairCollision_collisionHeader;

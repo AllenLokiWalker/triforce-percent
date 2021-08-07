@@ -1,6 +1,11 @@
-SariaStair = 0x6000948;
-SariaStairCollision_collisionHeader = 0x6000c20;
-DaruniaStair = 0x6001e68;
-DaruniaStairCollision_collisionHeader = 0x6002290;
-TriforceStair = 0x6004740;
-TriforceStairCollision_collisionHeader = 0x6004f58;
+RauruStair = 0x6000948;
+RauruStairCollision_collisionHeader = 0x6000c20;
+SariaStair = 0x6001e68;
+SariaStairCollision_collisionHeader = 0x6002290;
+SheikStair = 0x6004740;
+SheikStairCollision_collisionHeader = 0x6004f58;
+TriforceFadeWall = 0x6005c38;
+TriforceHallway = 0x60077b0;
+TriforceHallwayCollision_collisionHeader = 0x600824c;
+TriforceDoor = 0x60081b8;
+TriforceDoorCollision_collisionHeader = 0x6008220;
