@@ -1,13 +1,13 @@
 RlSkel = 0x06007B38;
 SaSkel = 0x0600b1a0;
-DuSkel = 0x06011ca8;
+DuSkel = 0x060122A8;
 Ru2Skel = 0x0600C700;
 NbSkel = 0x060181c8;
 ImSkel = 0x0600F788;
 
 RlAnimIdle = 0x06000A3C;
 SaAnimIdle = 0x060021d8;
-DuAnimIdle = 0x06006eb0;
+DuAnimIdle = 0x060074B0;
 Ru2AnimIdle = 0x06000DE8;
 NbAnimIdle = 0x06009694;
 ImAnimIdle = 0x06001868;
@@ -31,9 +31,9 @@ RlEyeClosed = 0x06003B60;
 SaEyeOpen = 0x06002f48;
 SaEyeHalf = 0x06003c48;
 SaEyeClosed = 0x06003848;
-DuEyeOpen = 0x06008080;
-DuEyeHalf = 0x06008480;
-DuEyeClosed = 0x06008880;
+DuEyeOpen = 0x06008680;
+DuEyeHalf = 0x06008A80;
+DuEyeClosed = 0x06008E80;
 Ru2EyeOpen = 0x06000F20;
 Ru2EyeHalf = 0x060022E0;
 Ru2EyeClosed = 0x06002AE0;
@@ -50,9 +50,9 @@ SaMouthClosed = 0x06003348;
 SaMouthSmiling = 0x06004448;
 SaMouthFrowning = 0x06004648;
 
-DuMouthSerious = 0x06008c80;
-DuMouthGrinning = 0x06009d40;
-DuMouthOpen = 0x0600a940;
-DuMouthHappy = 0x0600b180;
+DuMouthSerious = 0x06009280;
+DuMouthGrinning = 0x0600A340;
+DuMouthOpen = 0x0600AF40;
+DuMouthHappy = 0x0600B780;
 
-DuNoseSerious = 0x06007fc0;
+DuNoseSerious = 0x060085C0;

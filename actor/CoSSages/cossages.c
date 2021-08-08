@@ -24,6 +24,7 @@ static ColliderCylinderInitType1 sCylinderInit = {
 static const u8 NumLimbs[] = {
 	11, 17, 18, 23, 19, 17, 0
 };
+
 #define MAX_LIMBS 23
 
 static FlexSkeletonHeader *const SkelHeader[] = {
@@ -81,7 +82,13 @@ typedef struct {
 
 static void init(Entity *en, GlobalContext *globalCtx) {
 	en->initted = 0;
-	if(PARAM >= 1){
+	en->state = SAGE_STATE_GONE;
+	en->drawConfig = 0;
+	en->eyeTextureIndex = 0;
+	en->mouthTextureIndex = 0;
+	en->alpha = 0;
+	en->blinkTimer = 0;
+	if(PARAM >= 6){
 		Actor_Kill(&en->actor);
 		return;
 	}
@@ -89,12 +96,7 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, ShadowSize[PARAM]);
 	Collider_InitCylinder(globalCtx, &en->collider);
     Collider_SetCylinderType1(globalCtx, &en->collider, &en->actor, &sCylinderInit);
-	en->state = SAGE_STATE_GONE;
-	en->drawConfig = 0;
-	en->eyeTextureIndex = 0;
-	en->mouthTextureIndex = 0;
-	en->alpha = 0;
-	en->blinkTimer = 0;
+	en->initted = 1;
 }
 
 static s32 finishInit(Entity *en, GlobalContext *globalCtx) {
@@ -106,13 +108,13 @@ static s32 finishInit(Entity *en, GlobalContext *globalCtx) {
 	SkelAnime_InitFlex(globalCtx, &en->skelAnime, SkelHeader[PARAM], AnimIdle[PARAM], 
 		en->jointTable, en->morphTable, NumLimbs[PARAM]);
 	//Done
-	en->initted = 1;
+	en->initted = 2;
 	return 1;
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
-	Collider_DestroyCylinder(globalCtx, &en->collider);
-	if(en->initted) SkelAnime_Free(&en->skelAnime, globalCtx);
+	if(en->initted >= 1) Collider_DestroyCylinder(globalCtx, &en->collider);
+	if(en->initted == 2) SkelAnime_Free(&en->skelAnime, globalCtx);
 }
 
 static void updateEyes(Entity *en){
@@ -124,11 +126,17 @@ static void updateEyes(Entity *en){
 	en->eyeTextureIndex = (en->blinkTimer < 3) ? en->blinkTimer : 0;
 }
 
+static void updateCollision(Entity *en, GlobalContext *globalCtx){
+	Collider_UpdateCylinder(&en->actor, &en->collider);
+    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &en->collider.base);
+}
+
 static void update(Entity *en, GlobalContext *globalCtx) {
-	if(!en->initted){
-		if(!finishInit(en, globalCtx)) return;
-	}
+	if(en->initted == 0) return;
+	else if(en->initted == 1 && !finishInit(en, globalCtx)) return;
 	updateEyes(en);
+	updateCollision(en, globalCtx);
+	Actor_UpdateBgCheckInfo(globalCtx, &en->actor, 75.0f, 30.0f, 30.0f, 5);
 	s32 animDone = SkelAnime_Update(&en->skelAnime);
 	if(en->state == SAGE_STATE_GONE){
 		if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 1)){
@@ -140,10 +148,11 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		s32 temp = en->alpha;
 		temp += FADEIN_SPEED;
 		if(temp >= 255){
+			temp = 255;
 			en->state = SAGE_STATE_IDLE;
-			en->alpha = 255;
 			en->drawConfig = 1;
 		}
+		en->alpha = temp;
 	}else if(en->state == SAGE_STATE_IDLE){
 		if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 2)){
 			en->state = SAGE_STATE_BLESSING;
@@ -180,9 +189,9 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 	seg08Tex = EyeTextures[PARAM][en->eyeTextureIndex];
 	seg09Tex = seg08Tex;
 	if(PARAM == 1){
-		seg0ATex = &SaMouthClosed;
+		seg0ATex = &SaMouthClosed2;
 	}else if(PARAM == 2){
-		seg09Tex = &DuMouthGrinning;
+		seg09Tex = &DuMouthHappy;
 		seg0ATex = &DuNoseSerious;
 	}
 	gSPSegment((*gfx)++, 0x08, SEGMENTED_TO_VIRTUAL(seg08Tex));
