@@ -48,6 +48,8 @@ typedef struct {
 	&& (globalCtx->csCtx.npcActions[slot] != NULL) \
 	&& (globalCtx->csCtx.npcActions[slot]->action == num)
 
+extern Gfx gActorXluSetup[3]; //D_80116280
+
 //Functions
 
 extern void Audio_FadeOut(u16 frames);

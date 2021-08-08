@@ -1,0 +1,58 @@
+RlSkel = 0x06007B38;
+SaSkel = 0x0600b1a0;
+DuSkel = 0x06011ca8;
+Ru2Skel = 0x0600C700;
+NbSkel = 0x060181c8;
+ImSkel = 0x0600F788;
+
+RlAnimIdle = 0x06000A3C;
+SaAnimIdle = 0x060021d8;
+DuAnimIdle = 0x06006eb0;
+Ru2AnimIdle = 0x06000DE8;
+NbAnimIdle = 0x06009694;
+ImAnimIdle = 0x06001868;
+
+RlAnimBlessing = 0x0600040C;
+SaAnimBlessing = 0x0600df80;
+DuAnimBlessing = 0x06000800;
+Ru2AnimBlessing = 0x0600D3DC;
+NbAnimBlessing = 0x0600274c;
+ImAnimBlessing = 0x06000710;
+
+RlAnimBlsIdle = 0x06000830;
+SaAnimBlsIdle = 0x0600e500;
+DuAnimBlsIdle = 0x06000d00;
+NbAnimBlsIdle = 0x06002b4c;
+ImAnimBlsIdle = 0x06000AFC;
+
+RlEyeOpen = 0x06003620;
+RlEyeHalf = 0x06003960;
+RlEyeClosed = 0x06003B60;
+SaEyeOpen = 0x06002f48;
+SaEyeHalf = 0x06003c48;
+SaEyeClosed = 0x06003848;
+DuEyeOpen = 0x06008080;
+DuEyeHalf = 0x06008480;
+DuEyeClosed = 0x06008880;
+Ru2EyeOpen = 0x06000F20;
+Ru2EyeHalf = 0x060022E0;
+Ru2EyeClosed = 0x06002AE0;
+NbEyeOpen = 0x0600b428;
+NbEyeHalf = 0x0600d0e8;
+NbEyeClosed = 0x0600d4e8;
+ImEyeOpen = 0x06007210;
+ImEyeHalf = 0x06007D50;
+ImEyeClosed = 0x06008150;
+
+SaMouthClosed2 = 0x06003588;
+SaMouthSurprised = 0x06004c48;
+SaMouthClosed = 0x06003348;
+SaMouthSmiling = 0x06004448;
+SaMouthFrowning = 0x06004648;
+
+DuMouthSerious = 0x06008c80;
+DuMouthGrinning = 0x06009d40;
+DuMouthOpen = 0x0600a940;
+DuMouthHappy = 0x0600b180;
+
+DuNoseSerious = 0x06007fc0;

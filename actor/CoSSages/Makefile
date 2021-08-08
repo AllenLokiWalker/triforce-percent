@@ -1,12 +1,14 @@
 include ../../toolchain/make/main.mk
 
-ACTORNAME = cosstaircases
-ACTORNUM = 26
+ACTORNAME = cossages
+ACTORNUM = 31
 
 default: copyactor
 
-$(ACTORNAME).elf: $(OBJECTNAME).out.ld $(SCENEOUTLD)
+$(ACTORNAME).o: sages_objs.h
 
-ACTORLDFLAGS += -T $(OBJECTNAME).out.ld -T $(SCENEOUTLD)
+$(ACTORNAME).elf: sages_objs.ld
+
+ACTORLDFLAGS += -T sages_objs.ld
 
 include ../../toolchain/make/actor.mk
