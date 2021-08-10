@@ -1,7 +1,7 @@
 ChamberOfSages_scene_header00_cutscene = 0x2001ab0;
-ChamberOfSages_scene_header04_cutscene = 0x2002000;
-ChamberOfSages_scene_header05_cutscene = 0x20023bc;
-ChamberOfSages_scene_header06_cutscene = 0x2002640;
-ChamberOfSages_scene_header07_cutscene = 0x20028c4;
-ChamberOfSages_scene_header08_cutscene = 0x2002b48;
-ChamberOfSages_scene_header09_cutscene = 0x2002dcc;
+ChamberOfSages_scene_header04_cutscene = 0x2002014;
+ChamberOfSages_scene_header05_cutscene = 0x20023e4;
+ChamberOfSages_scene_header06_cutscene = 0x20027b4;
+ChamberOfSages_scene_header07_cutscene = 0x2002b84;
+ChamberOfSages_scene_header08_cutscene = 0x2002f54;
+ChamberOfSages_scene_header09_cutscene = 0x2003324;

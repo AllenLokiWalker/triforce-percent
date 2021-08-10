@@ -92,7 +92,7 @@ DECLARE_MESSAGE(0x0A10, BOX_BLACK, POS_MIDDLE,
 DECLARE_MESSAGE(0x0A11, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "The song you just played has" NEWLINE
-    "awoken the other Sages, and they" NEWLINE
+    "awakened the other Sages, and they" NEWLINE
     "are on their way to joining us here." BOX_BREAK UNSKIPPABLE
     "You must receive a blessing from" NEWLINE
     "each of us." BOX_BREAK UNSKIPPABLE
