@@ -69,7 +69,7 @@ static Gfx * const DLists[] = {
 };
 
 static const u8 DListsTransparent[] = {
-	1, 1, 1, 1, 1, 1, 1, 0, 0, 0
+	1, 1, 1, 1, 1, 1, 1, 1, 0, 0
 };
 
 static CollisionHeader * const ColHeaders[] = {

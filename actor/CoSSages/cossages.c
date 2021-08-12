@@ -22,26 +22,26 @@ static ColliderCylinderInitType1 sCylinderInit = {
 };
 
 static const u8 NumLimbs[] = {
-	11, 17, 18, 23, 19, 17, 0
+	11, 17, 18, 23, 19, 17, 17
 };
 
 #define MAX_LIMBS 23
 
 static FlexSkeletonHeader *const SkelHeader[] = {
-	&RlSkel, &SaSkel, &DuSkel, &Ru2Skel, &NbSkel, &ImSkel, NULL
+	&RlSkel, &SaSkel, &DuSkel, &Ru2Skel, &NbSkel, &ImSkel, &gSheikSkel
 };
 
 static AnimationHeader *const AnimIdle[] = {
-	&RlAnimIdle, &SaAnimIdle, &DuAnimIdle, &Ru2AnimIdle, &NbAnimIdle, &ImAnimIdle, NULL
+	&RlAnimIdle, &SaAnimIdle, &DuAnimIdle, &Ru2AnimIdle, &NbAnimIdle, &ImAnimIdle, &gSheikFallingFromSkyAnim
 };
 
 static AnimationHeader *const AnimBlessing[] = {
 	&RlAnimBlessing, &SaAnimBlessing, &DuAnimBlessing, &Ru2AnimBlessing,
-	&NbAnimBlessing, &ImAnimBlessing, NULL
+	&NbAnimBlessing, &ImAnimBlessing, &gSheikShowingTriforceOnHandAnim
 };
 
 static AnimationHeader *const AnimBlessingIdle[] = {
-	&RlAnimBlsIdle, &SaAnimBlsIdle, &DuAnimBlsIdle, NULL, &NbAnimBlsIdle, &ImAnimBlsIdle, NULL
+	&RlAnimBlsIdle, &SaAnimBlsIdle, &DuAnimBlsIdle, NULL, &NbAnimBlsIdle, &ImAnimBlsIdle, &gSheikShowingTriforceOnHandIdleAnim
 };
 
 static void *const EyeTextures[7][3] = {
@@ -51,7 +51,7 @@ static void *const EyeTextures[7][3] = {
 	{&Ru2EyeOpen, &Ru2EyeHalf, &Ru2EyeClosed},
 	{&NbEyeOpen,  &NbEyeHalf,  &NbEyeClosed},
 	{&ImEyeOpen,  &ImEyeHalf,  &ImEyeClosed},
-	{NULL, NULL, NULL}
+	{&gSheikEyeOpenTex, &gSheikEyeHalfClosedTex, &gSheikEyeShutTex}
 };
 
 #define SAGE_STATE_GONE 0
@@ -59,6 +59,7 @@ static void *const EyeTextures[7][3] = {
 #define SAGE_STATE_IDLE 2
 #define SAGE_STATE_BLESSING 3
 #define SAGE_STATE_BLESSING_IDLE 4
+#define SHEIK_STATE_ANGRY 5
 
 #define FADEIN_SPEED 16
 
@@ -78,7 +79,10 @@ typedef struct {
 	u8 mouthTextureIndex;
 	u8 alpha;
 	u8 blinkTimer;
+	u8 sfxTimer;
 } Entity;
+
+static void updateSheik(Entity *en, GlobalContext *globalCtx);
 
 static void init(Entity *en, GlobalContext *globalCtx) {
 	en->initted = 0;
@@ -88,9 +92,12 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	en->mouthTextureIndex = 0;
 	en->alpha = 0;
 	en->blinkTimer = 0;
-	if(PARAM >= 6){
+	if(PARAM >= 7){
 		Actor_Kill(&en->actor);
 		return;
+	}
+	if(PARAM == 6){
+		en->actor.update = (ActorFunc)updateSheik;
 	}
 	en->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, DepObjectNums[PARAM]);
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, ShadowSize[PARAM]);
@@ -129,14 +136,19 @@ static void updateEyes(Entity *en){
 static void updateCollision(Entity *en, GlobalContext *globalCtx){
 	Collider_UpdateCylinder(&en->actor, &en->collider);
     CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &en->collider.base);
+	Actor_UpdateBgCheckInfo(globalCtx, &en->actor, 75.0f, 30.0f, 30.0f, 5);
+}
+
+static s32 updateCommon(Entity *en, GlobalContext *globalCtx){
+	if(en->initted == 0) return 0;
+	else if(en->initted == 1 && !finishInit(en, globalCtx)) return 0;
+	updateEyes(en);
+	updateCollision(en, globalCtx);
+	return 1;
 }
 
 static void update(Entity *en, GlobalContext *globalCtx) {
-	if(en->initted == 0) return;
-	else if(en->initted == 1 && !finishInit(en, globalCtx)) return;
-	updateEyes(en);
-	updateCollision(en, globalCtx);
-	Actor_UpdateBgCheckInfo(globalCtx, &en->actor, 75.0f, 30.0f, 30.0f, 5);
+	if(!updateCommon(en, globalCtx)) return;
 	s32 animDone = SkelAnime_Update(&en->skelAnime);
 	if(en->state == SAGE_STATE_GONE){
 		if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 1)){
@@ -165,6 +177,64 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			if(AnimBlessingIdle[PARAM] != NULL){
 				Animation_Change(&en->skelAnime, AnimBlessingIdle[PARAM], 1.0f, 0.0f,
 					Animation_GetLastFrame(AnimBlessingIdle[PARAM]), ANIMMODE_LOOP, 0.0f);
+			}
+		}
+	}else if(en->state == SAGE_STATE_BLESSING_IDLE){
+		(void)0;
+	}
+}
+
+static void updateSheik(Entity *en, GlobalContext *globalCtx){
+	if(!updateCommon(en, globalCtx)) return;
+	s32 animDone = SkelAnime_Update(&en->skelAnime);
+	if(en->state == SAGE_STATE_GONE){
+		if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 1)){
+			en->state = SAGE_STATE_APPEARING;
+			en->drawConfig = 1;
+			en->alpha = 255;
+			en->sfxTimer = 5;
+			Animation_Change(&en->skelAnime, &gSheikFallingFromSkyAnim, 1.0f, 0.0f,
+				Animation_GetLastFrame(&gSheikFallingFromSkyAnim), ANIMMODE_ONCE, 0.0f);
+		}
+	}else if(en->state == SAGE_STATE_APPEARING){
+		if(en->sfxTimer > 0){
+			--en->sfxTimer;
+			if(en->sfxTimer == 0){
+				u32 sfxId = NA_SE_PL_SKIP;/*SFX_FLAG;
+				sfxId += SurfaceType_GetSfx(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId);*/
+				Audio_PlayActorSound2(&(en->actor), sfxId);
+			}
+		}
+		if(animDone){
+			en->state = SAGE_STATE_IDLE;
+			Animation_Change(&en->skelAnime, &gSheikIdleAnim, 1.0f, 0.0f,
+				Animation_GetLastFrame(&gSheikIdleAnim), ANIMMODE_LOOP, 0.0f);
+		}
+	}else if(en->state == SAGE_STATE_IDLE){
+		if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 2)){
+			en->state = SHEIK_STATE_ANGRY;
+			Animation_Change(&en->skelAnime, &gSheikArmsCrossedIdleAnim, 1.0f, 0.0f,
+				Animation_GetLastFrame(&gSheikArmsCrossedIdleAnim), ANIMMODE_ONCE, -8.0f);
+		}
+	}else if(en->state == SHEIK_STATE_ANGRY){
+		if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 3)){
+			en->state = SAGE_STATE_BLESSING;
+			en->sfxTimer = 13;
+			Animation_Change(&en->skelAnime, &gSheikShowingTriforceOnHandAnim, 1.0f, 0.0f,
+				Animation_GetLastFrame(&gSheikShowingTriforceOnHandAnim), ANIMMODE_ONCE, -4.0f);
+		}
+	}else if(en->state == SAGE_STATE_BLESSING){
+		if(en->sfxTimer > 0){
+			--en->sfxTimer;
+			if(en->sfxTimer == 0){
+				Audio_PlayActorSound2(&(en->actor), NA_SE_VO_SK_SHOUT);
+			}
+		}
+		if(animDone){
+			en->state = SAGE_STATE_BLESSING_IDLE;
+			if(AnimBlessingIdle[PARAM] != NULL){
+				Animation_Change(&en->skelAnime, &gSheikShowingTriforceOnHandIdleAnim, 1.0f, 0.0f,
+					Animation_GetLastFrame(&gSheikShowingTriforceOnHandIdleAnim), ANIMMODE_LOOP, 0.0f);
 			}
 		}
 	}else if(en->state == SAGE_STATE_BLESSING_IDLE){

@@ -4,6 +4,7 @@ DuSkel = 0x060122A8;
 Ru2Skel = 0x0600C700;
 NbSkel = 0x060181c8;
 ImSkel = 0x0600F788;
+gSheikSkel = 0x06013510;
 
 RlAnimIdle = 0x06000A3C;
 SaAnimIdle = 0x060021d8;
@@ -25,6 +26,12 @@ DuAnimBlsIdle = 0x06000d00;
 NbAnimBlsIdle = 0x06002b4c;
 ImAnimBlsIdle = 0x06000AFC;
 
+gSheikFallingFromSkyAnim = 0x0601CB08;
+gSheikIdleAnim = 0x06005248;
+gSheikArmsCrossedIdleAnim = 0x060144C4;
+gSheikShowingTriforceOnHandAnim = 0x06001C58;
+gSheikShowingTriforceOnHandIdleAnim = 0x06001F64;
+
 RlEyeOpen = 0x06003620;
 RlEyeHalf = 0x06003960;
 RlEyeClosed = 0x06003B60;
@@ -43,6 +50,9 @@ NbEyeClosed = 0x0600d4e8;
 ImEyeOpen = 0x06007210;
 ImEyeHalf = 0x06007D50;
 ImEyeClosed = 0x06008150;
+gSheikEyeOpenTex = 0x060056E0;
+gSheikEyeHalfClosedTex = 0x06005AE0;
+gSheikEyeShutTex = 0x06005EE0;
 
 SaMouthClosed2 = 0x06003588;
 SaMouthSurprised = 0x06004c48;

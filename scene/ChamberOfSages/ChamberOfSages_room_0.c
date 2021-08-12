@@ -16,7 +16,7 @@ SCmdBase ChamberOfSages_room_0_header00[] = {
 	SCENE_CMD_TIME_SETTINGS(0xFF, 0xFF, 10),
 	SCENE_CMD_MESH(&ChamberOfSages_room_0_meshHeader),
 	SCENE_CMD_OBJECT_LIST(8, &ChamberOfSages_room_0_header00_objectList),
-	SCENE_CMD_ACTOR_LIST(17, &ChamberOfSages_room_0_header00_actorList),
+	SCENE_CMD_ACTOR_LIST(18, &ChamberOfSages_room_0_header00_actorList),
 	SCENE_CMD_END(),
 };
 
@@ -31,24 +31,25 @@ s16 ChamberOfSages_room_0_header00_objectList[8] = {
 	OBJECT_XC,
 };
 
-ActorEntry ChamberOfSages_room_0_header00_actorList[17] = {
-	{ 26, -419, 215, -725, 0, 0, 0, 0x0001 },
-	{ 31, 465, 753, 806, 0, 38229, 0, 4 },
-	{ 31, -196, 126, 1, 0, 16384, 0, 0 },
+ActorEntry ChamberOfSages_room_0_header00_actorList[18] = {
 	{ 31, 926, 579, 0, 0, 49152, 0, 3 },
-	{ 26, 419, 394, -725, 0, 54613, 0, 0x0002 },
-	{ 31, -466, 928, 804, 0, 27307, 0, 5 },
+	{ 26, -419, 215, -725, 0, 0, 0, 0x0001 },
+	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0007 },
 	{ 31, 465, 404, -805, 0, 60075, 0, 2 },
-	{ 31, -468, 230, -806, 0, 5461, 0, 1 },
-	{ 26, -419, 918, 725, 0, 21845, 0, 0x0005 },
 	{ 26, 419, 744, 725, 0, 32768, 0, 0x0004 },
+	{ 31, 465, 753, 806, 0, 38229, 0, 4 },
+	{ 26, -419, 918, 725, 0, 21845, 0, 0x0005 },
 	{ 26, -840, 1092, 0, 0, 0, 0, 0x0006 },
-	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0008 },
+	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0009 },
+	{ 26, 419, 394, -725, 0, 54613, 0, 0x0002 },
+	{ 26, 838, 569, 0, 0, 43691, 0, 0x0003 },
 	{ ACTOR_EN_RIVER_SOUND, -94, 574, -105, 0, 0, 0, 0x0010 },
 	{ 26, 0, 118, 0, 0, 0, 0, 0x0000 },
-	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0009 },
-	{ 26, 838, 569, 0, 0, 43691, 0, 0x0003 },
-	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0007 },
+	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0008 },
+	{ 31, -468, 230, -806, 0, 5461, 0, 1 },
+	{ 31, -196, 126, 1, 0, 16384, 0, 0 },
+	{ 31, -466, 928, 804, 0, 27307, 0, 5 },
+	{ 31, -795, 1104, -80, 0, 60075, 0, 6 },
 };
 
 MeshHeader0 ChamberOfSages_room_0_meshHeader = { {0}, 1, (u32)&ChamberOfSages_room_0_meshDListEntry, (u32)&(ChamberOfSages_room_0_meshDListEntry) + sizeof(ChamberOfSages_room_0_meshDListEntry) };

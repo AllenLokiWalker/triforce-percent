@@ -140,7 +140,56 @@ DECLARE_MESSAGE(0x0A60, BOX_BLACK, POS_MIDDLE,
     "great destiny that is before you."
 )
 
+
+DECLARE_MESSAGE(0x0A70, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "Link, the great Hero of Time..." BOX_BREAK UNSKIPPABLE
+    "The one with the three virtues of" NEWLINE
+    "Courage, Power, and Wisdom in" NEWLINE
+    "balance in your heart..." BOX_BREAK UNSKIPPABLE
+    "The one with the ability to bend" NEWLINE
+    "and shift time itself..."
+)
+
+DECLARE_MESSAGE(0x0A71, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "In this reality, we have only" NEWLINE
+    "just met." BOX_BREAK UNSKIPPABLE
+    "Yet we have known each other in" NEWLINE
+    "ages past, and surely in other" NEWLINE
+    "timelines of the present." BOX_BREAK UNSKIPPABLE
+    "I sense that our destiny is about" NEWLINE
+    "to change forever." BOX_BREAK UNSKIPPABLE
+    "But I trust that you'll always use" NEWLINE
+    "your strengths to protect Hyrule."
+)
+
+DECLARE_MESSAGE(0x0A72, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "Are you ready, Link?"
+)
+
 //  "text text text text text text te"
+DECLARE_MESSAGE(0x0A73, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "I guess that hasn't been much of" NEWLINE
+    "a secret since " COLOR(LIGHTBLUE) "Melee" COLOR(WHITE) ", huh?" BOX_BREAK UNSKIPPABLE
+    "Would be nice if I could get my" NEWLINE
+    "own game someday..."
+)
+
+DECLARE_MESSAGE(0x0A74, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "Link, this isn't the time for" NEWLINE
+    "nonsense!" BOX_BREAK UNSKIPPABLE
+    "O-of course I-I'm a boy..."
+)
+
+DECLARE_MESSAGE(0x0A75, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "Let's not keep everyone waiting!"
+)
+
 
 // Trailer
 
