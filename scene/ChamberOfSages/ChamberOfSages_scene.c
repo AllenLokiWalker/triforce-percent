@@ -648,7 +648,7 @@ CollisionHeader ChamberOfSages_collisionHeader = { -2862, -269, -2893, 2902, 167
 s32 ChamberOfSages_scene_header00_cutscene[] = {
 	CS_BEGIN_CUTSCENE(11, 645),
 	CS_TIME_LIST(1),
-		CS_TIME(0, 1, 2, 12, 0, 0),
+		CS_TIME(1, 0, 1, 12, 0, 0),
 	CS_TEXT_LIST(2),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A10, 190, 235, 0x0000, 0x0000, 0x0000),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A11, 255, 513, 0x0000, 0x0000, 0x0000),
@@ -722,6 +722,7 @@ s32 ChamberOfSages_scene_header00_cutscene[] = {
 		CS_NPC_ACTION(2, 521, 1000, 0x0, 0x4000, 0x0, -196, 126, 1, -196, 126, 1, 0, 0, 0),
 	CS_END(),
 };
+
 SCmdBase ChamberOfSages_scene_header04[] = {
 	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
 	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
@@ -752,7 +753,7 @@ u16 ChamberOfSages_scene_header04_exitList[1] = {
 s32 ChamberOfSages_scene_header04_cutscene[] = {
 	CS_BEGIN_CUTSCENE(9, 170),
 	CS_TIME_LIST(1),
-		CS_TIME(0, 1, 2, 12, 0, 0),
+		CS_TIME(1, 0, 1, 12, 0, 0),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A20, 64, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 176),
@@ -798,6 +799,7 @@ s32 ChamberOfSages_scene_header04_cutscene[] = {
 		CS_NPC_ACTION(2, 90, 1000, 0x0, 0x1555, 0x0, -468, 230, -806, -468, 230, -806, 0, 0, 0),
 	CS_END(),
 };
+
 SCmdBase ChamberOfSages_scene_header05[] = {
 	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
 	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
@@ -828,7 +830,7 @@ u16 ChamberOfSages_scene_header05_exitList[1] = {
 s32 ChamberOfSages_scene_header05_cutscene[] = {
 	CS_BEGIN_CUTSCENE(9, 200),
 	CS_TIME_LIST(1),
-		CS_TIME(0, 1, 2, 12, 0, 0),
+		CS_TIME(1, 0, 1, 12, 0, 0),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A30, 64, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 166),
@@ -874,6 +876,7 @@ s32 ChamberOfSages_scene_header05_cutscene[] = {
 		CS_NPC_ACTION(2, 90, 1000, 0x0, 0x1555, 0x0, -468, 230, -806, -468, 230, -806, 0, 0, 0),
 	CS_END(),
 };
+
 SCmdBase ChamberOfSages_scene_header06[] = {
 	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
 	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
@@ -904,7 +907,7 @@ u16 ChamberOfSages_scene_header06_exitList[1] = {
 s32 ChamberOfSages_scene_header06_cutscene[] = {
 	CS_BEGIN_CUTSCENE(9, 200),
 	CS_TIME_LIST(1),
-		CS_TIME(0, 1, 2, 12, 0, 0),
+		CS_TIME(1, 0, 1, 12, 0, 0),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A40, 64, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 176),
@@ -950,6 +953,7 @@ s32 ChamberOfSages_scene_header06_cutscene[] = {
 		CS_NPC_ACTION(2, 90, 1000, 0x0, 0x1555, 0x0, -468, 230, -806, -468, 230, -806, 0, 0, 0),
 	CS_END(),
 };
+
 SCmdBase ChamberOfSages_scene_header07[] = {
 	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
 	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
@@ -980,9 +984,9 @@ u16 ChamberOfSages_scene_header07_exitList[1] = {
 s32 ChamberOfSages_scene_header07_cutscene[] = {
 	CS_BEGIN_CUTSCENE(9, 200),
 	CS_TIME_LIST(1),
-		CS_TIME(0, 1, 2, 12, 0, 0),
+		CS_TIME(1, 0, 1, 12, 0, 0),
 	CS_TEXT_LIST(1),
-		CS_TEXT_DISPLAY_TEXTBOX(0x0A50, 75, 89, 0x0001, 0x0000, 0x0000),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0A50, 75, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 171),
 		CS_CAM_POS(0, 0, 0, 0x42700000, 586, 807, 432, 0),
 		CS_CAM_POS(0, 0, 0, 0x42700000, 566, 807, 464, 0),
@@ -1026,6 +1030,7 @@ s32 ChamberOfSages_scene_header07_cutscene[] = {
 		CS_NPC_ACTION(2, 90, 1000, 0x0, 0x1555, 0x0, -468, 230, -806, -468, 230, -806, 0, 0, 0),
 	CS_END(),
 };
+
 SCmdBase ChamberOfSages_scene_header08[] = {
 	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
 	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
@@ -1056,9 +1061,9 @@ u16 ChamberOfSages_scene_header08_exitList[1] = {
 s32 ChamberOfSages_scene_header08_cutscene[] = {
 	CS_BEGIN_CUTSCENE(9, 200),
 	CS_TIME_LIST(1),
-		CS_TIME(0, 1, 2, 12, 0, 0),
+		CS_TIME(1, 0, 1, 12, 0, 0),
 	CS_TEXT_LIST(1),
-		CS_TEXT_DISPLAY_TEXTBOX(0x0A60, 64, 89, 0x0001, 0x0000, 0x0000),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0A60, 64, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 176),
 		CS_CAM_POS(0, 0, 0, 0x42700000, -83, 982, 724, 0),
 		CS_CAM_POS(0, 0, 0, 0x42700000, -120, 982, 724, 0),
@@ -1102,6 +1107,7 @@ s32 ChamberOfSages_scene_header08_cutscene[] = {
 		CS_NPC_ACTION(2, 90, 1000, 0x0, 0x1555, 0x0, -468, 230, -806, -468, 230, -806, 0, 0, 0),
 	CS_END(),
 };
+
 SCmdBase ChamberOfSages_scene_header09[] = {
 	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
 	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
@@ -1132,11 +1138,11 @@ u16 ChamberOfSages_scene_header09_exitList[1] = {
 s32 ChamberOfSages_scene_header09_cutscene[] = {
 	CS_BEGIN_CUTSCENE(15, 660),
 	CS_TIME_LIST(1),
-		CS_TIME(0, 1, 2, 12, 0, 0),
+		CS_TIME(1, 0, 1, 12, 0, 0),
 	CS_TEXT_LIST(5),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A70, 95, 99, 0x0000, 0x0000, 0x0000),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A71, 110, 347, 0x0000, 0x0000, 0x0000),
-		CS_TEXT_DISPLAY_TEXTBOX(0x0A72, 354, 359, 0x0000, 0x0000, 0x0000),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0A72, 354, 359, 0x0000, 0x0A73, 0x0A74),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A74, 370, 389, 0x0000, 0x0000, 0x0000),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A75, 390, 399, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 166),
@@ -1242,3 +1248,4 @@ s32 ChamberOfSages_scene_header09_cutscene[] = {
 		CS_NPC_ACTION(3, 400, 1000, 0x0, 0x0, 0x0, 34, 0, -200, 34, 0, -300, 0, 0, 0),
 	CS_END(),
 };
+

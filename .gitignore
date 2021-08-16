@@ -11,4 +11,7 @@ local.mk
 *.xdat
 *.blend1
 
+scene/gerudoway/gerudoway_room_*
+scene/gerudoway/gerudoway_scene*
+
 toolchain/yaz0/yaz0_encode
