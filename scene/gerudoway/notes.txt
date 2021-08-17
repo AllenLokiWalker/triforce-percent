@@ -1,0 +1,6 @@
+Desert Colossus: replace cutscene data at 0x4F10
+
+Gerudoway room 3: replace OBJECT_DAIKU with OBJECT_NB (0x00B3) at 0x0042
+replace ACTOR_EN_WONDER_ITEM with 
+NABOORU (0x0022), 1950 (0x079E), 20 (0x0014), -735 (0xFD21), 0x0000, 0x0000, 0x0000, 0x0000
+at 0x80

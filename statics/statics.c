@@ -29,6 +29,7 @@ void Statics_SetGameState(){
     gSaveContext.inf_table    [0x0] |= 1 << 0x0; //Greeted by Saria
     */
     gSaveContext.eventChkInf[0x9] |= 0xF; //Rescued carpenters (not get arrested by Gerudos)
+    gSaveContext.eventChkInf[0xB] |= 0x100; //Entered Desert Colossus (no entrance cutscene)
     gSaveContext.itemGetInf[0x2] |= 0x0478; //Obtained Mask of Truth, all trading masks
     gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
     //TODO remove for final version
@@ -53,6 +54,39 @@ void Statics_SetGameState(){
     gSaveContext.doubleMagic = 1;
 }
 
+extern void* DemoTerminatorTable[];
+extern void DemoTerminatorReturn();
+#define TERMINATOR_RETURN asm(".set noat\n .set noreorder\nj DemoTerminatorReturn\nnop\n.set at\n .set reorder")
+
+void Statics_TerminatorNabooruToDesertColossus(){
+    gGlobalContext.nextEntranceIndex = 0x0127;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0xFFF0;
+    gGlobalContext.fadeTransition = 3;
+    TERMINATOR_RETURN;
+}
+
+void Statics_TerminatorReturnToNabooru(){
+    gGlobalContext.nextEntranceIndex = 0x04A7;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0;
+    gGlobalContext.fadeTransition = 3;
+    TERMINATOR_RETURN;
+}
+
+#define NUM_PATCH_TERMINATOR 2
+static const struct { u8 index; void (*function)() } DemoTerminatorPatchTable[NUM_PATCH_TERMINATOR] = {
+    {0x4F, Statics_TerminatorNabooruToDesertColossus},
+    {0x50, Statics_TerminatorReturnToNabooru},
+};
+
+void Statics_PatchDemoTerminator(){
+    for(int i=0; i<NUM_PATCH_TERMINATOR; ++i){
+        DemoTerminatorTable[DemoTerminatorPatchTable[i].index] = 
+            (void*)DemoTerminatorPatchTable[i].function;
+    }
+}
+
 void Statics_RomhackLoadAll();
 
 void Statics_OneTimeRomhackOnly(){
@@ -72,6 +106,7 @@ void Statics_OneTime(){
     Statics_OcarinaCodePatches();
     Statics_AudioCodePatches(sIsLiveRun);
     Statics_GfxCodePatches();
+    Statics_PatchDemoTerminator();
     osWritebackDCache(0, 0x4000);
     osInvalICache(0, 0x4000);
     if(!sIsLiveRun){

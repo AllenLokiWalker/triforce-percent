@@ -50,6 +50,16 @@ typedef struct {
 
 extern Gfx gActorXluSetup[3]; //D_80116280
 
+#define WORKING_BUNNYHOOD_VAR gSaveContext.itemGetInf[0x2]
+#define WORKING_BUNNYHOOD_BIT 0x0001
+#define WORKING_GERUDOMASK_VAR gSaveContext.itemGetInf[0x2]
+#define WORKING_GERUDOMASK_BIT 0x0002
+#define NABOORU_CONTINUE_VAR gSaveContext.infTable[0x16]
+#define NABOORU_CONTINUE_BIT 0x0100
+
+#define MESSAGE_ADVANCE_EVENT ((func_8010BDBC(&globalCtx->msgCtx) == 5) && (Message_ShouldAdvance(globalCtx) != 0))
+#define MESSAGE_ADVANCE_CHOICE ((func_8010BDBC(&globalCtx->msgCtx) == 4) && (Message_ShouldAdvance(globalCtx) != 0))
+
 //Functions
 
 extern void Audio_FadeOut(u16 frames);
@@ -65,11 +75,6 @@ static inline const u32 InjectRamRomMap(const void* ram)
 {
     return ((u32)ram & 0x7FFFFFFFu) + 0x04000000u;
 }
-
-#define WORKING_BUNNYHOOD_VAR gSaveContext.itemGetInf[0x2]
-#define WORKING_BUNNYHOOD_BIT 0x0001
-#define WORKING_GERUDOMASK_VAR gSaveContext.itemGetInf[0x2]
-#define WORKING_GERUDOMASK_BIT 0x0002
 
 static inline s32 WearingWorkingBunnyHood(){
     return (Player_GetMask(&gGlobalContext) == PLAYER_MASK_BUNNY) 

@@ -184,13 +184,13 @@ DECLARE_MESSAGE(0x0B60, BOX_BLACK, POS_MIDDLE,
     "wishes her child to know of her" NEWLINE
     "Gerudo origins." BOX_BREAK UNSKIPPABLE
     "Very well! Guards, you may leave" NEWLINE
-    "the girl and I alone."
+    "the girl and I alone." EVENT
 )
 
 DECLARE_MESSAGE(0x0B61, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Well, enough acting, boy. Yes, I" NEWLINE
-    "can see through your disguise."
+    "can see through your disguise." EVENT
 )
 
 DECLARE_MESSAGE(0x0B62, BOX_BLACK, POS_MIDDLE,
@@ -198,7 +198,7 @@ DECLARE_MESSAGE(0x0B62, BOX_BLACK, POS_MIDDLE,
     "A Hylian child pretending to be a" NEWLINE
     "Gerudo. How will that help you in" NEWLINE
     "in stopping the great Ganondorf?" BOX_BREAK UNSKIPPABLE
-    "That is what you want, isn't it?"
+    "That is what you want, isn't it?" EVENT
 )
 
 DECLARE_MESSAGE(0x0B63, BOX_BLACK, POS_MIDDLE,
@@ -210,7 +210,7 @@ DECLARE_MESSAGE(0x0B63, BOX_BLACK, POS_MIDDLE,
     "yours." BOX_BREAK UNSKIPPABLE
     "The power of the Goddesses is all" NEWLINE
     "he desires, even if that means" NEWLINE
-    "betraying us."
+    "betraying us." EVENT
 )
 
 DECLARE_MESSAGE(0x0B64, BOX_BLACK, POS_MIDDLE,
@@ -218,18 +218,22 @@ DECLARE_MESSAGE(0x0B64, BOX_BLACK, POS_MIDDLE,
     "But while your goal is admirable," NEWLINE
     "you're still a child. No kid will" NEWLINE
     "stop Ganondorf." BOX_BREAK UNSKIPPABLE
-    "An adult with your desire, however..." BOX_BREAK UNSKIPPABLE
+    "An adult with your desire, however..." EVENT
+)
+
+DECLARE_MESSAGE(0x0B65, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
     "Ages ago, the Gerudo created a" NEWLINE
     "melody known as the " COLOR(BLUE) "Song of Time" COLOR(WHITE) "." NEWLINE
     "It is such powerful magic that it" NEWLINE
     "was divided in two halves." BOX_BREAK UNSKIPPABLE
     "The first half was granted to the" NEWLINE
     "Royal Family, while the second" NEWLINE
-    "remained in this land."
+    "remained in this land." EVENT
 )
 
 //  "text text text text text text te"
-DECLARE_MESSAGE(0x0B65, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B66, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Do you know what lies beyond the" NEWLINE
     "desert?" BOX_BREAK UNSKIPPABLE
@@ -244,12 +248,16 @@ DECLARE_MESSAGE(0x0B65, BOX_BLACK, POS_MIDDLE,
 )
 
 //  "text text text text text text te"
-DECLARE_MESSAGE(0x0B66, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B67, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "As I said, you're just a kid now." NEWLINE
     "But I sense that you can control" NEWLINE
     "even greater magic than just this" NEWLINE
-    "mask." BOX_BREAK UNSKIPPABLE
+    "mask." EVENT
+)
+
+DECLARE_MESSAGE(0x0B68, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
     "If you're truly who I think you" NEWLINE
     "are, I can teach you both halves" NEWLINE
     "of the " COLOR(BLUE) "Song of Time" COLOR(WHITE) "." BOX_BREAK UNSKIPPABLE
@@ -264,10 +272,10 @@ DECLARE_MESSAGE(0x0B66, BOX_BLACK, POS_MIDDLE,
     "NO"
 )
 
-DECLARE_MESSAGE(0x0B67, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B69, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Come now, I know you want to stop" NEWLINE
-    "Ganondorf."
+    "Ganondorf." EVENT
 )
 
 DECLARE_MESSAGE(0x00D5, BOX_BLUE, POS_MIDDLE,

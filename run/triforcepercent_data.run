@@ -20,10 +20,14 @@ ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl
 OBJECT 17 ../actor/CoSStaircases/zobj.zobj
 ACTOR 26 ../actor/CoSStaircases/cosstaircases.zovl
 ACTOR 31 ../actor/CoSSages/cossages.zovl
+ACTOR 34 ../actor/Nabooru/nabooru.zovl
 
 //Patched Zora's Domain scene
 PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat
 PATCH 0x2103000 ../scene/spot07_scene/zoras_room1.pat
+
+//Patched Thieves' Hideout scene
+PATCH 0x32B1000 ../scene/gerudoway/gerudoway_room_3.pat
 
 //TestVAlpha scene
 //SCENE 41 ../scene/TestVAlpha/TestVAlpha_scene.zscene
