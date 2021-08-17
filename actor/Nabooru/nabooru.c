@@ -24,15 +24,15 @@ static ColliderCylinderInitType1 sCylinderInit = {
 };
 
 static void *const EyeTextures[3] = {
-	&NbEyeOpen,  &NbEyeHalf,  &NbEyeClosed
+	&gNabooruEyeOpenTex,  &gNabooruEyeHalfTex,  &gNabooruEyeClosedTex
 };
 
 typedef struct {
 	Actor actor;
 	SkelAnime skelAnime;
 	ColliderCylinder collider;
-    Vec3s jointTable[MAX_LIMBS];
-    Vec3s morphTable[MAX_LIMBS];
+    Vec3s jointTable[NUM_LIMBS];
+    Vec3s morphTable[NUM_LIMBS];
 	u8 initted;
 	u8 state;
 	u8 eyeTextureIndex;
@@ -56,14 +56,13 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 		anim = &gNabooruSittingCrossLeggedAnim;
 	}
 	en->eyeTextureIndex = 0;
-	en->mouthTextureIndex = 0;
 	en->blinkTimer = 0;
 	en->timer = 0;
 	en->actor.textId = 0x0B60;
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, SHADOW_SIZE);
 	Collider_InitCylinder(globalCtx, &en->collider);
     Collider_SetCylinderType1(globalCtx, &en->collider, &en->actor, &sCylinderInit);
-	SkelAnime_InitFlex(globalCtx, &en->skelAnime, gNabooruSkel, anim, 
+	SkelAnime_InitFlex(globalCtx, &en->skelAnime, &gNabooruSkel, anim, 
 		en->jointTable, en->morphTable, NUM_LIMBS);
 	en->initted = 1;
 }
@@ -120,7 +119,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			en->timer = 0;
 			en->state = NB_STATE_TALK2;
 			en->actor.textId = 0x0B61;
-			func_8010B720(globalCtx, this->actor.textId);
+			func_8010B720(globalCtx, en->actor.textId);
 		}else{
 			++en->timer;
 		}
@@ -139,7 +138,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 				NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
 			}else{
 				++en->actor.textId;
-				func_8010B720(globalCtx, this->actor.textId);
+				func_8010B720(globalCtx, en->actor.textId);
 			}
 		}
 	}else if(en->state == NB_STATE_RELOAD){
@@ -154,20 +153,20 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	}else if(en->state == NB_STATE_TALK3){
 		if(MESSAGE_ADVANCE_EVENT){
 			en->actor.textId = 0x0B68;
-			func_8010B720(globalCtx, this->actor.textId);
+			func_8010B720(globalCtx, en->actor.textId);
 		}else if(MESSAGE_ADVANCE_CHOICE){
-			if(msgCtx->choiceIndex == 0) {
+			if(globalCtx->msgCtx.choiceIndex == 0) {
 				//TODO teach song
 			}else{
 				en->actor.textId = 0x0B69;
-				func_8010B720(globalCtx, this->actor.textId);
+				func_8010B720(globalCtx, en->actor.textId);
 				en->state = NB_STATE_REFUSED;
 			}
 		}
 	}else if(en->state == NB_STATE_REFUSED){
 		if (MESSAGE_ADVANCE_EVENT){
 			en->actor.textId = 0x0B68;
-			func_8010B720(globalCtx, this->actor.textId);
+			func_8010B720(globalCtx, en->actor.textId);
 			en->state = NB_STATE_TALK3;
 		}
 	}
@@ -176,10 +175,10 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 static void draw(Entity *en, GlobalContext *globalCtx) {
 	func_80093D18(globalCtx->state.gfxCtx);
 	void *seg08Tex = EyeTextures[en->eyeTextureIndex];
-	gSPSegment((*gfx)++, 0x08, SEGMENTED_TO_VIRTUAL(seg08Tex));
-    gSPSegment((*gfx)++, 0x09, SEGMENTED_TO_VIRTUAL(seg08Tex));
-    gDPSetEnvColor((*gfx)++, 0, 0, 0, 255);
-    gSPSegment((*gfx)++, 0x0C, &gActorXluSetup[2]); //Skips actual setup, just end DL
+	gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(seg08Tex));
+    gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(seg08Tex));
+    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
+    gSPSegment(POLY_OPA_DISP++, 0x0C, &gActorXluSetup[2]); //Skips actual setup, just end DL
 	SkelAnime_DrawFlexOpa(globalCtx, en->skelAnime.skeleton, en->skelAnime.jointTable,
 		en->skelAnime.dListCount, NULL, NULL, en);
 }

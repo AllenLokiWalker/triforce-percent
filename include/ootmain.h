@@ -57,6 +57,8 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 #define NABOORU_CONTINUE_VAR gSaveContext.infTable[0x16]
 #define NABOORU_CONTINUE_BIT 0x0100
 
+#define Actor_IsTalking func_8002F194
+#define Message_ShouldAdvance func_80106BC8
 #define MESSAGE_ADVANCE_EVENT ((func_8010BDBC(&globalCtx->msgCtx) == 5) && (Message_ShouldAdvance(globalCtx) != 0))
 #define MESSAGE_ADVANCE_CHOICE ((func_8010BDBC(&globalCtx->msgCtx) == 4) && (Message_ShouldAdvance(globalCtx) != 0))
 

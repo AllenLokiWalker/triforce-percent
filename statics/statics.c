@@ -75,7 +75,7 @@ void Statics_TerminatorReturnToNabooru(){
 }
 
 #define NUM_PATCH_TERMINATOR 2
-static const struct { u8 index; void (*function)() } DemoTerminatorPatchTable[NUM_PATCH_TERMINATOR] = {
+static const struct { u8 index; void (*function)(); } DemoTerminatorPatchTable[NUM_PATCH_TERMINATOR] = {
     {0x4F, Statics_TerminatorNabooruToDesertColossus},
     {0x50, Statics_TerminatorReturnToNabooru},
 };
