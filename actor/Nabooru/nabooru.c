@@ -6,6 +6,8 @@
 #define NPC_ACTION_SLOT 1
 #define SHADOW_SIZE 25.0f
 #define NUM_LIMBS 19
+#define NB_LIMB_TORSO 0x08
+#define NB_LIMB_HEAD 0x0F
 
 #define NB_STATE_INIT 0
 #define NB_STATE_TURN 1
@@ -33,6 +35,7 @@ typedef struct {
 	ColliderCylinder collider;
     Vec3s jointTable[NUM_LIMBS];
     Vec3s morphTable[NUM_LIMBS];
+	struct_80034A14_arg1 turnInfo;
 	u8 initted;
 	u8 state;
 	u8 eyeTextureIndex;
@@ -82,6 +85,14 @@ static void updateEyes(Entity *en){
 	en->eyeTextureIndex = (en->blinkTimer < 3) ? en->blinkTimer : 0;
 }
 
+/*
+static void updateTurnInfo(Entity *en, GlobalContext *globalCtx){
+	en->turnInfo.unk_18 = PLAYER->actor.world.pos; //focusPos
+	en->turnInfo.unk_14 = kREG(16) + 9.0f; //eyeHeight
+	func_80034A14(&en->actor, &en->turnInfo, kREG(17) + 0xC, 2);
+}
+*/
+
 static void update(Entity *en, GlobalContext *globalCtx) {
 	Collider_UpdateCylinder(&en->actor, &en->collider);
     CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &en->collider.base);
@@ -97,6 +108,8 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 				&gNabooruSittingCrossLeggedTurningToLookUpRightTransitionAnim),
 				ANIMMODE_ONCE_INTERP, -4.0f);
 			en->state = NB_STATE_TURN;
+		}else{
+			Actor_RequestToTalk(&en->actor, globalCtx);
 		}
 	}else if(en->state == NB_STATE_TURN){
 		if(animDone){
@@ -106,7 +119,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 				Animation_GetLastFrame(
 				&gNabooruSittingCrossLeggedLookingUpRightAnim),
 				ANIMMODE_LOOP, 0.0f);
-			func_8010B680(globalCtx, en->actor.textId, NULL);
+			MESSAGE_START;
 			en->state = NB_STATE_TALK1;
 		}
 	}else if(en->state == NB_STATE_TALK1){
@@ -119,7 +132,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			en->timer = 0;
 			en->state = NB_STATE_TALK2;
 			en->actor.textId = 0x0B61;
-			func_8010B720(globalCtx, en->actor.textId);
+			MESSAGE_CONTINUE;
 		}else{
 			++en->timer;
 		}
@@ -128,7 +141,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		if(en->timer == 20){
 			//TODO trigger Link surprised action
 			en->timer = -1;
-		}
+		} //func_80AB3DB0
 		if(MESSAGE_ADVANCE_EVENT){
 			if(en->actor.textId == 0x0B65){
 				gGlobalContext.nextEntranceIndex = 0x0127;
@@ -138,7 +151,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 				NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
 			}else{
 				++en->actor.textId;
-				func_8010B720(globalCtx, en->actor.textId);
+				MESSAGE_CONTINUE;
 			}
 		}
 	}else if(en->state == NB_STATE_RELOAD){
@@ -146,30 +159,52 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			//TODO set Link position
 		}else if(en->timer == 20){
 			en->actor.textId = 0x0B67;
-			func_8010B680(globalCtx, en->actor.textId, NULL);
+			MESSAGE_START;
 			en->state = NB_STATE_TALK3;
 		}
 		++en->timer;
 	}else if(en->state == NB_STATE_TALK3){
 		if(MESSAGE_ADVANCE_EVENT){
 			en->actor.textId = 0x0B68;
-			func_8010B720(globalCtx, en->actor.textId);
+			MESSAGE_CONTINUE;
 		}else if(MESSAGE_ADVANCE_CHOICE){
 			if(globalCtx->msgCtx.choiceIndex == 0) {
 				//TODO teach song
 			}else{
 				en->actor.textId = 0x0B69;
-				func_8010B720(globalCtx, en->actor.textId);
+				MESSAGE_CONTINUE;
 				en->state = NB_STATE_REFUSED;
 			}
 		}
 	}else if(en->state == NB_STATE_REFUSED){
 		if (MESSAGE_ADVANCE_EVENT){
 			en->actor.textId = 0x0B68;
-			func_8010B720(globalCtx, en->actor.textId);
+			MESSAGE_CONTINUE;
 			en->state = NB_STATE_TALK3;
 		}
 	}
+}
+
+s32 Nabooru_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+	//TODO
+	return false;
+}
+
+void Nabooru_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+	Entity *en = (Entity*)thisx;
+
+    if (limbIndex == NB_LIMB_HEAD) {
+        Vec3f vec1 = { 0.0f, 10.0f, 0.0f };
+        Vec3f vec2;
+
+        Matrix_MultVec3f(&vec1, &vec2);
+        en->actor.focus.pos.x = vec2.x;
+        en->actor.focus.pos.y = vec2.y;
+        en->actor.focus.pos.z = vec2.z;
+        en->actor.focus.rot.x = en->actor.world.rot.x;
+        en->actor.focus.rot.y = en->actor.world.rot.y;
+        en->actor.focus.rot.z = en->actor.world.rot.z;
+    }
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
@@ -180,7 +215,7 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &gActorXluSetup[2]); //Skips actual setup, just end DL
 	SkelAnime_DrawFlexOpa(globalCtx, en->skelAnime.skeleton, en->skelAnime.jointTable,
-		en->skelAnime.dListCount, NULL, NULL, en);
+		en->skelAnime.dListCount, Nabooru_OverrideLimbDraw, Nabooru_PostLimbDraw, en);
 }
 
 const ActorInit init_vars = {
