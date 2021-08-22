@@ -183,17 +183,22 @@ DECLARE_MESSAGE(0x0B60, BOX_BLACK, POS_MIDDLE,
     "How nice of her. I'm pleased she" NEWLINE
     "wishes her child to know of her" NEWLINE
     "Gerudo origins." BOX_BREAK UNSKIPPABLE
-    "Very well! Guards, you may leave" NEWLINE
-    "the girl and I alone." EVENT
+    QUICKTEXT_ENABLE "Very well!" QUICKTEXT_DISABLE EVENT
+)
+    
+DECLARE_MESSAGE(0x0B61, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "Guards, you may leave the girl" NEWLINE
+    "and I alone." EVENT
 )
 
-DECLARE_MESSAGE(0x0B61, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B62, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Well, enough acting, boy. Yes, I" NEWLINE
     "can see through your disguise." EVENT
 )
 
-DECLARE_MESSAGE(0x0B62, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B63, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "A Hylian child pretending to be a" NEWLINE
     "Gerudo. How will that help you in" NEWLINE
@@ -201,7 +206,7 @@ DECLARE_MESSAGE(0x0B62, BOX_BLACK, POS_MIDDLE,
     "That is what you want, isn't it?" EVENT
 )
 
-DECLARE_MESSAGE(0x0B63, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B64, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "You may think I'm your enemy," NEWLINE
     "being a Gerudo like him." BOX_BREAK UNSKIPPABLE
@@ -210,10 +215,10 @@ DECLARE_MESSAGE(0x0B63, BOX_BLACK, POS_MIDDLE,
     "yours." BOX_BREAK UNSKIPPABLE
     "The power of the Goddesses is all" NEWLINE
     "he desires, even if that means" NEWLINE
-    "betraying us." EVENT
+    "betraying us all." EVENT
 )
 
-DECLARE_MESSAGE(0x0B64, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B65, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "But while your goal is admirable," NEWLINE
     "you're still a child. No kid will" NEWLINE
@@ -221,7 +226,7 @@ DECLARE_MESSAGE(0x0B64, BOX_BLACK, POS_MIDDLE,
     "An adult with your desire, however..." EVENT
 )
 
-DECLARE_MESSAGE(0x0B65, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B66, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Ages ago, the Gerudo created a" NEWLINE
     "melody known as the " COLOR(BLUE) "Song of Time" COLOR(WHITE) "." NEWLINE
@@ -229,11 +234,11 @@ DECLARE_MESSAGE(0x0B65, BOX_BLACK, POS_MIDDLE,
     "was divided in two halves." BOX_BREAK UNSKIPPABLE
     "The first half was granted to the" NEWLINE
     "Royal Family, while the second" NEWLINE
-    "remained in this land." EVENT
+    "half remained in this land." EVENT
 )
 
 //  "text text text text text text te"
-DECLARE_MESSAGE(0x0B66, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B67, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Do you know what lies beyond the" NEWLINE
     "desert?" BOX_BREAK UNSKIPPABLE
@@ -248,7 +253,7 @@ DECLARE_MESSAGE(0x0B66, BOX_BLACK, POS_MIDDLE,
 )
 
 //  "text text text text text text te"
-DECLARE_MESSAGE(0x0B67, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B68, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "As I said, you're just a kid now." NEWLINE
     "But I sense that you can control" NEWLINE
@@ -256,26 +261,30 @@ DECLARE_MESSAGE(0x0B67, BOX_BLACK, POS_MIDDLE,
     "mask." EVENT
 )
 
-DECLARE_MESSAGE(0x0B68, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B69, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "If you're truly who I think you" NEWLINE
     "are, I can teach you both halves" NEWLINE
     "of the " COLOR(BLUE) "Song of Time" COLOR(WHITE) "." BOX_BREAK UNSKIPPABLE
     "By playing it, you'll be able to" NEWLINE
     "overcome the trials of the " COLOR(TYPE1_ORANGE) "Desert" NEWLINE
-    "Colossus" COLOR(WHITE) "," BOX_BREAK UNSKIPPABLE
-    "and you'll become the man who" NEWLINE
-    "could stand against Ganondorf." BOX_BREAK UNSKIPPABLE
+    "Colossus" COLOR(WHITE) "..." BOX_BREAK UNSKIPPABLE
+    "...and you'll become a man who" NEWLINE
+    "can stand against Ganondorf." EVENT
+)
+
+DECLARE_MESSAGE(0x0B6A, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
     "Is this really what you want?" NEWLINE
     NEWLINE
     TWO_CHOICE COLOR(GREEN) "Yes" NEWLINE
-    "NO"
+    "No"
 )
 
-DECLARE_MESSAGE(0x0B69, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B6B, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
-    "Come now, I know you want to stop" NEWLINE
-    "Ganondorf." EVENT
+    "Come now, I know you want to" NEWLINE
+    "stop Ganondorf." EVENT
 )
 
 DECLARE_MESSAGE(0x00D5, BOX_BLUE, POS_MIDDLE,

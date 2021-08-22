@@ -59,6 +59,7 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 
 #define Actor_IsTalking func_8002F194
 #define Actor_RequestToTalk func_8002F2F4
+#define Actor_RequestToTalkInRange func_8002F2CC
 #define Message_ShouldAdvance func_80106BC8
 #define MESSAGE_START func_8010B680(globalCtx, en->actor.textId, NULL)
 #define MESSAGE_CONTINUE func_8010B720(globalCtx, en->actor.textId)

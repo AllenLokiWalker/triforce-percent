@@ -54,9 +54,19 @@ void DmaPatcher_AddPatch(u32 vrom, u8* patch)
         Debugger_Printf("AddPatch %08X: Too many patches!", vrom);
     }else{
         //Debugger_Printf("AddPatch %d VROM %08X inj %08X", patcher.npatches+1, vrom, patch);
-        patcher.patches[patcher.npatches].vrom = vrom;
-        patcher.patches[patcher.npatches].patch = patch;
-        ++patcher.npatches;
+        s32 flag = 0;
+        for(u32 p=0; p<patcher.npatches; ++p){
+            if(patcher.patches[p].vrom == vrom){
+                patcher.patches[p].patch = patch;
+                flag = 1;
+                break;
+            }
+        }
+        if(!flag){
+            patcher.patches[patcher.npatches].vrom = vrom;
+            patcher.patches[patcher.npatches].patch = patch;
+            ++patcher.npatches;
+        }
     }
     __osRestoreInt(i);
 }

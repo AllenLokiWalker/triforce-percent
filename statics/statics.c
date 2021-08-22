@@ -320,7 +320,9 @@ void Statics_TimeTravel(){
     //unk_E3F0 == ocarina_no == 0x104C8 == unk_15_2[2] except u16
     //unk_E40E == 0x104E6 == unk_104E4[2] except s16
     //if(*((u16*)&(gGlobalContext.unk_15_2[0])) >= 2) return;
-    if(gGlobalContext.sceneNum == 0x43) return; //in Temple of Time
+    if(gGlobalContext.sceneNum == SCENE_TOKINOMA || gGlobalContext.sceneNum == SCENE_GERUDOWAY){
+        return; //in Temple of Time or Thieves' Hideout
+    }
     //Time travel
     gGlobalContext.linkAgeOnLoad = gSaveContext.linkAge ^ 1;
     //gGlobalContext.unk_1D_ = 1; //unk_11DE9 not sure? next variable after link_age
