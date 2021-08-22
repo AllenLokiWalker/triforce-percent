@@ -134,11 +134,7 @@ DECLARE_MESSAGE(0x0016, BOX_BLUE, POS_MIDDLE,
 DECLARE_MESSAGE(0x0B40, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "A Gerudo child far from the desert?" NEWLINE
-    "My! Your father must be Hylian."
-)
-
-DECLARE_MESSAGE(0x0B41, BOX_BLACK, POS_MIDDLE,
-    UNSKIPPABLE
+    "My! Your father must be Hylian." BOX_BREAK UNSKIPPABLE
     "Is this your first time visiting?" NEWLINE
     "Come in and greet your Gerudo" NEWLINE
     "sisters!"

@@ -338,3 +338,17 @@ void Statics_TimeTravel(){
     gSaveContext.night_seq_index = 0xFF;
     */
 }
+
+void Statics_Ge2DialogueChooser(){
+    asm(".set noat\n .set noreorder\n"
+    "lui   $t0, %hi(gSaveContext)\n"
+    "addiu $t1, $t0, %lo(gSaveContext)\n"
+    "lbu   $t2, 0x0F24($t1)\n"
+    "srl   $t3, $t2, 6\n"
+    "addiu $t6, $t2, 0x0040\n"
+    "addiu $t5, $t3, 0x0B50\n"
+    "sb    $t6, 0x0F24($t1)\n"
+    "jr $ra\n"
+    "sh    $t5, 0x010E($s0)\n"
+    ".set at\n .set reorder");
+}

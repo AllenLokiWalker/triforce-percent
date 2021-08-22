@@ -4,6 +4,7 @@ PATCH 0xEA7360 ../actor/z_oceff_wipe/actor.pat
 PATCH 0xC7B1F0 ../actor/z_en_xc/actor.pat
 PATCH 0xCC8430 ../actor/z_demo_effect/actor.pat
 PATCH 0xCB66A0 ../actor/z_bg_toki_swd/actor.pat
+PATCH 0xE9F0D0 ../actor/z_en_ge2/actor.pat
 
 //Misc scene patches
 PATCH 0x32B1000 ../scene/gerudoway/gerudoway_room_3.pat

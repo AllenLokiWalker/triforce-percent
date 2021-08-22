@@ -34,6 +34,28 @@ typedef struct {
 	Actor *guardActor;
 } Entity;
 
+typedef struct EnGe2 {
+    /* 0x0000 */ Actor actor;
+    /* 0x014C */ ColliderCylinder collider;
+    /* 0x0198 */ SkelAnime skelAnime;
+    /* 0x01DC */ Vec3s jointTable[22];
+    /* 0x0260 */ Vec3s morphTable[22];
+    /* 0x02E4 */ s16 eyeIndex;
+    /* 0x02E6 */ s16 blinkTimer;
+    /* 0x02E8 */ Vec3s headRot;
+    /* 0x02EE */ Vec3s unk_2EE;
+    /* 0x02F4 */ u16 stateFlags;
+    /* 0x02F6 */ s16 walkDirection;
+    /* 0x02F8 */ s16 yawTowardsPlayer;
+    /* 0x02FC */ f32 yDetectRange;
+    /* 0x0300 */ u16 walkDuration;
+    /* 0x0302 */ u16 walkTimer;
+    /* 0x0304 */ u8 unk_304;
+    /* 0x0305 */ u8 timer;
+    /* 0x0306 */ u8 playerSpottedParam;
+    /* 0x0308 */ void* actionFunc;
+} EnGe2; // size = 0x030C
+
 static void update_Init(Entity *en, GlobalContext *globalCtx);
 static void update_Talk1(Entity *en, GlobalContext *globalCtx);
 static void update_TalkGuards(Entity *en, GlobalContext *globalCtx);
@@ -62,6 +84,7 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	en->eyeTextureIndex = 0;
 	en->blinkTimer = 0;
 	en->timer = 0;
+	en->guardActor = NULL;
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, SHADOW_SIZE);
 	Collider_InitCylinder(globalCtx, &en->collider);
     Collider_SetCylinderType1(globalCtx, &en->collider, &en->actor, &sCylinderInit);
@@ -85,7 +108,7 @@ static void updateEyes(Entity *en){
 	en->eyeTextureIndex = (en->blinkTimer < 3) ? en->blinkTimer : 0;
 }
 
-static Actor *FindGuard(Actor *nabooru, GlobalContext *globalCtx){
+static Actor *FindGuardToTalk(Actor *nabooru, GlobalContext *globalCtx){
 	Actor* actor = globalCtx->actorCtx.actorLists[ACTORCAT_NPC].head;
     while (actor != NULL) {
         if(actor->id == ACTOR_EN_GE2 && actor->world.pos.x > nabooru->world.pos.x){
@@ -94,6 +117,59 @@ static Actor *FindGuard(Actor *nabooru, GlobalContext *globalCtx){
 		actor = actor->next;
     }
     return NULL;
+}
+
+//mode 1: kill all
+static void KillGuards(Entity *en, GlobalContext *globalCtx, s32 mode){
+	Actor* actor = globalCtx->actorCtx.actorLists[ACTORCAT_NPC].head;
+    while (actor != NULL) {
+        if(actor->id == ACTOR_EN_GE2 && (mode == 1 || actor != en->guardActor)){
+			Actor_Kill(actor);
+		}
+		actor = actor->next;
+    }
+	if(mode) en->guardActor = NULL;
+}
+
+static void GuardSetup(Actor *thisx, GlobalContext *globalCtx){
+	EnGe2 *en = (EnGe2*)thisx;
+	Animation_Change(&en->skelAnime, &gGerudoPurpleWalkingAnim, 1.5f, 0.0f, 
+		Animation_GetLastFrame(&gGerudoPurpleWalkingAnim), ANIMMODE_LOOP, -8.0f);
+	en->timer = 0;
+	en->unk_304 = 0; //used as state index
+	en->eyeIndex = 0;
+}
+
+static void GuardUpdateExit(Actor *thisx, GlobalContext *globalCtx){
+	EnGe2 *en = (EnGe2*)thisx;
+	static const Vec3f pathPoints[5] = {
+		{2200.0f, 0.0f, -638.0f},
+		{2200.0f, 0.0f, -720.0f},
+		{2200.0f, 160.0f, -920.0f},
+		{2300.0f, 160.0f, -1039.0f},
+		{2300.0f, 280.0f, -1280.0f}
+	};
+	static const u8 nFrames[5] = {10, 10, 10, 10, 10};
+	Vec3f curpos = en->actor.world.pos;
+	Vec3f dp = pathPoints[en->unk_304];
+	dp.x -= curpos.x; dp.y -= curpos.y; dp.z -= curpos.z;
+	en->actor.shape.rot.x = en->actor.shape.rot.z = 0;
+	en->actor.shape.rot.y = Math_Atan2S(dp.z, dp.x);
+	float ratio = 1.0f / (float)(nFrames[en->unk_304] - en->timer);
+	dp.x *= ratio; dp.y *= ratio; dp.z *= ratio;
+	curpos.x += dp.x; curpos.y += dp.y; curpos.z += dp.z;
+	en->actor.world.pos = curpos;
+	++en->timer;
+	if(en->timer >= nFrames[en->unk_304]){
+		en->timer = 0;
+		++en->unk_304;
+		if(en->unk_304 >= 5){
+			Actor_Kill(&en->actor);
+		}
+	}
+	Collider_UpdateCylinder(&en->actor, &en->collider);
+    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &en->collider.base);
+    Actor_UpdateBgCheckInfo(globalCtx, &en->actor, 40.0f, 25.0f, 40.0f, 5);
 }
 
 static void updateTurnInfo(Entity *en, GlobalContext *globalCtx, s32 mode){
@@ -137,7 +213,8 @@ static void update_Talk1(Entity *en, GlobalContext *globalCtx){
 	if(MESSAGE_ADVANCE_EVENT){
 		en->actor.update = (ActorFunc)update_TalkGuards;
 		en->actor.textId = 0x0B61;
-		en->guardActor = FindGuard(&en->actor, globalCtx);
+		en->guardActor = FindGuardToTalk(&en->actor, globalCtx);
+		KillGuards(en, globalCtx, 0);
 		MESSAGE_CONTINUE;
 	}
 }
@@ -145,6 +222,10 @@ static void update_Talk1(Entity *en, GlobalContext *globalCtx){
 static void update_TalkGuards(Entity *en, GlobalContext *globalCtx){
 	updateCommon(en, globalCtx, 1);
 	if(MESSAGE_ADVANCE_EVENT){
+		if(en->guardActor != NULL){
+			GuardSetup(en->guardActor, globalCtx);
+			en->guardActor->update = GuardUpdateExit;
+		}
 		en->actor.update = (ActorFunc)update_WaitGuards;
 		en->timer = 0;
 	}
@@ -152,7 +233,8 @@ static void update_TalkGuards(Entity *en, GlobalContext *globalCtx){
 
 static void update_WaitGuards(Entity *en, GlobalContext *globalCtx){
 	updateCommon(en, globalCtx, 1);
-	if(en->timer == 50){
+	if(en->timer == 80){
+		KillGuards(en, globalCtx, 1);
 		en->timer = 0;
 		en->actor.update = (ActorFunc)update_Talk2;
 		en->actor.textId = 0x0B62;
@@ -191,6 +273,7 @@ static void update_Reload(Entity *en, GlobalContext *globalCtx){
 		PLAYER->actor.world.pos = reloadLinkPos;
 		PLAYER->actor.world.rot = reloadLinkRot;
 		PLAYER->actor.shape.rot = reloadLinkRot;
+		KillGuards(en, globalCtx, 1);
 	}
 	if(Actor_IsTalking(&en->actor, globalCtx)){
 		en->actor.update = (ActorFunc)update_Talk3;

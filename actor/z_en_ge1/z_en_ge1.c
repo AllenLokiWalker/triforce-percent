@@ -524,10 +524,10 @@ static void EnGe1_GetReaction_GateGuard(EnGe1* this, GlobalContext* globalCtx) {
 	}
 	
 	/* Triforce% special reaction text: reroute "You've got guts coming
-	around here wearing that!" to "Hey, newcomer! I'll open the gate!"
+	around here wearing that!" to gatekeeper custom text
 	 */
 	if (reactionText == 0x719f)
-		reactionText = 0x6002;
+		reactionText = 0x0B40;
 
 	if (EnGe1_SetTalkAction(this, globalCtx, reactionText, 100.0f, EnGe1_Talk_GateGuard)) {
 		this->animFunc = EnGe1_CueUpAnimation;
