@@ -40,7 +40,7 @@ u16 UnicornFountain_scene_header00_exitList[1] = {
 };
 
 LightSettings UnicornFountain_scene_header00_lightSettings[1] = {
-	{ 62, 99, 143, 73, 73, 73, 219, 216, 170, 183, 183, 183, 21, 104, 133, 184, 177, 196, 0x07e1, 12800 },
+	{ 0x3E, 0x63, 0x8F, 0x49, 0x49, 0x49, 0xDB, 0xD8, 0xAA, 0xB7, 0xB7, 0xB7, 0x15, 0x68, 0x85, 0xB8, 0xB1, 0xC4, 0x07E1, 0x3200 },
 };
 
 u32 UnicornFountain_polygonTypes[] = {
@@ -615,9 +615,10 @@ s32 UnicornFountain_scene_header00_cutscene[] = {
 		CS_PLAYER_ACTION(0x0005, 0, 445, 0x0, 0xffff8000, 0x0, 0, -16, -568, 0, -16, -568, 0, 0, 0),
 		CS_PLAYER_ACTION(0x0011, 445, 990, 0x0, 0xffff8000, 0x0, 0, -16, -568, 0, -16, -568, 0, 0, 0),
 		CS_PLAYER_ACTION(0x003E, 990, 1000, 0x0, 0xffff8000, 0x0, 0, -16, -568, 0, -16, -568, 0, 0, 0),
-		CS_PLAYER_ACTION(0x0005, 1000, 1001, 0x0, 0xffff8000, 0x0, 0, -16, -568, 0, -16, -568, 0, 0, 0),
+		CS_PLAYER_ACTION(0x003F, 1000, 1001, 0x0, 0xffff8000, 0x0, 0, -16, -568, 0, -16, -568, 0, 0, 0),
 	CS_NPC_ACTION_LIST(55, 2),
 		CS_NPC_ACTION(1, 135, 1010, 0x0, 0x0, 0x0, 15, 0, 10, 15, 0, 0, 0, 0, 0),
 		CS_NPC_ACTION(2, 1010, 1011, 0x0, 0x0, 0x0, 15, 0, 0, 15, 0, -10, 0, 0, 0),
 	CS_END(),
 };
+

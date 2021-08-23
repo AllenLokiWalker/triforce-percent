@@ -27,8 +27,8 @@ s16 UnicornFountain_room_0_header00_objectList[2] = {
 
 ActorEntry UnicornFountain_room_0_header00_actorList[3] = {
 	{ 6, 0, 29, -760, 0, 0, 0, 0x0000 },
-	{ 23, 0, -28, -568, 0, 0, 0, 0x0000 },
 	{ ACTOR_EN_OKARINA_TAG, 0, -21, -568, 0, 0, 0, 0x1CA0 },
+	{ 23, 0, -28, -568, 0, 0, 0, 0x0000 },
 };
 
 MeshHeader0 UnicornFountain_room_0_meshHeader = { {0}, 1, (u32)&UnicornFountain_room_0_meshDListEntry, (u32)&(UnicornFountain_room_0_meshDListEntry) + sizeof(UnicornFountain_room_0_meshDListEntry) };

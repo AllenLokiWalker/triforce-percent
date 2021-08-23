@@ -152,7 +152,7 @@ DECLARE_MESSAGE(0x0B51, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Our fortress seems to be smaller" NEWLINE
     "every day." BOX_BREAK UNSKIPPABLE
-    "Some day, I suppose there'll be" NEWLINE
+    "Someday, I suppose there'll be" NEWLINE
     "nothing left but desert."
 )
 
@@ -227,7 +227,7 @@ DECLARE_MESSAGE(0x0B66, BOX_BLACK, POS_MIDDLE,
     "Ages ago, the Gerudo created a" NEWLINE
     "melody known as the " COLOR(BLUE) "Song of Time" COLOR(WHITE) "." NEWLINE
     "It is such powerful magic that it" NEWLINE
-    "was divided in two halves." BOX_BREAK UNSKIPPABLE
+    "was divided into two halves." BOX_BREAK UNSKIPPABLE
     "The first half was granted to the" NEWLINE
     "Royal Family, while the second" NEWLINE
     "half remained in this land."
@@ -284,19 +284,33 @@ DECLARE_MESSAGE(0x0B6B, BOX_BLACK, POS_MIDDLE,
 )
 
 DECLARE_MESSAGE(0x087A, BOX_OCARINA, POS_VARIABLE,
-    QUICKTEXT_ENABLE SHIFT("\x04") "This is the " COLOR(BLUE) "full Song of Time" COLOR(WHITE) "..." NEWLINE
+    QUICKTEXT_ENABLE SHIFT("\x14") "This is the " COLOR(BLUE) "full Song of Time" COLOR(WHITE) "..." NEWLINE
     NEWLINE
     NEWLINE
     QUICKTEXT_DISABLE OCARINA
 )
 
+DECLARE_MESSAGE(0x089D, BOX_OCARINA, POS_VARIABLE,
+    QUICKTEXT_ENABLE  SHIFT("\x08") "You played the " COLOR(BLUE) "full Song of Time" COLOR(WHITE) "." NEWLINE
+    NEWLINE
+    NEWLINE
+    QUICKTEXT_DISABLE
+)
+
 DECLARE_MESSAGE(0x00D5, BOX_BLUE, POS_MIDDLE,
     UNSKIPPABLE
-    "You've learned the " COLOR(BLUE) "full Song of Time" COLOR(WHITE) "!" NEWLINE
+    SHIFT("\x18") "You've learned the" NEWLINE 
+    SHIFT("\x18") COLOR(BLUE) "full Song of Time" COLOR(WHITE) "!" NEWLINE
     "This song is proof of a true Hero's" NEWLINE
     "courage." BOX_BREAK UNSKIPPABLE
-    "Play it as a child to become an adult," NEWLINE
-    "and as an adult to become a child."
+    "Play it as a child to become an" NEWLINE
+    "adult, and as an adult to become" NEWLINE
+    "a child."
+)
+
+DECLARE_MESSAGE(0x0B6C, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "I'll see you again in a few years!"
 )
 
 

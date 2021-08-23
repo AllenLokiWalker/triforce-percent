@@ -56,6 +56,8 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 #define WORKING_GERUDOMASK_BIT 0x0002
 #define NABOORU_CONTINUE_VAR gSaveContext.infTable[0x16] //0x0F24 bit 1<<0
 #define NABOORU_CONTINUE_BIT 0x0100
+#define NABOORU_DONE_VAR gSaveContext.infTable[0x16] //0x0F24 bit 1<<1
+#define NABOORU_DONE_BIT 0x0200
 //Using 0xF24 bits 1<<6 and 1<<7 for ge2 dialogue chooser
 
 #define Actor_IsTalking func_8002F194

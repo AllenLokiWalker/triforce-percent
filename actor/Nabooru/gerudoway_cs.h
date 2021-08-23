@@ -1,1 +1,2 @@
-extern s32 NabooruPanAway[];
+extern s32 NabooruPanAwayCS[];
+extern s32 NabooruSecondHalfCS[];

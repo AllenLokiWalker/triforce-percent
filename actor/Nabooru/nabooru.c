@@ -64,10 +64,13 @@ static void update_TalkGuards(Entity *en, GlobalContext *globalCtx);
 static void update_WaitGuards(Entity *en, GlobalContext *globalCtx);
 static void update_Talk2(Entity *en, GlobalContext *globalCtx);
 static void update_Reload(Entity *en, GlobalContext *globalCtx);
-static void update_Talk3(Entity *en, GlobalContext *globalCtx);
-static void update_Refused(Entity *en, GlobalContext *globalCtx);
-static void update_Teach1(Entity *en, GlobalContext *globalCtx);
-static void update_Teach2(Entity *en, GlobalContext *globalCtx);
+static void update_WaitAction1(Entity *en, GlobalContext *globalCtx);
+static void update_WaitChoice(Entity *en, GlobalContext *globalCtx);
+static void update_WaitAction2(Entity *en, GlobalContext *globalCtx);
+static void update_PreTakeOutInstrument(Entity *en, GlobalContext *globalCtx);
+static void update_TakingOutInstrument(Entity *en, GlobalContext *globalCtx);
+static void update_PlayingInstrument(Entity *en, GlobalContext *globalCtx);
+static void update_Done(Entity *en, GlobalContext *globalCtx);
 
 static void init(Entity *en, GlobalContext *globalCtx) {
 	en->initted = 0;
@@ -79,6 +82,9 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 		NABOORU_CONTINUE_VAR &= ~NABOORU_CONTINUE_BIT;
 		en->actor.update = (ActorFunc)update_Reload;
 		en->actor.textId = 0x0B68;
+	}else if((NABOORU_DONE_VAR & NABOORU_DONE_BIT)){
+		en->actor.update = (ActorFunc)update_Done;
+		en->actor.textId = 0x0B6C;
 	}else{
 		en->actor.update = (ActorFunc)update_Init;
 		en->actor.textId = 0x0B60;
@@ -133,12 +139,21 @@ static void KillGuards(Entity *en, GlobalContext *globalCtx, s32 mode){
 	if(mode) en->guardActor = NULL;
 }
 
-
 static void GuardUpdateCommon(EnGe2 *en, GlobalContext *globalCtx){
 	Collider_UpdateCylinder(&en->actor, &en->collider);
     CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &en->collider.base);
     Actor_UpdateBgCheckInfo(globalCtx, &en->actor, 40.0f, 25.0f, 40.0f, 5);
 	SkelAnime_Update(&en->skelAnime);
+}
+
+static void BetterStepToAngleS(s16 *angle, s16 target, s32 shift){
+	s16 step = *angle - target;
+	if(step < 0) step = -step;
+	s16 delta = step;
+	step >>= shift;
+	if(step < 0x80) step = 0x80;
+	if(step > delta) step = delta;
+	Math_StepToAngleS(angle, target, step);
 }
 
 static void GuardUpdateTurn(Actor *thisx, GlobalContext *globalCtx){
@@ -149,14 +164,7 @@ static void GuardUpdateTurn(Actor *thisx, GlobalContext *globalCtx){
 			Animation_GetLastFrame(&gGerudoPurpleLookingAboutAnim), ANIMMODE_LOOP, -8.0f);
 		en->eyeIndex = 0;
 	}
-	s16 yawTarget = en->actor.yawTowardsPlayer;
-	s16 step = en->actor.shape.rot.y - yawTarget;
-	if(step < 0) step = -step;
-	s16 delta = step;
-	step >>= 3;
-	if(step < 0x80) step = 0x80;
-	if(step > delta) step = delta;
-	Math_StepToAngleS(&en->actor.shape.rot.y, yawTarget, step);
+	BetterStepToAngleS(&en->actor.shape.rot.y, en->actor.yawTowardsPlayer, 3);
 	GuardUpdateCommon(en, globalCtx);
 }
 
@@ -197,7 +205,13 @@ static void GuardUpdateExit(Actor *thisx, GlobalContext *globalCtx){
 }
 
 static void updateTurnInfo(Entity *en, GlobalContext *globalCtx, s32 mode){
-	if(mode < 0) return;
+	if(mode < 0){
+		BetterStepToAngleS(&en->turnInfo.unk_08.x, 0, 2);
+		BetterStepToAngleS(&en->turnInfo.unk_08.y, 0, 2);
+		BetterStepToAngleS(&en->turnInfo.unk_0E.x, 0, 2);
+		BetterStepToAngleS(&en->turnInfo.unk_0E.y, 0, 2);
+		return;
+	}
 	f32 eyeHeight;
 	Actor *target;
 	if(mode == 1){
@@ -213,12 +227,12 @@ static void updateTurnInfo(Entity *en, GlobalContext *globalCtx, s32 mode){
 	func_80034A14(&en->actor, &en->turnInfo, kREG(17) + 0xC, 2);
 }
 
-static s32 updateCommon(Entity *en, GlobalContext *globalCtx, s32 guard) {
+static s32 updateCommon(Entity *en, GlobalContext *globalCtx, s32 turnMode) {
 	Collider_UpdateCylinder(&en->actor, &en->collider);
     CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &en->collider.base);
 	Actor_UpdateBgCheckInfo(globalCtx, &en->actor, 75.0f, 30.0f, 30.0f, 5);
 	updateEyes(en);
-	updateTurnInfo(en, globalCtx, guard);
+	updateTurnInfo(en, globalCtx, turnMode);
 	return SkelAnime_Update(&en->skelAnime);
 }
 
@@ -282,13 +296,7 @@ static void update_Talk2(Entity *en, GlobalContext *globalCtx){
 	if(MESSAGE_ADVANCE_EVENT){
 		if(en->actor.textId == 0x0B65){
 			NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
-			/*
-			//gGlobalContext.nextEntranceIndex = 0x0127;
-			gGlobalContext.sceneLoadFlag = 0x14;
-			//gSaveContext.cutsceneIndex = 0xFFF0;
-			gGlobalContext.fadeTransition = 3;
-			*/
-			globalCtx->csCtx.segment = &NabooruPanAway;
+			globalCtx->csCtx.segment = &NabooruPanAwayCS;
 			gSaveContext.cutsceneTrigger = 1;
 		}else{
 			++en->actor.textId;
@@ -299,72 +307,84 @@ static void update_Talk2(Entity *en, GlobalContext *globalCtx){
 
 static void update_Reload(Entity *en, GlobalContext *globalCtx){
 	updateCommon(en, globalCtx, 0);
-	if(en->timer == 0){
-		static const Vec3f reloadLinkPos = {1904.0f, 0.0f, -688.0f};
-		static const Vec3s reloadLinkRot = {0, 0x5555, 0};
-		PLAYER->actor.world.pos = reloadLinkPos;
-		PLAYER->actor.world.rot = reloadLinkRot;
-		PLAYER->actor.shape.rot = reloadLinkRot;
-		KillGuards(en, globalCtx, 1);
+	/*
+	static const Vec3f reloadLinkPos = {1904.0f, 0.0f, -688.0f};
+	static const Vec3s reloadLinkRot = {0, 0x5555, 0};
+	PLAYER->actor.world.pos = reloadLinkPos;
+	PLAYER->actor.world.rot = reloadLinkRot;
+	PLAYER->actor.shape.rot = reloadLinkRot;
+	*/
+	KillGuards(en, globalCtx, 1);
+	globalCtx->csCtx.segment = &NabooruSecondHalfCS;
+	gSaveContext.cutsceneTrigger = 1;
+	en->actor.update = (ActorFunc)update_WaitAction1;
+}
+
+static void update_WaitAction1(Entity *en, GlobalContext *globalCtx){
+	updateCommon(en, globalCtx, 0);
+	if(CHECK_NPC_ACTION(NPC_ACTION_SLOT, 1)){
+		en->actor.textId = 0x0B6A;
+		MESSAGE_CONTINUE;
+		en->actor.update = (ActorFunc)update_WaitChoice;
 	}
-	if(Actor_IsTalking(&en->actor, globalCtx)){
-		en->actor.flags &= ~0x10000; //disable auto talk
-		en->actor.update = (ActorFunc)update_Talk3;
-	}else{
-		en->actor.flags |= 0x10000; //auto talk
-		Actor_RequestToTalkInRange(&en->actor, globalCtx, 1000.0f);
-		/*
-		PLAYER->targetActor = &en->actor;
-	    PLAYER->targetActorDistance = en->actor.xzDistToPlayer;
-	    PLAYER->exchangeItemId = EXCH_ITEM_NONE;
-		*/
+}
+
+static void update_WaitChoice(Entity *en, GlobalContext *globalCtx){
+	globalCtx->csCtx.frames--;
+	updateCommon(en, globalCtx, 0);
+	if(MESSAGE_ADVANCE_CHOICE){
+		if(globalCtx->msgCtx.choiceIndex == 0){
+			en->actor.update = (ActorFunc)update_WaitAction2;
+		}else{
+			en->actor.textId = 0x0B6B;
+			MESSAGE_CONTINUE;
+		}
+	}else if(MESSAGE_ADVANCE_EVENT){
+		en->actor.textId = 0x0B6A;
+		MESSAGE_CONTINUE;
+	}
+}
+
+static void update_WaitAction2(Entity *en, GlobalContext *globalCtx){
+	updateCommon(en, globalCtx, 0);
+	if(CHECK_NPC_ACTION(NPC_ACTION_SLOT, 2)){
+		Animation_Change(&en->skelAnime, &gNabooruSittingCrossLeggedTurningToLookUpRightTransitionAnim, 1.0f, 0.0f, 
+			Animation_GetLastFrame(&gNabooruSittingCrossLeggedTurningToLookUpRightTransitionAnim), ANIMMODE_ONCE, -4.0f);
+		en->actor.update = (ActorFunc)update_PreTakeOutInstrument;
+		en->timer = 0;
+	}
+}
+
+static void update_PreTakeOutInstrument(Entity *en, GlobalContext *globalCtx){
+	updateCommon(en, globalCtx, -1); //Let return to center position
+	if(en->timer >= 8){
+		en->actor.update = (ActorFunc)update_TakingOutInstrument;
 	}
 	++en->timer;
 }
 
-static void update_Talk3(Entity *en, GlobalContext *globalCtx){
-	updateCommon(en, globalCtx, 0);
-	if(MESSAGE_ADVANCE_EVENT){
-		++en->actor.textId;
-		MESSAGE_CONTINUE;
-	}else if(MESSAGE_ADVANCE_CHOICE){
-		if(globalCtx->msgCtx.choiceIndex == 0) {
-			func_8010BD58(globalCtx, 12); //Teach Song of Time
-			en->timer = 0;
-			en->actor.update = (ActorFunc)update_Teach1;
-		}else{
-			en->actor.textId = 0x0B6B;
-			MESSAGE_CONTINUE;
-			en->actor.update = (ActorFunc)update_Refused;
-		}
+static void update_TakingOutInstrument(Entity *en, GlobalContext *globalCtx){
+	s32 animFinished = updateCommon(en, globalCtx, -1);
+	if(animFinished){
+		Animation_Change(&en->skelAnime, &gNabooruSittingCrossLeggedLookingUpRightAnim, 1.0f, 0.0f, 
+			Animation_GetLastFrame(&gNabooruSittingCrossLeggedLookingUpRightAnim), ANIMMODE_LOOP, -4.0f);
+		en->actor.update = (ActorFunc)update_PlayingInstrument;
 	}
 }
 
-static void update_Refused(Entity *en, GlobalContext *globalCtx){
-	updateCommon(en, globalCtx, 0);
-	if (MESSAGE_ADVANCE_EVENT){
-		en->actor.textId = 0x0B6A;
-		MESSAGE_CONTINUE;
-		en->actor.update = (ActorFunc)update_Talk3;
+static void update_PlayingInstrument(Entity *en, GlobalContext *globalCtx){
+	updateCommon(en, globalCtx, -1);
+	if(CHECK_NPC_ACTION(NPC_ACTION_SLOT, 3)){
+		Animation_Change(&en->skelAnime, &gNabooruSittingCrossLeggedAnim, 1.0f, 0.0f, 
+			Animation_GetLastFrame(&gNabooruSittingCrossLeggedAnim), ANIMMODE_LOOP, -8.0f);
+		en->actor.update = (ActorFunc)update_Done;
+		en->actor.textId = 0x0B6C;
 	}
 }
 
-static void update_Teach1(Entity *en, GlobalContext *globalCtx){
+static void update_Done(Entity *en, GlobalContext *globalCtx){
 	updateCommon(en, globalCtx, 0);
-	if(en->timer == 390){
-		func_8010BD58(globalCtx, 25); //Learn Song of Time
-		en->actor.update = (ActorFunc)update_Teach2;
-	}else{
-		++en->timer;
-	}
-}
-
-static void update_Teach2(Entity *en, GlobalContext *globalCtx){
-	updateCommon(en, globalCtx, 0);
-	if(func_8010BDBC(&globalCtx->msgCtx) == 0){
-		//TODO learn song cutscene
-		en->actor.update = (ActorFunc)update_Init;
-	}
+	Actor_RequestToTalk(&en->actor, globalCtx);
 }
 
 s32 Nabooru_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
