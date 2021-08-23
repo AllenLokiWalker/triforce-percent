@@ -96,4 +96,5 @@ extern StandardLimb gNabooruWaistLimb;
 extern void* gNabooruSkelLimbs[18];
 extern FlexSkeletonHeader gNabooruSkel;
 
+extern AnimationHeader gGerudoPurpleLookingAboutAnim;
 extern AnimationHeader gGerudoPurpleWalkingAnim;

@@ -1,6 +1,8 @@
 #include "ootmain.h"
 #include "object_nb.h"
 
+#include "gerudoway_cs.c"
+
 #define DEP_OBJECT_NUM 0xB3
 #define NPC_ACTION_NUM 40
 #define NPC_ACTION_SLOT 1
@@ -131,17 +133,41 @@ static void KillGuards(Entity *en, GlobalContext *globalCtx, s32 mode){
 	if(mode) en->guardActor = NULL;
 }
 
-static void GuardSetup(Actor *thisx, GlobalContext *globalCtx){
+
+static void GuardUpdateCommon(EnGe2 *en, GlobalContext *globalCtx){
+	Collider_UpdateCylinder(&en->actor, &en->collider);
+    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &en->collider.base);
+    Actor_UpdateBgCheckInfo(globalCtx, &en->actor, 40.0f, 25.0f, 40.0f, 5);
+	SkelAnime_Update(&en->skelAnime);
+}
+
+static void GuardUpdateTurn(Actor *thisx, GlobalContext *globalCtx){
 	EnGe2 *en = (EnGe2*)thisx;
-	Animation_Change(&en->skelAnime, &gGerudoPurpleWalkingAnim, 1.5f, 0.0f, 
-		Animation_GetLastFrame(&gGerudoPurpleWalkingAnim), ANIMMODE_LOOP, -8.0f);
-	en->timer = 0;
-	en->unk_304 = 0; //used as state index
-	en->eyeIndex = 0;
+	if(en->unk_304 == 0xFF){ //signal to init
+		en->unk_304 = 0;
+		Animation_Change(&en->skelAnime, &gGerudoPurpleLookingAboutAnim, 1.0f, 0.0f, 
+			Animation_GetLastFrame(&gGerudoPurpleLookingAboutAnim), ANIMMODE_LOOP, -8.0f);
+		en->eyeIndex = 0;
+	}
+	s16 yawTarget = en->actor.yawTowardsPlayer;
+	s16 step = en->actor.shape.rot.y - yawTarget;
+	if(step < 0) step = -step;
+	s16 delta = step;
+	step >>= 3;
+	if(step < 0x80) step = 0x80;
+	if(step > delta) step = delta;
+	Math_StepToAngleS(&en->actor.shape.rot.y, yawTarget, step);
+	GuardUpdateCommon(en, globalCtx);
 }
 
 static void GuardUpdateExit(Actor *thisx, GlobalContext *globalCtx){
 	EnGe2 *en = (EnGe2*)thisx;
+	if(en->unk_304 == 0xFF){ //signal to init
+		en->unk_304 = 0; //used as state index
+		Animation_Change(&en->skelAnime, &gGerudoPurpleWalkingAnim, 1.5f, 0.0f, 
+			Animation_GetLastFrame(&gGerudoPurpleWalkingAnim), ANIMMODE_LOOP, -8.0f);
+		en->timer = 0;
+	}
 	static const Vec3f pathPoints[5] = {
 		{2200.0f, 0.0f, -638.0f},
 		{2200.0f, 0.0f, -720.0f},
@@ -149,7 +175,7 @@ static void GuardUpdateExit(Actor *thisx, GlobalContext *globalCtx){
 		{2300.0f, 160.0f, -1039.0f},
 		{2300.0f, 280.0f, -1280.0f}
 	};
-	static const u8 nFrames[5] = {10, 10, 10, 10, 10};
+	static const u8 nFrames[5] = {15, 10, 35, 15, 20};
 	Vec3f curpos = en->actor.world.pos;
 	Vec3f dp = pathPoints[en->unk_304];
 	dp.x -= curpos.x; dp.y -= curpos.y; dp.z -= curpos.z;
@@ -167,9 +193,7 @@ static void GuardUpdateExit(Actor *thisx, GlobalContext *globalCtx){
 			Actor_Kill(&en->actor);
 		}
 	}
-	Collider_UpdateCylinder(&en->actor, &en->collider);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &en->collider.base);
-    Actor_UpdateBgCheckInfo(globalCtx, &en->actor, 40.0f, 25.0f, 40.0f, 5);
+	GuardUpdateCommon(en, globalCtx);
 }
 
 static void updateTurnInfo(Entity *en, GlobalContext *globalCtx, s32 mode){
@@ -215,6 +239,10 @@ static void update_Talk1(Entity *en, GlobalContext *globalCtx){
 		en->actor.textId = 0x0B61;
 		en->guardActor = FindGuardToTalk(&en->actor, globalCtx);
 		KillGuards(en, globalCtx, 0);
+		if(en->guardActor != NULL){
+			((EnGe2*)en->guardActor)->unk_304 = 0xFF; //signal to init
+			en->guardActor->update = GuardUpdateTurn;
+		}
 		MESSAGE_CONTINUE;
 	}
 }
@@ -223,7 +251,7 @@ static void update_TalkGuards(Entity *en, GlobalContext *globalCtx){
 	updateCommon(en, globalCtx, 1);
 	if(MESSAGE_ADVANCE_EVENT){
 		if(en->guardActor != NULL){
-			GuardSetup(en->guardActor, globalCtx);
+			((EnGe2*)en->guardActor)->unk_304 = 0xFF; //signal to init
 			en->guardActor->update = GuardUpdateExit;
 		}
 		en->actor.update = (ActorFunc)update_WaitGuards;
@@ -252,12 +280,16 @@ static void update_Talk2(Entity *en, GlobalContext *globalCtx){
 		en->timer = -1;
 	}
 	if(MESSAGE_ADVANCE_EVENT){
-		if(en->actor.textId == 0x0B66){
+		if(en->actor.textId == 0x0B65){
+			NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
+			/*
 			//gGlobalContext.nextEntranceIndex = 0x0127;
 			gGlobalContext.sceneLoadFlag = 0x14;
 			//gSaveContext.cutsceneIndex = 0xFFF0;
 			gGlobalContext.fadeTransition = 3;
-			NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
+			*/
+			globalCtx->csCtx.segment = &NabooruPanAway;
+			gSaveContext.cutsceneTrigger = 1;
 		}else{
 			++en->actor.textId;
 			MESSAGE_CONTINUE;
@@ -276,6 +308,7 @@ static void update_Reload(Entity *en, GlobalContext *globalCtx){
 		KillGuards(en, globalCtx, 1);
 	}
 	if(Actor_IsTalking(&en->actor, globalCtx)){
+		en->actor.flags &= ~0x10000; //disable auto talk
 		en->actor.update = (ActorFunc)update_Talk3;
 	}else{
 		en->actor.flags |= 0x10000; //auto talk

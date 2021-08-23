@@ -96,4 +96,5 @@ gNabooruWaistLimb = 0x06018174;
 gNabooruSkelLimbs = 0x06018180;
 gNabooruSkel = 0x060181c8;
 
+gGerudoPurpleLookingAboutAnim = 0x060098ac;
 gGerudoPurpleWalkingAnim = 0x06009ed4;

@@ -230,7 +230,7 @@ DECLARE_MESSAGE(0x0B66, BOX_BLACK, POS_MIDDLE,
     "was divided in two halves." BOX_BREAK UNSKIPPABLE
     "The first half was granted to the" NEWLINE
     "Royal Family, while the second" NEWLINE
-    "half remained in this land." EVENT
+    "half remained in this land."
 )
 
 //  "text text text text text text te"
@@ -254,7 +254,7 @@ DECLARE_MESSAGE(0x0B68, BOX_BLACK, POS_MIDDLE,
     "As I said, you're just a kid now." NEWLINE
     "But I sense that you can control" NEWLINE
     "even greater magic than just this" NEWLINE
-    "mask." EVENT
+    "mask."
 )
 
 DECLARE_MESSAGE(0x0B69, BOX_BLACK, POS_MIDDLE,
@@ -266,7 +266,7 @@ DECLARE_MESSAGE(0x0B69, BOX_BLACK, POS_MIDDLE,
     "overcome the trials of the " COLOR(TYPE1_ORANGE) "Desert" NEWLINE
     "Colossus" COLOR(WHITE) "..." BOX_BREAK UNSKIPPABLE
     "...and you'll become a man who" NEWLINE
-    "can stand against Ganondorf." EVENT
+    "can stand against Ganondorf."
 )
 
 DECLARE_MESSAGE(0x0B6A, BOX_BLACK, POS_MIDDLE,
@@ -281,6 +281,13 @@ DECLARE_MESSAGE(0x0B6B, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Come now, I know you want to" NEWLINE
     "stop Ganondorf." EVENT
+)
+
+DECLARE_MESSAGE(0x087A, BOX_OCARINA, POS_VARIABLE,
+    QUICKTEXT_ENABLE SHIFT("\x04") "This is the " COLOR(BLUE) "full Song of Time" COLOR(WHITE) "..." NEWLINE
+    NEWLINE
+    NEWLINE
+    QUICKTEXT_DISABLE OCARINA
 )
 
 DECLARE_MESSAGE(0x00D5, BOX_BLUE, POS_MIDDLE,

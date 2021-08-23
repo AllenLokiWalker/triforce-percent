@@ -59,9 +59,9 @@ extern void DemoTerminatorReturn();
 #define TERMINATOR_RETURN asm(".set noat\n .set noreorder\nj DemoTerminatorReturn\nnop\n.set at\n .set reorder")
 
 void Statics_TerminatorNabooruToDesertColossus(){
-    gGlobalContext.nextEntranceIndex = 0x0127;
+    //gGlobalContext.nextEntranceIndex = 0x0127;
     gGlobalContext.sceneLoadFlag = 0x14;
-    gSaveContext.cutsceneIndex = 0xFFF0;
+    //gSaveContext.cutsceneIndex = 0xFFF0;
     gGlobalContext.fadeTransition = 3;
     TERMINATOR_RETURN;
 }
@@ -82,7 +82,8 @@ static const struct { u8 index; void (*function)(); } DemoTerminatorPatchTable[N
 
 void Statics_PatchDemoTerminator(){
     for(int i=0; i<NUM_PATCH_TERMINATOR; ++i){
-        DemoTerminatorTable[DemoTerminatorPatchTable[i].index] = 
+        //Jump table starts at 1
+        DemoTerminatorTable[DemoTerminatorPatchTable[i].index - 1] = 
             (void*)DemoTerminatorPatchTable[i].function;
     }
 }
@@ -339,16 +340,26 @@ void Statics_TimeTravel(){
     */
 }
 
-void Statics_Ge2DialogueChooser(){
+void Statics_Ge2DialogueGet(){
     asm(".set noat\n .set noreorder\n"
     "lui   $t0, %hi(gSaveContext)\n"
     "addiu $t1, $t0, %lo(gSaveContext)\n"
     "lbu   $t2, 0x0F24($t1)\n"
     "srl   $t3, $t2, 6\n"
-    "addiu $t6, $t2, 0x0040\n"
     "addiu $t5, $t3, 0x0B50\n"
-    "sb    $t6, 0x0F24($t1)\n"
     "jr $ra\n"
     "sh    $t5, 0x010E($s0)\n"
+    ".set at\n .set reorder");
+}
+
+void Statics_Ge2DialogueUpdate(){
+    asm(".set noat\n .set noreorder\n"
+    "lh    $t6, 0x001C($s0)\n" //what we replaced
+    "lui   $t0, %hi(gSaveContext)\n"
+    "addiu $t1, $t0, %lo(gSaveContext)\n"
+    "lbu   $t2, 0x0F24($t1)\n"
+    "addiu $t3, $t2, 0x0040\n"
+    "jr $ra\n"
+    "sb    $t3, 0x0F24($t1)\n"
     ".set at\n .set reorder");
 }

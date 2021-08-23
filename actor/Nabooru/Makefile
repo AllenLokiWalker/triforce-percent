@@ -5,7 +5,7 @@ ACTORNUM = 34
 
 default: copyactor
 
-$(ACTORNAME).o: object_nb.h
+$(ACTORNAME).o: object_nb.h gerudoway_cs.c gerudoway_cs.h
 
 $(ACTORNAME).elf: object_nb.ld
 
