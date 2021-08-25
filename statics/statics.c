@@ -216,13 +216,15 @@ void Statics_TestShortcuts(){
             //clip below the ice in Zora's Domain
             //PLAYER->actor.pos.y -= 80.0f;
             //animation test
-            Statics_AnimeTest(1);
+            //Statics_AnimeTest(1);
+            //give child an adult item
+            INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_ODD_POTION;
         }else if((CTRLR_PRESS & BTN_DLEFT)){
             //Press L+DL for frog
             func_8010B680(&gGlobalContext, 0x0901, NULL); //textbox_begin
         }else if((CTRLR_PRESS & BTN_DRIGHT)){
             //Press L+DR for animation test
-            Statics_AnimeTest(0);
+            //Statics_AnimeTest(0);
         }else if((CTRLR_PRESS & BTN_DUP)){
             //Kill Link (sorry)
             gSaveContext.health = 0;

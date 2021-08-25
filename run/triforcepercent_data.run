@@ -12,6 +12,7 @@ PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat
 PATCH 0x2103000 ../scene/spot07_scene/zoras_room1.pat
 
 //Misc custom actors
+ACTOR 277 ../actor/z_en_skj/z_en_skj.zovl
 ACTOR 312 ../actor/z_en_ge1/z_en_ge1.zovl
 ACTOR 34 ../actor/Nabooru/nabooru.zovl
 ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl

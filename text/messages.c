@@ -86,7 +86,7 @@ DECLARE_MESSAGE(0x0B30, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Hey, Kokiri! I smell something" NEWLINE
     "on you..." BOX_BREAK UNSKIPPABLE
-    "That smells like my Magic Powder." NEWLINE
+    "That smells like my " COLOR(RED) "Magic Powder" COLOR(WHITE) "." NEWLINE
     QUICKTEXT_ENABLE "Give it back!" QUICKTEXT_DISABLE NEWLINE
     TWO_CHOICE COLOR(GREEN) "Yes" NEWLINE
     "No"
@@ -100,7 +100,7 @@ DECLARE_MESSAGE(0x0B31, BOX_BLACK, POS_MIDDLE,
 
 DECLARE_MESSAGE(0x0B32, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
-    "I knew it, it's my Magic Powder!" BOX_BREAK UNSKIPPABLE
+    "I knew it, it's my " COLOR(RED) "Magic Powder" COLOR(WHITE) "!" BOX_BREAK UNSKIPPABLE
     "That other nasty Kokiri kid stole" NEWLINE
     "it from me. He said that because" NEWLINE
     "it's made of forest mushrooms," NEWLINE
@@ -109,12 +109,24 @@ DECLARE_MESSAGE(0x0B32, BOX_BLACK, POS_MIDDLE,
     "the owner of the forest?!" BOX_BREAK UNSKIPPABLE
     "I plucked those mushrooms, dried" NEWLINE
     "them, and mashed them myself!" BOX_BREAK UNSKIPPABLE
-    "grumble..." BOX_BREAK UNSKIPPABLE
+    SHIFT("\x18") "grumble..." BOX_BREAK UNSKIPPABLE
     "Anyway, it's not your fault." NEWLINE
     "Thank you for bringing it back." BOX_BREAK UNSKIPPABLE
     "As a reward, I'll use this powder" NEWLINE
     "on your masks to make them more" NEWLINE
     "powerful!"
+)
+
+DECLARE_MESSAGE(0x0B33, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "If you have any masks, show them" NEWLINE
+    "to me!"
+)
+
+DECLARE_MESSAGE(0x0B34, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "Let me sprinkle some of this " COLOR(RED) "Magic" NEWLINE
+    "Powder" COLOR(WHITE) " on that mask!" EVENT
 )
 
 DECLARE_MESSAGE(0x0013, BOX_BLUE, POS_MIDDLE,
