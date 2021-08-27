@@ -10,13 +10,13 @@ UPDATETXT = $(ZZRTLDIR)/update.txt
 .PRECIOUS: $(ACTORNAME).zovl
 
 %.o: %.c
-	$(CC) $(CCFLAGS) --save-temps -c $< -o $@
+	$(CC) $(CCFLAGS) -c $< -o $@
 	
 %.elf: %.o
-	$(LD) $(LDFLAGS) $(ACTORLDFLAGS) -T $(ACTORLD) -Map actor.map -o $@ $< 
+	$(LD) $(LDFLAGS) $(ACTORLDFLAGS) -T $(ACTORLD) -o $@ $< 
 	
 %.zovl: %.elf
-	$(NOVL) -vvv -c -A $(BASEADDR) -o $@ $<
+	$(NOVL) -c -A $(BASEADDR) -o $@ $<
 	
 %.yaz0: %.zovl
 	$(YAZ0) $< > $@
