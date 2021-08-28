@@ -32,9 +32,6 @@ void Statics_SetGameState(){
     gSaveContext.eventChkInf[0xB] |= 0x100; //Entered Desert Colossus (no entrance cutscene)
     gSaveContext.itemGetInf[0x2] |= 0x0478; //Obtained Mask of Truth, all trading masks
     gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
-    //TODO remove for final version
-    WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
-    WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE

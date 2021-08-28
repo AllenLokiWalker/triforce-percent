@@ -19,19 +19,18 @@ typedef struct {
 	//ColliderCylinder collider;
     Vec3s jointTable[NUM_LIMBS];
     Vec3s morphTable[NUM_LIMBS];
+	s32 maskGiving;
 } Entity;
 
 static Entity *sSmallStumpSkullKid = NULL;
 
 void invisDestroy(Entity *en, GlobalContext *globalCtx);
 void invisUpdate(Entity *en, GlobalContext *globalCtx);
-/*
 static void update_NotOnStump(Entity *en, GlobalContext *globalCtx);
 static void update_OnStump(Entity *en, GlobalContext *globalCtx);
-*/
 
 static void init(Entity *en, GlobalContext *globalCtx) {
-	Rupees_ChangeBy(7);
+	//Rupees_ChangeBy(7);
 	s16 type = (en->actor.params >> 0xA) & 0x3F;
 	if(type == 5){
 		//Invisible on Saria's Song stump
@@ -41,11 +40,11 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 		en->actor.update = (ActorFunc)invisUpdate;
 		Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &en->actor, ACTORCAT_PROP);
 		return;
-	}/*else if(type != 0){
+	}else if(type != 0){
 		en->actor.destroy = NULL;
 		Actor_Kill(&en->actor);
 		return;
-	}*/
+	}
 	//Normal for Saria's Song
 	en->actor.naviEnemyId = 0x40;
 	en->actor.flags |= 9;
@@ -55,15 +54,16 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	SkelAnime_InitFlex(globalCtx, &en->skelAnime, &gSkullKidSkel, &gSkullKidPlayFluteAnim, 
 		en->jointTable, en->morphTable, NUM_LIMBS);
 	Actor_SetScale(&en->actor, 0.01f);
+	en->maskGiving = -1;
 }
 
 void invisDestroy(Entity *en, GlobalContext *globalCtx){
-	Rupees_ChangeBy(-1);
+	//Rupees_ChangeBy(-1);
 	sSmallStumpSkullKid = NULL;
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
-	Rupees_ChangeBy(-2);
+	//Rupees_ChangeBy(-2);
 	//Collider_DestroyCylinder(globalCtx, &en->collider);
 	SkelAnime_Free(&en->skelAnime, globalCtx);
 }
@@ -89,10 +89,10 @@ static void update_NotOnStump(Entity *en, GlobalContext *globalCtx){
 	if(isLinkOnStump()){
 		Animation_Change(&en->skelAnime, &gSkullKidWaitAnim, 1.0f, 0.0f, 
 			Animation_GetLastFrame(&gSkullKidWaitAnim), ANIMMODE_LOOP, -8.0f);
-		//en->actor.update = (ActorFunc)update_OnStump;
+		en->actor.update = (ActorFunc)update_OnStump;
 	}
 }
-/*
+
 static void update_OnStump(Entity *en, GlobalContext *globalCtx){
 	updateCommon(en, globalCtx);
 	if(sSmallStumpSkullKid == NULL) return;
@@ -106,8 +106,10 @@ static void update_OnStump(Entity *en, GlobalContext *globalCtx){
 	//player->stateFlags2 |= 0x800000; //fixed camera?
 	s32 shouldRequestTalk = 0;
 	en->actor.flags &= ~0x10000; //disable auto talk
-	s32 isBunny = (Player_GetMask(globalCtx) == PLAYER_MASK_BUNNY);
-	s32 isGerudo = (Player_GetMask(globalCtx) == PLAYER_MASK_GERUDO);
+	s32 isBunny = (Player_GetMask(globalCtx) == PLAYER_MASK_BUNNY) 
+		&& !(WORKING_BUNNYHOOD_VAR & WORKING_BUNNYHOOD_BIT);
+	s32 isGerudo = (Player_GetMask(globalCtx) == PLAYER_MASK_GERUDO)
+		&& !(WORKING_GERUDOMASK_VAR & WORKING_GERUDOMASK_BIT);
 	if((SKULLKID_WILL_UPGRADE_VAR & SKULLKID_WILL_UPGRADE_BIT)){
 		shouldRequestTalk = 1;
 		if(isBunny || isGerudo){
@@ -137,18 +139,26 @@ static void update_OnStump(Entity *en, GlobalContext *globalCtx){
 			en->actor.textId = 0x0B31;
 		}
 		MESSAGE_CONTINUE;
-	}else if(MESSAGE_ADVANCE_EVENT){
-		s32 mask = -1;
+	}else if(MESSAGE_ADVANCE_END && en->actor.textId == 0x0B34){
 		if(isBunny){
-			mask = GI_MASK_BUNNY;
+			en->maskGiving = GI_MASK_BUNNY;
+			WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
 		}else{
-			mask = GI_MASK_GERUDO;
+			en->maskGiving = GI_MASK_GERUDO;
+			WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
 		}
 		Player_UnsetMask(globalCtx);
-		Actor_PickUp(&en->actor, globalCtx, mask, 1000.0f, 1000.0f);
+	}
+	if(en->maskGiving >= 0){
+		if(en->actor.parent != NULL){
+			en->actor.parent = NULL;
+			en->maskGiving = -1;
+		}else{
+			Actor_PickUp(&en->actor, globalCtx, en->maskGiving, 2000.0f, 2000.0f);
+		}
 	}
 }
-*/
+
 static void draw(Entity *en, GlobalContext *globalCtx) {
 	static Gfx dList[2];
 	func_80093D18(globalCtx->state.gfxCtx);

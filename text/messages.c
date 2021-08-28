@@ -109,7 +109,7 @@ DECLARE_MESSAGE(0x0B32, BOX_BLACK, POS_MIDDLE,
     "the owner of the forest?!" BOX_BREAK UNSKIPPABLE
     "I plucked those mushrooms, dried" NEWLINE
     "them, and mashed them myself!" BOX_BREAK UNSKIPPABLE
-    SHIFT("\x18") "grumble..." BOX_BREAK UNSKIPPABLE
+    SHIFT("\x34") "grumble..." BOX_BREAK UNSKIPPABLE
     "Anyway, it's not your fault." NEWLINE
     "Thank you for bringing it back." BOX_BREAK UNSKIPPABLE
     "As a reward, I'll use this powder" NEWLINE
@@ -125,8 +125,8 @@ DECLARE_MESSAGE(0x0B33, BOX_BLACK, POS_MIDDLE,
 
 DECLARE_MESSAGE(0x0B34, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
-    "Let me sprinkle some of this " COLOR(RED) "Magic" NEWLINE
-    "Powder" COLOR(WHITE) " on that mask!" EVENT
+    "Let me sprinkle some of this" NEWLINE
+    COLOR(RED) "Magic Powder" COLOR(WHITE) " on that mask!"
 )
 
 DECLARE_MESSAGE(0x0013, BOX_BLUE, POS_MIDDLE,
@@ -296,7 +296,7 @@ DECLARE_MESSAGE(0x0B6B, BOX_BLACK, POS_MIDDLE,
 )
 
 DECLARE_MESSAGE(0x087A, BOX_OCARINA, POS_VARIABLE,
-    QUICKTEXT_ENABLE SHIFT("\x14") "This is the " COLOR(BLUE) "full Song of Time" COLOR(WHITE) "..." NEWLINE
+    QUICKTEXT_ENABLE SHIFT("\x0E") "This is the " COLOR(BLUE) "full Song of Time" COLOR(WHITE) "..." NEWLINE
     NEWLINE
     NEWLINE
     QUICKTEXT_DISABLE OCARINA
@@ -311,8 +311,8 @@ DECLARE_MESSAGE(0x089D, BOX_OCARINA, POS_VARIABLE,
 
 DECLARE_MESSAGE(0x00D5, BOX_BLUE, POS_MIDDLE,
     UNSKIPPABLE
-    SHIFT("\x18") "You've learned the" NEWLINE 
-    SHIFT("\x18") COLOR(BLUE) "full Song of Time" COLOR(WHITE) "!" NEWLINE
+    SHIFT("\x28") "You've learned the" NEWLINE 
+    SHIFT("\x29") COLOR(BLUE) "full Song of Time" COLOR(WHITE) "!" BOX_BREAK UNSKIPPABLE
     "This song is proof of a true Hero's" NEWLINE
     "courage." BOX_BREAK UNSKIPPABLE
     "Play it as a child to become an" NEWLINE
@@ -328,21 +328,113 @@ DECLARE_MESSAGE(0x0B6C, BOX_BLACK, POS_MIDDLE,
 
 // 0xC00: Key of Power
 
+DECLARE_MESSAGE(0x0C10, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "Whaaaat?! Impossible!" BOX_BREAK UNSKIPPABLE
+    "I'm the fastest man in Hyrule!" NEWLINE
+    "How did you get here before I did?" EVENT
+)
+
+DECLARE_MESSAGE(0x0C11, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "Ahem, sorry about that!" NEWLINE
+    "What I mean is that you're" NEWLINE
+    "extraordinary!" BOX_BREAK UNSKIPPABLE
+    "Meet me in the middle of Hyrule" NEWLINE
+    "Field to get a " COLOR(RED) "special reward" COLOR(WHITE) "!"
+)
+
+DECLARE_MESSAGE(0x0C20, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    COLOR(RED) "Ha, you fool!" COLOR(WHITE) BOX_BREAK UNSKIPPABLE
+    COLOR(RED) "This is the only reward cheaters" NEWLINE
+    "like you get!" COLOR(WHITE)
+)
+
+DECLARE_MESSAGE(0x0C30, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "huff... huff..." BOX_BREAK UNSKIPPABLE
+    "I guess you're a better cheater than" NEWLINE
+    "I am..." BOX_BREAK UNSKIPPABLE
+    "I never thought anyone would find a" NEWLINE
+    "power like the one I did, seven years" NEWLINE
+    "ago..." EVENT
+)
+
+DECLARE_MESSAGE(0x0C31, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "That day, after Hyrule Castle was" NEWLINE
+    "attacked, I went on my usual running" NEWLINE
+    "route to clear my mind." BOX_BREAK UNSKIPPABLE
+    "Somewhere out in the field here, I" NEWLINE
+    "stepped on this object, lying on the" NEWLINE
+    "ground." BOX_BREAK UNSKIPPABLE
+    "It must have been dropped by someone" NEWLINE
+    "who fled town." EVENT
+)
+
+DECLARE_MESSAGE(0x0C32, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "It was a golden locket. I tried it" NEWLINE
+    "on and felt this rush all over my" NEWLINE
+    "body!" BOX_BREAK UNSKIPPABLE
+    "I could run faster than I could" NEWLINE
+    "ever imagine." BOX_BREAK UNSKIPPABLE
+    "In fact, I could run faster than" NEWLINE
+    "light! That's how I was able to" NEWLINE
+    "finish the race before I started," NEWLINE
+    "and how I was just fighting you." EVENT
+)
+
+DECLARE_MESSAGE(0x0C33, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "But I now realize this has made" NEWLINE
+    "me a terrible man." BOX_BREAK UNSKIPPABLE
+    "I wanted to be the fastest so" NEWLINE
+    "badly I tried to kill you!" BOX_BREAK UNSKIPPABLE
+    SHIFT("\x28") "sniffle..." EVENT
+)
+
+DECLARE_MESSAGE(0x0C34, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "I just want to be my own self again," NEWLINE
+    "to run free in the wild. I don't" NEWLINE
+    "care about the magic anymore." BOX_BREAK UNSKIPPABLE
+    "Here, you can have this." EVENT
+)
+
+DECLARE_MESSAGE(0x0068, BOX_BLUE, POS_MIDDLE,
+    UNSKIPPABLE  ITEM_ICON("\x6F")  QUICKTEXT_ENABLE 
+    "You obtained the " COLOR(LIGHTBLUE) "Sages' Charm" COLOR(WHITE) "!" QUICKTEXT_DISABLE NEWLINE
+    "This locket amplifies and" NEWLINE
+    "enhances the magic power" NEWLINE
+    "of its wearer." BOX_BREAK UNSKIPPABLE ITEM_ICON("\x6F")
+    "Equip the Sages' offerings" NEWLINE
+    "to channel their power" NEWLINE
+    "yourself!"
+)
+
+
 // 0xD00: Key of Wisdom
 
 DECLARE_MESSAGE(0x0D20, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Welcome Link!" NEWLINE
-    "I am the " COLOR(LIGHTBLUE) "Great Fairy of Wisdom" COLOR(WHITE) "." BOX_BREAK
-    "You have done well to get here," NEWLINE
-    "blah blah blah."
+    "I am the " COLOR(LIGHTBLUE) "Great Fairy of Wisdom" COLOR(WHITE) "." BOX_BREAK UNSKIPPABLE
+    "For ages, I've offered guidance to" NEWLINE
+    "those who seek enlightenment." NEWLINE
+    "This, too, is why you're here."
 )
 
 DECLARE_MESSAGE(0x0D21, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
-    "This is the final key to the Sacred" NEWLINE
-    "Realm, representing the wisdom in" NEWLINE
-    "your heart."
+    "You have almost reached the end of" NEWLINE
+    "your journey, but to prove your" NEWLINE
+    "spirit's growth, you must allow the" NEWLINE
+    "wisdom of the Sages to guide you." BOX_BREAK UNSKIPPABLE
+    "This song is proof of that virtue," NEWLINE
+    "and the final key to the Sacred" NEWLINE
+    "Realm."
 )
 
 DECLARE_MESSAGE(0x086D, BOX_OCARINA, POS_VARIABLE,
@@ -380,8 +472,9 @@ DECLARE_MESSAGE(0x088E, BOX_BLACK, POS_MIDDLE,
 
 DECLARE_MESSAGE(0x0D23, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
-    "Link, I believe you know now what" NEWLINE
-    "you must do."
+    "Play this song before the blade of" NEWLINE
+    "destiny, and the path of the Sages" NEWLINE
+    "shall be revealed."
 )
 
 // 0xA00: Ending Sequence (so we can have 0xACE be significant)

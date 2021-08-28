@@ -40,8 +40,10 @@ typedef struct {
 
 #undef POLY_OPA_DISP
 #undef POLY_XLU_DISP
+#undef OVERLAY_DISP
 #define POLY_OPA_DISP gGlobalContext.state.gfxCtx->polyOpa.p
 #define POLY_XLU_DISP gGlobalContext.state.gfxCtx->polyXlu.p
+#define OVERLAY_DISP gGlobalContext.state.gfxCtx->overlay.p
 
 #define CHECK_NPC_ACTION(slot, num) \
 	(globalCtx->csCtx.state != 0) \
@@ -69,8 +71,10 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 #define Message_ShouldAdvance func_80106BC8
 #define MESSAGE_START func_8010B680(globalCtx, en->actor.textId, NULL)
 #define MESSAGE_CONTINUE func_8010B720(globalCtx, en->actor.textId)
-#define MESSAGE_ADVANCE_EVENT ((func_8010BDBC(&globalCtx->msgCtx) == 5) && (Message_ShouldAdvance(globalCtx) != 0))
-#define MESSAGE_ADVANCE_CHOICE ((func_8010BDBC(&globalCtx->msgCtx) == 4) && (Message_ShouldAdvance(globalCtx) != 0))
+#define MESSAGE_ADVANCE_TYPE(n) ((func_8010BDBC(&globalCtx->msgCtx) == n) && (Message_ShouldAdvance(globalCtx) != 0))
+#define MESSAGE_ADVANCE_EVENT MESSAGE_ADVANCE_TYPE(5)
+#define MESSAGE_ADVANCE_CHOICE MESSAGE_ADVANCE_TYPE(4)
+#define MESSAGE_ADVANCE_END MESSAGE_ADVANCE_TYPE(6)
 
 //Functions
 
