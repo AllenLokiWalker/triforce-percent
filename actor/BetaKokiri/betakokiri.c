@@ -137,24 +137,12 @@ void BetaKokiri_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
     if (limbIndex == LIMB_HEAD) {
 		setBank(en, globalCtx, en->skelBankIdx, 1);
 		
-        Vec3f headBoneOriginToHeadCenter = { 0.0f, 20.0f, 0.0f };
-        Vec3f headCenterOut;
-        Matrix_MultVec3f(&headBoneOriginToHeadCenter, &headCenterOut);
-        en->actor.focus.pos.x = headCenterOut.x;
-        en->actor.focus.pos.y = headCenterOut.y;
-        en->actor.focus.pos.z = headCenterOut.z;
-        en->actor.focus.rot.x = en->actor.world.rot.x;
-        en->actor.focus.rot.y = en->actor.world.rot.y;
-        en->actor.focus.rot.z = en->actor.world.rot.z;
+        static Vec3f headBoneOriginToHeadCenter = { 700.0f, 0.0f, 0.0f };
+        Matrix_MultVec3f(&headBoneOriginToHeadCenter, &en->actor.focus.pos);
     }
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
-	/*
-	static const Gfx emptyDL[1] = {
-		{.words = gsSPEndDisplayList()}
-	};
-	*/
 	static Gfx emptyDL[1];
 	gSPEndDisplayList(emptyDL);
 	if(en->initted != 2) return;
