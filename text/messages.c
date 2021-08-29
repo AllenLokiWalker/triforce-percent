@@ -1,21 +1,8 @@
 // 0x900: Debugging
 
-DECLARE_MESSAGE(0x0900, BOX_BLACK, POS_MIDDLE,
-    UNSKIPPABLE ITEM_ICON("\x6B") QUICKTEXT_ENABLE
-    "You got the " COLOR(YELLOW) "Triforce" COLOR(WHITE) "!!!" QUICKTEXT_DISABLE NEWLINE
-    "After 22 years, the dreams of" NEWLINE
-    "millions of players around the" NEWLINE
-    "world have finally come true!"
-)
-
 DECLARE_MESSAGE(0x0901, BOX_BLUE, POS_MIDDLE,
     UNSKIPPABLE ITEM_ICON("\x35") QUICKTEXT_ENABLE 
     "Frog"
-)
-
-DECLARE_MESSAGE(0x0902, BOX_BLACK, POS_MIDDLE,
-    UNSKIPPABLE QUICKTEXT_ENABLE 
-    "Anim loading from RAM"
 )
 
 // 0xB00: Key of Courage
@@ -36,23 +23,24 @@ DECLARE_MESSAGE(0x0B12, BOX_BLACK, POS_MIDDLE,
     "No, no! These are crawlies!" NEWLINE
     "Crawlies are dumb. I want a flying" NEWLINE
     "bug. You know, colorful, with wings." BOX_BREAK
-    "They like flowers, so you might find" NEWLINE
-    "one somewhere people grow lots of" NEWLINE
-    "different kinds of flowers."
+    "They like flowers, so you might" NEWLINE
+    "find one somewhere people grow lots" NEWLINE
+    "of different kinds of flowers."
 )
 
 DECLARE_MESSAGE(0x0B13, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
-    "Wow, you actually brought it! Thanks!" BOX_BREAK UNSKIPPABLE
+    "Wow, you actually brought it!" NEWLINE
+    QUICKTEXT_ENABLE "Thanks!" QUICKTEXT_DISABLE BOX_BREAK UNSKIPPABLE
     "You're a nice guy, unlike that Mido..." NEWLINE
-    "He never talks to me. Except one time" NEWLINE
-    "he gave me this, and ordered me to" NEWLINE
-    "keep it safe." BOX_BREAK UNSKIPPABLE
+    "He never talks to me. Except one" NEWLINE
+    "time he gave me this, and ordered" NEWLINE
+    "me to keep it safe." BOX_BREAK UNSKIPPABLE
     "But I don't really want it... You can" NEWLINE
     "have it!"
 )
 
-DECLARE_MESSAGE(0x0B14, BOX_BLUE, POS_MIDDLE,
+DECLARE_MESSAGE(0x0004, BOX_BLUE, POS_MIDDLE,
     UNSKIPPABLE ITEM_ICON("\x31") QUICKTEXT_ENABLE "You got the " COLOR(RED) "Magic Powder" COLOR(WHITE) "!" QUICKTEXT_DISABLE NEWLINE
     "It smells like mushrooms."
 )
@@ -60,7 +48,12 @@ DECLARE_MESSAGE(0x0B14, BOX_BLUE, POS_MIDDLE,
 DECLARE_MESSAGE(0x0B15, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "I don't think you can use it by" NEWLINE
-    "yourself, though."
+    "yourself, though..."
+)
+
+DECLARE_MESSAGE(0x0B16, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "Thanks for bringing me that bug!"
 )
 
 DECLARE_MESSAGE(0x71B2, BOX_BLACK, POS_VARIABLE,
@@ -109,7 +102,7 @@ DECLARE_MESSAGE(0x0B32, BOX_BLACK, POS_MIDDLE,
     "the owner of the forest?!" BOX_BREAK UNSKIPPABLE
     "I plucked those mushrooms, dried" NEWLINE
     "them, and mashed them myself!" BOX_BREAK UNSKIPPABLE
-    SHIFT("\x34") "grumble..." BOX_BREAK UNSKIPPABLE
+    SHIFT("\x40") "grumble..." BOX_BREAK UNSKIPPABLE
     "Anyway, it's not your fault." NEWLINE
     "Thank you for bringing it back." BOX_BREAK UNSKIPPABLE
     "As a reward, I'll use this powder" NEWLINE
@@ -139,7 +132,7 @@ DECLARE_MESSAGE(0x0013, BOX_BLUE, POS_MIDDLE,
 DECLARE_MESSAGE(0x0016, BOX_BLUE, POS_MIDDLE,
     UNSKIPPABLE ITEM_ICON("\x2A") QUICKTEXT_ENABLE "You upgraded the " COLOR(RED) "Gerudo Mask" COLOR(WHITE) "!" QUICKTEXT_DISABLE NEWLINE
     "Now you can charm people with" NEWLINE
-    "the perfect lady's disguise--" NEWLINE
+    "the perfect lady's disguise..." NEWLINE
     "even Gerudo themselves!"
 )
 
@@ -478,7 +471,7 @@ DECLARE_MESSAGE(0x0D23, BOX_BLACK, POS_MIDDLE,
     "shall be revealed."
 )
 
-// 0xA00: Ending Sequence (so we can have 0xACE be significant)
+// 0xA00: Ending Sequence
 
 DECLARE_MESSAGE(0x0A10, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
@@ -590,6 +583,14 @@ DECLARE_MESSAGE(0x0A74, BOX_BLACK, POS_MIDDLE,
 DECLARE_MESSAGE(0x0A75, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Let's not keep everyone waiting!"
+)
+
+DECLARE_MESSAGE(0x0ACE, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE ITEM_ICON("\x6B") QUICKTEXT_ENABLE
+    "You got the " COLOR(YELLOW) "Triforce" COLOR(WHITE) "!!!" QUICKTEXT_DISABLE NEWLINE
+    "After 23 years, the dreams of" NEWLINE
+    "millions of players around the" NEWLINE
+    "world have finally come true!"
 )
 
 

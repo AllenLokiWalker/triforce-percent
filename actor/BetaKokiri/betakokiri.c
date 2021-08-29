@@ -32,6 +32,8 @@ typedef struct {
 	u8 initted;
 	u8 eyeTextureIndex;
 	u8 blinkTimer;
+	u8 waitingAutoTalk;
+	s32 getItemId;
 	s32 animBankIdx, skelBankIdx, headBankIdx;
 } Entity;
 
@@ -43,6 +45,9 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	}
 	en->eyeTextureIndex = 0;
 	en->blinkTimer = 0;
+	en->waitingAutoTalk = 0;
+	en->getItemId = -1;
+    en->actor.textId = 0x0B10;
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, SHADOW_SIZE);
 	Collider_InitCylinder(globalCtx, &en->collider);
     Collider_SetCylinderType1(globalCtx, &en->collider, &en->actor, &sCylinderInit);
@@ -113,9 +118,44 @@ static s32 updateCommon(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void update(Entity *en, GlobalContext *globalCtx){
+	Player *player = PLAYER;
 	s32 animDone = updateCommon(en, globalCtx);
 	if(animDone < 0) return;
-	//TODO
+	Actor_RequestToTalk(&en->actor, globalCtx);
+	if(Actor_IsTalking(&en->actor, globalCtx)){
+		en->actor.flags &= ~0x10000;
+		s8 playerExchangeItem = Actor_GetItemExchangePlayer(globalCtx);
+		if(en->actor.textId == 0x0B15){
+			(void)0;
+		}else if((BETAKOKIRI_DONE_VAR & BETAKOKIRI_DONE_BIT)){
+			en->actor.textId = 0x0B16;
+		}else if(playerExchangeItem == EXCH_ITEM_BUG){
+			en->actor.textId = 0x0B12;
+		}else if(playerExchangeItem == EXCH_ITEM_BUTTERFLY){
+			en->actor.textId = 0x0B13;
+			func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+		}else if(playerExchangeItem == EXCH_ITEM_NONE){
+			en->actor.textId = 0x0B10;
+		}else{
+			en->actor.textId = 0x0B11;
+		}
+		player->actor.textId = en->actor.textId;
+	}
+	player->exchangeItemId = EXCH_ITEM_BLUE_FIRE;
+	if(en->actor.textId == 0x0B13 && MESSAGE_ADVANCE_END){
+		en->getItemId = GI_ODD_POTION;
+		BETAKOKIRI_DONE_VAR |= BETAKOKIRI_DONE_BIT;
+	}
+	if(en->getItemId >= 0){
+		if(en->actor.parent != NULL){
+			en->actor.parent = NULL;
+			en->getItemId = -1;
+			en->actor.flags |= 0x10000;
+			en->actor.textId = 0x0B15;
+		}else{
+			Actor_PickUp(&en->actor, globalCtx, en->getItemId, 2000.0f, 2000.0f);
+		}
+	}
 }
 
 s32 BetaKokiri_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {

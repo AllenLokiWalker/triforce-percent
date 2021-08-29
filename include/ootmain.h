@@ -52,12 +52,14 @@ typedef struct {
 
 extern Gfx gActorXluSetup[3]; //D_80116280
 
+#define BETAKOKIRI_DONE_VAR gSaveContext.infTable[0x1] //0x0EFB bit 1<<0
+#define BETAKOKIRI_DONE_BIT 0x0001
+#define SKULLKID_WILL_UPGRADE_VAR gSaveContext.itemGetInf[0x2] //0x0EF5 bit 1<<2
+#define SKULLKID_WILL_UPGRADE_BIT 0x0004
 #define WORKING_BUNNYHOOD_VAR gSaveContext.itemGetInf[0x2] //0x0EF5 bit 1<<0
 #define WORKING_BUNNYHOOD_BIT 0x0001
 #define WORKING_GERUDOMASK_VAR gSaveContext.itemGetInf[0x2] //0x0EF5 bit 1<<1
 #define WORKING_GERUDOMASK_BIT 0x0002
-#define SKULLKID_WILL_UPGRADE_VAR gSaveContext.itemGetInf[0x2] //0x0EF5 bit 1<<2
-#define SKULLKID_WILL_UPGRADE_BIT 0x0004
 #define NABOORU_CONTINUE_VAR gSaveContext.infTable[0x16] //0x0F24 bit 1<<0
 #define NABOORU_CONTINUE_BIT 0x0100
 #define NABOORU_DONE_VAR gSaveContext.infTable[0x16] //0x0F24 bit 1<<1
@@ -68,6 +70,7 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 #define Actor_RequestToTalk func_8002F2F4
 #define Actor_RequestToTalkInRange func_8002F2CC
 #define Actor_PickUp func_8002F434
+#define Actor_GetItemExchangePlayer func_8002F368
 #define Message_ShouldAdvance func_80106BC8
 #define MESSAGE_START func_8010B680(globalCtx, en->actor.textId, NULL)
 #define MESSAGE_CONTINUE func_8010B720(globalCtx, en->actor.textId)
@@ -75,6 +78,9 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 #define MESSAGE_ADVANCE_EVENT MESSAGE_ADVANCE_TYPE(5)
 #define MESSAGE_ADVANCE_CHOICE MESSAGE_ADVANCE_TYPE(4)
 #define MESSAGE_ADVANCE_END MESSAGE_ADVANCE_TYPE(6)
+
+#define GI_BUTTERFLY GI_BLUE_FIRE
+#define EXCH_ITEM_BUTTERFLY EXCH_ITEM_BLUE_FIRE
 
 //Functions
 

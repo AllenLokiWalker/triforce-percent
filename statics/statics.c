@@ -229,12 +229,20 @@ void Statics_TestShortcuts(){
     }
 }
 
+void Statics_MoveOddPotionToChild(){
+    if(gSaveContext.inventory.items[SLOT_TRADE_ADULT] == ITEM_ODD_POTION){
+        gSaveContext.inventory.items[SLOT_TRADE_ADULT] = ITEM_NONE;
+        gSaveContext.inventory.items[SLOT_TRADE_CHILD] = ITEM_ODD_POTION;
+    }
+}
+
 void Statics_Player_Update(){
     //Patch overwrote this
     if(PLAYER->unk_A73 != 0) PLAYER->unk_A73--;
     //Custom content
     Statics_TestShortcuts();
     Statics_LostWoods();
+    Statics_MoveOddPotionToChild();
 }
 
 static u8 sOneTime = 0;
