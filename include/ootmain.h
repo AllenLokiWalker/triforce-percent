@@ -102,5 +102,41 @@ static inline s32 WearingWorkingGerudoMask(){
         && (WORKING_GERUDOMASK_VAR & WORKING_GERUDOMASK_BIT);
 }
 
+static inline void Gfx_PrintDebugTextStart(GfxPrint* printer, Gfx** prevDisplayList, Gfx** displayList, u8 r, u8 g, u8 b, u8 a, s32 x, s32 y) {
+    // Branch OVERLAY_DISP to POLY_OPA_DISP
+    *prevDisplayList = POLY_OPA_DISP;
+    *displayList = Graph_GfxPlusOne(POLY_OPA_DISP);
+    gSPDisplayList(OVERLAY_DISP++, *displayList);
+
+    // Open Printer
+    GfxPrint_Init(printer);
+    GfxPrint_Open(printer, *displayList);
+
+    // Setup printer color and position
+    GfxPrint_SetColor(printer, r, g, b, a);
+    GfxPrint_SetPos(printer, x, y);
+}
+
+static inline void Gfx_PrintDebugTextEnd(GfxPrint* printer, Gfx** prevDisplayList, Gfx** displayList) {
+    // Close Printer
+    *displayList = GfxPrint_Close(printer);
+    GfxPrint_Destroy(printer);
+
+    // Branch back
+    gSPEndDisplayList(*displayList++);
+    Graph_BranchDlist(*prevDisplayList, *displayList);
+    POLY_OPA_DISP = *displayList;
+}
+
+#define GfxPrint_DebugPrintf(__r, __g, __b, __a, __x, __y, __fmt, ...) \
+    do { \
+        GfxPrint __printer; \
+        Gfx* __prevDisplayList; \
+        Gfx* __displayList; \
+        Gfx_PrintDebugTextStart(&__printer, &__prevDisplayList, &__displayList, __r, __g, __b, __a, __x, __y); \
+        GfxPrint_Printf(&__printer, __fmt, __VA_ARGS__); \
+        Gfx_PrintDebugTextEnd(&__printer, &__prevDisplayList, &__displayList); \
+    } while (0)
+
 
 #endif /* ! _OOTMAIN_H_INCLUDED_ */

@@ -7,11 +7,13 @@ PATCH 0xCB66A0 ../actor/z_bg_toki_swd/actor.pat
 PATCH 0xE9F0D0 ../actor/z_en_ge2/actor.pat
 
 //Misc scene patches
+PATCH 0x217C000 ../scene/spot10/spot10_room_7.pat
 PATCH 0x32B1000 ../scene/gerudoway/gerudoway_room_3.pat
 PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat
 PATCH 0x2103000 ../scene/spot07_scene/zoras_room1.pat
 
 //Misc custom actors
+ACTOR 49 ../actor/BetaKokiri/betakokiri.zovl
 ACTOR 277 ../actor/z_en_skj/z_en_skj.zovl
 ACTOR 312 ../actor/z_en_ge1/z_en_ge1.zovl
 ACTOR 34 ../actor/Nabooru/nabooru.zovl

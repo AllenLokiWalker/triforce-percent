@@ -2,7 +2,8 @@ include ../toolchain/make/main.mk
 
 MAKESUBDIRS = \
 	gerudoway \
-	spot07_scene
+	spot07_scene \
+	spot10
 
 OUTFILES = \
 	UnicornFountain/UnicornFountain_scene.zscene \

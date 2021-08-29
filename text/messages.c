@@ -209,8 +209,9 @@ DECLARE_MESSAGE(0x0B62, BOX_BLACK, POS_MIDDLE,
 DECLARE_MESSAGE(0x0B63, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "A Hylian child pretending to be a" NEWLINE
-    "Gerudo. How will that help you in" NEWLINE
-    "stopping the great Ganondorf?" BOX_BREAK UNSKIPPABLE
+    "Gerudo. I admire your courage, but" NEWLINE
+    "how will this help you in stopping" NEWLINE
+    "the great Ganondorf?" BOX_BREAK UNSKIPPABLE
     "That is what you want, isn't it?" EVENT
 )
 

@@ -1,5 +1,6 @@
 SUBDIRS = \
 BetaGreatFairy/ \
+BetaKokiri/ \
 CoSSages/ \
 CoSStaircases/ \
 Nabooru/ \
