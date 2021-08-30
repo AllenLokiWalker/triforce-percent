@@ -1,6 +1,6 @@
 include toolchain/make/main.mk
 
-CONTENTS = actor/ anim/ music/ scene/ textures/
+CONTENTS = actor/ anim/ music/ scene/ textures/ model/
 SUBDIRS = toolchain/ $(CONTENTS) loader/ statics/ bootstrap/ rom-setup/
 DUMP = build-romhack/project.zzrpl
 

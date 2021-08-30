@@ -2,6 +2,7 @@ include ../toolchain/make/main.mk
 
 MAKESUBDIRS = \
 	gerudoway \
+	shop1 \
 	spot07_scene \
 	spot10
 
@@ -63,20 +64,8 @@ $(MAKESUBDIRS):
 %_scene.elf %_scene.map: %_scene.o scene.ld
 	$(LD) $(LDFLAGS) -T scene.ld -Map $*_scene.map -o $*_scene.elf $<
 
-%.ia8.c: %.ia8.png
-	$(ZAPD) btex -tt ia8 -i $< -o temp.inc
-	echo "#define _Z64HDR_DISABLE_FABSF_ASM_ 1\n#include \"ootmain.h\"\nconst u64 temp[] = {\n" > $@
-	cat temp.inc >> $@
-	echo "};\n" >> $@
-	rm -f temp.inc
-
-%.ia8.elf: %.ia8.o
-	$(LD) $(LDFLAGS) -T scene.ld -o $@ $<
-
-%.ia8: %.ia8.bin
-	cp $< $@
-
 clean: cleansubdirs
 	rm -f */title.ia8
 
+include ../toolchain/make/textures.mk
 include ../toolchain/make/c.mk

@@ -19,6 +19,10 @@ extern float sSoundParam5;
 
 extern u8 sSubscreenButtonStates[30];
 
+static const u64 TexButterfly[] = {
+    #include "../textures/butterfly_bottle.rgba32.inc"
+};
+
 void Patched_LoadItemIconMain(GlobalContext *globalCtx, u16 button, u16 num){
     InterfaceContext *interfaceCtx = (InterfaceContext*)&globalCtx->interfaceCtx;
     u32 rom = 0x007BD000; //icon_item_static
@@ -41,7 +45,9 @@ void Patched_LoadItemIconMain(GlobalContext *globalCtx, u16 button, u16 num){
     }
     rom += item * size;
     
-    if(num == 0){
+    if(item == ITEM_BIG_POE){
+        bcopy(TexButterfly, ram, size);
+    }else if(num == 0){
         DmaMgr_SendRequest1(ram, rom, size);
     }else{
         DmaRequest *request = ((num == 1) ? &interfaceCtx->dmaRequest_160 : &interfaceCtx->dmaRequest_180);

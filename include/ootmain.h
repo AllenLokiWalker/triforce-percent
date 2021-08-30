@@ -52,8 +52,14 @@ typedef struct {
 
 extern Gfx gActorXluSetup[3]; //D_80116280
 
-#define BETAKOKIRI_DONE_VAR gSaveContext.infTable[0x1] //0x0EFB bit 1<<0
-#define BETAKOKIRI_DONE_BIT 0x0001
+#define BETAKOKIRI_SPAWNED_VAR gSaveContext.infTable[0x1] //0x0EFB bit 1<<0
+#define BETAKOKIRI_SPAWNED_BIT 0x0001
+#define LOOKING_FOR_BUTTERFLY_VAR gSaveContext.infTable[0x1] //0x0EFB bit 1<<1
+#define LOOKING_FOR_BUTTERFLY_BIT 0x0002
+#define SHOP_HAS_BUTTERFLY_VAR gSaveContext.infTable[0x1] //0x0EFB bit 1<<2
+#define SHOP_HAS_BUTTERFLY_BIT 0x0004
+#define BETAKOKIRI_DONE_VAR gSaveContext.infTable[0x1] //0x0EFB bit 1<<3
+#define BETAKOKIRI_DONE_BIT 0x0008
 #define SKULLKID_WILL_UPGRADE_VAR gSaveContext.itemGetInf[0x2] //0x0EF5 bit 1<<2
 #define SKULLKID_WILL_UPGRADE_BIT 0x0004
 #define WORKING_BUNNYHOOD_VAR gSaveContext.itemGetInf[0x2] //0x0EF5 bit 1<<0
@@ -79,8 +85,10 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 #define MESSAGE_ADVANCE_CHOICE MESSAGE_ADVANCE_TYPE(4)
 #define MESSAGE_ADVANCE_END MESSAGE_ADVANCE_TYPE(6)
 
-#define GI_BUTTERFLY GI_BLUE_FIRE
-#define EXCH_ITEM_BUTTERFLY EXCH_ITEM_BLUE_FIRE
+#define ITEM_BUTTERFLY ITEM_BIG_POE //0x1E
+#define GI_BUTTERFLY GI_BIG_POE //0x70
+#define EXCH_ITEM_BUTTERFLY EXCH_ITEM_BIG_POE //0x1C
+#define SI_BUTTERFLY SI_BIG_POE //0x29
 
 //Functions
 

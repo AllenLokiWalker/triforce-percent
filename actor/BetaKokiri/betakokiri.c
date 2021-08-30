@@ -39,7 +39,7 @@ typedef struct {
 
 static void init(Entity *en, GlobalContext *globalCtx) {
 	en->initted = 0;
-	if(en->actor.params != 0){
+	if(en->actor.params != 0 || !(BETAKOKIRI_SPAWNED_VAR & BETAKOKIRI_SPAWNED_BIT)){
 		Actor_Kill(&en->actor);
 		return;
 	}
@@ -123,6 +123,7 @@ static void update(Entity *en, GlobalContext *globalCtx){
 	if(animDone < 0) return;
 	Actor_RequestToTalk(&en->actor, globalCtx);
 	if(Actor_IsTalking(&en->actor, globalCtx)){
+		LOOKING_FOR_BUTTERFLY_VAR |= LOOKING_FOR_BUTTERFLY_BIT;
 		en->actor.flags &= ~0x10000;
 		s8 playerExchangeItem = Actor_GetItemExchangePlayer(globalCtx);
 		if(en->actor.textId == 0x0B15){
@@ -134,6 +135,7 @@ static void update(Entity *en, GlobalContext *globalCtx){
 		}else if(playerExchangeItem == EXCH_ITEM_BUTTERFLY){
 			en->actor.textId = 0x0B13;
 			func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+			Player_UpdateBottleHeld(globalCtx, player, ITEM_BOTTLE, PLAYER_AP_BOTTLE);
 		}else if(playerExchangeItem == EXCH_ITEM_NONE){
 			en->actor.textId = 0x0B10;
 		}else{

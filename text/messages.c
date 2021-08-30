@@ -56,7 +56,7 @@ DECLARE_MESSAGE(0x0B16, BOX_BLACK, POS_MIDDLE,
     "Thanks for bringing me that bug!"
 )
 
-DECLARE_MESSAGE(0x71B2, BOX_BLACK, POS_VARIABLE,
+DECLARE_MESSAGE(0x009C, BOX_BLACK, POS_VARIABLE,
     UNSKIPPABLE
     "What's that? You're lookin' for a" NEWLINE
     "flyin' bug?" BOX_BREAK UNSKIPPABLE
@@ -66,12 +66,29 @@ DECLARE_MESSAGE(0x71B2, BOX_BLACK, POS_VARIABLE,
     "He always leaves some around, and" NEWLINE
     "I bet he'll be happy to know he" NEWLINE
     "helped his old man make a sale!" NEWLINE
-    "Har har har!" BOX_BREAK UNSKIPPABLE
-    "Lemme put one out for ya."
+    TEXT_SPEED("\x02") 
+    QUICKTEXT_ENABLE "Har" QUICKTEXT_DISABLE " " 
+    QUICKTEXT_ENABLE "har" QUICKTEXT_DISABLE " " 
+    QUICKTEXT_ENABLE "har" QUICKTEXT_DISABLE "!" 
+    TEXT_SPEED("\x00") BOX_BREAK UNSKIPPABLE
+    "Lemme put one out for ya." EVENT
 )
 
-DECLARE_MESSAGE(0x0010, BOX_BLUE, POS_MIDDLE,
-    UNSKIPPABLE ITEM_ICON("\x25") QUICKTEXT_ENABLE "You got a " COLOR(RED) "Butterfly" COLOR(WHITE) "!" QUICKTEXT_DISABLE NEWLINE
+DECLARE_MESSAGE(0x0B28, BOX_BLACK, POS_MIDDLE,
+    QUICKTEXT_ENABLE  COLOR(RED) "Butterfly   35 Rupees" NEWLINE
+    COLOR(WHITE) "This is a beautiful red and" NEWLINE
+    "yellow butterfly. You can keep it" NEWLINE
+    "in one of your bottles." QUICKTEXT_DISABLE PERSISTENT
+)
+
+DECLARE_MESSAGE(0x0B29, BOX_BLACK, POS_MIDDLE,
+    QUICKTEXT_ENABLE "Butterfly   35 Rupees" QUICKTEXT_DISABLE NEWLINE
+    NEWLINE TWO_CHOICE COLOR(GREEN) "Buy" NEWLINE
+    "Don't buy" COLOR(WHITE)
+)
+
+DECLARE_MESSAGE(0x00F9, BOX_BLUE, POS_MIDDLE,
+    UNSKIPPABLE ITEM_ICON("\x1E") QUICKTEXT_ENABLE "You got a " COLOR(RED) "Butterfly" COLOR(WHITE) "!" QUICKTEXT_DISABLE NEWLINE
     "Bug enthusiasts love these!"
 )
 
@@ -195,7 +212,7 @@ DECLARE_MESSAGE(0x0B61, BOX_BLACK, POS_MIDDLE,
 
 DECLARE_MESSAGE(0x0B62, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
-    "Well, enough acting, boy. Yes, I" NEWLINE
+    "Well, enough acting, " TEXT_SPEED("\x03") "boy" TEXT_SPEED("\x00") ". Yes, I" NEWLINE
     "can see through your disguise." EVENT
 )
 
@@ -586,7 +603,7 @@ DECLARE_MESSAGE(0x0A75, BOX_BLACK, POS_MIDDLE,
 )
 
 DECLARE_MESSAGE(0x0ACE, BOX_BLACK, POS_MIDDLE,
-    UNSKIPPABLE ITEM_ICON("\x6B") QUICKTEXT_ENABLE
+    UNSKIPPABLE ITEM_ICON("\x73") QUICKTEXT_ENABLE
     "You got the " COLOR(YELLOW) "Triforce" COLOR(WHITE) "!!!" QUICKTEXT_DISABLE NEWLINE
     "After 23 years, the dreams of" NEWLINE
     "millions of players around the" NEWLINE

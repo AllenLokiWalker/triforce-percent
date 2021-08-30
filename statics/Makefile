@@ -6,15 +6,26 @@ default: statics.bin statics.out.ld
 
 #Dependencies
 
-statics.o: statics.h ../loader/fast_loader/fast_loader.h
+statics.o: \
+	statics.h \
+	ossan_related.h \
+	../loader/fast_loader/fast_loader.h
 
-interface.o: interface.h
+interface.o: \
+	interface.h \
+	../textures/butterfly_bottle.rgba32.inc
 
-message.o: message.h ../text/messages.c
+message.o: \
+	message.h \
+	../text/messages.c
 
-../text/build_messages_file.o: ../text/message_data_fmt.h ../text/messages.c
+../text/build_messages_file.o: \
+	../text/message_data_fmt.h \
+	../text/messages.c
 
-anime.o: anime.h ../anim/anim.c
+anime.o: \
+	anime.h \
+	../anim/anim.c
 
 ocarina.o: \
 	ocarina.h \

@@ -9,6 +9,7 @@
 #include "ocarina.h"
 #include "audio.h"
 #include "gfx.h"
+#include "ossan_related.h"
 
 static u8 sIsLiveRun = 0;
 
@@ -140,7 +141,7 @@ void Statics_LostWoods(){
     static const float sWoodsTargetX[3] = {0.0f, 793.0f, 269.0f}; //north, south, west
     static const float sWoodsTargetZ[3] = {-530.0f, 546.0f, -795.0f};
     static const s8 sWoodsPath[4] = {0, 2, 1, 2};
-    const float radius = 55.0f;
+    const float radius = 80.0f;
     Player *player = PLAYER;
     if(gGlobalContext.sceneNum != 0x5B){ //not in Lost Woods
         if(sWoodsState == 1 && sWoodsCount < 4){
@@ -149,6 +150,7 @@ void Statics_LostWoods(){
              }else{
                  sWoodsCount = 0;
              }
+             if(sIsLiveRun) Debugger_Printf("sWoodsCount %d", sWoodsCount);
              sWoodsState = 0;
         }
         return;
@@ -160,6 +162,7 @@ void Statics_LostWoods(){
         }else if(sWoodsState == 20){
             Audio_PlayActorSound2(&(player->actor), 0x4802);
             ++sWoodsState;
+            BETAKOKIRI_SPAWNED_VAR |= BETAKOKIRI_SPAWNED_BIT;
         }
     }else{
         sWoodsState = 1;
@@ -229,6 +232,49 @@ void Statics_TestShortcuts(){
     }
 }
 
+void Statics_PatchShop(){
+    GlobalContext* globalCtx = &gGlobalContext;
+    if(globalCtx->sceneNum != SCENE_SHOP1) return;
+    //Get actor and overlay
+    Actor* ossanActor = globalCtx->actorCtx.actorLists[ACTORCAT_NPC].head;
+    while(ossanActor != NULL){
+        if(ossanActor->id == ACTOR_EN_OSSAN) break;
+        ossanActor = ossanActor->next;
+    }
+    if(ossanActor == NULL) return;
+    EnOssan* ossan = (EnOssan*)ossanActor;
+    void* ossanOverlay = gActorOverlayTable[ACTOR_EN_OSSAN].loadedRamAddr;
+    if(ossanOverlay == NULL) return;
+    //Check logic
+    if(!(LOOKING_FOR_BUTTERFLY_VAR & LOOKING_FOR_BUTTERFLY_BIT)) return;
+    if(globalCtx->msgCtx.unk_E2F8 == 0x009C){ //textId
+        SHOP_HAS_BUTTERFLY_VAR |= SHOP_HAS_BUTTERFLY_BIT;
+    }
+    if(!(SHOP_HAS_BUTTERFLY_VAR & SHOP_HAS_BUTTERFLY_BIT)) return;
+    //Change store item
+    ShopItem* sShopkeeperStores = (ShopItem*)(ossanOverlay + 0x58F0);
+    ShopItem* butterflyEntry = &sShopkeeperStores[4*8+3];
+    if(butterflyEntry->shopItemIndex != SI_BUTTERFLY){
+        if(ossan->shelfSlots[3] == NULL){
+            //Link actor update ran before ossan actor init
+            butterflyEntry->shopItemIndex = SI_BUTTERFLY;
+        }else if(ossan->shelves != NULL){
+            //Make sure shelves are loaded, otherwise don't do this until next frame
+            butterflyEntry->shopItemIndex = SI_BUTTERFLY;
+            Actor_Kill(&ossan->shelfSlots[3]->actor);
+            ossan->shelfSlots[3] = (EnGirlA*)Actor_Spawn(
+                &globalCtx->actorCtx, globalCtx, ACTOR_EN_GIRLA,
+                ossan->shelves->actor.world.pos.x + butterflyEntry->xOffset,
+                ossan->shelves->actor.world.pos.y + butterflyEntry->yOffset,
+                ossan->shelves->actor.world.pos.z + butterflyEntry->zOffset,
+                ossan->shelves->actor.shape.rot.x,
+                ossan->shelves->actor.shape.rot.y + 0xEAAC,
+                ossan->shelves->actor.shape.rot.z,
+                SI_BUTTERFLY);
+        }
+    }
+}
+
 void Statics_MoveOddPotionToChild(){
     if(gSaveContext.inventory.items[SLOT_TRADE_ADULT] == ITEM_ODD_POTION){
         gSaveContext.inventory.items[SLOT_TRADE_ADULT] = ITEM_NONE;
@@ -242,6 +288,7 @@ void Statics_Player_Update(){
     //Custom content
     Statics_TestShortcuts();
     Statics_LostWoods();
+    Statics_PatchShop();
     Statics_MoveOddPotionToChild();
 }
 
