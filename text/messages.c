@@ -343,7 +343,7 @@ DECLARE_MESSAGE(0x0C10, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Whaaaat?! Impossible!" BOX_BREAK UNSKIPPABLE
     "I'm the fastest man in Hyrule!" NEWLINE
-    "How did you get here before I did?" EVENT
+    "How did you get here before I did?!" EVENT
 )
 
 DECLARE_MESSAGE(0x0C11, BOX_BLACK, POS_MIDDLE,

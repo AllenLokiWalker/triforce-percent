@@ -9,6 +9,7 @@ PATCH 0xC004E0 ../actor/z_en_girla/actor.pat
 
 //Misc scene patches
 PATCH 0x217C000 ../scene/spot10/spot10_room_7.pat
+PATCH 0x2171000 ../scene/spot10/spot10_room_5.pat
 PATCH 0x28E4000 ../scene/shop1/shop1_room_0.pat
 PATCH 0x32B1000 ../scene/gerudoway/gerudoway_room_3.pat
 PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat
@@ -23,6 +24,7 @@ ACTOR 277 ../actor/z_en_skj/z_en_skj.zovl
 ACTOR 333 ../actor/z_en_owl/z_en_owl.zovl
 ACTOR 312 ../actor/z_en_ge1/z_en_ge1.zovl
 ACTOR 34 ../actor/Nabooru/nabooru.zovl
+ACTOR 54 ../actor/z_en_mm3/z_en_mm3.zovl
 ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl
 
 //Custom icons

@@ -14,6 +14,7 @@ z_demo_effect/ \
 z_en_ge1/ \
 z_en_ge2/ \
 z_en_girla/ \
+z_en_mm3/ \
 z_en_owl/ \
 z_en_skj/ \
 z_en_wonder_item/ \

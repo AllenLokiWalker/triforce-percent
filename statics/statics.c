@@ -378,6 +378,17 @@ void Statics_TimeTravel(){
     if(gGlobalContext.sceneNum == SCENE_TOKINOMA || gGlobalContext.sceneNum == SCENE_GERUDOWAY){
         return; //in Temple of Time or Thieves' Hideout
     }
+    if((gSaveContext.eventInf[1] & 1)){
+        //Timer 2 (Running Man race) is active
+        if(LINK_IS_CHILD){
+            gSaveContext.timer2Value = -10; //10 seconds to time 0
+        }else{
+            //gCounterDigit0Tex = 02003040, size of each digit is 0x80
+            //Want to stay in bounds in segment 2. Over 1:30 should be plenty of
+            //time to get across Hyrule Field, even without the Bunny Hood
+            gSaveContext.timer2Value = -96;
+        }
+    }
     //Time travel
     gGlobalContext.linkAgeOnLoad = gSaveContext.linkAge ^ 1;
     //gGlobalContext.unk_1D_ = 1; //unk_11DE9 not sure? next variable after link_age

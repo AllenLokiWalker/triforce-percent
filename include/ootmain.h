@@ -66,11 +66,15 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 #define WORKING_BUNNYHOOD_BIT 0x0001
 #define WORKING_GERUDOMASK_VAR gSaveContext.itemGetInf[0x2] //0x0EF5 bit 1<<1
 #define WORKING_GERUDOMASK_BIT 0x0002
+//Using 0xF24 bits 1<<6 and 1<<7 for ge2 dialogue chooser
 #define NABOORU_CONTINUE_VAR gSaveContext.infTable[0x16] //0x0F24 bit 1<<0
 #define NABOORU_CONTINUE_BIT 0x0100
 #define NABOORU_DONE_VAR gSaveContext.infTable[0x16] //0x0F24 bit 1<<1
 #define NABOORU_DONE_BIT 0x0200
-//Using 0xF24 bits 1<<6 and 1<<7 for ge2 dialogue chooser
+#define RUNNINGMAN_WANTS_TO_BATTLE_VAR gSaveContext.infTable[23] //0x0F26 bit 1<<6
+#define RUNNINGMAN_WANTS_TO_BATTLE_BIT 0x4000
+#define RUNNINGMAN_DEFEATED_VAR gSaveContext.infTable[23] //0x0F26 bit 1<<5
+#define RUNNINGMAN_DEFEATED_BIT 0x2000
 
 #define Actor_IsTalking func_8002F194
 #define Actor_RequestToTalk func_8002F2F4
