@@ -33,6 +33,8 @@ void Statics_SetGameState(){
     gSaveContext.eventChkInf[0xB] |= 0x100; //Entered Desert Colossus (no entrance cutscene)
     gSaveContext.itemGetInf[0x2] |= 0x0478; //Obtained Mask of Truth, all trading masks
     gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
+    //TODO remove before final
+    WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
@@ -150,7 +152,7 @@ void Statics_LostWoods(){
              }else{
                  sWoodsCount = 0;
              }
-             if(sIsLiveRun) Debugger_Printf("sWoodsCount %d", sWoodsCount);
+             //if(sIsLiveRun) Debugger_Printf("sWoodsCount %d", sWoodsCount);
              sWoodsState = 0;
         }
         return;
@@ -223,8 +225,12 @@ void Statics_TestShortcuts(){
             //Press L+DL for frog
             func_8010B680(&gGlobalContext, 0x0901, NULL); //textbox_begin
         }else if((CTRLR_PRESS & BTN_DRIGHT)){
-            //Press L+DR for animation test
+            //Press L+DR for....
+            //animation test
             //Statics_AnimeTest(0);
+            //race test
+            gSaveContext.eventInf[1] |= 1;
+            gSaveContext.timer2State = -30;
         }else if((CTRLR_PRESS & BTN_DUP)){
             //Kill Link (sorry)
             gSaveContext.health = 0;

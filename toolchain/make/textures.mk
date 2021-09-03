@@ -19,7 +19,7 @@
 %.ia4.inc: %.ia4.png
 	$(ZAPD) btex -tt ia4 -i $< -o $@
 
-clean:
+texclean:
 	rm -f *.rgba32.inc *.rgb5a1.inc *.ia8.inc *.ci8.inc *.i4.inc *.ia4.inc *.pat
 
 %.pat: %

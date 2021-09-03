@@ -29,13 +29,20 @@ ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl
 
 //Custom icons
 //icon_item_static starts at 0x7BD000, each image is 0x1000 (32x32x32b)
-//Item 0x1E
+//Image 0x1E
 PATCH 0x7DB000 ../textures/butterfly_bottle.rgba32.pat
 //icon_item_24_static starts at 0x846000, each image is 0x900 (24x24x32b)
 //Image 0x09
 PATCH 0x84B100 ../textures/sages_charm.rgba32.pat
 //Image 0x0D
 PATCH 0x84D500 ../textures/triforce.rgba32.pat
+//item_name_static starts at 0x880000, each image is 0x800 (128x16x8b)
+//Image 0x1E
+PATCH 0x88F000 ../textures/item_butterfly.ia4.pat
+//Image 0x31
+PATCH 0x898800 ../textures/item_magic_powder.ia4.pat
+//Image 0x6F
+PATCH 0x8B7800 ../textures/item_sages_charm.ia4.pat
 
 //Custom Link animations
 STATICDATA ../anim/anim.bin 0 0x0 0x0

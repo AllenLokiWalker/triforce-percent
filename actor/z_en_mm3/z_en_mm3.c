@@ -31,6 +31,13 @@ typedef struct {
 	u8 timer;
 } Entity;
 
+static void update_Wait(Entity *en, GlobalContext *globalCtx);
+static void update_RunIn(Entity *en, GlobalContext *globalCtx);
+static void update_Sitting(Entity *en, GlobalContext *globalCtx);
+static void update_Talking(Entity *en, GlobalContext *globalCtx);
+static void update_GettingUp(Entity *en, GlobalContext *globalCtx);
+static void update_RunOut(Entity *en, GlobalContext *globalCtx);
+
 static void init(Entity *en, GlobalContext *globalCtx) {
 	if(en->actor.params != 0 || LINK_IS_CHILD || !(gSaveContext.eventInf[1] & 1)){
 		en->actor.destroy = NULL;
@@ -54,13 +61,10 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 
 static s32 updateCommon(Entity *en, GlobalContext *globalCtx) {
 	if(en->lookingAtLink){
-		func_80038290(globalCtx, &this->actor, &this->headRot, &this->torsoRot,
-			this->actor.focus.pos);
+		func_80038290(globalCtx, &en->actor, &en->headRot, &en->torsoRot,
+			en->actor.focus.pos);
 	}else{
-		Math_SmoothStepToS(&this->headRot.x, 0, 6, 6200, 100);
-        Math_SmoothStepToS(&this->headRot.y, 0, 6, 6200, 100);
-        Math_SmoothStepToS(&this->torsoRot.x, 0, 6, 6200, 100);
-        Math_SmoothStepToS(&this->torsoRot.y, 0, 6, 6200, 100);
+		func_80037F30(&en->headRot, &en->torsoRot);
 	}
 	Collider_UpdateCylinder(&en->actor, &en->collider);
     CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &en->collider.base);
@@ -76,28 +80,30 @@ static void update_Wait(Entity *en, GlobalContext *globalCtx){
 	}
 }
 	
-static float moveAlongPath(Entity *en, uint16_t totalframes, 
+static float moveAlongPath(Entity *en, u16 totalframes, 
 		const Vec3f *startPos, const Vec3f *endPos){
 	float frac = (float)en->timer / (float)totalframes;
 	if(frac >= 1.0f) frac = 1.0f;
 	Vec3f dp = *endPos;
 	dp.x -= startPos->x; dp.y -= startPos->y; dp.z -= startPos->z;
-	en->actor.world.pos = startPos;
+	en->actor.world.pos = *startPos;
 	en->actor.world.pos.x += dp.x * frac;
 	en->actor.world.pos.y += dp.y * frac;
 	en->actor.world.pos.z += dp.z * frac;
 	en->actor.shape.rot.x = en->actor.shape.rot.z = 0;
 	en->actor.shape.rot.y = Math_Atan2S(dp.z, dp.x);
+	en->actor.world.rot = en->actor.shape.rot;
 	++en->timer;
+	return frac;
 }
 	
 static void update_RunIn(Entity *en, GlobalContext *globalCtx){
 	float frac = moveAlongPath(en, SECONDS_RUN_IN * 20, &en->actor.home.pos, &bridgeEndPos);
 	if(frac >= 0.5f) en->lookingAtLink = 1;
-	if(frac >= 0.6f) en->mouthTexIndex = 1;
+	if(frac >= 0.55f) en->mouthTexIndex = 1;
 	if(frac >= 1.0f){
-		Animation_Change(&en->skelAnime, gRunningManSitStandAnim, -1.0f,
-			Animation_GetLastFrame(gRunningManSitStandAnim), 0.0f, ANIMMODE_ONCE, -7.0f);
+		Animation_Change(&en->skelAnime, &gRunningManSitStandAnim, -1.0f,
+			Animation_GetLastFrame(&gRunningManSitStandAnim), 0.0f, ANIMMODE_ONCE, -7.0f);
 		en->actor.update = (ActorFunc)update_Sitting;
 	}
 	updateCommon(en, globalCtx);
@@ -106,8 +112,8 @@ static void update_RunIn(Entity *en, GlobalContext *globalCtx){
 static void update_Sitting(Entity *en, GlobalContext *globalCtx){
 	s32 animDone = updateCommon(en, globalCtx);
 	if(animDone){
-		Animation_Change(&en->skelAnime, gRunningManExcitedAnim, 1.0f, 0.0f,
-			Animation_GetLastFrame(gRunningManExcitedAnim), ANIMMODE_LOOP, -12.0f);
+		Animation_Change(&en->skelAnime, &gRunningManExcitedAnim, 1.0f, 0.0f,
+			Animation_GetLastFrame(&gRunningManExcitedAnim), ANIMMODE_LOOP, -12.0f);
 		en->actor.update = (ActorFunc)update_Talking;
 		en->actor.textId = 0x0C10;
 		en->actor.flags |= 0x10000; //auto talk
@@ -124,33 +130,25 @@ static void update_Talking(Entity *en, GlobalContext *globalCtx){
 	Actor_RequestToTalkInRange(&en->actor, globalCtx, 1000);
 	if(MESSAGE_ADVANCE_EVENT){
 		en->actor.flags &= ~0x10000; //auto talk
-		Animation_Change(&en->skelAnime, gRunningManSitWaitAnim, 1.0f, 0.0f,
-			Animation_GetLastFrame(gRunningManSitWaitAnim), ANIMMODE_LOOP, -7.0f);
+		Animation_Change(&en->skelAnime, &gRunningManSitWaitAnim, 1.0f, 0.0f,
+			Animation_GetLastFrame(&gRunningManSitWaitAnim), ANIMMODE_LOOP, -7.0f);
 		en->actor.textId = 0x0C11;
-		en->timer = 0;
 		en->mouthTexIndex = 0;
 		MESSAGE_CONTINUE;
 	}else if(MESSAGE_ADVANCE_END){
-		Animation_Change(&en->skelAnime, gRunningManSitStandAnim, 1.0f, 0.0f,
-			Animation_GetLastFrame(gRunningManSitStandAnim), ANIMMODE_ONCE, -12.0f);
+		Animation_Change(&en->skelAnime, &gRunningManSitStandAnim, 1.0f, 0.0f,
+			Animation_GetLastFrame(&gRunningManSitStandAnim), ANIMMODE_ONCE, -12.0f);
 		en->lookingAtLink = 0;
 		en->actor.update = (ActorFunc)update_GettingUp;
-	}
-	if(en->actor.textId == 0x0C11){
-		if(en->timer == 60){
-			Animation_Change(&en->skelAnime, gRunningManHappyAnim, 1.0f, 0.0f,
-				Animation_GetLastFrame(gRunningManHappyAnim), ANIMMODE_LOOP, -12.0f);
-		}else{
-			++en->timer;
-		}
 	}
 }
 
 static void update_GettingUp(Entity *en, GlobalContext *globalCtx){
 	s32 animDone = updateCommon(en, globalCtx);
 	if(animDone){
-		Animation_Change(&en->skelAnime, gRunningManRunAnim, 1.5f, 0.0f,
-			Animation_GetLastFrame(gRunningManRunAnim), ANIMMODE_LOOP, -7.0f);
+		Animation_Change(&en->skelAnime, &gRunningManRunAnim, 1.5f, 0.0f,
+			Animation_GetLastFrame(&gRunningManRunAnim), ANIMMODE_LOOP, 0.0f);
+		en->timer = 0;
 		en->actor.update = (ActorFunc)update_RunOut;
 	}
 }
@@ -167,17 +165,17 @@ static void update_RunOut(Entity *en, GlobalContext *globalCtx){
 s32 EnMm3_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Entity* en = (Entity*)thisx;
 	if(limbIndex == LIMB_TORSO){
-        rot->x += this->torsoRot.y;
-        rot->y -= this->torsoRot.x;
+        rot->x += en->torsoRot.y;
+        //rot->y -= en->torsoRot.x;
 	}else if(limbIndex == LIMB_HEAD){
-        rot->x += this->headRot.y;
-        rot->z += this->headRot.x + 0xFA0;
+        rot->x += en->headRot.y;
+        rot->z += en->headRot.x * 0.5f;
     }
     return false;
 }
 
 void EnMm3_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
-    static const Vec3f headOffset = { 200.0f, 800.0f, 0.0f };
+    static Vec3f headOffset = { 200.0f, 800.0f, 0.0f };
     Entity* en = (Entity*)thisx;
     if(limbIndex == LIMB_HEAD){
         Matrix_MultVec3f(&headOffset, &en->actor.focus.pos);
@@ -185,6 +183,7 @@ void EnMm3_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
+    static const u64* mouthTextures[] = { gRunningManMouthClosedTex, gRunningManMouthOpenTex };
 	if(en->invisible) return;
 	func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(mouthTextures[en->mouthTexIndex]));
