@@ -324,7 +324,9 @@ __attribute__((section(".start"))) void Debugger_Init()
 {
 	fp_postcmd = Debugger_Draw;
     fl_disable_green_bar = 1;
+	/*
     Debugger_ShowMessage(180, "\x1FWelcome to \x12T\x16""A\x14S\x1A""b\x1Bo\x1Ct \x13O\x15S\x1F v420.69");
 	Debugger_ShowMessage(190, "Hyperspeed polling data loader loaded.");
 	Debugger_ShowMessage(200, "Debugger loaded (HI MOM!).");
+	*/
 }

@@ -17,10 +17,10 @@ static void BgSpot07Taki_Update(Actor* thisx, GlobalContext* globalCtx);
 static void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx);
 
 /* Triforce% functions */
-static float Triforce_ThawNormalized(BgSpot07Taki* this);
-static u8 Triforce_WaterFadeIn(BgSpot07Taki* this);
-static u8 Triforce_IceFadeOut(BgSpot07Taki* this);
-static u8 Triforce_FrozenWaterfallFadeOut(BgSpot07Taki* this);
+static float GetThawRatio(BgSpot07Taki* this);
+static u8 GetWaterFadeAlpha(BgSpot07Taki* this);
+static u8 GetIceFadeAlpha(BgSpot07Taki* this);
+static u8 GetFrozenWaterfallFadeAlpha(BgSpot07Taki* this);
 static u8 Triforce_DisablePrimColor(void *dlist);
 static void Triforce_ToggleCaustics(BgSpot07Taki* this, enum caustics mode);
 static void Triforce_SpawnSoundActor(BgSpot07Taki* this, GlobalContext* globalCtx);
@@ -61,12 +61,15 @@ static struct
 static void Triforce_WaterfallFadeIn(BgSpot07Taki* this)
 {
 	/* alpha value of each waterfall vertex, used for fade-in */
-	const u8 vertexAlpha[] = {
-		127, 127, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 250, 250, 250, 250, 250, 250, 255, 0, 255, 0, 0, 0, 0, 255, 0, 0, 0, 0, 255, 0, 0, 255, 255, 0, 0, 255, 0, 0, 0, 0, 255, 202, 164, 127, 164, 202, 202, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0
+	static const u8 vertexAlpha[] = {
+		127, 127, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+		255, 255, 255, 250, 250, 250, 250, 250, 250, 255, 0, 255, 0, 0, 0, 0, 255,
+		0, 0, 0, 0, 255, 0, 0, 255, 255, 0, 0, 255, 0, 0, 0, 0, 255, 202, 164, 127,
+		164, 202, 202, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0
 	};
 	u8 *v = SEGMENTED_TO_VIRTUAL(0x06000000);
 	int i;
-	float f = Triforce_ThawNormalized(this);
+	float f = GetThawRatio(this);
 	
 	for (i = 0; i < sizeof(vertexAlpha); ++i, v += 16)
 	{
@@ -108,6 +111,9 @@ static void Triforce_SpawnSoundActor(BgSpot07Taki* this, GlobalContext* globalCt
 static void BgSpot07Taki_Init(Actor* thisx, GlobalContext* globalCtx) {
 	BgSpot07Taki* this = THIS;
 	CollisionHeader* colHeader = NULL;
+	
+	//TODO
+	globalCtx->actorCtx.flags.chest &= ~(1 << FLAG_THAWED);
 
 	DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
 	Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
@@ -142,7 +148,8 @@ static void BgSpot07Taki_Init(Actor* thisx, GlobalContext* globalCtx) {
 			} else {
 				CollisionHeader_GetVirtual(COLL_CHAMBER, &colHeader);
 			}
-			this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+			this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna,
+				&this->dyna.actor, colHeader);
 		}
 	}
 	else
@@ -168,7 +175,8 @@ static void Triforce_TestShouldThaw(BgSpot07Taki* this, GlobalContext* globalCtx
 		/* activation logic */
 		if (!wait
 			&& func_80043590(&this->dyna) /* Link is standing on ice */
-			&& Actor_Find(&globalCtx->actorCtx, ACTOR_MAGIC_FIRE, ACTORCAT_ITEMACTION) /* used Din's Fire */
+			&& Actor_Find(&globalCtx->actorCtx, ACTOR_MAGIC_FIRE, ACTORCAT_ITEMACTION) 
+			/* used Din's Fire */
 		)
 		{
 			wait = 30;
@@ -177,7 +185,6 @@ static void Triforce_TestShouldThaw(BgSpot07Taki* this, GlobalContext* globalCtx
 		if (wait && !(--wait))
 		{
 			g.thawing = globalCtx->gameplayFrames;
-			/* TODO is this safe? is there a better way? */
 			Audio_PlayActorSound2(&PLAYER->actor, NA_SE_EV_ICE_MELT);
 		}
 		return;
@@ -246,19 +253,23 @@ static void FastPrim(Gfx *p, u8 r, u8 g, u8 b, u8 a)
 
 static void FastXluMode(Gfx *p)
 {
-	gDPSetCombineLERP(p++, TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, COMBINED, 0, PRIMITIVE, 0);
-	gDPSetRenderMode(p++, AA_EN | Z_CMP | IM_RD | CLR_ON_CVG | CVG_DST_WRAP | ZMODE_XLU | FORCE_BL | GBL_c1(G_BL_CLR_FOG, G_BL_A_SHADE, G_BL_CLR_IN, G_BL_1MA), G_RM_AA_ZB_XLU_SURF2);
+	gDPSetCombineLERP(p++, TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, 
+		COMBINED, 0, PRIMITIVE, 0, COMBINED, 0, PRIMITIVE, 0);
+	gDPSetRenderMode(p++, AA_EN | Z_CMP | Z_UPD | IM_RD | CLR_ON_CVG | CVG_DST_WRAP | ZMODE_XLU | FORCE_BL 
+		| GBL_c1(G_BL_CLR_FOG, G_BL_A_SHADE, G_BL_CLR_IN, G_BL_1MA), G_RM_AA_ZB_XLU_SURF2);
 }
 
 static void FastXluModeTextureAlpha(Gfx *p, int stride)
 {
 	u32 pOld = (u32)p;
-	gDPSetCombineLERP(p++, TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED);
+	gDPSetCombineLERP(p++, TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0, 
+		COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED);
 	if (stride)
 	{
 		p = (void*)(pOld + stride * 8);
 	}
-	gDPSetRenderMode(p++, AA_EN | Z_CMP | IM_RD | CLR_ON_CVG | CVG_DST_WRAP | ZMODE_XLU | FORCE_BL | GBL_c1(G_BL_CLR_FOG, G_BL_A_SHADE, G_BL_CLR_IN, G_BL_1MA), G_RM_AA_ZB_XLU_SURF2);
+	gDPSetRenderMode(p++, AA_EN | Z_CMP | Z_UPD | IM_RD | CLR_ON_CVG | CVG_DST_WRAP | ZMODE_XLU | FORCE_BL 
+		| GBL_c1(G_BL_CLR_FOG, G_BL_A_SHADE, G_BL_CLR_IN, G_BL_1MA), G_RM_AA_ZB_XLU_SURF2);
 }
 
 static void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
@@ -269,8 +280,10 @@ static void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
 	frames = globalCtx->gameplayFrames;
 
 	gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot07_taki.c", 191),
-			  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-
+		G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+	
+    func_80093D84(globalCtx->state.gfxCtx);
+	
 	gSPSegment(
 		POLY_XLU_DISP++
 		, 0x08
@@ -283,7 +296,7 @@ static void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
 	if (LINK_IS_CHILD || g.thawing) {
 		gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, 128);
-		gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, Triforce_WaterFadeIn(this));
+		gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, GetWaterFadeAlpha(this));
 		if (IS_MAIN_ROOM) {
 			gSPSegment(
 				POLY_XLU_DISP++
@@ -328,20 +341,23 @@ static void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
 		}
 	}
 	if (LINK_IS_ADULT && !g.thawed) {
+		u8 wa = GetFrozenWaterfallFadeAlpha(this);
+		
+    	func_80093D84(globalCtx->state.gfxCtx);
+		gDPSetAlphaCompare(POLY_XLU_DISP++, G_AC_THRESHOLD);
+		
+		gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, GetIceFadeAlpha(this));
 		if (IS_MAIN_ROOM) {
-			FastPrim(PRIM_ICE_MAIN_RING, -1, -1, -1, Triforce_FrozenWaterfallFadeOut(this));
+			FastPrim(PRIM_ICE_MAIN_RING, -1, -1, -1, wa);
 			FastXluModeTextureAlpha(SETCOMBINE_ICE_MAIN_RING, 0);
-			gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, Triforce_IceFadeOut(this));
 			gSPDisplayList(POLY_XLU_DISP++, DLIST_ICE_MAIN);
 		} else {
-			FastPrim(PRIM_ICE_CHAMBER_EDGE, -1, -1, -1, Triforce_FrozenWaterfallFadeOut(this));
+			FastPrim(PRIM_ICE_CHAMBER_EDGE, -1, -1, -1, wa);
 			FastXluModeTextureAlpha(SETCOMBINE_ICE_CHAMBER_EDGE, 5);
-			gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, Triforce_IceFadeOut(this));
 			gSPDisplayList(POLY_XLU_DISP++, DLIST_ICE_CHAMBER);
 		}
 		
-		func_80093D18(globalCtx->state.gfxCtx);
-		gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, Triforce_FrozenWaterfallFadeOut(this));
+		gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, wa);
 		if (IS_MAIN_ROOM) {
 			FastXluMode(SETCOMBINE_ICE_WATERFALL);
 			gSPDisplayList(POLY_XLU_DISP++, DLIST_ICE_WATERFALL);
@@ -349,12 +365,11 @@ static void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
 			FastXluMode(SETCOMBINE_ICE_WATERFALL_EDGE);
 			gSPDisplayList(POLY_XLU_DISP++, DLIST_ICE_WATERFALL_EDGE);
 		}
-		func_80093D84(globalCtx->state.gfxCtx);
 	}
 	//CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot07_taki.c", 272);
 }
 
-static float Triforce_ThawNormalized(BgSpot07Taki* this)
+static float GetThawRatio(BgSpot07Taki* this)
 {
 	float v;
 	if (g.thawed)
@@ -370,19 +385,19 @@ static float Triforce_ThawNormalized(BgSpot07Taki* this)
 	return v;
 }
 
-static u8 Triforce_WaterFadeIn(BgSpot07Taki* this)
+static u8 GetWaterFadeAlpha(BgSpot07Taki* this)
 {
-	return Triforce_ThawNormalized(this) * g.maxOpacity.water;
+	return GetThawRatio(this) * g.maxOpacity.water;
 }
 
-static u8 Triforce_IceFadeOut(BgSpot07Taki* this)
+static u8 GetIceFadeAlpha(BgSpot07Taki* this)
 {
-	return (1.0 - Triforce_ThawNormalized(this)) * g.maxOpacity.ice;
+	return (1.0 - GetThawRatio(this)) * g.maxOpacity.ice;
 }
 
-static u8 Triforce_FrozenWaterfallFadeOut(BgSpot07Taki* this)
+static u8 GetFrozenWaterfallFadeAlpha(BgSpot07Taki* this)
 {
-	return (1.0 - Triforce_ThawNormalized(this)) * g.maxOpacity.frozenWaterfall;
+	return (1.0 - GetThawRatio(this)) * g.maxOpacity.frozenWaterfall;
 }
 
 /* disable primcolor in a display list so we can control it through code */
@@ -455,6 +470,3 @@ static void Triforce_ToggleCaustics(BgSpot07Taki* this, enum caustics mode)
 	osInvalICache(v, 4);
 	caustics = mode;
 }
-
-
-
