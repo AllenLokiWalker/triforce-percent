@@ -1,0 +1,10 @@
+extern SCmdBase EndingDemo_scene_header00[];
+extern ActorEntry EndingDemo_scene_header00_startPositionList[];
+extern RomFile EndingDemo_scene_roomList[];
+extern EntranceEntry EndingDemo_scene_header00_entranceList[];
+extern LightSettings EndingDemo_scene_header00_lightSettings[4];
+extern u32 EndingDemo_polygonTypes[];
+extern CollisionPoly EndingDemo_polygons[];
+extern Vec3s EndingDemo_vertices[4];
+extern CollisionHeader EndingDemo_collisionHeader;
+extern s32 Something[];

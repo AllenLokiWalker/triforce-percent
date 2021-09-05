@@ -62,6 +62,12 @@ typedef struct {
     //4: same as 3 but looping
     //5: once, 2/3 speed, -8 morph, sets moveFlags to 0x1C
     //6: once, full speed, flags 0x9C
+    //7: looping, 2/3 speed, flags 0x1C
+    //8: looping, full speed, flags 0x9C
+    //9: once, last speed
+    //A: looping, last speed
+    //B: just anim update
+    //C: if update, goto 4 and set unk_850
     //
     //If negative (-1), calls func. If zero, does nothing.
     /* 0x00 */ s8 type; 
@@ -90,9 +96,9 @@ LinkActionEntry linkActionInitPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_A
     {0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},
     {0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},
     //Patched
-    {3, {&linkAnimPatchTable[0]}},
-    {3, {&linkAnimPatchTable[1]}},
-    {7, {&testAnimHeader}}, 
+    {3, {&linkAnimPatchTable[0]}}, //ReachUp
+    {3, {&linkAnimPatchTable[1]}}, //LookToMeditate
+    {8, {&linkAnimPatchTable[2]}}, //Meditate
     {0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},
     {0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},
 };
@@ -132,8 +138,9 @@ s8 csActionToLinkActionPatchTable[NUM_ORIG_CS_ACTIONS+NUM_CUSTOM_CS_ACTIONS] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     //Custom
     NUM_ORIG_LINK_ACTIONS,
+    NUM_ORIG_LINK_ACTIONS+1,
+    NUM_ORIG_LINK_ACTIONS+2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,
 };
 
 extern void Player_RAM_START();

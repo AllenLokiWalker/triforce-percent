@@ -16,7 +16,9 @@ OUTFILES = \
 	ChamberOfSages/ChamberOfSages_room_0.zmap \
 	ChamberOfSages/ChamberOfSages_scene.out.ld \
 	TriforceRoom/TriforceRoom_scene.zscene \
-	TriforceRoom/TriforceRoom_room_0.zmap
+	TriforceRoom/TriforceRoom_room_0.zmap \
+	EndingDemo/EndingDemo_scene.zscene \
+	EndingDemo/EndingDemo_room_0.zmap
 ROOMROMGOAWAY = \
 	-D_UnicornFountain_room_0SegmentRomStart=0xDEADBEEF \
 	-D_UnicornFountain_room_0SegmentRomEnd=0xDEADBEEF \
@@ -25,7 +27,9 @@ ROOMROMGOAWAY = \
 	-D_ChamberOfSages_room_0SegmentRomStart=0xDEADBEEF \
 	-D_ChamberOfSages_room_0SegmentRomEnd=0xDEADBEEF \
 	-D_TriforceRoom_room_0SegmentRomStart=0xDEADBEEF \
-	-D_TriforceRoom_room_0SegmentRomEnd=0xDEADBEEF
+	-D_TriforceRoom_room_0SegmentRomEnd=0xDEADBEEF \
+	-D_EndingDemo_room_0SegmentRomStart=0xDEADBEEF \
+	-D_EndingDemo_room_0SegmentRomEnd=0xDEADBEEF
 TITLEFILES = \
 	UnicornFountain/title.ia8 \
 	ChamberOfSages/title.ia8
@@ -33,6 +37,7 @@ UNICORNFOUNTAINDIR = ../build-romhack/scene/38
 TESTVALPHADIR = ../build-romhack/scene/41
 CHAMBEROFSAGESDIR = ../build-romhack/scene/41
 TRIFORCEROOMDIR = ../build-romhack/scene/39
+ENDINGDEMODIR = ../build-romhack/scene/41
 
 CCFLAGS += $(ROOMROMGOAWAY) -Wno-incompatible-pointer-types -Wno-missing-braces
 
@@ -45,13 +50,15 @@ default: $(OUTFILES) $(TITLEFILES)
 	cp UnicornFountain/conf.txt $(UNICORNFOUNTAINDIR)/conf.txt
 	#cp TestVAlpha/TestVAlpha_scene.zscene $(TESTVALPHADIR)/scene.zscene
 	#cp TestVAlpha/TestVAlpha_room_0.zmap $(TESTVALPHADIR)/room_0.zmap
-	cp ChamberOfSages/ChamberOfSages_scene.zscene $(CHAMBEROFSAGESDIR)/scene.zscene
-	cp ChamberOfSages/ChamberOfSages_room_0.zmap $(CHAMBEROFSAGESDIR)/room_0.zmap
-	cp ChamberOfSages/title.ia8.png $(CHAMBEROFSAGESDIR)/title.png
-	cp ChamberOfSages/conf.txt $(CHAMBEROFSAGESDIR)/conf.txt
+	#cp ChamberOfSages/ChamberOfSages_scene.zscene $(CHAMBEROFSAGESDIR)/scene.zscene
+	#cp ChamberOfSages/ChamberOfSages_room_0.zmap $(CHAMBEROFSAGESDIR)/room_0.zmap
+	#cp ChamberOfSages/title.ia8.png $(CHAMBEROFSAGESDIR)/title.png
+	#cp ChamberOfSages/conf.txt $(CHAMBEROFSAGESDIR)/conf.txt
 	cp TriforceRoom/TriforceRoom_scene.zscene $(TRIFORCEROOMDIR)/scene.zscene
 	cp TriforceRoom/TriforceRoom_room_0.zmap $(TRIFORCEROOMDIR)/room_0.zmap
 	cp TriforceRoom/conf.txt $(TRIFORCEROOMDIR)/conf.txt
+	cp EndingDemo/EndingDemo_scene.zscene $(ENDINGDEMODIR)/scene.zscene
+	cp EndingDemo/EndingDemo_room_0.zmap $(ENDINGDEMODIR)/room_0.zmap
 
 default clean: $(MAKESUBDIRS)
 

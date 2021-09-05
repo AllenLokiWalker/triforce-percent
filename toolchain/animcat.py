@@ -20,7 +20,7 @@ with open('anim.txt', 'r') as txtfile:
         l = l.strip()
         if not l: continue
         if l[0] == '#': continue
-        matchfiles = list(filter(lambda x: l in x, binfiles))
+        matchfiles = list(filter(lambda x: 'linkcustomanim_' + l + '_' in x, binfiles))
         if len(matchfiles) == 0:
             raise RuntimeError('Could not find animation matching ' + l)
         if len(matchfiles) > 1:
