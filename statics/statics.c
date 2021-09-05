@@ -220,7 +220,8 @@ void Statics_TestShortcuts(){
             //animation test
             //Statics_AnimeTest(1);
             //give child an adult item
-            INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_ODD_POTION;
+            //INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_ODD_POTION;
+            Statics_SetGameState();
         }else if((CTRLR_PRESS & BTN_DLEFT)){
             //Press L+DL for frog
             func_8010B680(&gGlobalContext, 0x0901, NULL); //textbox_begin
