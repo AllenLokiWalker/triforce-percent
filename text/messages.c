@@ -648,7 +648,7 @@ DECLARE_MESSAGE(0x0E05, BOX_BLACK, POS_MIDDLE,
 
 DECLARE_MESSAGE(0x0E06, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(YELLOW) TEXT_SPEED("\x01")
-    "Now, Link... What is your will?" NEWLINE TEXT_SPEED("\x00")
+    "Now, Link... What do you wish for?" NEWLINE TEXT_SPEED("\x00")
     THREE_CHOICE COLOR(GREEN) "Be King of Hyrule" NEWLINE
     "Rupees" NEWLINE
     "A voice"

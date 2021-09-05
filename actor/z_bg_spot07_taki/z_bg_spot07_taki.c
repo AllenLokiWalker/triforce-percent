@@ -104,7 +104,6 @@ static void OverwriteCombineRenderNoTexAlpha(Gfx *p)
 		| GBL_c1(G_BL_CLR_FOG, G_BL_A_SHADE, G_BL_CLR_IN, G_BL_1MA), G_RM_AA_ZB_XLU_SURF2);
 }
 
-/*
 static void OverwriteCombineRenderTexAlpha(Gfx *p, int stride)
 {
 	Gfx* pOld = p;
@@ -117,25 +116,28 @@ static void OverwriteCombineRenderTexAlpha(Gfx *p, int stride)
 	gDPSetRenderMode(p++, AA_EN | Z_CMP | Z_UPD | IM_RD | CLR_ON_CVG | CVG_DST_WRAP | ZMODE_XLU | FORCE_BL 
 		| GBL_c1(G_BL_CLR_FOG, G_BL_A_SHADE, G_BL_CLR_IN, G_BL_1MA), G_RM_AA_ZB_XLU_SURF2);
 }
-*/
 
 static void PatchObject(BgSpot07Taki *this, GlobalContext *globalCtx)
 {
-	static bool objectIsPatched = false;
-	if(objectIsPatched) return;
-	objectIsPatched = true;
+	static bool loadedMaxAlphas = false;
 	
-	g.maxOpacity.water = NopPrimColorAndGetFirst(DLIST_WATER_MAIN);
+	u8 w, i, f;
+	w = NopPrimColorAndGetFirst(DLIST_WATER_MAIN);
 	NopPrimColorAndGetFirst(DLIST_WATER_CHAMBER);
-	g.maxOpacity.ice = NopPrimColorAndGetFirst(DLIST_ICE_MAIN);
+	i = NopPrimColorAndGetFirst(DLIST_ICE_MAIN);
 	NopPrimColorAndGetFirst(DLIST_ICE_CHAMBER);
-	g.maxOpacity.frozenWaterfall = NopPrimColorAndGetFirst(DLIST_ICE_WATERFALL);
+	f = NopPrimColorAndGetFirst(DLIST_ICE_WATERFALL);
 	NopPrimColorAndGetFirst(DLIST_ICE_WATERFALL_EDGE);
 	
-	/*
+	if(!loadedMaxAlphas){
+		g.maxOpacity.water = w;
+		g.maxOpacity.ice = i;
+		g.maxOpacity.frozenWaterfall = f;
+		loadedMaxAlphas = true;
+	}
+	
 	OverwriteCombineRenderTexAlpha(SETCOMBINE_ICE_MAIN_RING, 0);
 	OverwriteCombineRenderTexAlpha(SETCOMBINE_ICE_CHAMBER_EDGE, 5);
-	*/
 	OverwriteCombineRenderNoTexAlpha(SETCOMBINE_ICE_WATERFALL);
 	OverwriteCombineRenderNoTexAlpha(SETCOMBINE_ICE_WATERFALL_EDGE);
 }
@@ -145,7 +147,6 @@ static void SetCaustics(BgSpot07Taki* this, bool enabled)
 {
 	u32 *v = 0;
 	u32 original = 0; /* original opcode */
-	static bool last_enabled = false;
 #ifdef _Z64HDR_OOT_DEBUG_H_
 	v = (void*)(0x8009E730 + 0x54);
 	original = 0x00001825; /* or v1, r0, r0 */
@@ -156,9 +157,8 @@ static void SetCaustics(BgSpot07Taki* this, bool enabled)
 	#warning SetCaustics unsupported game version
 	return;
 #endif
-	if (LINK_IS_CHILD || !v || !original || enabled == last_enabled)
+	if (!v || !original)
 		return;
-	last_enabled = enabled;
 	*v = (enabled ? 0 : original);
 	osWritebackDCache(v, 4);
 	osInvalICache(v, 4);
@@ -195,12 +195,11 @@ static void BgSpot07Taki_Init(Actor* thisx, GlobalContext* globalCtx) {
 	BgSpot07Taki* this = THIS;
 	CollisionHeader* colHeader = NULL;
 	
-	//TODO
-	globalCtx->actorCtx.flags.chest &= ~(1 << FLAG_THAWED);
+	//Uncomment this to reset the flag so we can try again
+	//globalCtx->actorCtx.flags.chest &= ~(1 << FLAG_THAWED);
 
 	DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
 	Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
-	this->gl = globalCtx;
 	PatchObject(this, globalCtx);
 	
 	if (LINK_IS_ADULT && !FLAG_THAWED_GET)
@@ -241,6 +240,9 @@ static void BgSpot07Taki_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 
 static void BgSpot07Taki_Update(Actor* thisx, GlobalContext* globalCtx) {
 	BgSpot07Taki* this = THIS;
+	PatchObject(this, globalCtx);
+	/*
+	//Manual alpha controls
 	if(g.thawingState == THAWING_STATE_INIT || g.thawingState == THAWING_STATE_DONE){
 		s32 t;
 		if((CTRLR_RAW & BTN_DLEFT)){
@@ -257,6 +259,7 @@ static void BgSpot07Taki_Update(Actor* thisx, GlobalContext* globalCtx) {
 			t = (s32)g.curAlpha.frozenWaterfall + 2; if(t > 255) t = 255; g.curAlpha.frozenWaterfall = t;
 		}
 	}
+	*/
 	if(g.thawingState == THAWING_STATE_INIT){
 		if (func_80043590(&this->dyna) /* Link is standing on ice */
 			/* used Din's Fire */
@@ -274,6 +277,9 @@ static void BgSpot07Taki_Update(Actor* thisx, GlobalContext* globalCtx) {
 			++g.thawingTimer;
 		}
 	}else if(g.thawingState == THAWING_STATE_THAWING){
+		if(g.thawingTimer == THAW_TIME / 6){
+			Audio_PlayActorSound2(&PLAYER->actor, NA_SE_SY_CORRECT_CHIME);
+		}
 		if(g.thawingTimer == THAW_TIME / 2){
 			SetCaustics(this, true);
 			SpawnWaterfallSound(this, globalCtx);
@@ -284,14 +290,13 @@ static void BgSpot07Taki_Update(Actor* thisx, GlobalContext* globalCtx) {
 				this->hasDynaPoly = false;
 			}
 			g.thawingState = THAWING_STATE_DONE;
-		}else{
-			++g.thawingTimer;
 		}
 		float ratio = (float)g.thawingTimer / (float)THAW_TIME;
 		float invratio = 1.0f - ratio;
 		g.curAlpha.water = ratio * g.maxOpacity.water;
 		g.curAlpha.ice = invratio * g.maxOpacity.ice;
 		g.curAlpha.frozenWaterfall = invratio * g.maxOpacity.frozenWaterfall;
+		++g.thawingTimer;
 		
 		/* wow - unintelligible dust spawning magic courtesy of z64me <z64.me> */
 		static int ok = -1;
