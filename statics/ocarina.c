@@ -22,9 +22,9 @@ typedef struct {
 
 extern CanonSong CanonSongs[14]; //extra 2 are short scarecrow's song and minigame song
 
-static const DetectableSong PatchedDetectableSongs[12] = {
+static const DetectableSong VanillaPatchedDetectableSongs[12] = {
     {6, {0x2, 0xE, 0xB, 0x9, 0xB, 0x9,  -1,  -1}}, //Forest
-    {6, {0xE, 0x5, 0x2, 0x9, 0xB, 0xE,  -1,  -1}}, //Sages
+    {8, {0x5, 0x2, 0x5, 0x2, 0x9, 0x5, 0x9, 0x5}}, //Fire
     {5, {0x2, 0x5, 0x9, 0x9, 0xB,  -1,  -1,  -1}}, //Water
     {6, {0x2, 0x5, 0x2, 0x9, 0x5, 0x2,  -1,  -1}}, //Spirit
     {7, {0xB, 0x9, 0x9, 0x2, 0xB, 0x9, 0x5,  -1}}, //Shadow
@@ -33,8 +33,16 @@ static const DetectableSong PatchedDetectableSongs[12] = {
     {6, {0xE, 0xB, 0x9, 0xE, 0xB, 0x9,  -1,  -1}}, //Epona
     {6, {0xB, 0xE, 0x9, 0xB, 0xE, 0x9,  -1,  -1}}, //Zelda
     {6, {0x9, 0x5, 0xE, 0x9, 0x5, 0xE,  -1,  -1}}, //Sun
-    {8, {0x9, 0xC, 0xB, 0x7, 0x5, 0x7, 0x9, 0x2}}, //Time
-    {6, {0x2, 0x5, 0xE, 0x2, 0x5, 0xE,  -1,  -1}} //Storms
+    {6, {0x9, 0x2, 0x5, 0x9, 0x2, 0x5,  -1,  -1}}, //Time
+    {6, {0x2, 0x5, 0xE, 0x2, 0x5, 0xE,  -1,  -1}}  //Storms
+};
+
+static const DetectableSong LongOfTime_Detectable = {
+    8, {0x9, 0xC, 0xB, 0x7, 0x5, 0x7, 0x9, 0x2} //Long
+};
+
+static const DetectableSong OvertureOfSages_Detectable = {
+    6, {0xE, 0x5, 0x2, 0x9, 0xB, 0xE,  -1,  -1} //Sages
 };
 
 static const CanonSong OvertureOfSages_Canon = {{
@@ -195,10 +203,19 @@ static const void* const OcaPatchContents[] = {
 #undef OPAT
 };
 
-void Statics_OcarinaCodePatches(){
-    bcopy(&PatchedDetectableSongs, &DetectableSongs, sizeof(PatchedDetectableSongs));
-    bcopy(&OvertureOfSages_Canon, &CanonSongs[1], sizeof(CanonSong));
+void Ocarina_GiveLongOfTime(){
+    bcopy(&LongOfTime_Detectable, &DetectableSongs[10], sizeof(DetectableSong));
     bcopy(&LongOfTime_Canon, &CanonSongs[10], sizeof(CanonSong));
+}
+void Ocarina_GiveOvertureOfSages(){
+    bcopy(&OvertureOfSages_Detectable, &DetectableSongs[1], sizeof(DetectableSong));
+    bcopy(&OvertureOfSages_Canon, &CanonSongs[1], sizeof(CanonSong));
+}
+
+void Statics_OcarinaCodePatches(){
+    bcopy(&VanillaPatchedDetectableSongs, &DetectableSongs, sizeof(VanillaPatchedDetectableSongs));
+    if((LONGOFTIME_VAR & LONGOFTIME_BIT)) Ocarina_GiveLongOfTime();
+    if((OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)) Ocarina_GiveOvertureOfSages();
     //800DEF90: instruction for setting a0 to instrument for Sheik songs teach
     *((u8*)0x800DEF93) = 0x02;
     //Patches for chromatic Ocarina

@@ -36,7 +36,7 @@ EntranceEntry UnicornFountain_scene_header00_entranceList[] = {
 };
 
 u16 UnicornFountain_scene_header00_exitList[1] = {
-	0x0000,
+	0x0328,
 };
 
 LightSettings UnicornFountain_scene_header00_lightSettings[1] = {

@@ -1,12 +1,4 @@
-extern SCmdEchoSettings TriforceRoom_room_0_header00_cmd00;
-extern SCmdRoomBehavior TriforceRoom_room_0_header00_cmd01;
-extern SCmdSkyboxDisables TriforceRoom_room_0_header00_cmd02;
-extern SCmdTimeSettings TriforceRoom_room_0_header00_cmd03;
-extern SCmdMesh TriforceRoom_room_0_header00_cmd04;
-extern SCmdObjectList TriforceRoom_room_0_header00_cmd05;
-extern SCmdActorList TriforceRoom_room_0_header00_cmd06;
-extern SCmdEndMarker TriforceRoom_room_0_header00_cmd07;
-
+extern SCmdBase TriforceRoom_room_0_header00[];
 extern s16 TriforceRoom_room_0_header00_objectList[3];
 extern ActorEntry TriforceRoom_room_0_header00_actorList[5];
 extern MeshHeader0 TriforceRoom_room_0_meshHeader;

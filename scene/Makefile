@@ -17,6 +17,7 @@ OUTFILES = \
 	ChamberOfSages/ChamberOfSages_scene.out.ld \
 	TriforceRoom/TriforceRoom_scene.zscene \
 	TriforceRoom/TriforceRoom_room_0.zmap \
+	TriforceRoom/TriforceRoom_scene.out.ld \
 	EndingDemo/EndingDemo_scene.zscene \
 	EndingDemo/EndingDemo_room_0.zmap
 ROOMROMGOAWAY = \

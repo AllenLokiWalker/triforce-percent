@@ -1,18 +1,7 @@
-extern SCmdSoundSettings TriforceRoom_scene_header00_cmd00;
-extern SCmdRoomList TriforceRoom_scene_header00_cmd01;
-extern SCmdMiscSettings TriforceRoom_scene_header00_cmd02;
-extern SCmdColHeader TriforceRoom_scene_header00_cmd03;
-extern SCmdEntranceList TriforceRoom_scene_header00_cmd04;
-extern SCmdSpecialFiles TriforceRoom_scene_header00_cmd05;
-extern SCmdSpawnList TriforceRoom_scene_header00_cmd06;
-extern SCmdSkyboxSettings TriforceRoom_scene_header00_cmd07;
-extern SCmdLightSettingList TriforceRoom_scene_header00_cmd08;
-extern SCmdCutsceneData TriforceRoom_scene_header00_cmd09;
-extern SCmdEndMarker TriforceRoom_scene_header00_cmd10;
-
+extern SCmdBase TriforceRoom_scene_header00[];
 extern ActorEntry TriforceRoom_scene_header00_startPositionList[];
 extern RomFile TriforceRoom_scene_roomList[];
-extern EntranceEntry TriforceRoom_scene_header00_entranceList[1];
+extern EntranceEntry TriforceRoom_scene_header00_entranceList[];
 extern LightSettings TriforceRoom_scene_header00_lightSettings[2];
 extern u32 TriforceRoom_polygonTypes[];
 extern CollisionPoly TriforceRoom_polygons[];

@@ -10,6 +10,7 @@
 #include "audio.h"
 #include "gfx.h"
 #include "ossan_related.h"
+#include "../scene/TriforceRoom/TriforceRoom_scene.h"
 
 static u8 sIsLiveRun = 0;
 
@@ -26,14 +27,16 @@ void Statics_SetGameState(){
     gSaveContext.event_chk_inf[0x8] |= 1 << 0x0; //Zelda Fled Hyrule Castle
     gSaveContext.event_chk_inf[0x8] |= 1 << 0x2; //Bridge Unlocked (After Zelda Escape Cutscene)
     gSaveContext.event_chk_inf[0xA] |= 1 << 0x9; //Learned Song of Time
-    gSaveContext.event_chk_inf[0xC] |= 1 << 0x1; //Spoke to Saria on Lost Woods Bridge
     gSaveContext.inf_table    [0x0] |= 1 << 0x0; //Greeted by Saria
     */
     gSaveContext.eventChkInf[0x9] |= 0xF; //Rescued carpenters (not get arrested by Gerudos)
-    gSaveContext.eventChkInf[0xB] |= 0x100; //Entered Desert Colossus (no entrance cutscene)
+    gSaveContext.eventChkInf[0xA] |= 0x0011; //Entered Hyrule Field and Zora's Domain
+    gSaveContext.eventChkInf[0xB] |= 0x010C; //Entered Gerudo Valley, Gerudo's Fortress, Desert Colossus
+    gSaveContext.eventChkInf[0xC] |= 0x0002; //Spoke to Saria on Lost Woods Bridge
     gSaveContext.itemGetInf[0x2] |= 0x0478; //Obtained Mask of Truth, all trading masks
     gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
-    //TODO remove before final
+    //TODO TESTING
+    LONGOFTIME_VAR |= LONGOFTIME_BIT;
     WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
@@ -74,10 +77,19 @@ void Statics_TerminatorReturnToNabooru(){
     TERMINATOR_RETURN;
 }
 
-#define NUM_PATCH_TERMINATOR 2
+void Statics_TerminatorTriforceToEnding(){
+    gGlobalContext.nextEntranceIndex = 0x03FC;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0;
+    gGlobalContext.fadeTransition = 3;
+    TERMINATOR_RETURN;
+}
+
+#define NUM_PATCH_TERMINATOR 3
 static const struct { u8 index; void (*function)(); } DemoTerminatorPatchTable[NUM_PATCH_TERMINATOR] = {
     {0x4F, Statics_TerminatorNabooruToDesertColossus},
     {0x50, Statics_TerminatorReturnToNabooru},
+    {0x51, Statics_TerminatorTriforceToEnding},
 };
 
 void Statics_PatchDemoTerminator(){
@@ -88,15 +100,88 @@ void Statics_PatchDemoTerminator(){
     }
 }
 
+void PatchEntranceTable4(u16 entryIdx, const EntranceTableEntry *contents)
+{
+    gFakeEntranceTable[entryIdx+0] = *contents;
+    gFakeEntranceTable[entryIdx+1] = *contents;
+    gFakeEntranceTable[entryIdx+2] = *contents;
+    gFakeEntranceTable[entryIdx+3] = *contents;
+}
+
+void Statics_PatchRoutingToSages(){
+    //Bolero of Fire to Death Mountain Crater -> Overture of Sages to Chamber of the Sages
+    static const EntranceTableEntry bolero_to_crater_entry = {
+        .scene = SCENE_KENJYANOMA,
+        .spawn = 0, .keepMusic = 0, .titleCard = 1, .transitionIn = 7, .transitionOut = 7
+    };
+    PatchEntranceTable4(0x04F6, &bolero_to_crater_entry);
+}
+
+void Statics_SetUpRouting(){
+    //Gerudo's Fortress to Thieves' Hideout -> scene not changed, but disabled title card
+    static const EntranceTableEntry return_to_nabooru_entry = {
+        .scene = SCENE_GERUDOWAY, 
+        .spawn = 8, .keepMusic = 0, .titleCard = 0, .transitionIn = 5, .transitionOut = 5
+    };
+    PatchEntranceTable4(0x04A7, &return_to_nabooru_entry);
+    //Zora's Domain to Lake Hylia -> Zora's Domain to Unicorn Fountain
+    static const EntranceTableEntry zoras_to_lake_entry = {
+        .scene = SCENE_UNICORNFOUNTAIN, 
+        .spawn = 0, .keepMusic = 0, .titleCard = 1, .transitionIn = 4, .transitionOut = 4
+    };
+    PatchEntranceTable4(0x0560, &zoras_to_lake_entry);
+    //Lake Hylia to Zora's Domain -> scene not changed, but transition changed
+    //Used for Unicorn Fountain to Zora's Domain
+    static const EntranceTableEntry lake_to_zoras_entry = {
+        .scene = SCENE_SPOT06, 
+        .spawn = 4, .keepMusic = 0, .titleCard = 1, .transitionIn = 4, .transitionOut = 4
+    };
+    PatchEntranceTable4(0x0328, &lake_to_zoras_entry);
+    //TODO edit Zora's spawn location to be in front of the exit
+    //Kakariko Village to Granny's Potion Shop -> Kakariko Village to Kakariko Village turnaround
+    static const EntranceTableEntry kakariko_to_granny_entry = {
+        .scene = SCENE_SPOT01, 
+        .spawn = 7, .keepMusic = 1, .titleCard = 0, .transitionIn = 0x20, .transitionOut = 0x20
+    };
+    PatchEntranceTable4(0x0072, &kakariko_to_granny_entry);
+    if((OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)){
+        Statics_PatchRoutingToSages();
+    }
+    //Granny's Potion Shop to Kakariko Village -> Chamber of the Sages to Triforce Room
+    static const EntranceTableEntry granny_to_kakariko_entry = {
+        .scene = SCENE_TRIFORCEROOM,
+        .spawn = 0, .keepMusic = 0, .titleCard = 0, .transitionIn = 1, .transitionOut = 2
+    };
+    PatchEntranceTable4(0x034D, &granny_to_kakariko_entry);
+    static const EntranceCutsceneTableEntry spirit_boss_entry = {
+        .entrance = 0x034D, .age = 2, .eventChkFlag = TRIFORCE_ROOM_ENTRANCE_CS_EVENTCHKFLAG, 
+        .segAddr = TriforceRoom_scene_header00_cutscene
+    };
+    gEntranceCutsceneTable[30] = spirit_boss_entry;
+    //Goron City to Goron Shop -> Goron City to Goron City turnaround
+    static const EntranceTableEntry gcity_to_gshop_entry = {
+        .scene = SCENE_SPOT18,
+        .spawn = 2, .keepMusic = 1, .titleCard = 0, .transitionIn = 5, .transitionOut = 5
+    };
+    PatchEntranceTable4(0x037C, &gcity_to_gshop_entry);
+    //Goron Shop to Goron City -> Triforce Room to Ending
+    static const EntranceTableEntry gshop_to_gcity_entry = {
+        .scene = SCENE_ENDING,
+        .spawn = 0, .keepMusic = 0, .titleCard = 0, .transitionIn = 7, .transitionOut = 7
+    };
+    PatchEntranceTable4(0x03FC, &gshop_to_gcity_entry);
+    //Graveyard to Dampe's Hut -> Graveyard to Graveyard turnaround
+    static const EntranceTableEntry graveyard_to_hut_entry = {
+        .scene = SCENE_SPOT02,
+        .spawn = 2, .keepMusic = 1, .titleCard = 0, .transitionIn = 5, .transitionOut = 5
+    };
+    PatchEntranceTable4(0x030D, &graveyard_to_hut_entry);
+}
+
 void Statics_RomhackLoadAll();
 
 void Statics_OneTimeRomhackOnly(){
     Statics_RomhackLoadAll();
-    //Entrance cutscene table 0x800EFD04 entry 17 (originally Inside Jabu)
-    //Entrance 0x9C, age 2, flag 0, segment offset 0x02000130 (from 0x17 cutscene command in scene)
-    //WRITE 8 0x800EFD8C 0x00 0x9C 0x02 0x00 0x02 0x00 0x01 0x30
-    *((u32*)0x800EFD8C) = 0x009C0200;
-    *((u32*)0x800EFD90) = 0x020002E4;
 }
 
 void Statics_OneTime(){
@@ -108,6 +193,7 @@ void Statics_OneTime(){
     Statics_AudioCodePatches(sIsLiveRun);
     Statics_GfxCodePatches();
     Statics_PatchDemoTerminator();
+    Statics_SetUpRouting();
     osWritebackDCache(0, 0x4000);
     osInvalICache(0, 0x4000);
     if(!sIsLiveRun){
@@ -289,6 +375,18 @@ void Statics_MoveOddPotionToChild(){
     }
 }
 
+void Statics_FixWaterSpawn(){
+    InterfaceContext *interfaceCtx = &gGlobalContext.interfaceCtx;
+    if(gGlobalContext.sceneNum == SCENE_UNICORNFOUNTAIN){
+        interfaceCtx->restrictions.hGauge = interfaceCtx->restrictions.bButton =
+        interfaceCtx->restrictions.aButton = interfaceCtx->restrictions.bottles =
+        interfaceCtx->restrictions.tradeItems = interfaceCtx->restrictions.hookshot =
+        interfaceCtx->restrictions.ocarina = interfaceCtx->restrictions.warpSongs =
+        interfaceCtx->restrictions.sunsSong = interfaceCtx->restrictions.farores =
+        interfaceCtx->restrictions.dinsNayrus = interfaceCtx->restrictions.all = 0;
+    }
+}
+
 void Statics_Player_Update(){
     //Patch overwrote this
     if(PLAYER->unk_A73 != 0) PLAYER->unk_A73--;
@@ -297,6 +395,7 @@ void Statics_Player_Update(){
     Statics_LostWoods();
     Statics_PatchShop();
     Statics_MoveOddPotionToChild();
+    Statics_FixWaterSpawn();
 }
 
 static u8 sOneTime = 0;
@@ -375,6 +474,7 @@ void Statics_RomhackLoadAll(){
 }
 
 void Statics_TimeTravel(){
+    if(!(LONGOFTIME_VAR & LONGOFTIME_BIT)) return;
     //Don't time travel if playing Song of Time at ocarina prompt
     //unk_E3EE == ocarina_mode == 0x104C6 == unk_15_2[0] except u16 not char
     //unk_E3F0 == ocarina_no == 0x104C8 == unk_15_2[2] except u16
@@ -408,6 +508,46 @@ void Statics_TimeTravel(){
     gSaveContext.seq_index = 0xFF;
     gSaveContext.night_seq_index = 0xFF;
     */
+}
+
+void Statics_GiveLongOfTime(){
+    LONGOFTIME_VAR |= LONGOFTIME_BIT;
+    Ocarina_GiveLongOfTime();
+}
+
+void Statics_GiveOvertureOfSages(){
+    OVERTUREOFSAGES_VAR |= OVERTUREOFSAGES_BIT;
+    Ocarina_GiveOvertureOfSages();
+    Statics_PatchRoutingToSages();
+}
+
+s32 Statics_CheckWarpToSacredRealm(){
+    GlobalContext *globalCtx = &gGlobalContext;
+    u16 actor = ACTOR_DEMO_KANKYO;
+    u16 params = 0xF;
+    bool returnNull = false;
+    if(globalCtx->msgCtx.unk_E3EC == 1 //Bolero of Fire played
+            && (OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)){
+        static const Vec3f masterSwordPos = {-1.0f, 68.0f, 0.0f};
+        Vec3f playerPos = PLAYER->actor.world.pos;
+        float sqDistFromMS = SQ(playerPos.x - masterSwordPos.x) 
+            + SQ(playerPos.y - masterSwordPos.y) + SQ(playerPos.z - masterSwordPos.z);
+        if(gGlobalContext.sceneNum == SCENE_TOKINOMA && sqDistFromMS < 2500.0f){
+            actor = ACTOR_DEMO_EFFECT;
+            params = 0xF;
+            returnNull = true;
+        }else{
+            Player *player = PLAYER;
+            player->stateFlags1 &= ~0x30000000;
+            player->stateFlags2 &= ~0x8000000;
+            globalCtx->mainCamera.unk_14C |= 8;
+            func_8010B680(globalCtx, 0x0D30, NULL); //Message_Start
+            return 1; //don't spawn, and make it think it spawned so it doesn't handle the warp
+        }
+    }
+    Actor *ret = Actor_Spawn(&globalCtx->actorCtx, globalCtx, actor, 0.0f, 0.0f, 0.0f, 0, 0, 0, params);
+    if(returnNull) return 0;
+    return (s32)ret;
 }
 
 void Statics_Ge2DialogueGet(){

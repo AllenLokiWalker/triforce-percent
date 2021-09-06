@@ -51,6 +51,14 @@ void Statics_LoadMsgInfoPatched(GlobalContext *globalCtx, u16 textId, s32 type){
         ++tbl;
     }
     
+    //Handle conditional text patches
+    if(
+        (!(LONGOFTIME_VAR & LONGOFTIME_BIT) && (textId == 0x087A || textId == 0x089D)) ||
+        (!(OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT) && 
+            (textId == 0x0871 || textId == 0x0074 || textId == 0x0894 || textId == 0x088E)) 
+    )
+        found = 0;
+    
     if(!found){
         //Use real table
         tbl = messageTableAddresses[type];

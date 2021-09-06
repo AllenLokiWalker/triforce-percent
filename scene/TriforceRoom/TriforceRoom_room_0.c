@@ -9,22 +9,16 @@
 #include "variables.h"
 #include "TriforceRoom_scene.h"
 
-SCmdEchoSettings TriforceRoom_room_0_header00_cmd00 = { 0x16, 0x00, {0x00}, 0x00 };
-
-SCmdRoomBehavior TriforceRoom_room_0_header00_cmd01 = { 0x08, 0x00, 0x00000000 };
-
-SCmdSkyboxDisables TriforceRoom_room_0_header00_cmd02 = { 0x12, 0x00, 0x00, 0x00, 0x00, 0x00 };
-
-SCmdTimeSettings TriforceRoom_room_0_header00_cmd03 = { 0x10, 0x00, 0x00, 0x00, 0xFF, 0xFF, 10 };
-
-SCmdMesh TriforceRoom_room_0_header00_cmd04 = { 0x0A, 0x00, (u32)&TriforceRoom_room_0_meshHeader };
-
-SCmdObjectList TriforceRoom_room_0_header00_cmd05 = { 0x0B, 3, (u32)TriforceRoom_room_0_header00_objectList };
-
-SCmdActorList TriforceRoom_room_0_header00_cmd06 = { 0x01, 5, (u32)TriforceRoom_room_0_header00_actorList };
-
-SCmdEndMarker TriforceRoom_room_0_header00_cmd07 = { 0x14, 0x00, 0x00 };
-
+SCmdBase TriforceRoom_room_0_header00[] = {
+	SCENE_CMD_ECHO_SETTINGS(0x00),
+	SCENE_CMD_ROOM_BEHAVIOR(0x00, 0x00, false, false),
+	SCENE_CMD_SKYBOX_DISABLES(false, false),
+	SCENE_CMD_TIME_SETTINGS(0xFF, 0xFF, 10),
+	SCENE_CMD_MESH(&TriforceRoom_room_0_meshHeader),
+	SCENE_CMD_OBJECT_LIST(3, &TriforceRoom_room_0_header00_objectList),
+	SCENE_CMD_ACTOR_LIST(5, &TriforceRoom_room_0_header00_actorList),
+	SCENE_CMD_END(),
+};
 
 s16 TriforceRoom_room_0_header00_objectList[3] = {
 	0x4,
@@ -33,11 +27,11 @@ s16 TriforceRoom_room_0_header00_objectList[3] = {
 };
 
 ActorEntry TriforceRoom_room_0_header00_actorList[5] = {
-	{ 5, 0, 0, 0, 0, 0, 0, 0x0000 },
-	{ 1, 0, 0, 0, 0, 0, 0, 0x0001 },
+	{ 1, 0, 0, 0, 0, 0, 0, 0x0002 },
 	{ 1, 0, 0, 0, 0, 0, 0, 0x0000 },
 	{ 3, 0, 0, 0, 0, 0, 0, 0x0000 },
-	{ 1, 0, 0, 0, 0, 0, 0, 0x0002 },
+	{ 5, 0, 0, 0, 0, 0, 0, 0x0000 },
+	{ 1, 0, 0, 0, 0, 0, 0, 0x0001 },
 };
 
 MeshHeader0 TriforceRoom_room_0_meshHeader = { {0}, 1, (u32)&TriforceRoom_room_0_meshDListEntry, (u32)&(TriforceRoom_room_0_meshDListEntry) + sizeof(TriforceRoom_room_0_meshDListEntry) };

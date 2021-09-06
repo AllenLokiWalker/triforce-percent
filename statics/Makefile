@@ -9,7 +9,8 @@ default: statics.bin statics.out.ld
 statics.o: \
 	statics.h \
 	ossan_related.h \
-	../loader/fast_loader/fast_loader.h
+	../loader/fast_loader/fast_loader.h \
+	../scene/TriforceRoom/TriforceRoom_scene.h
 
 interface.o: \
 	interface.h \
@@ -59,7 +60,8 @@ LD_SCRIPTS = \
 	gfx.ld \
 	../loader/fast_loader/fast_loader.out.ld \
 	../loader/debugger/debugger.out.ld \
-	../loader/dma_patcher/dma_patcher.out.ld
+	../loader/dma_patcher/dma_patcher.out.ld \
+	../scene/TriforceRoom/TriforceRoom_scene.out.ld
 
 statics.elf statics.map: $(LINK_OBJS) $(LD_SCRIPTS) $(OOTMAINLD)
 	$(LD) $(LDFLAGS) -T statics.ld -Map statics.map -o statics.elf $(LINK_OBJS)

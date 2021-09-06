@@ -1,5 +1,6 @@
 #include "ootmain.h"
 #include "obj.h"
+#include "../../statics/statics.h"
 
 extern s32 UnicornFountain_scene_header00_cutscene[];
 
@@ -50,6 +51,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		en->actor.world.pos.y -= 1000.0f;
 		en->lastFloatY = FLOAT_CENTER_HEIGHT;
 		if(CHECK_NPC_ACTION(FAIRY_SLOT, 1)){
+			Statics_GiveOvertureOfSages();
 			en->frames = 0;
 			++en->state;
 		}

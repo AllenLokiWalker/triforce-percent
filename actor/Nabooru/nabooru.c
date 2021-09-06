@@ -2,6 +2,7 @@
 #include "object_nb.h"
 
 #include "gerudoway_cs.c"
+#include "../../statics/statics.h"
 
 #define DEP_OBJECT_NUM 0xB3
 #define NPC_ACTION_NUM 40
@@ -82,7 +83,7 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 		NABOORU_CONTINUE_VAR &= ~NABOORU_CONTINUE_BIT;
 		en->actor.update = (ActorFunc)update_Reload;
 		en->actor.textId = 0x0B68;
-	}else if((NABOORU_DONE_VAR & NABOORU_DONE_BIT)){
+	}else if((LONGOFTIME_VAR & LONGOFTIME_BIT)){
 		en->actor.update = (ActorFunc)update_Done;
 		en->actor.textId = 0x0B6C;
 	}else{
@@ -334,6 +335,7 @@ static void update_WaitChoice(Entity *en, GlobalContext *globalCtx){
 	updateCommon(en, globalCtx, 0);
 	if(MESSAGE_ADVANCE_CHOICE){
 		if(globalCtx->msgCtx.choiceIndex == 0){
+			Statics_GiveLongOfTime();
 			en->actor.update = (ActorFunc)update_WaitAction2;
 		}else{
 			en->actor.textId = 0x0B6B;

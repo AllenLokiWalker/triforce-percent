@@ -28,6 +28,34 @@ typedef struct {
     const char* segment;
 } MessageTableEntry;
 
+typedef union {
+    struct {
+        s8 scene;
+        s8 spawn;
+        union {
+            u16 flags;
+            struct {
+                u16 keepMusic:1;
+                u16 titleCard:1;
+                u16 transitionIn:7;
+                u16 transitionOut:7;
+            };
+        };
+    };
+    u32 data;
+} EntranceTableEntry;
+
+extern EntranceTableEntry gFakeEntranceTable[];
+
+typedef struct {
+    s16 entrance;
+    u8 age;
+    u8 eventChkFlag;
+    void *segAddr;
+} EntranceCutsceneTableEntry;
+
+extern EntranceCutsceneTableEntry gEntranceCutsceneTable[];
+
 // Members
 
 #define CTRLR_RAW gGlobalContext.state.input[0].cur.button
@@ -69,12 +97,15 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 //Using 0xF24 bits 1<<6 and 1<<7 for ge2 dialogue chooser
 #define NABOORU_CONTINUE_VAR gSaveContext.infTable[0x16] //0x0F24 bit 1<<0
 #define NABOORU_CONTINUE_BIT 0x0100
-#define NABOORU_DONE_VAR gSaveContext.infTable[0x16] //0x0F24 bit 1<<1
-#define NABOORU_DONE_BIT 0x0200
+#define LONGOFTIME_VAR gSaveContext.infTable[0x16] //0x0F24 bit 1<<1
+#define LONGOFTIME_BIT 0x0200
 #define RUNNINGMAN_WANTS_TO_BATTLE_VAR gSaveContext.infTable[23] //0x0F26 bit 1<<6
 #define RUNNINGMAN_WANTS_TO_BATTLE_BIT 0x4000
 #define RUNNINGMAN_DEFEATED_VAR gSaveContext.infTable[23] //0x0F26 bit 1<<5
 #define RUNNINGMAN_DEFEATED_BIT 0x2000
+#define OVERTUREOFSAGES_VAR gSaveContext.eventChkInf[5] //0x0EDE bit 1<<15
+#define OVERTUREOFSAGES_BIT 0x8000
+#define TRIFORCE_ROOM_ENTRANCE_CS_EVENTCHKFLAG 0xCF //0x0EEC bit 1<<15
 
 #define Actor_IsTalking func_8002F194
 #define Actor_RequestToTalk func_8002F2F4
@@ -93,6 +124,10 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 #define GI_BUTTERFLY GI_BIG_POE //0x70
 #define EXCH_ITEM_BUTTERFLY EXCH_ITEM_BIG_POE //0x1C
 #define SI_BUTTERFLY SI_BIG_POE //0x29
+
+#define SCENE_UNICORNFOUNTAIN SCENE_MAHOUYA //Granny's potion shop
+#define SCENE_TRIFORCEROOM SCENE_GOLON //Goron shop
+#define SCENE_ENDING SCENE_HUT //Dampe's hut
 
 //Functions
 

@@ -47,7 +47,7 @@ func_800005A0:
 	.set	macro
 	.set	reorder
 
-	la	$4,rhstaticsFile.22242
+	la	$4,rhstaticsFile.22267
 	jal	DmaMgr_ProcessMsg
 	lw	$31,20($sp)
 	move	$4,$16
@@ -63,9 +63,9 @@ func_800005A0:
 	.size	func_800005A0, .-func_800005A0
 	.data
 	.align	2
-	.type	rhstaticsFile.22242, @object
-	.size	rhstaticsFile.22242, 12
-rhstaticsFile.22242:
+	.type	rhstaticsFile.22267, @object
+	.size	rhstaticsFile.22267, 12
+rhstaticsFile.22267:
 	.word	-559038737
 	.word	statics_START
 	.word	69233001

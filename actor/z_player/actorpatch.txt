@@ -68,3 +68,6 @@
 # Patch jump height
 80847C4C jal Statics_Player_BunnyHood_YSpeed
 80847C64 nop
+
+# Patch spawning effect for warp song
+8084C694 jal Statics_CheckWarpToSacredRealm

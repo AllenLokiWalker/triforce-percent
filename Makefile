@@ -16,7 +16,7 @@ actor/: toolchain/ $(DUMP) statics/ scene/
 
 scene/: $(DUMP)
 
-statics/: anim/ loader/ textures/
+statics/: anim/ loader/ scene/ textures/
 
 bootstrap/: loader/
 

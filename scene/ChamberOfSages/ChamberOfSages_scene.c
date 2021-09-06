@@ -49,7 +49,7 @@ EntranceEntry ChamberOfSages_scene_header00_entranceList[] = {
 };
 
 u16 ChamberOfSages_scene_header00_exitList[1] = {
-	0x0000,
+	0x034D,
 };
 
 LightSettings ChamberOfSages_scene_header00_lightSettings[1] = {
@@ -747,7 +747,7 @@ EntranceEntry ChamberOfSages_scene_header04_entranceList[] = {
 };
 
 u16 ChamberOfSages_scene_header04_exitList[1] = {
-	0x0000,
+	0x034D,
 };
 
 s32 ChamberOfSages_scene_header04_cutscene[] = {
@@ -824,7 +824,7 @@ EntranceEntry ChamberOfSages_scene_header05_entranceList[] = {
 };
 
 u16 ChamberOfSages_scene_header05_exitList[1] = {
-	0x0000,
+	0x034D,
 };
 
 s32 ChamberOfSages_scene_header05_cutscene[] = {
@@ -901,7 +901,7 @@ EntranceEntry ChamberOfSages_scene_header06_entranceList[] = {
 };
 
 u16 ChamberOfSages_scene_header06_exitList[1] = {
-	0x0000,
+	0x034D,
 };
 
 s32 ChamberOfSages_scene_header06_cutscene[] = {
@@ -978,7 +978,7 @@ EntranceEntry ChamberOfSages_scene_header07_entranceList[] = {
 };
 
 u16 ChamberOfSages_scene_header07_exitList[1] = {
-	0x0000,
+	0x034D,
 };
 
 s32 ChamberOfSages_scene_header07_cutscene[] = {
@@ -1055,7 +1055,7 @@ EntranceEntry ChamberOfSages_scene_header08_entranceList[] = {
 };
 
 u16 ChamberOfSages_scene_header08_exitList[1] = {
-	0x0000,
+	0x034D,
 };
 
 s32 ChamberOfSages_scene_header08_cutscene[] = {
@@ -1132,7 +1132,7 @@ EntranceEntry ChamberOfSages_scene_header09_entranceList[] = {
 };
 
 u16 ChamberOfSages_scene_header09_exitList[1] = {
-	0x0000,
+	0x034D,
 };
 
 s32 ChamberOfSages_scene_header09_cutscene[] = {

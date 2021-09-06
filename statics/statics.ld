@@ -5,6 +5,7 @@ OUTPUT_ARCH (mips)
 INCLUDE ../loader/fast_loader/fast_loader.out.ld
 INCLUDE ../loader/debugger/debugger.out.ld
 INCLUDE ../loader/dma_patcher/dma_patcher.out.ld
+INCLUDE ../scene/TriforceRoom/TriforceRoom_scene.out.ld
 
 INCLUDE interface.ld
 INCLUDE message.ld
