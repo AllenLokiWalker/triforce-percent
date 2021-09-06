@@ -38,6 +38,7 @@ void Statics_SetGameState(){
     //TODO TESTING
     LONGOFTIME_VAR |= LONGOFTIME_BIT;
     WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+    OVERTUREOFSAGES_VAR |= OVERTUREOFSAGES_BIT;
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
@@ -387,6 +388,8 @@ void Statics_FixWaterSpawn(){
     }
 }
 
+//static u8 exitOcarinaMode = 0;
+
 void Statics_Player_Update(){
     //Patch overwrote this
     if(PLAYER->unk_A73 != 0) PLAYER->unk_A73--;
@@ -396,6 +399,14 @@ void Statics_Player_Update(){
     Statics_PatchShop();
     Statics_MoveOddPotionToChild();
     Statics_FixWaterSpawn();
+    //
+    /*
+    if(exitOcarinaMode){
+        if(sIsLiveRun) Debugger_Printf("Trying to exit ocarina");
+        globalCtx->msgCtx.unk_E3EE = 4; //Link exit ocarina mode
+        if(!(PLAYER->stateFlags2 & 0x3800000)) exitOcarinaMode = 0; //Has been exited
+    }
+    */
 }
 
 static u8 sOneTime = 0;
@@ -521,33 +532,57 @@ void Statics_GiveOvertureOfSages(){
     Statics_PatchRoutingToSages();
 }
 
-s32 Statics_CheckWarpToSacredRealm(){
+#define WSRSTATE_NOTTRY 0
+#define WSRSTATE_SUCCESS 1
+#define WSRSTATE_FAILURE 2
+
+static s32 Statics_GetWarpSacredRealmState(){
+    GlobalContext *globalCtx = &gGlobalContext;
+    if(globalCtx->msgCtx.unk_E3EC != 1) return WSRSTATE_NOTTRY; //Bolero of Fire played
+    if(!(OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)) return WSRSTATE_NOTTRY;
+    if(globalCtx->sceneNum != SCENE_TOKINOMA) return WSRSTATE_FAILURE;
+    static const Vec3f masterSwordPos = {-1.0f, 68.0f, 0.0f};
+    Vec3f playerPos = PLAYER->actor.world.pos;
+    float sqDistFromMS = SQ(playerPos.x - masterSwordPos.x) 
+        + SQ(playerPos.y - masterSwordPos.y) + SQ(playerPos.z - masterSwordPos.z);
+    if(sqDistFromMS > 2500.0f) return WSRSTATE_FAILURE;
+    return WSRSTATE_SUCCESS;
+}
+
+s32 Statics_CantWarpToSacredRealm(){
+    GlobalContext *globalCtx = &gGlobalContext;
+    Player *player = PLAYER;
+    player->csMode = 0;
+    player->stateFlags1 &= ~0x20000000;
+    s32 wsrstate = Statics_GetWarpSacredRealmState();
+    if(wsrstate != WSRSTATE_FAILURE) return 0;
+    func_800ED858(0); //disable ocarina
+    globalCtx->msgCtx.unk_E3EE = 4; //Link exit ocarina mode
+    Message_Close(globalCtx);
+    //exitOcarinaMode = 1;
+    /*
+    player->prevCsMode = 1;
+    player->csMode = 0;
+    player->unk_664 = NULL;
+    player->stateFlags1 &= ~0x700F8081;
+    player->stateFlags2 &= ~0x8082000;
+    player->stateFlags3 &= ~0x80;
+    globalCtx->mainCamera.unk_14C |= 8;
+    */
+    //func_8010B680(globalCtx, 0x0D30, NULL); //Message_Start
+    return 1;
+}
+
+void* Statics_SpawnWarpActor(){
     GlobalContext *globalCtx = &gGlobalContext;
     u16 actor = ACTOR_DEMO_KANKYO;
     u16 params = 0xF;
-    bool returnNull = false;
-    if(globalCtx->msgCtx.unk_E3EC == 1 //Bolero of Fire played
-            && (OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)){
-        static const Vec3f masterSwordPos = {-1.0f, 68.0f, 0.0f};
-        Vec3f playerPos = PLAYER->actor.world.pos;
-        float sqDistFromMS = SQ(playerPos.x - masterSwordPos.x) 
-            + SQ(playerPos.y - masterSwordPos.y) + SQ(playerPos.z - masterSwordPos.z);
-        if(gGlobalContext.sceneNum == SCENE_TOKINOMA && sqDistFromMS < 2500.0f){
-            actor = ACTOR_DEMO_EFFECT;
-            params = 0xF;
-            returnNull = true;
-        }else{
-            Player *player = PLAYER;
-            player->stateFlags1 &= ~0x30000000;
-            player->stateFlags2 &= ~0x8000000;
-            globalCtx->mainCamera.unk_14C |= 8;
-            func_8010B680(globalCtx, 0x0D30, NULL); //Message_Start
-            return 1; //don't spawn, and make it think it spawned so it doesn't handle the warp
-        }
+    if(Statics_GetWarpSacredRealmState() == WSRSTATE_SUCCESS){
+        actor = ACTOR_DEMO_EFFECT;
+        params = 0xF;
+        Flags_SetEnv(globalCtx, 1);
     }
-    Actor *ret = Actor_Spawn(&globalCtx->actorCtx, globalCtx, actor, 0.0f, 0.0f, 0.0f, 0, 0, 0, params);
-    if(returnNull) return 0;
-    return (s32)ret;
+    return Actor_Spawn(&globalCtx->actorCtx, globalCtx, actor, 0.0f, 0.0f, 0.0f, 0, 0, 0, params);
 }
 
 void Statics_Ge2DialogueGet(){

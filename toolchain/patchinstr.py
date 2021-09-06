@@ -5,6 +5,7 @@ Supported instructions:
     lui
     lb, lh, lw, lbu, lhu, sb, sh, sw
     j, jal
+    beq, bne
     nop
 Use: python3 patchinstr.py target.zovl patch.txt [ldfile1.ld ldfile2.ld ...]
 patch text file format:
@@ -54,6 +55,7 @@ def patchinstr(data, patchfile):
         't8', 't9', 'k0', 'k1', 'gp', 'sp', 's8', 'ra']
     meminstr = {'lb': 0x80, 'lh': 0x84, 'lw': 0x8C, 'lbu': 0x90, 'lhu': 0x94, 
         'sb': 0xA0, 'sh': 0xA4, 'sw': 0xAC}
+    jumpinstr = {'beq': 0x10, 'bne': 0x14}
     def getreg(tok, dest=True):
         tok = tok.lower()
         if tok[0] == '$':
@@ -116,6 +118,18 @@ def patchinstr(data, patchfile):
             symaddr = symbols[sym]
             instr = 0x08000000 if toks[1] == 'j' else 0x0C000000
             instr |= (symaddr >> 2) & 0x03FFFFFF
+            data[addr:addr+4] = instr.to_bytes(4, 'big')
+        elif toks[1] in jumpinstr:
+            assert len(toks) == 5
+            rs = getreg(toks[2], False)
+            rt = getreg(toks[3], False)
+            branchaddr = int(toks[4], 16) - baseaddr
+            assert branchaddr >= 0 and branchaddr < len(data) and (branchaddr & 3) == 0
+            branchoff = (branchaddr - (addr + 4)) >> 2
+            if branchoff < 0:
+                branchoff += 0x10000
+            assert branchoff >= 0 and branchoff <= 0xFFFF
+            instr = (jumpinstr[toks[1]] << 24) | (rs << 21) | (rt << 16) | branchoff
             data[addr:addr+4] = instr.to_bytes(4, 'big')
         else:
             # Immediate/offset instructions

@@ -70,4 +70,11 @@
 80847C64 nop
 
 # Patch spawning effect for warp song
-8084C694 jal Statics_CheckWarpToSacredRealm
+8084C618 sb    t8, 0x1397(v1)
+8084C61C jal Statics_CantWarpToSacredRealm
+8084C620 nop
+8084C624 bne   v0, zero, 8084C6C0
+8084C628 nop
+8084C630 addiu a1, zero, 0x0000
+8084C638 addiu a0, s1, 0x0000
+8084C694 jal Statics_SpawnWarpActor
