@@ -130,6 +130,8 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 #define SCENE_TRIFORCEROOM SCENE_GOLON //Goron shop
 #define SCENE_ENDING SCENE_HUT //Dampe's hut
 
+#define ACTOR_WSRCUTSCENE 83
+
 //Functions
 
 extern void Audio_FadeOut(u16 frames);

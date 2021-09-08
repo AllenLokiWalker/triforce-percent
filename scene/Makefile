@@ -4,7 +4,8 @@ MAKESUBDIRS = \
 	gerudoway \
 	shop1 \
 	spot07_scene \
-	spot10
+	spot10 \
+	tokinoma
 
 OUTFILES = \
 	UnicornFountain/UnicornFountain_scene.zscene \

@@ -1,0 +1,54 @@
+#include "ultra64.h"
+#include "z64.h"
+#include "macros.h"
+#include "command_macros_base.h"
+#include "z64cutscene_commands.h"
+
+#include "tokinoma_cs.h"
+
+s32 WarpToSacredRealmCS[] = {
+	CS_BEGIN_CUTSCENE(6, 150),
+	CS_TERMINATOR(82, 137, 138),
+	CS_SCENE_TRANS_FX(1, 130, 137),
+	CS_MISC_LIST(1),
+		CS_MISC(10, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+	CS_CAM_POS_LIST(0, 186),
+		CS_CAM_POS(0, 0, 0, 0x42b40000, -1, 72, -32, 0),
+		CS_CAM_POS(0, 0, 0, 0x42b40000, -1, 72, -32, 0),
+		CS_CAM_POS(0, 0, 0, 0x42b40000, -1, 72, -32, 0),
+		CS_CAM_POS(0, 0, 0, 0x42b80000, -1, 81, -18, 0),
+		CS_CAM_POS(0, 0, 0, 0x42be0000, -1, 93, -10, 0),
+		CS_CAM_POS(0, 0, 0, 0x42c80000, -1, 123, -2, 0),
+		CS_CAM_POS(0, 0, 0, 0x42dc0000, -1, 250, -2, 0),
+		CS_CAM_POS(0, 0, 0, 0x42f00000, -1, 404, 0, 0),
+		CS_CAM_POS(0, 0, 0, 0x43020000, -1, 607, 0, 0),
+		CS_CAM_POS(0, 0, 0, 0x430c0000, -1, 828, 0, 0),
+		CS_CAM_POS(0, 0, 0, 0x43160000, -1, 1047, 0, 0),
+		CS_CAM_POS(0, 0, 0, 0x43200000, -1, 1262, 0, 0),
+		CS_CAM_POS(0, 0, 0, 0x432a0000, -1, 1475, 0, 0),
+		CS_CAM_POS(0, 0, 0, 0x43320000, -1, 1803, 0, 0),
+		CS_CAM_POS(0, 0, 0, 0x43320000, -1, 2042, 0, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(0, 191),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42b40000, -1, 119, 23, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 30, 0x42b40000, -1, 119, 23, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 25, 0x42b40000, -1, 119, 23, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 15, 0x42b80000, -1, 148, 23, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 12, 0x42be0000, -1, 208, 23, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 10, 0x42c80000, -1, 276, 13, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 8, 0x42dc0000, -1, 482, 2, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 8, 0x42f00000, -1, 635, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 7, 0x43020000, -1, 838, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 7, 0x430c0000, -1, 1059, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 7, 0x43160000, -1, 1278, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 6, 0x43200000, -1, 1493, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 12, 0x432a0000, -1, 1706, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 12, 0x43320000, -1, 2034, 1, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 6, 0x43320000, -1, 2273, 1, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_PLAYER_ACTION_LIST(2),
+		CS_PLAYER_ACTION(0x0005, 0, 25, 0x0, 0xffff8000, 0x0, -1, 70, 24, -1, 70, 24, 0, 0, 0),
+		CS_PLAYER_ACTION(0x0027, 25, 1000, 0x0, 0xffff8000, 0x0, -1, 70, 24, -1, 70, 24, 0, 0, 0),
+	CS_END(),
+};
+

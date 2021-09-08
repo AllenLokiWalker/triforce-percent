@@ -86,11 +86,20 @@ void Statics_TerminatorTriforceToEnding(){
     TERMINATOR_RETURN;
 }
 
-#define NUM_PATCH_TERMINATOR 3
+void Statics_TerminatorWarpToSacredRealm(){
+    gGlobalContext.nextEntranceIndex = 0x04F6;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0;
+    gGlobalContext.fadeTransition = 3;
+    TERMINATOR_RETURN;
+}
+
+#define NUM_PATCH_TERMINATOR 4
 static const struct { u8 index; void (*function)(); } DemoTerminatorPatchTable[NUM_PATCH_TERMINATOR] = {
     {0x4F, Statics_TerminatorNabooruToDesertColossus},
     {0x50, Statics_TerminatorReturnToNabooru},
     {0x51, Statics_TerminatorTriforceToEnding},
+    {0x52, Statics_TerminatorWarpToSacredRealm}
 };
 
 void Statics_PatchDemoTerminator(){
@@ -388,8 +397,6 @@ void Statics_FixWaterSpawn(){
     }
 }
 
-//static u8 exitOcarinaMode = 0;
-
 void Statics_Player_Update(){
     //Patch overwrote this
     if(PLAYER->unk_A73 != 0) PLAYER->unk_A73--;
@@ -399,14 +406,6 @@ void Statics_Player_Update(){
     Statics_PatchShop();
     Statics_MoveOddPotionToChild();
     Statics_FixWaterSpawn();
-    //
-    /*
-    if(exitOcarinaMode){
-        if(sIsLiveRun) Debugger_Printf("Trying to exit ocarina");
-        globalCtx->msgCtx.unk_E3EE = 4; //Link exit ocarina mode
-        if(!(PLAYER->stateFlags2 & 0x3800000)) exitOcarinaMode = 0; //Has been exited
-    }
-    */
 }
 
 static u8 sOneTime = 0;
@@ -485,14 +484,11 @@ void Statics_RomhackLoadAll(){
 }
 
 void Statics_TimeTravel(){
-    if(!(LONGOFTIME_VAR & LONGOFTIME_BIT)) return;
-    //Don't time travel if playing Song of Time at ocarina prompt
-    //unk_E3EE == ocarina_mode == 0x104C6 == unk_15_2[0] except u16 not char
-    //unk_E3F0 == ocarina_no == 0x104C8 == unk_15_2[2] except u16
-    //unk_E40E == 0x104E6 == unk_104E4[2] except s16
-    //if(*((u16*)&(gGlobalContext.unk_15_2[0])) >= 2) return;
-    if(gGlobalContext.sceneNum == SCENE_TOKINOMA || gGlobalContext.sceneNum == SCENE_GERUDOWAY){
-        return; //in Temple of Time or Thieves' Hideout
+    GlobalContext *globalCtx = &gGlobalContext;
+    if(!(LONGOFTIME_VAR & LONGOFTIME_BIT) 
+        || globalCtx->sceneNum == SCENE_TOKINOMA 
+        || globalCtx->sceneNum == SCENE_GERUDOWAY){
+        return;
     }
     if((gSaveContext.eventInf[1] & 1)){
         //Timer 2 (Running Man race) is active
@@ -506,19 +502,12 @@ void Statics_TimeTravel(){
         }
     }
     //Time travel
-    gGlobalContext.linkAgeOnLoad = gSaveContext.linkAge ^ 1;
-    //gGlobalContext.unk_1D_ = 1; //unk_11DE9 not sure? next variable after link_age
+    globalCtx->linkAgeOnLoad = gSaveContext.linkAge ^ 1;
     gSaveContext.respawnFlag = -2;
-    gGlobalContext.sceneLoadFlag = 0x14;
-    gGlobalContext.nextEntranceIndex = gSaveContext.entranceIndex;
-    //gSaveContext.next_day_time = gSaveContext.day_time;
-    gGlobalContext.fadeTransition = 0x2C;
+    globalCtx->sceneLoadFlag = 0x14;
+    globalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+    globalCtx->fadeTransition = 0x2C;
     gSaveContext.nextTransition = 5;
-    /*
-    Audio_FadeOut(30);
-    gSaveContext.seq_index = 0xFF;
-    gSaveContext.night_seq_index = 0xFF;
-    */
 }
 
 void Statics_GiveLongOfTime(){
@@ -532,57 +521,20 @@ void Statics_GiveOvertureOfSages(){
     Statics_PatchRoutingToSages();
 }
 
-#define WSRSTATE_NOTTRY 0
-#define WSRSTATE_SUCCESS 1
-#define WSRSTATE_FAILURE 2
-
-static s32 Statics_GetWarpSacredRealmState(){
-    GlobalContext *globalCtx = &gGlobalContext;
-    if(globalCtx->msgCtx.unk_E3EC != 1) return WSRSTATE_NOTTRY; //Bolero of Fire played
-    if(!(OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)) return WSRSTATE_NOTTRY;
-    if(globalCtx->sceneNum != SCENE_TOKINOMA) return WSRSTATE_FAILURE;
-    static const Vec3f masterSwordPos = {-1.0f, 68.0f, 0.0f};
-    Vec3f playerPos = PLAYER->actor.world.pos;
-    float sqDistFromMS = SQ(playerPos.x - masterSwordPos.x) 
-        + SQ(playerPos.y - masterSwordPos.y) + SQ(playerPos.z - masterSwordPos.z);
-    if(sqDistFromMS > 2500.0f) return WSRSTATE_FAILURE;
-    return WSRSTATE_SUCCESS;
-}
-
-s32 Statics_CantWarpToSacredRealm(){
+s32 Statics_ShouldAbortWarp(){
     GlobalContext *globalCtx = &gGlobalContext;
     Player *player = PLAYER;
     player->csMode = 0;
     player->stateFlags1 &= ~0x20000000;
-    s32 wsrstate = Statics_GetWarpSacredRealmState();
-    if(wsrstate != WSRSTATE_FAILURE) return 0;
+    if(globalCtx->msgCtx.unk_E3EC != 1 //Bolero of Fire not played
+        || OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)) return 0;
+    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_WSRCUTSCENE, 0.0f, 0.0f, 0, 0, 0, 0x0000);
     func_800ED858(0); //disable ocarina
     globalCtx->msgCtx.unk_E3EE = 4; //Link exit ocarina mode
+    globalCtx->csCtx.state = 0; //try to go back to normal
     Message_Close(globalCtx);
-    //exitOcarinaMode = 1;
-    /*
-    player->prevCsMode = 1;
-    player->csMode = 0;
-    player->unk_664 = NULL;
-    player->stateFlags1 &= ~0x700F8081;
-    player->stateFlags2 &= ~0x8082000;
-    player->stateFlags3 &= ~0x80;
-    globalCtx->mainCamera.unk_14C |= 8;
-    */
-    //func_8010B680(globalCtx, 0x0D30, NULL); //Message_Start
+	gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = PLAYER->actor.params;
     return 1;
-}
-
-void* Statics_SpawnWarpActor(){
-    GlobalContext *globalCtx = &gGlobalContext;
-    u16 actor = ACTOR_DEMO_KANKYO;
-    u16 params = 0xF;
-    if(Statics_GetWarpSacredRealmState() == WSRSTATE_SUCCESS){
-        actor = ACTOR_DEMO_EFFECT;
-        params = 0xF;
-        Flags_SetEnv(globalCtx, 1);
-    }
-    return Actor_Spawn(&globalCtx->actorCtx, globalCtx, actor, 0.0f, 0.0f, 0.0f, 0, 0, 0, params);
 }
 
 void Statics_Ge2DialogueGet(){

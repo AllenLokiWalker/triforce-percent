@@ -7,6 +7,7 @@ Nabooru/ \
 TriforcePiece/ \
 TriforceChest/ \
 TriforceLight/ \
+WSRCutscene / \
 z_bg_mjin/ \
 z_bg_spot07_taki/ \
 z_bg_toki_swd/ \

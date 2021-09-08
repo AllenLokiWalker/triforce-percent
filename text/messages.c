@@ -490,7 +490,7 @@ DECLARE_MESSAGE(0x0D23, BOX_BLACK, POS_MIDDLE,
 
 DECLARE_MESSAGE(0x0D30, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE QUICKTEXT_ENABLE COLOR(RED)
-    SHIFT("\x20") "You can't warp here!"
+    SHIFT("\x1D") "You can't warp here!" FADE("\x46")
 )
 
 // 0xA00: Chamber of Sages / Triforce

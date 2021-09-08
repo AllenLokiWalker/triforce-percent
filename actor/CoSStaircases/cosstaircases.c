@@ -94,7 +94,7 @@ extern s32 ChamberOfSages_scene_header08_cutscene[];
 extern s32 ChamberOfSages_scene_header09_cutscene[];
 
 static s32 * const Cutscenes[] = {
-	ChamberOfSages_scene_header00_cutscene,
+	NULL,
 	ChamberOfSages_scene_header04_cutscene,
 	ChamberOfSages_scene_header05_cutscene,
 	ChamberOfSages_scene_header06_cutscene,
