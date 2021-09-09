@@ -1,7 +1,7 @@
-ChamberOfSages_scene_header00_cutscene = 0x2001ab4;
-ChamberOfSages_scene_header04_cutscene = 0x200201c;
-ChamberOfSages_scene_header05_cutscene = 0x20023f0;
-ChamberOfSages_scene_header06_cutscene = 0x20027c4;
-ChamberOfSages_scene_header07_cutscene = 0x2002b98;
-ChamberOfSages_scene_header08_cutscene = 0x2002f6c;
-ChamberOfSages_scene_header09_cutscene = 0x2003340;
+CS0Rauru = 0x2001b24;
+CS1Saria = 0x2002018;
+CS2Darunia = 0x2002378;
+CS3Ruto = 0x20026d8;
+CS4Nabooru = 0x2002a38;
+CS5Impa = 0x2002d98;
+CS6Sheik = 0x20030f8;

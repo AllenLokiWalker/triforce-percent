@@ -20,7 +20,6 @@ SCmdBase ChamberOfSages_scene_header00[] = {
 	SCENE_CMD_SKYBOX_SETTINGS(0x1D, 0x00, 0x01),
 	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header00_exitList),
 	SCENE_CMD_ENV_LIGHT_SETTINGS(1, &ChamberOfSages_scene_header00_lightSettings),
-	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header00_cutscene),
 	SCENE_CMD_END(),
 };
 
@@ -29,11 +28,6 @@ SCmdBase* ChamberOfSages_scene_alternateHeaders[] = {
 	0,
 	0,
 	ChamberOfSages_scene_header04,
-	ChamberOfSages_scene_header05,
-	ChamberOfSages_scene_header06,
-	ChamberOfSages_scene_header07,
-	ChamberOfSages_scene_header08,
-	ChamberOfSages_scene_header09,
 };
 
 ActorEntry ChamberOfSages_scene_header00_startPositionList[] = {
@@ -645,10 +639,41 @@ Vec3s ChamberOfSages_vertices[261] = {
 
 CollisionHeader ChamberOfSages_collisionHeader = { -2862, -269, -2893, 2902, 1673, 2871, 261, ChamberOfSages_vertices, 312, ChamberOfSages_polygons, ChamberOfSages_polygonTypes, 0, 0, 0 };
 
-s32 ChamberOfSages_scene_header00_cutscene[] = {
+SCmdBase ChamberOfSages_scene_header04[] = {
+	SCENE_CMD_SOUND_SETTINGS(0x04, 0x13, 0x56),
+	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
+	SCENE_CMD_MISC_SETTINGS(0x00, 0x0E),
+	SCENE_CMD_COL_HEADER(&ChamberOfSages_collisionHeader),
+	SCENE_CMD_ENTRANCE_LIST(&ChamberOfSages_scene_header04_entranceList),
+	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
+	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header04_startPositionList),
+	SCENE_CMD_SKYBOX_SETTINGS(0x1D, 0x00, 0x01),
+	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header04_exitList),
+	SCENE_CMD_ENV_LIGHT_SETTINGS(1, &ChamberOfSages_scene_header04_lightSettings),
+	SCENE_CMD_CUTSCENE_DATA(&CS0Rauru),
+	SCENE_CMD_END(),
+};
+
+ActorEntry ChamberOfSages_scene_header04_startPositionList[] = {
+	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
+};
+
+EntranceEntry ChamberOfSages_scene_header04_entranceList[] = {
+	{ 0, 0 },
+};
+
+u16 ChamberOfSages_scene_header04_exitList[1] = {
+	0x034D,
+};
+
+LightSettings ChamberOfSages_scene_header04_lightSettings[1] = {
+	{ 0x51, 0x42, 0x5E, 0xF5, 0x7A, 0x1D, 0xA2, 0x8F, 0xFF, 0x03, 0x08, 0x82, 0xFF, 0xBD, 0xE1, 0x00, 0x00, 0x00, 0xFFE0, 0x3200 },
+};
+
+s32 CS0Rauru[] = {
 	CS_BEGIN_CUTSCENE(11, 645),
 	CS_TIME_LIST(1),
-		CS_TIME(1, 0, 1, 12, 0, 0),
+		CS_TIME(1, 0, 1, 11, 59, 0),
 	CS_TEXT_LIST(2),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A10, 190, 235, 0x0000, 0x0000, 0x0000),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A11, 255, 513, 0x0000, 0x0000, 0x0000),
@@ -723,37 +748,10 @@ s32 ChamberOfSages_scene_header00_cutscene[] = {
 	CS_END(),
 };
 
-SCmdBase ChamberOfSages_scene_header04[] = {
-	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
-	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
-	SCENE_CMD_MISC_SETTINGS(0x00, 0x00),
-	SCENE_CMD_COL_HEADER(&ChamberOfSages_collisionHeader),
-	SCENE_CMD_ENTRANCE_LIST(&ChamberOfSages_scene_header04_entranceList),
-	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
-	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header04_startPositionList),
-	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
-	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header04_exitList),
-	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
-	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header04_cutscene),
-	SCENE_CMD_END(),
-};
-
-ActorEntry ChamberOfSages_scene_header04_startPositionList[] = {
-	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
-};
-
-EntranceEntry ChamberOfSages_scene_header04_entranceList[] = {
-	{ 0, 0 },
-};
-
-u16 ChamberOfSages_scene_header04_exitList[1] = {
-	0x034D,
-};
-
-s32 ChamberOfSages_scene_header04_cutscene[] = {
+s32 CS1Saria[] = {
 	CS_BEGIN_CUTSCENE(9, 170),
 	CS_TIME_LIST(1),
-		CS_TIME(1, 0, 1, 12, 0, 0),
+		CS_TIME(1, 0, 1, 11, 59, 0),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A20, 64, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 176),
@@ -800,37 +798,10 @@ s32 ChamberOfSages_scene_header04_cutscene[] = {
 	CS_END(),
 };
 
-SCmdBase ChamberOfSages_scene_header05[] = {
-	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
-	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
-	SCENE_CMD_MISC_SETTINGS(0x00, 0x00),
-	SCENE_CMD_COL_HEADER(&ChamberOfSages_collisionHeader),
-	SCENE_CMD_ENTRANCE_LIST(&ChamberOfSages_scene_header05_entranceList),
-	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
-	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header05_startPositionList),
-	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
-	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header05_exitList),
-	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
-	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header05_cutscene),
-	SCENE_CMD_END(),
-};
-
-ActorEntry ChamberOfSages_scene_header05_startPositionList[] = {
-	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
-};
-
-EntranceEntry ChamberOfSages_scene_header05_entranceList[] = {
-	{ 0, 0 },
-};
-
-u16 ChamberOfSages_scene_header05_exitList[1] = {
-	0x034D,
-};
-
-s32 ChamberOfSages_scene_header05_cutscene[] = {
+s32 CS2Darunia[] = {
 	CS_BEGIN_CUTSCENE(9, 200),
 	CS_TIME_LIST(1),
-		CS_TIME(1, 0, 1, 12, 0, 0),
+		CS_TIME(1, 0, 1, 11, 59, 0),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A30, 64, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 166),
@@ -877,37 +848,10 @@ s32 ChamberOfSages_scene_header05_cutscene[] = {
 	CS_END(),
 };
 
-SCmdBase ChamberOfSages_scene_header06[] = {
-	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
-	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
-	SCENE_CMD_MISC_SETTINGS(0x00, 0x00),
-	SCENE_CMD_COL_HEADER(&ChamberOfSages_collisionHeader),
-	SCENE_CMD_ENTRANCE_LIST(&ChamberOfSages_scene_header06_entranceList),
-	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
-	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header06_startPositionList),
-	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
-	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header06_exitList),
-	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
-	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header06_cutscene),
-	SCENE_CMD_END(),
-};
-
-ActorEntry ChamberOfSages_scene_header06_startPositionList[] = {
-	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
-};
-
-EntranceEntry ChamberOfSages_scene_header06_entranceList[] = {
-	{ 0, 0 },
-};
-
-u16 ChamberOfSages_scene_header06_exitList[1] = {
-	0x034D,
-};
-
-s32 ChamberOfSages_scene_header06_cutscene[] = {
+s32 CS3Ruto[] = {
 	CS_BEGIN_CUTSCENE(9, 200),
 	CS_TIME_LIST(1),
-		CS_TIME(1, 0, 1, 12, 0, 0),
+		CS_TIME(1, 0, 1, 11, 59, 0),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A40, 64, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 176),
@@ -954,37 +898,10 @@ s32 ChamberOfSages_scene_header06_cutscene[] = {
 	CS_END(),
 };
 
-SCmdBase ChamberOfSages_scene_header07[] = {
-	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
-	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
-	SCENE_CMD_MISC_SETTINGS(0x00, 0x00),
-	SCENE_CMD_COL_HEADER(&ChamberOfSages_collisionHeader),
-	SCENE_CMD_ENTRANCE_LIST(&ChamberOfSages_scene_header07_entranceList),
-	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
-	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header07_startPositionList),
-	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
-	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header07_exitList),
-	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
-	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header07_cutscene),
-	SCENE_CMD_END(),
-};
-
-ActorEntry ChamberOfSages_scene_header07_startPositionList[] = {
-	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
-};
-
-EntranceEntry ChamberOfSages_scene_header07_entranceList[] = {
-	{ 0, 0 },
-};
-
-u16 ChamberOfSages_scene_header07_exitList[1] = {
-	0x034D,
-};
-
-s32 ChamberOfSages_scene_header07_cutscene[] = {
+s32 CS4Nabooru[] = {
 	CS_BEGIN_CUTSCENE(9, 200),
 	CS_TIME_LIST(1),
-		CS_TIME(1, 0, 1, 12, 0, 0),
+		CS_TIME(1, 0, 1, 11, 59, 0),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A50, 75, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 171),
@@ -1031,37 +948,10 @@ s32 ChamberOfSages_scene_header07_cutscene[] = {
 	CS_END(),
 };
 
-SCmdBase ChamberOfSages_scene_header08[] = {
-	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
-	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
-	SCENE_CMD_MISC_SETTINGS(0x00, 0x00),
-	SCENE_CMD_COL_HEADER(&ChamberOfSages_collisionHeader),
-	SCENE_CMD_ENTRANCE_LIST(&ChamberOfSages_scene_header08_entranceList),
-	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
-	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header08_startPositionList),
-	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
-	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header08_exitList),
-	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
-	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header08_cutscene),
-	SCENE_CMD_END(),
-};
-
-ActorEntry ChamberOfSages_scene_header08_startPositionList[] = {
-	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
-};
-
-EntranceEntry ChamberOfSages_scene_header08_entranceList[] = {
-	{ 0, 0 },
-};
-
-u16 ChamberOfSages_scene_header08_exitList[1] = {
-	0x034D,
-};
-
-s32 ChamberOfSages_scene_header08_cutscene[] = {
+s32 CS5Impa[] = {
 	CS_BEGIN_CUTSCENE(9, 200),
 	CS_TIME_LIST(1),
-		CS_TIME(1, 0, 1, 12, 0, 0),
+		CS_TIME(1, 0, 1, 11, 59, 0),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A60, 64, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 176),
@@ -1108,41 +998,14 @@ s32 ChamberOfSages_scene_header08_cutscene[] = {
 	CS_END(),
 };
 
-SCmdBase ChamberOfSages_scene_header09[] = {
-	SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
-	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
-	SCENE_CMD_MISC_SETTINGS(0x00, 0x00),
-	SCENE_CMD_COL_HEADER(&ChamberOfSages_collisionHeader),
-	SCENE_CMD_ENTRANCE_LIST(&ChamberOfSages_scene_header09_entranceList),
-	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
-	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header09_startPositionList),
-	SCENE_CMD_SKYBOX_SETTINGS(0x01, 0x00, 0x00),
-	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header09_exitList),
-	SCENE_CMD_ENV_LIGHT_SETTINGS(0, NULL),
-	SCENE_CMD_CUTSCENE_DATA(&ChamberOfSages_scene_header09_cutscene),
-	SCENE_CMD_END(),
-};
-
-ActorEntry ChamberOfSages_scene_header09_startPositionList[] = {
-	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
-};
-
-EntranceEntry ChamberOfSages_scene_header09_entranceList[] = {
-	{ 0, 0 },
-};
-
-u16 ChamberOfSages_scene_header09_exitList[1] = {
-	0x034D,
-};
-
-s32 ChamberOfSages_scene_header09_cutscene[] = {
+s32 CS6Sheik[] = {
 	CS_BEGIN_CUTSCENE(15, 660),
 	CS_TIME_LIST(1),
-		CS_TIME(1, 0, 1, 12, 0, 0),
+		CS_TIME(1, 0, 1, 11, 59, 0),
 	CS_TEXT_LIST(5),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A70, 95, 99, 0x0000, 0x0000, 0x0000),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A71, 110, 347, 0x0000, 0x0000, 0x0000),
-		CS_TEXT_DISPLAY_TEXTBOX(0x0A72, 354, 359, 0x0000, 0x0A73, 0x0A74),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0A72, 354, 359, 0x0000, 0x0000, 0x0000),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A74, 370, 389, 0x0000, 0x0000, 0x0000),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A75, 390, 399, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 166),

@@ -85,22 +85,21 @@ static CollisionHeader * const ColHeaders[] = {
 	&TriforceDoorCollision_collisionHeader,
 };
 
-extern s32 ChamberOfSages_scene_header00_cutscene[];
-extern s32 ChamberOfSages_scene_header04_cutscene[];
-extern s32 ChamberOfSages_scene_header05_cutscene[];
-extern s32 ChamberOfSages_scene_header06_cutscene[];
-extern s32 ChamberOfSages_scene_header07_cutscene[];
-extern s32 ChamberOfSages_scene_header08_cutscene[];
-extern s32 ChamberOfSages_scene_header09_cutscene[];
+extern s32 CS1Saria[];
+extern s32 CS2Darunia[];
+extern s32 CS3Ruto[];
+extern s32 CS4Nabooru[];
+extern s32 CS5Impa[];
+extern s32 CS6Sheik[];
 
 static s32 * const Cutscenes[] = {
 	NULL,
-	ChamberOfSages_scene_header04_cutscene,
-	ChamberOfSages_scene_header05_cutscene,
-	ChamberOfSages_scene_header06_cutscene,
-	ChamberOfSages_scene_header07_cutscene,
-	ChamberOfSages_scene_header08_cutscene,
-	ChamberOfSages_scene_header09_cutscene,
+	CS1Saria,
+	CS2Darunia,
+	CS3Ruto,
+	CS4Nabooru,
+	CS5Impa,
+	CS6Sheik,
 	NULL,
 	NULL,
 	NULL

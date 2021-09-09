@@ -27,7 +27,7 @@ ACTOR 312 ../actor/z_en_ge1/z_en_ge1.zovl
 ACTOR 34 ../actor/Nabooru/nabooru.zovl
 ACTOR 54 ../actor/z_en_mm3/z_en_mm3.zovl
 ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl
-ACTOR 83 ../actor/wsrcutscene/wsrcutscene.zovl
+ACTOR 83 ../actor/WSRCutscene/wsrcutscene.zovl
 
 //Custom icons
 //icon_item_static starts at 0x7BD000, each image is 0x1000 (32x32x32b)

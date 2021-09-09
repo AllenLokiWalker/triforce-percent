@@ -89,7 +89,7 @@ void Statics_TerminatorTriforceToEnding(){
 void Statics_TerminatorWarpToSacredRealm(){
     gGlobalContext.nextEntranceIndex = 0x04F6;
     gGlobalContext.sceneLoadFlag = 0x14;
-    gSaveContext.cutsceneIndex = 0;
+    gSaveContext.cutsceneIndex = 0xFFF0;
     gGlobalContext.fadeTransition = 3;
     TERMINATOR_RETURN;
 }
@@ -527,8 +527,9 @@ s32 Statics_ShouldAbortWarp(){
     player->csMode = 0;
     player->stateFlags1 &= ~0x20000000;
     if(globalCtx->msgCtx.unk_E3EC != 1 //Bolero of Fire not played
-        || OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)) return 0;
-    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_WSRCUTSCENE, 0.0f, 0.0f, 0, 0, 0, 0x0000);
+        || !(OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)) return 0;
+    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_WSRCUTSCENE, 
+        0.0f, 0.0f, 0.0f, 0, 0, 0, 0x0000);
     func_800ED858(0); //disable ocarina
     globalCtx->msgCtx.unk_E3EE = 4; //Link exit ocarina mode
     globalCtx->csCtx.state = 0; //try to go back to normal

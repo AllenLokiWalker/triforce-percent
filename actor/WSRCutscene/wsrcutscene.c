@@ -17,10 +17,9 @@ static void init(Entity *en, GlobalContext *globalCtx) {
     float sqDistFromMS = SQ(playerPos.x - masterSwordPos.x) 
         + SQ(playerPos.y - masterSwordPos.y) + SQ(playerPos.z - masterSwordPos.z);
     if(sqDistFromMS > 2500.0f) en->mode = 0;
-	if(!en->mode){
-		gSaveContext.unk_13EE = 50; //try to make interface back to normal
-	    Interface_ChangeAlpha(gSaveContext.unk_13EE);
-	}else{
+	gSaveContext.unk_13EE = 50; //try to make interface back to normal
+    Interface_ChangeAlpha(gSaveContext.unk_13EE);
+	if(en->mode){
 		globalCtx->csCtx.segment = &WarpToSacredRealmCS;
 		gSaveContext.cutsceneTrigger = 1;
 	}
@@ -44,7 +43,7 @@ const ActorInit init_vars = {
 	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
 	.category = ACTORCAT_BG,
 	.flags = 0x00000010,
-	.objectId = GAMEPLAY_KEEP,
+	.objectId = OBJECT_GAMEPLAY_KEEP,
 	.instanceSize = sizeof(Entity),
 	.init = (ActorFunc)init,
 	.destroy = (ActorFunc)destroy,
