@@ -87,10 +87,11 @@ void Statics_TerminatorTriforceToEnding(){
 }
 
 void Statics_TerminatorWarpToSacredRealm(){
-    gGlobalContext.nextEntranceIndex = 0x04F6;
+    gGlobalContext.nextEntranceIndex = 0x006B;
     gGlobalContext.sceneLoadFlag = 0x14;
     gSaveContext.cutsceneIndex = 0xFFF0;
     gGlobalContext.fadeTransition = 3;
+    gSaveContext.nextTransition = 3;
     TERMINATOR_RETURN;
 }
 
@@ -110,82 +111,80 @@ void Statics_PatchDemoTerminator(){
     }
 }
 
-void PatchEntranceTable4(u16 entryIdx, const EntranceTableEntry *contents)
+void PatchEntranceTable(u16 entryIdx, u8 count, const EntranceTableEntry *contents)
 {
-    gFakeEntranceTable[entryIdx+0] = *contents;
-    gFakeEntranceTable[entryIdx+1] = *contents;
-    gFakeEntranceTable[entryIdx+2] = *contents;
-    gFakeEntranceTable[entryIdx+3] = *contents;
-}
-
-void Statics_PatchRoutingToSages(){
-    //Bolero of Fire to Death Mountain Crater -> Overture of Sages to Chamber of the Sages
-    static const EntranceTableEntry bolero_to_crater_entry = {
-        .scene = SCENE_KENJYANOMA,
-        .spawn = 0, .keepMusic = 0, .titleCard = 1, .transitionIn = 7, .transitionOut = 7
-    };
-    PatchEntranceTable4(0x04F6, &bolero_to_crater_entry);
+    for(u8 i=0; i<count; ++i)
+        gFakeEntranceTable[entryIdx+count] = *contents;
 }
 
 void Statics_SetUpRouting(){
-    //Gerudo's Fortress to Thieves' Hideout -> scene not changed, but disabled title card
-    static const EntranceTableEntry return_to_nabooru_entry = {
-        .scene = SCENE_GERUDOWAY, 
-        .spawn = 8, .keepMusic = 0, .titleCard = 0, .transitionIn = 5, .transitionOut = 5
+    //
+    //Patches to remove access to reused scenes
+    //Kakariko Village to Granny's Potion Shop -> Kakariko Village to Kakariko Village turnaround
+    static const EntranceTableEntry kakariko_to_granny_entry = {
+        .scene = SCENE_SPOT01, 
+        .spawn = 7, .keepMusic = 1, .titleCard = 0, .transitionIn = 0x20, .transitionOut = 0x20
     };
-    PatchEntranceTable4(0x04A7, &return_to_nabooru_entry);
+    PatchEntranceTable(0x0072, 4, &kakariko_to_granny_entry);
+    //Goron City to Goron Shop -> Goron City to Goron City turnaround
+    static const EntranceTableEntry gcity_to_gshop_entry = {
+        .scene = SCENE_SPOT18,
+        .spawn = 2, .keepMusic = 1, .titleCard = 0, .transitionIn = 5, .transitionOut = 5
+    };
+    PatchEntranceTable(0x037C, 4, &gcity_to_gshop_entry);
+    //Graveyard to Dampe's Hut -> Graveyard to Graveyard turnaround
+    static const EntranceTableEntry graveyard_to_hut_entry = {
+        .scene = SCENE_SPOT02,
+        .spawn = 2, .keepMusic = 1, .titleCard = 0, .transitionIn = 5, .transitionOut = 5
+    };
+    PatchEntranceTable(0x030D, 4, &graveyard_to_hut_entry);
+    //
+    //Main areas
     //Zora's Domain to Lake Hylia -> Zora's Domain to Unicorn Fountain
     static const EntranceTableEntry zoras_to_lake_entry = {
         .scene = SCENE_UNICORNFOUNTAIN, 
         .spawn = 0, .keepMusic = 0, .titleCard = 1, .transitionIn = 4, .transitionOut = 4
     };
-    PatchEntranceTable4(0x0560, &zoras_to_lake_entry);
+    PatchEntranceTable(0x0560, 4, &zoras_to_lake_entry);
     //Lake Hylia to Zora's Domain -> scene not changed, but transition changed
     //Used for Unicorn Fountain to Zora's Domain
     static const EntranceTableEntry lake_to_zoras_entry = {
         .scene = SCENE_SPOT06, 
         .spawn = 4, .keepMusic = 0, .titleCard = 1, .transitionIn = 4, .transitionOut = 4
     };
-    PatchEntranceTable4(0x0328, &lake_to_zoras_entry);
+    PatchEntranceTable(0x0328, 4, &lake_to_zoras_entry);
     //TODO edit Zora's spawn location to be in front of the exit
-    //Kakariko Village to Granny's Potion Shop -> Kakariko Village to Kakariko Village turnaround
-    static const EntranceTableEntry kakariko_to_granny_entry = {
-        .scene = SCENE_SPOT01, 
-        .spawn = 7, .keepMusic = 1, .titleCard = 0, .transitionIn = 0x20, .transitionOut = 0x20
+    //Cutscenes to Chamber of Sages -> Overture of Sages to Chamber of the Sages
+    static const EntranceTableEntry cs_to_cos_entry = {
+        .scene = SCENE_KENJYANOMA,
+        .spawn = 0, .keepMusic = 0, .titleCard = 1, .transitionIn = 7, .transitionOut = 7
     };
-    PatchEntranceTable4(0x0072, &kakariko_to_granny_entry);
-    if((OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)){
-        Statics_PatchRoutingToSages();
-    }
+    PatchEntranceTable(0x006B, 7, &cs_to_cos_entry);
     //Granny's Potion Shop to Kakariko Village -> Chamber of the Sages to Triforce Room
     static const EntranceTableEntry granny_to_kakariko_entry = {
         .scene = SCENE_TRIFORCEROOM,
         .spawn = 0, .keepMusic = 0, .titleCard = 0, .transitionIn = 1, .transitionOut = 2
     };
-    PatchEntranceTable4(0x034D, &granny_to_kakariko_entry);
+    PatchEntranceTable(0x034D, 4, &granny_to_kakariko_entry);
     static const EntranceCutsceneTableEntry spirit_boss_entry = {
         .entrance = 0x034D, .age = 2, .eventChkFlag = TRIFORCE_ROOM_ENTRANCE_CS_EVENTCHKFLAG, 
         .segAddr = TriforceRoom_scene_header00_cutscene
     };
     gEntranceCutsceneTable[30] = spirit_boss_entry;
-    //Goron City to Goron Shop -> Goron City to Goron City turnaround
-    static const EntranceTableEntry gcity_to_gshop_entry = {
-        .scene = SCENE_SPOT18,
-        .spawn = 2, .keepMusic = 1, .titleCard = 0, .transitionIn = 5, .transitionOut = 5
-    };
-    PatchEntranceTable4(0x037C, &gcity_to_gshop_entry);
     //Goron Shop to Goron City -> Triforce Room to Ending
     static const EntranceTableEntry gshop_to_gcity_entry = {
         .scene = SCENE_ENDING,
         .spawn = 0, .keepMusic = 0, .titleCard = 0, .transitionIn = 7, .transitionOut = 7
     };
-    PatchEntranceTable4(0x03FC, &gshop_to_gcity_entry);
-    //Graveyard to Dampe's Hut -> Graveyard to Graveyard turnaround
-    static const EntranceTableEntry graveyard_to_hut_entry = {
-        .scene = SCENE_SPOT02,
-        .spawn = 2, .keepMusic = 1, .titleCard = 0, .transitionIn = 5, .transitionOut = 5
+    PatchEntranceTable(0x03FC, 4, &gshop_to_gcity_entry);
+    //
+    //Other
+    //Gerudo's Fortress to Thieves' Hideout -> scene not changed, but disabled title card
+    static const EntranceTableEntry return_to_nabooru_entry = {
+        .scene = SCENE_GERUDOWAY, 
+        .spawn = 8, .keepMusic = 0, .titleCard = 0, .transitionIn = 5, .transitionOut = 5
     };
-    PatchEntranceTable4(0x030D, &graveyard_to_hut_entry);
+    PatchEntranceTable(0x04A7, 4, &return_to_nabooru_entry);
 }
 
 void Statics_RomhackLoadAll();
@@ -518,7 +517,6 @@ void Statics_GiveLongOfTime(){
 void Statics_GiveOvertureOfSages(){
     OVERTUREOFSAGES_VAR |= OVERTUREOFSAGES_BIT;
     Ocarina_GiveOvertureOfSages();
-    Statics_PatchRoutingToSages();
 }
 
 s32 Statics_ShouldAbortWarp(){

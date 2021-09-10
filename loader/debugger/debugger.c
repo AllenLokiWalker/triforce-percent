@@ -270,6 +270,11 @@ extern OSThread padmgrth;
 
 static void Debugger_Draw()
 {
+	GlobalContext *globalCtx = &gGlobalContext;
+	_printf(8, 8, "\x12sc %d st %d nexte %04X cs %04X nxcs %04X",
+		globalCtx->sceneNum, gSaveContext.sceneSetupIndex, 
+		globalCtx->nextEntranceIndex, gSaveContext.cutsceneIndex, gSaveContext.nextCutsceneIndex);
+	
 	u8 msg;
 	for(msg=0; msg<N_DBG_MSGS; ++msg){
 		if(debugger.messages[msg].timeout){

@@ -138,7 +138,8 @@ GDQ / TASbot Liaison \
 DWANGOAC
 
 Video Editing \
-MUSKET012
+MUSKET012 \
+GRAVATOS
 
 YouTube Partner Channels \
 SWANKYBOX
@@ -154,7 +155,7 @@ Awesome Games Done Quick 2022
 
 ### 
 
-Assets, Scenario, and Performance \
+Assets, Toolchain, and Performance \
 Copyright (C) 2019-2022 \
 The Triforce% Team
 

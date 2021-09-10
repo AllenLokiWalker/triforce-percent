@@ -46,12 +46,11 @@ static s16 Patched_GetLengthOrLastFrame(AnimationHeaderCommon *animation, s16 mi
     return anim->frameCount - minus;
 }
 
+static u32 prevAnimBaseAddr = 0;
+
 //Animation table
 //LinkAnimationHeader linkAnimPatchTable[...] = {...};
 #include "../anim/anim.c"
-
-//Testing
-LinkAnimationHeader testAnimHeader = { { 40 }, 0x0701E340 };
 
 typedef struct {
     //If positive, passes ptr to function in table D_80854AA4 (debug) indexed
@@ -170,8 +169,9 @@ void Statics_Player_Init(){
 
 void Statics_AnimeRegisterStaticData(void* ram_addr){
     for(s32 i=0; i<(sizeof(linkAnimPatchTable)/sizeof(linkAnimPatchTable[0])); ++i){
-        linkAnimPatchTable[i].segment += (u32)ram_addr;
+        linkAnimPatchTable[i].segment += (u32)ram_addr - prevAnimBaseAddr;
     }
+    prevAnimBaseAddr = (u32)ram_addr;
 }
 
 void Statics_AnimeCodePatches(u8 isLiveRun){
