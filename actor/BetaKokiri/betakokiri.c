@@ -132,6 +132,7 @@ static void update(Entity *en, GlobalContext *globalCtx){
 			en->actor.textId = 0x0B16;
 		}else if(playerExchangeItem == EXCH_ITEM_BUG){
 			en->actor.textId = 0x0B12;
+			func_80078884(NA_SE_SY_ERROR);
 		}else if(playerExchangeItem == EXCH_ITEM_BUTTERFLY){
 			en->actor.textId = 0x0B13;
 			func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
@@ -195,7 +196,7 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 		BetaKokiri_OverrideLimbDraw, BetaKokiri_PostLimbDraw, en);
 }
 
-const ActorInit init_vars = {
+const ActorInitExplPad init_vars = {
 	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
 	.category = ACTORCAT_NPC,
 	.flags = 0x00000019,

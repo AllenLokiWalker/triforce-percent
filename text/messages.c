@@ -276,7 +276,7 @@ DECLARE_MESSAGE(0x0B68, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "As I said, you're just a kid now." NEWLINE
     "But I sense that you can control" NEWLINE
-    "even greater magic than just this" NEWLINE
+    "even greater magic than just that" NEWLINE
     "mask."
 )
 

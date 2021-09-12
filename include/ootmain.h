@@ -1,6 +1,18 @@
 #ifndef _OOTMAIN_H_INCLUDED_
 #define _OOTMAIN_H_INCLUDED_
-#include "z64hdr/oot_10.h"
+
+#define Z64HDR_HELPER_QUALIFIERS static inline
+
+#ifdef NO_Z64HDR_GARBAGE
+#define _Z64HDR_DISABLE_FABSF_ASM_ 1
+#endif
+
+#include "z64hdr/oot_u10/z64hdr.h"
+
+#ifndef NO_Z64HDR_GARBAGE
+#include "z64hdr/common/helpers/Matrix.h"
+#endif
+
 #include "audiobank.h"
 
 //Structs
@@ -55,6 +67,11 @@ typedef struct {
 } EntranceCutsceneTableEntry;
 
 extern EntranceCutsceneTableEntry gEntranceCutsceneTable[];
+
+typedef struct {
+    s16 x;
+    s16 y;
+} Vec2s;
 
 // Members
 

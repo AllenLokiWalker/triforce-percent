@@ -1,4 +1,4 @@
-INCLUDE z64hdr/oot_10_syms.ld
+INCLUDE z64hdr/oot_u10/syms.ld
 
 Audio_FadeOut = 0x800C7684;
 func_80037F30 = 0x8002ACB8;

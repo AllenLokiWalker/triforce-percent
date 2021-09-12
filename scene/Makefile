@@ -3,6 +3,7 @@ include ../toolchain/make/main.mk
 MAKESUBDIRS = \
 	gerudoway \
 	shop1 \
+	spot00 \
 	spot07_scene \
 	spot10 \
 	tokinoma

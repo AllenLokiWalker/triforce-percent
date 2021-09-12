@@ -104,7 +104,7 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 	Gfx_DrawDListXlu(globalCtx, (Gfx*)DL_BETAGREATFAIRY_FLOWER);
 }
 
-const ActorInit init_vars = {
+const ActorInitExplPad init_vars = {
 	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
 	.category = ACTORCAT_PROP,
 	.flags = 0x00000010,

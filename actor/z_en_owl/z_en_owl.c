@@ -8,7 +8,7 @@ static void destroy(Actor *this, GlobalContext *globalCtx) {}
 static void update(Actor *this, GlobalContext *globalCtx){}
 static void draw(Actor *this, GlobalContext *globalCtx) {}
 
-const ActorInit init_vars = {
+const ActorInitExplPad init_vars = {
 	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
 	.category = ACTORCAT_NPC,
 	.flags = 0x00000010,

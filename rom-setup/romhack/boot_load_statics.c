@@ -1,4 +1,4 @@
-#define _Z64HDR_DISABLE_FABSF_ASM_ 1
+#define NO_Z64HDR_GARBAGE 1
 #include "ootmain.h"
 
 extern u32 statics_START;

@@ -429,7 +429,7 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 		en->skelAnime.dListCount, Nabooru_OverrideLimbDraw, Nabooru_PostLimbDraw, en);
 }
 
-const ActorInit init_vars = {
+const ActorInitExplPad init_vars = {
 	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
 	.category = ACTORCAT_NPC,
 	.flags = 0x00000019,

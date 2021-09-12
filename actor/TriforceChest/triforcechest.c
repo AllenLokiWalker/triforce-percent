@@ -45,7 +45,7 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 		NULL, NULL, &en->actor);
 }
 
-const ActorInit init_vars = {
+const ActorInitExplPad init_vars = {
 	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
 	.category = ACTORCAT_PROP,
 	.flags = 0x00000010,

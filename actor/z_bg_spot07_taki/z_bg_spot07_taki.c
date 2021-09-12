@@ -16,7 +16,7 @@ static void BgSpot07Taki_Destroy(Actor* thisx, GlobalContext* globalCtx);
 static void BgSpot07Taki_Update(Actor* thisx, GlobalContext* globalCtx);
 static void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx);
 
-const ActorInit init_vars = {
+const ActorInitExplPad init_vars = {
 	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
 	.category = ACTORCAT_BG,
 	.flags = FLAGS,
@@ -147,14 +147,14 @@ static void SetCaustics(BgSpot07Taki* this, bool enabled)
 {
 	u32 *v = 0;
 	u32 original = 0; /* original opcode */
-#ifdef _Z64HDR_OOT_DEBUG_H_
+#ifdef _Z64HDR_MQ_DEBUG_
 	v = (void*)(0x8009E730 + 0x54);
 	original = 0x00001825; /* or v1, r0, r0 */
-#elif defined(_Z64HDR_OOT_10_H_)
+#elif defined(_Z64HDR_U10_)
 	v = (void*)(0x800871B8 + 0x38);
 	original = 0x00004825; /* or t1, r0, r0 */
 #else
-	#warning SetCaustics unsupported game version
+	#error SetCaustics unsupported game version
 	return;
 #endif
 	if (!v || !original)

@@ -66,7 +66,7 @@ static void EnGe1_Wait_Archery(EnGe1* this, GlobalContext* globalCtx);
 static void EnGe1_CueUpAnimation(EnGe1* this);
 static void EnGe1_StopFidget(EnGe1* this);
 
-const ActorInit init_vars = {
+const ActorInitExplPad init_vars = {
 	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
 	.category = ACTORCAT_NPC,
 	.flags = FLAGS,

@@ -26,7 +26,7 @@ texclean:
 	$(CREATE_PATCH) --full $< $@
 
 %.c: %.inc
-	echo "#define _Z64HDR_DISABLE_FABSF_ASM_ 1\n#include \"ootmain.h\"\nconst u64 temp[] = {\n" > $@
+	echo "#define NO_Z64HDR_GARBAGE 1\n#include \"ootmain.h\"\nconst u64 temp[] = {\n" > $@
 	cat $< >> $@
 	echo "};\n" >> $@
 
