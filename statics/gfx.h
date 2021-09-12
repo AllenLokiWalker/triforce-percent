@@ -1,1 +1,0 @@
-void Statics_GfxCodePatches();

@@ -5,6 +5,7 @@ extern ActorEntry ChamberOfSages_room_0_header00_actorList[18];
 extern MeshHeader0 ChamberOfSages_room_0_meshHeader;
 extern MeshEntry0 ChamberOfSages_room_0_meshDListEntry[1];
 extern SCmdBase ChamberOfSages_room_0_header04[];
+extern s16 ChamberOfSages_room_0_header04_objectList[8];
 extern ActorEntry ChamberOfSages_room_0_header04_actorList[18];
 extern Gfx ChamberOfSages_room_0_entry_0_opaque[];
 extern Gfx ChamberOfSages_room_0_entry_0_transparent[];

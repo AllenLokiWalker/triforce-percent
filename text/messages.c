@@ -442,8 +442,8 @@ DECLARE_MESSAGE(0x0D21, BOX_BLACK, POS_MIDDLE,
     "You have almost reached the end of" NEWLINE
     "your journey, but to prove your" NEWLINE
     "spirit's growth, you must allow the" NEWLINE
-    "wisdom of the Sages to guide you." BOX_BREAK UNSKIPPABLE
-    "This song is proof of that virtue," NEWLINE
+    COLOR(LIGHTBLUE) "wisdom of the Sages" COLOR(WHITE) " to guide you." BOX_BREAK UNSKIPPABLE
+    COLOR(LIGHTBLUE) "This song" COLOR(WHITE) " is proof of that virtue," NEWLINE
     "and the final key to the Sacred" NEWLINE
     "Realm."
 )

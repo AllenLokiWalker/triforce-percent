@@ -12,11 +12,9 @@ INCLUDE message.ld
 INCLUDE anime.ld
 INCLUDE ocarina.ld
 INCLUDE audio.ld
-INCLUDE gfx.ld
+INCLUDE scene.ld
 
 linkJumpYSpeed = 0x808514A8;
-DemoTerminatorTable = 0x8010736C;
-DemoTerminatorReturn = 0x80054C3C;
 
 SECTIONS {
 	. = dma_patcher_END;

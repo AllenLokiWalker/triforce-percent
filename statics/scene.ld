@@ -1,0 +1,6 @@
+sceneDrawConfigJumpTable = 0x800FBD18;
+Object_InitBank = 0x800813D4;
+Object_InitBank_AfterSpaceSize = 0x80081480;
+bgCheckSceneMemList = 0x800EC0E4;
+DemoTerminatorTable = 0x8010736C;
+DemoTerminatorReturn = 0x80054C3C;

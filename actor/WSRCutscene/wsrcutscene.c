@@ -5,7 +5,7 @@
 typedef struct {
 	Actor actor;
 	u8 mode;
-	u8 timer;
+	u16 timer;
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
