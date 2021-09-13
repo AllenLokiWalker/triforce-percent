@@ -12,6 +12,7 @@ PATCH 0x217C000 ../scene/spot10/spot10_room_7.pat
 PATCH 0x2171000 ../scene/spot10/spot10_room_5.pat
 PATCH 0x28E4000 ../scene/shop1/shop1_room_0.pat
 PATCH 0x32B1000 ../scene/gerudoway/gerudoway_room_3.pat
+PATCH 0x1FE3000 ../scene/spot00/spot00_room_0.pat
 PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat
 PATCH 0x2103000 ../scene/spot07_scene/zoras_room1.pat
 PATCH 0x253C000 ../scene/tokinoma/tokinoma_room_0.pat
@@ -26,6 +27,8 @@ ACTOR 333 ../actor/z_en_owl/z_en_owl.zovl
 ACTOR 312 ../actor/z_en_ge1/z_en_ge1.zovl
 ACTOR 34 ../actor/Nabooru/nabooru.zovl
 ACTOR 54 ../actor/z_en_mm3/z_en_mm3.zovl
+OBJECT 59 ../actor/BossRunningMan/zobj.zobj
+ACTOR 115 ../actor/BossRunningMan/BossRunningMan.zovl
 ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl
 ACTOR 83 ../actor/WSRCutscene/wsrcutscene.zovl
 

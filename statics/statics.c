@@ -35,9 +35,9 @@ void Statics_SetGameState(){
     gSaveContext.itemGetInf[0x2] |= 0x0478; //Obtained Mask of Truth, all trading masks
     gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
     //TODO TESTING
-    // LONGOFTIME_VAR |= LONGOFTIME_BIT;
-    // WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
-    // OVERTUREOFSAGES_VAR |= OVERTUREOFSAGES_BIT;
+    WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+    Statics_GiveLongOfTime();
+    Statics_GiveOvertureOfSages();
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
@@ -64,7 +64,6 @@ void Statics_OneTimeRomhackOnly(){
 }
 
 void Statics_OneTime(){
-    Statics_SetGameState();
 	Statics_InterfaceCodePatches();
     Statics_MessageCodePatches();
     Statics_AnimeCodePatches(sIsLiveRun);
@@ -85,11 +84,16 @@ void Statics_InventoryEditor(){
     //Also, the game already has code to press L to turn OFF the inventory
     //editor, which conflicts with this. This is why this is convoluted.
     static u8 sLPress = 0;
+    static u8 sWasGameStateSet = 0;
     static u16 sInvEditorLastState = 0;
     if(!sLPress){
         if((CTRLR_RAW & BTN_L)){
             sLPress = 1;
             if(!sInvEditorLastState && gGlobalContext.pauseCtx.state){
+                if(!sWasGameStateSet){
+                    Statics_SetGameState();
+                    sWasGameStateSet = 1;
+                }
                 gGlobalContext.pauseCtx.debugState = 1;
             }
         }

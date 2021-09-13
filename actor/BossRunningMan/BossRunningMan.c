@@ -1,4 +1,5 @@
 #include "BossRunningMan.h"
+#include "BossRunningManCutscenes.c"
 
 /* -_-_-_-_-_-_-_-_-_- */
 
@@ -25,10 +26,13 @@
 
 void RunningMan_Init(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_Destroy(BossRunningMan* this, GlobalContext* globalCtx);
-void RunningMan_NpcUpdate(BossRunningMan* this, GlobalContext* globalCtx);
+void RunningMan_UpdateIntro(BossRunningMan* this, GlobalContext* globalCtx);
+void RunningMan_UpdateOutro(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_BossUpdate(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_Draw(BossRunningMan* this, GlobalContext* globalCtx);
 
+void RunningMan_SetupIntroWait(BossRunningMan* this, GlobalContext* globalCtx);
+void RunningMan_IntroWait(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_SetupRun(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_Run(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_SetupDodge(BossRunningMan* this, GlobalContext* globalCtx);
@@ -48,12 +52,12 @@ void RunningMan_ArrowC(BossRunningMan* this, GlobalContext* globalCtx);
 const ActorInitExplPad init_vars = {
 	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
 	.category = ACTORCAT_BOSS,
-	.flags = 1 | (1 << 2) | ACTORFLAG_UPDATE | ACTORFLAG_DRAW,
+	.flags = (1 << 2) | ACTORFLAG_UPDATE | ACTORFLAG_DRAW,
 	.objectId = DEP_OBJECT_NUM,
 	.instanceSize = sizeof(BossRunningMan),
 	.init = (ActorFunc)RunningMan_Init,
 	.destroy = (ActorFunc)RunningMan_Destroy,
-	.update = (ActorFunc)RunningMan_BossUpdate,
+	.update = (ActorFunc)RunningMan_UpdateIntro,
 	.draw = (ActorFunc)RunningMan_Draw
 };
 
@@ -208,7 +212,28 @@ void RunningMan_RelativePos(Vec3f* posOrigin, s16 yawOrigin, Vec3f* result, Vec3
 
 /* -_-_-_-_-_-_-_-_-_- */
 
+static void RunningMan_ClearReusedVars(BossRunningMan* this){
+	const u32 maxsize = MAX(sizeof(this->boss), sizeof(this->npc));
+	bzero(&this->boss, maxsize);
+}
+
 void RunningMan_Init(BossRunningMan* this, GlobalContext* globalCtx) {
+	if(!(RUNNINGMAN_WANTS_TO_BATTLE_VAR & RUNNINGMAN_WANTS_TO_BATTLE_BIT)
+		|| this->actor.params != 0){
+		Actor_Kill(&this->actor);
+		return;
+	}
+	this->state.enableDraw = 0;
+	this->npc.timer = 0;
+	Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_EX_RUPPY,
+		this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
+		0, 0, 0, ACTORPARAM_BETAGIANTRUPEE);
+}
+
+static void RunningMan_ChangeToBoss(BossRunningMan* this, GlobalContext* globalCtx) {
+	RunningMan_ClearReusedVars(this);
+	this->state.enableDraw = 1;
+	
 	Actor_SetScale(&this->actor, 0.1f);
 	Collider_InitCylinder(globalCtx, &this->colliders.cyl);
 	Collider_SetCylinder(globalCtx, &this->colliders.cyl, &this->actor, &sCylInit);
@@ -219,6 +244,7 @@ void RunningMan_Init(BossRunningMan* this, GlobalContext* globalCtx) {
 	this->actor.colorFilterParams = 0x4000;
 	this->actor.colChkInfo.mass = 0xFE;
 	this->actor.colChkInfo.health = 0x80;
+	this->actor.flags |= 1; //targetable
 	
 	SkelAnime_InitFlex(
 		globalCtx,
@@ -229,25 +255,66 @@ void RunningMan_Init(BossRunningMan* this, GlobalContext* globalCtx) {
 		this->morphTable,
 		SKEL_RUNNINGMAN_NUMBONES_DT
 	);
-	
-	Audio_SetBGM(0x1B);
+	this->needDestroy = 1;
 	
 	SetDamageEffect(DAMAGE_NORMAL);
 	SetDamageFlag(DMG_DEFAULT);
 	SetDamageAmount(0x8);
 	
-	SetupAction(SetupRun);
+	SetupAction(SetupIntroWait);
+}
+
+static void RunningMan_ChangeToNPC(BossRunningMan* this, GlobalContext* globalCtx) {
+	RunningMan_ClearReusedVars(this);
+	this->state = (RunManState) {
+		.drawGhosts = 0,
+		.targetPos = 0,
+		.syncRotY = 0,
+		.colHurt = 0,
+		.colKick = 0,
+		.isHurt = 0,
+		.setShapeRot = 0,
+		.setDirRot = 0,
+		.blockDmgStun = 0,
+		.handHitR = 0,
+		.handHitL = 0,
+		.attachColToHead = 0,
+		.headTrack = 0,
+	};
+	this->actor.update = (void*)RunningMan_UpdateOutro;
 }
 
 void RunningMan_Destroy(BossRunningMan* this, GlobalContext* globalCtx) {
+	if(!this->needDestroy) return;
+	SkelAnime_Free(&this->skelAnime, globalCtx);
+	Collider_DestroyCylinder(globalCtx, &this->colliders.kick);
+	Collider_DestroyCylinder(globalCtx, &this->colliders.cyl);
 }
 
-void RunningMan_NpcUpdate(BossRunningMan* this, GlobalContext* globalCtx) {
+void RunningMan_UpdateIntro(BossRunningMan* this, GlobalContext* globalCtx){
+	if(this->npc.timer == 0){
+		Actor *betaGiantRupee = Actor_Find(&globalCtx->actorCtx, ACTOR_EN_EX_RUPPY, ACTORCAT_PROP);
+		if(betaGiantRupee == NULL){
+			this->npc.timer = 1;
+			Audio_SetBGM(5 << 0x10 | 0x100000FF); //fade music quickly
+		}
+	}else{
+		++this->npc.timer;
+		if(this->npc.timer == 20){
+			this->actor.world.pos.y += 200.0f;
+			this->actor.update = (ActorFunc)RunningMan_BossUpdate;
+			globalCtx->csCtx.segment = &BossRunningManIntroCS;
+			gSaveContext.cutsceneTrigger = 1;
+			RunningMan_ChangeToBoss(this, globalCtx);
+			return;
+		}
+	}
+}
+
+void RunningMan_UpdateOutro(BossRunningMan* this, GlobalContext* globalCtx) {
 	RunManState* state = &this->state;
 	
-	state->headTrack = 0;
-	if (this->actor.xzDistToPlayer < 180)
-		state->headTrack = true;
+	state->headTrack = (this->actor.xzDistToPlayer < 180);
 }
 
 #ifndef CHK_ALL
@@ -259,25 +326,8 @@ void RunningMan_BossUpdate(BossRunningMan* this, GlobalContext* globalCtx) {
 	//Player* p = PLAYER;
 	
 	if (this->actor.colChkInfo.health == 0) {
-		/* Clean Boss section for struct */
-		bzero(&this->boss.firstVar, (u32)(&this->boss.lastVar) - (u32)(&this->boss.firstVar));
-		*state = (RunManState) {
-			.drawGhosts = 0,
-			.targetPos = 0,
-			.syncRotY = 0,
-			.colHurt = 0,
-			.colKick = 0,
-			.isHurt = 0,
-			.setShapeRot = 0,
-			.setDirRot = 0,
-			.blockDmgStun = 0,
-			.handHitR = 0,
-			.handHitL = 0,
-			.attachColToHead = 0,
-			.headTrack = 0,
-		};
-		
-		this->actor.update = (void*)RunningMan_NpcUpdate;
+		RunningMan_ChangeToNPC(this, globalCtx);
+		return;
 	}
 	
 	if (this->actionFunc)
@@ -287,7 +337,9 @@ void RunningMan_BossUpdate(BossRunningMan* this, GlobalContext* globalCtx) {
 		ExecuteAction(SetupArrow);
 	}
 	
-	gSaveContext.dayTime = 0xB556; // Lock time to noon
+	// Lock time to noon
+	//gSaveContext.dayTime = 0xB556; //This isn't noon
+	gSaveContext.dayTime = 0xA000;
 	
 	if (state->targetPos == true) {
 		s16 dirYaw = Math_Vec3f_Yaw(&this->actor.world.pos, &this->boss.targetPos);
@@ -519,6 +571,7 @@ void RunningMan_OverridePostDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** 
 
 void RunningMan_Draw(BossRunningMan* this, GlobalContext* globalCtx) {
 	RunManState* state = &this->state;
+	if(!state->enableDraw) return;
 	
 	// Particles will be handled like this only for draw order reasons
 	for (s32 i = 0; i < this->boss.dustNum; i++) {
@@ -605,6 +658,40 @@ void RunningMan_Draw(BossRunningMan* this, GlobalContext* globalCtx) {
 	this->boss.masterFrame = this->skelAnime.curFrame;
 	
 	func_80034BA0(globalCtx, &this->skelAnime, RunningMan_OverrideLimbDraw, RunningMan_OverridePostDraw, &this->actor, 255);
+}
+
+/* -_-_-_-_-_-_-_-_-_- */
+
+void RunningMan_SetupIntroWait(BossRunningMan* this, GlobalContext* globalCtx) {
+	RunManState* state = &this->state;
+	
+	//TODO change to some pose for falling in and then some pose for looking
+	//ready to attack
+	AnimChange(&this->skelAnime, ANIM_RUNFAST, 0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
+	
+	*state = (RunManState) {
+		.drawGhosts = false,
+		.targetPos = true,
+		.syncRotY = true,
+		.colHurt = false,
+		.colKick = 0,
+		.isHurt = 0,
+		.setShapeRot = 0,
+		.setDirRot = 0,
+		.blockDmgStun = 0,
+		.handHitR = 0,
+		.handHitL = 0,
+		.attachColToHead = 0,
+		.headTrack = true,
+	};
+	
+	SetupAction(IntroWait);
+}
+
+void RunningMan_IntroWait(BossRunningMan* this, GlobalContext* globalCtx) {
+	if(globalCtx->csCtx.state == 0){
+		SetupAction(SetupRun);
+	}
 }
 
 /* -_-_-_-_-_-_-_-_-_- */
@@ -1128,6 +1215,9 @@ void RunningMan_SetupHurt(BossRunningMan* this, GlobalContext* globalCtx) {
 		.headTrack = 0,
 	};
 	
+	//TODO: When hurt, don't get knocked back directly away from Link. Add about
+	//10-30 degrees randomly to one side or the other. This makes it much harder
+	//to hit him with a second arrow while he's down.
 	this->boss.dirTarget = this->actor.world.rot.y = (s16)(this->actor.yawTowardsPlayer + 0x8000);
 	this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
 	this->boss.stepMax = 1000;

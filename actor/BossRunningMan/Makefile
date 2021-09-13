@@ -6,6 +6,6 @@ OBJECTNUM = 59
 
 default: copyactor copyobject
 
-$(ACTORNAME).o: BossRunningMan.h bossrunningmanobj.h
+$(ACTORNAME).o: BossRunningMan.h bossrunningmanobj.h BossRunningManCutscenes.h BossRunningManCutscenes.c
 
 include ../../toolchain/make/actor.mk

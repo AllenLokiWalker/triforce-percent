@@ -1,0 +1,34 @@
+#include "ultra64.h"
+#include "z64.h"
+#include "macros.h"
+#include "command_macros_base.h"
+#include "z64cutscene_commands.h"
+
+#include "BossRunningManCutscenes.h"
+
+s32 BossRunningManIntroCS[] = {
+	CS_BEGIN_CUTSCENE(4, 120),
+	CS_TEXT_LIST(2),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0C20, 35, 65, 0x0000, 0x0000, 0x0000),
+		CS_TEXT_DISPLAY_TEXTBOX(0x0C21, 70, 100, 0x0000, 0x0000, 0x0000),
+	CS_PLAY_BGM_LIST(1),
+		CS_PLAY_BGM(0x001B + 1, 101, 1, 0, 0, 0, 0, 0, 0, 0, 0),
+	CS_CAM_POS_LIST(0, 86),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 225, 359, 5506, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 225, 359, 5506, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 225, 359, 5506, 0),
+		CS_CAM_POS(0, 0, 0, 0x41f00000, 225, 359, 5506, 0),
+		CS_CAM_POS(0, 0, 0, 0x41f00000, 225, 359, 5506, 0),
+		CS_CAM_POS(0, 0, 0, 0x41f00000, 225, 359, 5506, 0),
+		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_CAM_FOCUS_POINT_LIST(0, 90),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 200, 359, 5456, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 40, 0x42700000, 200, 359, 5456, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 10, 0x42700000, 200, 359, 5456, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 5, 0x41f00000, 200, 359, 5456, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 5, 0x41f00000, 200, 359, 5456, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 5, 0x41f00000, 200, 359, 5456, 0),
+		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
+	CS_END(),
+};
+

@@ -6,6 +6,7 @@
 
 #define DEP_OBJECT_NUM 59
 #define NUM_GHOSTS 4
+#define ACTORPARAM_BETAGIANTRUPEE 0x0001
 
 typedef enum {
 	/* 0 */ DAMAGE_NORMAL,
@@ -67,6 +68,7 @@ typedef struct {
 	u8 handHitL        : 1;
 	u8 attachColToHead : 1;
 	u8 headTrack       : 1;
+	u8 enableDraw      : 1;
 } RunManState;
 
 typedef struct BossRunningMan {
@@ -78,9 +80,9 @@ typedef struct BossRunningMan {
 	Vec2s          headFocus;
 	ColliderSet    colliders;
 	RunningManFunc actionFunc;
+	u8             needDestroy;
 	union {
 		struct {
-			u32      firstVar;
 			f32      speedX;
 			Vec3f    targetPos;
 			Vec3f    ghostPos[NUM_GHOSTS];
@@ -97,10 +99,9 @@ typedef struct BossRunningMan {
 			s16      rotShapeTarget;
 			s16      stepMax;
 			u8       chuTimer;
-			u32      lastVar;
 		} boss;
 		struct {
-			u32 unk;
+			u16 timer;
 		} npc;
 	};
 } BossRunningMan;
