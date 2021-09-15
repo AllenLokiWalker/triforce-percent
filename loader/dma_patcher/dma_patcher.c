@@ -44,6 +44,8 @@ __attribute__((section(".start"))) void DmaPatcher_Init()
 	*((u32*)0x800B806C) = JUMPINSTR(DmaPatcher_AudioFastCopyPatch_Pre);
 	*((u32*)0x800B8184) = JUMPINSTR(DmaPatcher_AudioFastCopyPatch_Post);
     // finally
+    osWritebackDCache(NULL, 0x4000);
+    osInvalICache(NULL, 0x4000);
     __osRestoreInt(i);
 }
 
