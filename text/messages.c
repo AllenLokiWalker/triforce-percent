@@ -370,23 +370,23 @@ DECLARE_MESSAGE(0x0C21, BOX_BLACK, POS_MIDDLE,
 DECLARE_MESSAGE(0x0C30, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "huff... huff..." BOX_BREAK UNSKIPPABLE
-    "I guess you're a better cheater than" NEWLINE
-    "I am..." BOX_BREAK UNSKIPPABLE
-    "I never thought anyone would find a" NEWLINE
-    "power like the one I did, seven years" NEWLINE
-    "ago..." EVENT
+    "I guess you're a better cheater" NEWLINE
+    "than I am..." BOX_BREAK UNSKIPPABLE
+    "I never thought anyone would" NEWLINE
+    "find a power like the one I did," NEWLINE
+    "seven years ago..." EVENT
 )
 
 DECLARE_MESSAGE(0x0C31, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
-    "That day, after Hyrule Castle was" NEWLINE
-    "attacked, I went on my usual running" NEWLINE
-    "route to clear my mind." BOX_BREAK UNSKIPPABLE
-    "Somewhere out in the field here, I" NEWLINE
-    "stepped on this object, lying on the" NEWLINE
-    "ground." BOX_BREAK UNSKIPPABLE
-    "It must have been dropped by someone" NEWLINE
-    "who fled town." EVENT
+    "That day, after Hyrule Castle" NEWLINE
+    "was attacked, I went on my usual" NEWLINE
+    "running route to clear my mind." BOX_BREAK UNSKIPPABLE
+    "Somewhere out in the field here," NEWLINE
+    "I stepped on this object, lying" NEWLINE
+    "on the ground." BOX_BREAK UNSKIPPABLE
+    "It must have been dropped by" NEWLINE
+    "someone fleeing town." EVENT
 )
 
 DECLARE_MESSAGE(0x0C32, BOX_BLACK, POS_MIDDLE,
@@ -395,11 +395,11 @@ DECLARE_MESSAGE(0x0C32, BOX_BLACK, POS_MIDDLE,
     "on and felt this rush all over my" NEWLINE
     "body!" BOX_BREAK UNSKIPPABLE
     "I could run faster than I could" NEWLINE
-    "ever imagine." BOX_BREAK UNSKIPPABLE
-    "In fact, I could run faster than" NEWLINE
-    "light! That's how I was able to" NEWLINE
-    "finish the race before I started," NEWLINE
-    "and how I was just fighting you." EVENT
+    "ever imagine. In fact, I could run" NEWLINE
+    "faster than light!" BOX_BREAK UNSKIPPABLE
+    "That's how I was able to finish" NEWLINE
+    "the race before I started, and" NEWLINE
+    "how I was just fighting you." EVENT
 )
 
 DECLARE_MESSAGE(0x0C33, BOX_BLACK, POS_MIDDLE,
@@ -408,15 +408,16 @@ DECLARE_MESSAGE(0x0C33, BOX_BLACK, POS_MIDDLE,
     "me a terrible man." BOX_BREAK UNSKIPPABLE
     "I wanted to be the fastest so" NEWLINE
     "badly I tried to kill you!" BOX_BREAK UNSKIPPABLE
-    SHIFT("\x28") "sniffle..." EVENT
+    SHIFT("\x48") "sniffle..." EVENT
 )
 
 DECLARE_MESSAGE(0x0C34, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
-    "I just want to be my own self again," NEWLINE
-    "to run free in the wild. I don't" NEWLINE
-    "care about the magic anymore." BOX_BREAK UNSKIPPABLE
-    "Here, you can have this." EVENT
+    "I just want to be my own self" NEWLINE
+    "again, to run free in the wild." NEWLINE
+    "I don't care about the magic" NEWLINE
+    "anymore." BOX_BREAK UNSKIPPABLE
+    "Here, you can have this."
 )
 
 DECLARE_MESSAGE(0x0068, BOX_BLUE, POS_MIDDLE,

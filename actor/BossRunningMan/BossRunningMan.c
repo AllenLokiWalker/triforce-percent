@@ -27,7 +27,7 @@
 void RunningMan_Init(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_Destroy(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_UpdateIntro(BossRunningMan* this, GlobalContext* globalCtx);
-void RunningMan_UpdateOutro(BossRunningMan* this, GlobalContext* globalCtx);
+void RunningMan_UpdateDialogue(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_BossUpdate(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_Draw(BossRunningMan* this, GlobalContext* globalCtx);
 
@@ -231,7 +231,7 @@ static void RunningMan_ChangeToBoss(BossRunningMan* this, GlobalContext* globalC
 	this->actor.gravity = -8.0f;
 	this->actor.colorFilterParams = 0x4000;
 	this->actor.colChkInfo.mass = 0xFE;
-	this->actor.colChkInfo.health = 0x80;
+	this->actor.colChkInfo.health = 1; //TODO 0x80;
 	this->actor.flags |= 1; //targetable
 	
 	SkelAnime_InitFlex(
@@ -260,7 +260,11 @@ static void RunningMan_ChangeToNPC(BossRunningMan* this, GlobalContext* globalCt
 	this->state = (RunManState) {
 		.enableDraw = true,
 	};
-	this->actor.update = (void*)RunningMan_UpdateOutro;
+	this->actor.update = (void*)RunningMan_UpdateDialogue;
+	this->actor.textId = 0x0C30;
+	this->actor.flags |= 0x10000; //auto talk
+	this->npc.getItemId = -1;
+	Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &this->actor, ACTORCAT_NPC);
 }
 
 void RunningMan_Init(BossRunningMan* this, GlobalContext* globalCtx) {
@@ -304,10 +308,45 @@ void RunningMan_UpdateIntro(BossRunningMan* this, GlobalContext* globalCtx){
 	}
 }
 
-void RunningMan_UpdateOutro(BossRunningMan* this, GlobalContext* globalCtx) {
-	RunManState* state = &this->state;
+void RunningMan_UpdateDialogue(BossRunningMan* en, GlobalContext* globalCtx) {
+	RunManState* state = &en->state;
 	
-	state->headTrack = (this->actor.xzDistToPlayer < 180);
+	state->headTrack = (en->actor.xzDistToPlayer < 180);
+	
+	Actor_RequestToTalkInRange(&en->actor, globalCtx, 1000.0f);
+	if(Actor_IsTalking(&en->actor, globalCtx)){
+		en->actor.flags &= ~0x10000; //auto talk
+	}
+	if(MESSAGE_ADVANCE_EVENT){
+		if(en->actor.textId == 0x0C30){
+			//TODO change animation
+			en->actor.textId = 0x0C31;
+			MESSAGE_CONTINUE;
+		}else if(en->actor.textId == 0x0C31){
+			//TODO change animation
+			en->actor.textId = 0x0C32;
+			MESSAGE_CONTINUE;
+		}else if(en->actor.textId == 0x0C32){
+			//TODO change animation
+			en->actor.textId = 0x0C33;
+			MESSAGE_CONTINUE;
+		}else if(en->actor.textId == 0x0C33){
+			//TODO change animation
+			en->actor.textId = 0x0C34;
+			MESSAGE_CONTINUE;
+		}
+	}else if(en->actor.textId == 0x0C34 && MESSAGE_ADVANCE_END){
+		en->npc.getItemId = GI_SAGES_CHARM;
+	}
+	if(en->npc.getItemId >= 0){
+		if(en->actor.parent != NULL){
+			en->actor.parent = NULL;
+			en->npc.getItemId = -1;
+			//TODO run away
+		}else{
+			Actor_PickUp(&en->actor, globalCtx, en->npc.getItemId, 2000.0f, 2000.0f);
+		}
+	}
 }
 
 #ifndef CHK_ALL
@@ -686,6 +725,7 @@ void RunningMan_IntroWait(BossRunningMan* this, GlobalContext* globalCtx) {
 
 #define mSpeedFactor this->boss.workFloat[0]
 #define mOutroMode this->boss.workInt[0]
+#define mTimer this->boss.workInt[1]
 #define initRunSpeed 7.0f
 
 void RunningMan_SetupOutro(BossRunningMan* this, GlobalContext* globalCtx) {
@@ -699,7 +739,7 @@ void RunningMan_SetupOutro(BossRunningMan* this, GlobalContext* globalCtx) {
 	};
 	
 	this->actor.world.pos = this->actor.home.pos;
-	this->actor.world.rot.y = 0xA000;
+	this->actor.world.rot.y = 0xB000;
 	this->actor.shape.rot = this->actor.world.rot;
 	this->actor.speedXZ = initRunSpeed;
 	this->boss.speedX = 0.0f;
@@ -709,20 +749,30 @@ void RunningMan_SetupOutro(BossRunningMan* this, GlobalContext* globalCtx) {
 	Audio_SetBGM(0x100100FF); //stop music
 	Enemy_StartFinishingBlow(globalCtx, &this->actor);
 	
+	globalCtx->csCtx.segment = &BossRunningManOutroCS;
+	gSaveContext.cutsceneTrigger = 1;
+	
 	SetupAction(Outro);
 }
 
 void RunningMan_Outro(BossRunningMan* this, GlobalContext* globalCtx) {
 	if(mOutroMode == 0){
-		mSpeedFactor -= 0.010f;
+		mSpeedFactor -= 0.005f;
 		if(mSpeedFactor <= 0.0f){
 			this->actor.speedXZ = 0.0f;
 			this->skelAnime.playSpeed = 0.0f;
+			mTimer = 0;
 			mOutroMode = 1;
-			mSpeedFactor = 0.2f;
 		}else{
 			this->actor.speedXZ = initRunSpeed * mSpeedFactor;
 			this->skelAnime.playSpeed = mSpeedFactor;
+		}
+	}else if(mOutroMode == 1){
+		if(mTimer == 15){
+			mSpeedFactor = 0.2f;
+			mOutroMode = 2;
+		}else{
+			++mTimer;
 		}
 	}else{
 		this->actor.world.rot.z += mSpeedFactor * 0x0300;
@@ -735,6 +785,7 @@ void RunningMan_Outro(BossRunningMan* this, GlobalContext* globalCtx) {
 }
 
 #undef initRunSpeed
+#undef mTimer
 #undef mSpeedFactor
 #undef mOutroMode
 

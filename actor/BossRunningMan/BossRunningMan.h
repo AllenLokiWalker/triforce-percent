@@ -102,6 +102,7 @@ typedef struct BossRunningMan {
 		} boss;
 		struct {
 			u16 timer;
+			s32 getItemId;
 		} npc;
 	};
 } BossRunningMan;
