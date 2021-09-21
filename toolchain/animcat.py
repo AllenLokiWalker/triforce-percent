@@ -32,7 +32,7 @@ with open('anim.txt', 'r') as txtfile:
             raise RuntimeError('Error with anim frame count ' + frames)
         frames = int(frames)
         size = os.path.getsize(binfile)
-        assert size % 0x86 == 0
+        assert frames * 0x86 == size
         animinfo.append(AnimInfo(binfile, frames, curaddr))
         curaddr += size
 

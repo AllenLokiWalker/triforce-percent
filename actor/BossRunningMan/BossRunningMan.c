@@ -28,6 +28,7 @@ void RunningMan_Init(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_Destroy(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_UpdateIntro(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_UpdateDialogue(BossRunningMan* this, GlobalContext* globalCtx);
+void RunningMan_UpdateRunAway(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_BossUpdate(BossRunningMan* this, GlobalContext* globalCtx);
 void RunningMan_Draw(BossRunningMan* this, GlobalContext* globalCtx);
 
@@ -265,6 +266,14 @@ static void RunningMan_ChangeToNPC(BossRunningMan* this, GlobalContext* globalCt
 	this->actor.flags |= 0x10000; //auto talk
 	this->npc.getItemId = -1;
 	Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &this->actor, ACTORCAT_NPC);
+	Vec3f pos = this->actor.world.pos;
+	pos.y += 50.0f;
+	globalCtx->mainCamera.at = pos;
+	pos = PLAYER->actor.world.pos;
+	pos.x += 50.0f;
+	pos.y += 100.0f;
+	globalCtx->mainCamera.eye = globalCtx->mainCamera.eyeNext = pos;
+	globalCtx->mainCamera.xzSpeed = 0.0f;
 }
 
 void RunningMan_Init(BossRunningMan* this, GlobalContext* globalCtx) {
@@ -293,6 +302,10 @@ void RunningMan_UpdateIntro(BossRunningMan* this, GlobalContext* globalCtx){
 		if(betaGiantRupee == NULL){
 			this->npc.timer = 1;
 		    Audio_SetBGM(0x100100FF); //stop music
+			Vec3f pos = this->actor.home.pos;
+			pos.z -= 30.0f;
+			pos.x += 15.0f;
+			PLAYER->actor.world.pos = pos;
 			func_8002F698(globalCtx, &this->actor, 20.0f, 0x1000, 8.0f, 2, 0);
 		}
 	}else{
@@ -337,15 +350,35 @@ void RunningMan_UpdateDialogue(BossRunningMan* en, GlobalContext* globalCtx) {
 		}
 	}else if(en->actor.textId == 0x0C34 && MESSAGE_ADVANCE_END){
 		en->npc.getItemId = GI_SAGES_CHARM;
+		en->actor.textId = 0;
 	}
 	if(en->npc.getItemId >= 0){
 		if(en->actor.parent != NULL){
 			en->actor.parent = NULL;
 			en->npc.getItemId = -1;
-			//TODO run away
+			en->npc.timer = 0;
 		}else{
 			Actor_PickUp(&en->actor, globalCtx, en->npc.getItemId, 2000.0f, 2000.0f);
 		}
+	}
+	++en->npc.timer;
+	if(en->actor.textId == 0 && en->npc.getItemId < 0 && en->npc.timer > 40 
+			&& func_8010BDBC(&globalCtx->msgCtx) == 0){
+		Animation_Change(&en->skelAnime, (void*)ANIM_RUNFAST, 1.0f, 0.0f,
+			Animation_GetLastFrame((void*)ANIM_RUNFAST), ANIMMODE_LOOP_INTERP, 8);
+		en->actor.world.rot.y = 0xC000;
+		en->actor.world.rot.x = en->actor.world.rot.z = 0;
+		en->actor.shape.rot = en->actor.world.rot;
+		en->actor.speedXZ = 10.0f;
+		en->actor.update = (ActorFunc)RunningMan_UpdateRunAway;
+	}
+}
+
+void RunningMan_UpdateRunAway(BossRunningMan* this, GlobalContext* globalCtx) {
+	Actor_Move(&this->actor, 0.0f);
+	Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 20.0f, 40.0f, 40.0f, 0x1D);
+	if(this->actor.xzDistToPlayer > 1500.0f){
+		Actor_Kill(&this->actor);
 	}
 }
 
@@ -364,10 +397,6 @@ void RunningMan_BossUpdate(BossRunningMan* this, GlobalContext* globalCtx) {
 	
 	if (this->actionFunc)
 		this->actionFunc(this, globalCtx);
-	
-	if (CHK_ALL(cur, BTN_DLEFT)) {
-		ExecuteAction(SetupArrow);
-	}
 	
 	// Lock time to noon
 	//gSaveContext.dayTime = 0xB556; //This isn't noon
@@ -509,11 +538,11 @@ s32 RunningMan_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
 	
 	switch (limbIndex) {
 	    case RUNMAN_HEAD:
-		    if (this->state.ghosting != true) {
+		    if (!this->state.ghosting) {
 			    Matrix_MultVec3f(&head, &this->actor.focus.pos);
 			    Matrix_MultVec3f(&front, &f);
 			    
-			    if (this->state.headTrack == true) {
+			    if (this->state.headTrack) {
 				    targetYaw = -Math_Vec3f_Yaw(&this->actor.focus.pos, &f) + Math_Vec3f_Yaw(&this->actor.focus.pos, &p->actor.world.pos);
 				    targetPitch = -Math_Vec3f_Pitch(&this->actor.focus.pos, &f) + Math_Vec3f_Pitch(&this->actor.focus.pos, &p->actor.world.pos);
 				    
@@ -726,25 +755,28 @@ void RunningMan_IntroWait(BossRunningMan* this, GlobalContext* globalCtx) {
 #define mSpeedFactor this->boss.workFloat[0]
 #define mOutroMode this->boss.workInt[0]
 #define mTimer this->boss.workInt[1]
+#define mLastFrame this->boss.workShort[0]
 #define initRunSpeed 7.0f
 
 void RunningMan_SetupOutro(BossRunningMan* this, GlobalContext* globalCtx) {
 	RunManState* state = &this->state;
 	
-	//TODO change to run slow
 	AnimChange(&this->skelAnime, ANIM_RUNFAST, 0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
 	
 	*state = (RunManState) {
 		.enableDraw = true,
 	};
 	
-	this->actor.world.pos = this->actor.home.pos;
+	this->actor.world.pos = this->actor.prevPos = this->actor.home.pos;
+	this->actor.world.rot.x = this->actor.world.rot.z = 0;
 	this->actor.world.rot.y = 0xB000;
 	this->actor.shape.rot = this->actor.world.rot;
 	this->actor.speedXZ = initRunSpeed;
 	this->boss.speedX = 0.0f;
+	this->actor.velocity.x = this->actor.velocity.y = this->actor.velocity.z = 0;
 	mSpeedFactor = 1.0f;
 	mOutroMode = 0;
+	mLastFrame = -1;
 	
 	Audio_SetBGM(0x100100FF); //stop music
 	Enemy_StartFinishingBlow(globalCtx, &this->actor);
@@ -766,6 +798,11 @@ void RunningMan_Outro(BossRunningMan* this, GlobalContext* globalCtx) {
 		}else{
 			this->actor.speedXZ = initRunSpeed * mSpeedFactor;
 			this->skelAnime.playSpeed = mSpeedFactor;
+			s16 frame = this->skelAnime.curFrame;
+			if(frame != mLastFrame && (frame == 2 || frame == 7)){
+				Audio_PlayActorSound2(&this->actor, NA_SE_EN_MORIBLIN_WALK);
+			}
+			mLastFrame = frame;
 		}
 	}else if(mOutroMode == 1){
 		if(mTimer == 15){
@@ -774,12 +811,20 @@ void RunningMan_Outro(BossRunningMan* this, GlobalContext* globalCtx) {
 		}else{
 			++mTimer;
 		}
-	}else{
+	}else if(mOutroMode == 2){
 		this->actor.world.rot.z += mSpeedFactor * 0x0300;
 		this->actor.shape.rot = this->actor.world.rot;
 		mSpeedFactor += 0.05f;
 		if(this->actor.world.rot.z >= 0x4000){
+			this->actor.world.rot.z = 0x4000;
+			mOutroMode = 3;
+			mTimer = 0;
+		}
+	}else if(mOutroMode == 3){
+		if(mTimer == 30){
 			RunningMan_ChangeToNPC(this, globalCtx);
+		}else{
+			++mTimer;
 		}
 	}
 }
@@ -894,6 +939,10 @@ void RunningMan_Run(BossRunningMan* this, GlobalContext* globalCtx) {
 	DECR(mGetTo);
 	
 	if (DECR(mFlipTimer) == 0) {
+		if(Rand_ZeroOne() < 0.3){
+			ExecuteAction(SetupArrow);
+			return;
+		}
 		mDirectRand = -mDirectRand;
 		mFlipTimer = Rand_S16Offset(10, 90);
 		Math_StepToAngleS(&this->actor.world.rot.y, (s16)(this->actor.yawTowardsPlayer + 0x8000), 4000);
