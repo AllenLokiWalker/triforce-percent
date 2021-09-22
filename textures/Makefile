@@ -3,7 +3,7 @@ include ../toolchain/make/main.mk
 TEXTURES = \
 	butterfly_bottle.rgba32.inc \
 	butterfly_bottle.rgba32.pat \
-	sages_charm.rgba32.pat \
+	sages_charm_24.rgba32.pat \
 	triforce.rgba32.pat \
 	item_butterfly.ia4.pat \
 	item_magic_powder.ia4.pat \

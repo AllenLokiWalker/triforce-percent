@@ -1,5 +1,6 @@
 SUBDIRS = \
-	object_gi_butterfly/
+	object_gi_butterfly/ \
+	SagesCharm/
 
 .PHONY: default clean $(SUBDIRS)
 

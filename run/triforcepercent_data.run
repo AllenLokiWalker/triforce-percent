@@ -19,6 +19,7 @@ PATCH 0x253C000 ../scene/tokinoma/tokinoma_room_0.pat
 
 //Object patches
 PATCH 0x18C1000 ../model/object_gi_butterfly/object_gi_butterfly.pat
+OBJECT 120 ../model/SagesCharm/object_gi_sagescharm.bin
 
 //Misc custom actors
 ACTOR 49 ../actor/BetaKokiri/betakokiri.zovl
@@ -38,7 +39,7 @@ ACTOR 83 ../actor/WSRCutscene/wsrcutscene.zovl
 PATCH 0x7DB000 ../textures/butterfly_bottle.rgba32.pat
 //icon_item_24_static starts at 0x846000, each image is 0x900 (24x24x32b)
 //Image 0x09
-PATCH 0x84B100 ../textures/sages_charm.rgba32.pat
+PATCH 0x84B100 ../textures/sages_charm_24.rgba32.pat
 //Image 0x0D
 PATCH 0x84D500 ../textures/triforce.rgba32.pat
 //item_name_static starts at 0x880000, each image is 0x800 (128x16x8b)

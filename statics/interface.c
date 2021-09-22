@@ -1,5 +1,6 @@
 #include "ootmain.h"
 #include "interface.h"
+#include "statics.h"
 
 extern void Construct_Icon_Start();
 extern void Construct_Icon_Target();
@@ -126,6 +127,7 @@ s32 *Patched_EquipEffectTexLoad(s32 *dl, s32 dummy, PauseContext *pauseCtx){
 void Statics_HandleEquipMedallionsToC(){
     PauseContext *pauseCtx = &gGlobalContext.pauseCtx;
     if(!pauseCtx->state) return;
+    if(!(SAGES_CHARM_VAR & SAGES_CHARM_BIT)) return;
     
     //Enable C buttons on Quest Status subscreen
 	//Have to set once every time the pause menu overlay gets reloaded
@@ -162,6 +164,25 @@ void Statics_HandleEquipMedallionsToC(){
     }
 }
 
+typedef struct {
+    /* 0x00 */ void (*drawFunc)(GlobalContext*, s16);
+    /* 0x04 */ u32 dlists[8];
+} DrawItemTableEntry; // size = 0x24
+
+extern DrawItemTableEntry gDrawItemTable[];
+
+typedef struct {
+    /* 0x00 */ u8 itemId;
+    /* 0x01 */ u8 field; // various bit-packed data
+    /* 0x02 */ s8 gi;    // defines the draw id and chest opening animation
+    /* 0x03 */ u8 textId;
+    /* 0x04 */ u16 objectId;
+} GetItemEntry; // size = 0x06
+
+extern GetItemEntry linkGetItemTable[];
+
+extern Gfx gGiSagesCharmDL[];
+
 void Statics_InterfaceCodePatches(){
     //
     *( (u32*)Interface_LoadItemIcon1   ) = JUMPINSTR(Patched_LoadItemIcon1);
@@ -180,4 +201,13 @@ void Statics_InterfaceCodePatches(){
     *(((u32*)InterfaceEffectTex_Start)+1) = 0x8E8402B0; //lw a0, 0x02B0(s4)
     *(((u32*)InterfaceEffectTex_Start)+2) = JUMPINSTR(InterfaceEffectTex_Target);
     *(((u32*)InterfaceEffectTex_Start)+3) = 0xAE8202B0; //sw v0, 0x02B0(s4)
+    //
+    //Get item draw patch
+    gDrawItemTable[GID_SAGES_CHARM].dlists[0] = (u32)gGiSagesCharmDL;
+}
+
+void Statics_InterfacePlayerInit(){
+    //Get item entry patch
+    GetItemEntry *relocGetItemTable = (GetItemEntry*)PlayerVRAMtoRAM(linkGetItemTable);
+    relocGetItemTable[GI_SAGES_CHARM-1].objectId = OBJECT_GI_SAGESCHARM;
 }

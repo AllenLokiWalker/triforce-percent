@@ -17,3 +17,6 @@ sSubscreenButtonStates = 0x8039F084; /*0x80829CE4;*/
 /*ovl_kaleido_scope gets loaded at 0x80387D38 ??? */
 
 KaleidoScope_UpdateEquipAnim = 0x8081AA60;
+
+gDrawItemTable = 0x800EFE30;
+linkGetItemTable = 0x808514E4; /* in Link VRAM domain */

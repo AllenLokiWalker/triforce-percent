@@ -268,6 +268,16 @@ void Statics_FixWaterSpawn(){
     }
 }
 
+void Statics_Player_Init(){
+    //Patch overwrote 
+    //globalCtx->shootingGalleryStatus = globalCtx->bombchuBowlingStatus = 0;
+    //so we have to do that
+    ((u8*)&gGlobalContext)[0x11E5C] = 0;
+    ((u8*)&gGlobalContext)[0x11E5D] = 0;
+    Statics_AnimePlayerInit();
+    Statics_InterfacePlayerInit();
+}
+
 void Statics_Player_Update(){
     //Patch overwrote this
     if(PLAYER->unk_A73 != 0) PLAYER->unk_A73--;

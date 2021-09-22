@@ -42,7 +42,7 @@ CHAMBEROFSAGESDIR = ../build-romhack/scene/41
 TRIFORCEROOMDIR = ../build-romhack/scene/39
 ENDINGDEMODIR = ../build-romhack/scene/41
 
-CCFLAGS += $(ROOMROMGOAWAY) -Wno-incompatible-pointer-types -Wno-missing-braces
+CCFLAGS += $(ROOMROMGOAWAY) -Wno-incompatible-pointer-types -Wno-missing-braces -DNO_Z64HDR_GARBAGE
 
 .PHONY: default clean $(MAKESUBDIRS)
 

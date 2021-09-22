@@ -155,7 +155,7 @@ void DmaPatcher_ProcessMsg(DmaRequest* req)
     DmaEntry* iter = gDmaDataTable;
     if(vrom >= 0x04000000 && vrom < 0x04800000){
         //New file not in ROM provided as injection
-        //Debugger_Printf("DMA %08X VROM RAM map", vrom);
+        Debugger_Printf("DMA %08X VROM RAM map", vrom);
         DmaPatcher_CopyRAM(ram, InjectRomRamMap(vrom), size);
         return;
     }

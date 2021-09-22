@@ -142,20 +142,8 @@ s8 csActionToLinkActionPatchTable[NUM_ORIG_CS_ACTIONS+NUM_CUSTOM_CS_ACTIONS] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 };
 
-extern void Player_RAM_START();
-extern void Player_START();
-
-static void *PlayerVRAMtoRAM(void *ptr){
-    return ptr - (void*)Player_START + (void*)Player_RAM_START;
-}
-
-void Statics_Player_Init(){
+void Statics_AnimePlayerInit(){
     static u32 alreadyrun = 0;
-    //Patch overwrote 
-    //globalCtx->shootingGalleryStatus = globalCtx->bombchuBowlingStatus = 0;
-    //so we have to do that
-    ((u8*)&gGlobalContext)[0x11E5C] = 0;
-    ((u8*)&gGlobalContext)[0x11E5D] = 0;
     if(alreadyrun) return;
     alreadyrun = 1;
     //Copy original, relocated, animation tables to patch tables in statics.

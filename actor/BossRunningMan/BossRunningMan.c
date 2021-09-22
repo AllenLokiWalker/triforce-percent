@@ -232,7 +232,7 @@ static void RunningMan_ChangeToBoss(BossRunningMan* this, GlobalContext* globalC
 	this->actor.gravity = -8.0f;
 	this->actor.colorFilterParams = 0x4000;
 	this->actor.colChkInfo.mass = 0xFE;
-	this->actor.colChkInfo.health = 1; //TODO 0x80;
+	this->actor.colChkInfo.health = 0x80;
 	this->actor.flags |= 1; //targetable
 	
 	SkelAnime_InitFlex(
@@ -278,6 +278,7 @@ static void RunningMan_ChangeToNPC(BossRunningMan* this, GlobalContext* globalCt
 
 void RunningMan_Init(BossRunningMan* this, GlobalContext* globalCtx) {
 	if(!(RUNNINGMAN_WANTS_TO_BATTLE_VAR & RUNNINGMAN_WANTS_TO_BATTLE_BIT)
+		|| (SAGES_CHARM_VAR & SAGES_CHARM_BIT)
 		|| this->actor.params != 0){
 		Actor_Kill(&this->actor);
 		return;
@@ -349,6 +350,7 @@ void RunningMan_UpdateDialogue(BossRunningMan* en, GlobalContext* globalCtx) {
 			MESSAGE_CONTINUE;
 		}
 	}else if(en->actor.textId == 0x0C34 && MESSAGE_ADVANCE_END){
+		SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
 		en->npc.getItemId = GI_SAGES_CHARM;
 		en->actor.textId = 0;
 	}
@@ -806,17 +808,19 @@ void RunningMan_Outro(BossRunningMan* this, GlobalContext* globalCtx) {
 		}
 	}else if(mOutroMode == 1){
 		if(mTimer == 15){
+			Audio_PlayActorSound2(&this->actor, NA_SE_VO_IN_LOST);
 			mSpeedFactor = 0.2f;
 			mOutroMode = 2;
 		}else{
 			++mTimer;
 		}
 	}else if(mOutroMode == 2){
-		this->actor.world.rot.z += mSpeedFactor * 0x0300;
+		this->actor.world.rot.z += mSpeedFactor * 0x0280;
 		this->actor.shape.rot = this->actor.world.rot;
-		mSpeedFactor += 0.05f;
+		mSpeedFactor += 0.07f;
 		if(this->actor.world.rot.z >= 0x4000){
 			this->actor.world.rot.z = 0x4000;
+			Audio_PlayActorSound2(&this->actor, NA_SE_PL_BODY_HIT);
 			mOutroMode = 3;
 			mTimer = 0;
 		}
