@@ -62,6 +62,7 @@ SAURAEN
 Textures \
 KIM-SUKLEY \
 \/ZEL\/ \
+AEROARTWORK \
 SAURAEN
 
 Scenario \

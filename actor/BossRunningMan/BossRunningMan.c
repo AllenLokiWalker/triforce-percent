@@ -60,7 +60,7 @@ const ActorInitExplPad init_vars = {
 	.instanceSize = sizeof(BossRunningMan),
 	.init = (ActorFunc)RunningMan_Init,
 	.destroy = (ActorFunc)RunningMan_Destroy,
-	.update = (ActorFunc)RunningMan_UpdateIntro,
+	.update = (ActorFunc)RunningMan_UpdateDialogue, //TODO
 	.draw = (ActorFunc)RunningMan_Draw
 };
 
@@ -192,7 +192,6 @@ void RunningMan_SetDodging(BossRunningMan* this, GlobalContext* globalCtx) {
 		this->actor.world.pos.x += Math_SinS(this->actor.yawTowardsPlayer + 0x8000) * 26.0f;
 		this->actor.world.pos.z += Math_SinS(this->actor.yawTowardsPlayer + 0x8000) * 26.0f;
 		ExecuteAction(SetupDodge);
-		
 		return;
 	}
 }
@@ -232,7 +231,7 @@ static void RunningMan_ChangeToBoss(BossRunningMan* this, GlobalContext* globalC
 	this->actor.gravity = -8.0f;
 	this->actor.colorFilterParams = 0x4000;
 	this->actor.colChkInfo.mass = 0xFE;
-	this->actor.colChkInfo.health = 0x80;
+	this->actor.colChkInfo.health = 0xC0;
 	this->actor.flags |= 1; //targetable
 	
 	SkelAnime_InitFlex(
@@ -285,6 +284,7 @@ void RunningMan_Init(BossRunningMan* this, GlobalContext* globalCtx) {
 	}
 	this->state.enableDraw = 0;
 	this->npc.timer = 0;
+	this->actor.textId = 0x0C30;
 	Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_EX_RUPPY,
 		this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
 		0, 0, 0, ACTORPARAM_BETAGIANTRUPEE);
@@ -334,7 +334,7 @@ void RunningMan_UpdateDialogue(BossRunningMan* en, GlobalContext* globalCtx) {
 	if(MESSAGE_ADVANCE_EVENT){
 		if(en->actor.textId == 0x0C30){
 			//TODO change animation
-			en->actor.textId = 0x0C31;
+			en->actor.textId = 0x0C34; //0x0C31; TODO
 			MESSAGE_CONTINUE;
 		}else if(en->actor.textId == 0x0C31){
 			//TODO change animation
@@ -943,7 +943,7 @@ void RunningMan_Run(BossRunningMan* this, GlobalContext* globalCtx) {
 	DECR(mGetTo);
 	
 	if (DECR(mFlipTimer) == 0) {
-		if(Rand_ZeroOne() < 0.3){
+		if(Rand_ZeroOne() < 0.3f){
 			ExecuteAction(SetupArrow);
 			return;
 		}
@@ -1140,7 +1140,11 @@ void RunningMan_Dodge(BossRunningMan* this, GlobalContext* globalCtx) {
 	}
 	
 	if (AnimFromFrame(10.0f)) {
-		ExecuteAction(SetupKick);
+		if(Rand_ZeroOne() < 0.3f){
+			ExecuteAction(SetupArrow);
+		}else{
+			ExecuteAction(SetupKick);
+		}
 	}
 }
 

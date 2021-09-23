@@ -34,10 +34,10 @@ void Statics_SetGameState(){
     gSaveContext.eventChkInf[0xC] |= 0x0002; //Spoke to Saria on Lost Woods Bridge
     gSaveContext.itemGetInf[0x2] |= 0x0478; //Obtained Mask of Truth, all trading masks
     gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
-    //TODO TESTING
-    WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+    //WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
     Statics_GiveLongOfTime();
-    Statics_GiveOvertureOfSages();
+    //Statics_GiveOvertureOfSages();
+    RUNNINGMAN_WANTS_TO_BATTLE_VAR |= RUNNINGMAN_WANTS_TO_BATTLE_BIT;
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
@@ -181,14 +181,8 @@ void Statics_TestShortcuts(){
     //Test/Debugging
     if((CTRLR_RAW & BTN_L)){
         if((CTRLR_PRESS & BTN_DDOWN)){
-            //Press L+DD for...
-            //clip below the ice in Zora's Domain
-            //PLAYER->actor.pos.y -= 80.0f;
-            //animation test
-            //Statics_AnimeTest(1);
-            //give child an adult item
-            //INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_ODD_POTION;
-            Statics_SetGameState();
+            //Press L+DD to spawn the Arwing
+            KREG(0) = -100;
         }else if((CTRLR_PRESS & BTN_DLEFT)){
             //Press L+DL for frog
             func_8010B680(&gGlobalContext, 0x0901, NULL); //textbox_begin
@@ -200,8 +194,9 @@ void Statics_TestShortcuts(){
             gSaveContext.eventInf[1] |= 1;
             gSaveContext.timer2State = -30;
         }else if((CTRLR_PRESS & BTN_DUP)){
-            //Kill Link (sorry)
+            //Kill Link (sorry) and try to exit cutscene
             gSaveContext.health = 0;
+            gGlobalContext.csCtx.state = CS_STATE_IDLE;
         }
     }
 }
@@ -274,6 +269,7 @@ void Statics_Player_Init(){
     //so we have to do that
     ((u8*)&gGlobalContext)[0x11E5C] = 0;
     ((u8*)&gGlobalContext)[0x11E5D] = 0;
+    if(sIsLiveRun) Debugger_Printf("player init");
     Statics_AnimePlayerInit();
     Statics_InterfacePlayerInit();
 }
