@@ -60,7 +60,7 @@ const ActorInitExplPad init_vars = {
 	.instanceSize = sizeof(BossRunningMan),
 	.init = (ActorFunc)RunningMan_Init,
 	.destroy = (ActorFunc)RunningMan_Destroy,
-	.update = (ActorFunc)RunningMan_UpdateDialogue, //TODO
+	.update = (ActorFunc)RunningMan_UpdateIntro,
 	.draw = (ActorFunc)RunningMan_Draw
 };
 
@@ -231,7 +231,7 @@ static void RunningMan_ChangeToBoss(BossRunningMan* this, GlobalContext* globalC
 	this->actor.gravity = -8.0f;
 	this->actor.colorFilterParams = 0x4000;
 	this->actor.colChkInfo.mass = 0xFE;
-	this->actor.colChkInfo.health = 0xC0;
+	this->actor.colChkInfo.health = 0xB0;
 	this->actor.flags |= 1; //targetable
 	
 	SkelAnime_InitFlex(
@@ -334,7 +334,7 @@ void RunningMan_UpdateDialogue(BossRunningMan* en, GlobalContext* globalCtx) {
 	if(MESSAGE_ADVANCE_EVENT){
 		if(en->actor.textId == 0x0C30){
 			//TODO change animation
-			en->actor.textId = 0x0C34; //0x0C31; TODO
+			en->actor.textId = 0x0C31;
 			MESSAGE_CONTINUE;
 		}else if(en->actor.textId == 0x0C31){
 			//TODO change animation
@@ -373,6 +373,11 @@ void RunningMan_UpdateDialogue(BossRunningMan* en, GlobalContext* globalCtx) {
 		en->actor.shape.rot = en->actor.world.rot;
 		en->actor.speedXZ = 10.0f;
 		en->actor.update = (ActorFunc)RunningMan_UpdateRunAway;
+		if(gSaveContext.dayTime >= 0xC001 || gSaveContext.dayTime < 0x4555){
+			Audio_SetBGM(1); //Night ambience
+		}else{
+			Audio_SetBGM(2); //Hyrule Field
+		}
 	}
 }
 
@@ -400,9 +405,8 @@ void RunningMan_BossUpdate(BossRunningMan* this, GlobalContext* globalCtx) {
 	if (this->actionFunc)
 		this->actionFunc(this, globalCtx);
 	
-	// Lock time to noon
-	//gSaveContext.dayTime = 0xB556; //This isn't noon
-	gSaveContext.dayTime = 0xA000;
+	// Lock time
+	gSaveContext.dayTime = 0xAAAB;
 	
 	if (state->targetPos == true) {
 		s16 dirYaw = Math_Vec3f_Yaw(&this->actor.world.pos, &this->boss.targetPos);
@@ -1140,7 +1144,7 @@ void RunningMan_Dodge(BossRunningMan* this, GlobalContext* globalCtx) {
 	}
 	
 	if (AnimFromFrame(10.0f)) {
-		if(Rand_ZeroOne() < 0.3f){
+		if(Rand_ZeroOne() < 0.2f){
 			ExecuteAction(SetupArrow);
 		}else{
 			ExecuteAction(SetupKick);

@@ -35,9 +35,8 @@ void Statics_SetGameState(){
     gSaveContext.itemGetInf[0x2] |= 0x0478; //Obtained Mask of Truth, all trading masks
     gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
     //WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
-    Statics_GiveLongOfTime();
+    //Statics_GiveLongOfTime();
     //Statics_GiveOvertureOfSages();
-    RUNNINGMAN_WANTS_TO_BATTLE_VAR |= RUNNINGMAN_WANTS_TO_BATTLE_BIT;
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
@@ -269,9 +268,7 @@ void Statics_Player_Init(){
     //so we have to do that
     ((u8*)&gGlobalContext)[0x11E5C] = 0;
     ((u8*)&gGlobalContext)[0x11E5D] = 0;
-    if(sIsLiveRun) Debugger_Printf("player init");
-    Statics_AnimePlayerInit();
-    Statics_InterfacePlayerInit();
+    //nothing using this right now
 }
 
 void Statics_Player_Update(){
@@ -283,6 +280,8 @@ void Statics_Player_Update(){
     Statics_PatchShop();
     Statics_MoveOddPotionToChild();
     Statics_FixWaterSpawn();
+    Statics_AnimePlayerUpdate();
+    Statics_InterfacePlayerUpdate();
 }
 
 static u8 sOneTime = 0;

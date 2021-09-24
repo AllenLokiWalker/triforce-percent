@@ -206,8 +206,10 @@ void Statics_InterfaceCodePatches(){
     gDrawItemTable[GID_SAGES_CHARM].dlists[0] = (u32)gGiSagesCharmDL;
 }
 
-void Statics_InterfacePlayerInit(){
-    //Get item entry patch
+void Statics_InterfacePlayerUpdate(){
+    //Get item entry patch. This only has to be done once every time the Link
+    //overlay has been reloaded, but it's cheap and there's no harm to doing it
+    //repeatedly.
     GetItemEntry *relocGetItemTable = (GetItemEntry*)PlayerVRAMtoRAM(linkGetItemTable);
     relocGetItemTable[GI_SAGES_CHARM-1].objectId = OBJECT_GI_SAGESCHARM;
 }

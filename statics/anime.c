@@ -142,8 +142,8 @@ s8 csActionToLinkActionPatchTable[NUM_ORIG_CS_ACTIONS+NUM_CUSTOM_CS_ACTIONS] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 };
 
-void Statics_AnimePlayerInit(){
-    static u32 alreadyrun = 0;
+void Statics_AnimePlayerUpdate(){
+    static u8 alreadyrun = 0;
     if(alreadyrun) return;
     alreadyrun = 1;
     //Copy original, relocated, animation tables to patch tables in statics.
