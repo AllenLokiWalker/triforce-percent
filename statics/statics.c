@@ -177,11 +177,20 @@ void Statics_Player_BunnyHood_YSpeed(){
 }
 
 void Statics_TestShortcuts(){
+    GlobalContext* globalCtx = &gGlobalContext;
     //Test/Debugging
     if((CTRLR_RAW & BTN_L)){
         if((CTRLR_PRESS & BTN_DDOWN)){
             //Press L+DD to spawn the Arwing
-            KREG(0) = -100;
+            Actor *arwing = Actor_Find(&globalCtx->actorCtx, ACTOR_EN_CLEAR_TAG, ACTORCAT_BOSS);
+            if(arwing == NULL){
+                Player *player = PLAYER;
+                Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_CLEAR_TAG,
+                    player->actor.world.pos.x,
+                    player->actor.world.pos.y + 120.0f,
+                    player->actor.world.pos.z,
+                    0, 0, 0, 0);
+            }
         }else if((CTRLR_PRESS & BTN_DLEFT)){
             //Press L+DL for frog
             func_8010B680(&gGlobalContext, 0x0901, NULL); //textbox_begin
