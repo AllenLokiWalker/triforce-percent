@@ -1,7 +1,7 @@
 CS0Rauru = 0x2001b24;
-CS1Saria = 0x2002018;
-CS2Darunia = 0x2002378;
-CS3Ruto = 0x20026d8;
-CS4Nabooru = 0x2002a38;
-CS5Impa = 0x2002d98;
-CS6Sheik = 0x20030f8;
+CS1Saria = 0x2002004;
+CS2Darunia = 0x2002350;
+CS3Ruto = 0x200269c;
+CS4Nabooru = 0x20029e8;
+CS5Impa = 0x2002d34;
+CS6Sheik = 0x2003080;

@@ -475,7 +475,7 @@ DECLARE_MESSAGE(0x0074, BOX_BLUE, POS_MIDDLE,
 )
 
 DECLARE_MESSAGE(0x0894, BOX_OCARINA, POS_VARIABLE,
-    QUICKTEXT_ENABLE SHIFT("\x07") "You played the " COLOR(LIGHTBLUE) "Overture of Sages" COLOR(WHITE) "." NEWLINE
+    QUICKTEXT_ENABLE SHIFT("\x01") "You played the " COLOR(LIGHTBLUE) "Overture of Sages" COLOR(WHITE) "." NEWLINE
     NEWLINE
     NEWLINE
     QUICKTEXT_DISABLE
@@ -546,8 +546,9 @@ DECLARE_MESSAGE(0x0A40, BOX_BLACK, POS_MIDDLE,
 DECLARE_MESSAGE(0x0A50, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(TYPE1_ORANGE)
     "Nice work! It looks like our" NEWLINE
-    "song worked for you. From all the" NEWLINE
-    "Gerudos, you have our support!"
+    "song worked for you." BOX_BREAK UNSKIPPABLE
+    "From all the Gerudos," NEWLINE
+    "you have our support!"
 )
 
 DECLARE_MESSAGE(0x0A60, BOX_BLACK, POS_MIDDLE,
@@ -595,19 +596,27 @@ DECLARE_MESSAGE(0x0A72, BOX_BLACK, POS_MIDDLE,
 DECLARE_MESSAGE(0x0A73, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "I guess that hasn't been much of" NEWLINE
-    "a secret since " COLOR(RED) "Melee" COLOR(WHITE) ", huh?" BOX_BREAK UNSKIPPABLE
-    "Would be nice if I could get my" NEWLINE
-    "own game someday..."
+    "a secret since " COLOR(RED) "Melee" COLOR(WHITE) ", huh?" EVENT
 )
 
 DECLARE_MESSAGE(0x0A74, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
-    "Link, this isn't the time for" NEWLINE
-    "nonsense!" BOX_BREAK UNSKIPPABLE
-    "O-of course I-I'm a boy..."
+    "Would be nice if I could get my" NEWLINE
+    "own game someday..."
 )
 
 DECLARE_MESSAGE(0x0A75, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "Link, this isn't the time for" NEWLINE
+    "nonsense!" EVENT
+)
+
+DECLARE_MESSAGE(0x0A76, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
+    "O-of course I-I'm a boy..."
+)
+
+DECLARE_MESSAGE(0x0A77, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Let's not keep everyone waiting!"
 )

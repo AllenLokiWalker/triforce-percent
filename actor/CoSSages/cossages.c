@@ -71,6 +71,7 @@ typedef struct {
 	ColliderCylinder collider;
     Vec3s jointTable[MAX_LIMBS];
     Vec3s morphTable[MAX_LIMBS];
+	s16 sheikHeadY, sheikHeadX;
 	s32 objBankIndex;
 	u8 initted;
 	u8 state;
@@ -80,6 +81,7 @@ typedef struct {
 	u8 alpha;
 	u8 blinkTimer;
 	u8 sfxTimer;
+	u8 sheikLookAwayFlag;
 } Entity;
 
 static void updateSheik(Entity *en, GlobalContext *globalCtx);
@@ -125,12 +127,47 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void updateEyes(Entity *en){
-	if(en->blinkTimer == 0){
-		en->blinkTimer = Rand_S16Offset(60, 60);
+	if(PARAM == 6 && en->sheikLookAwayFlag){
+		if(en->blinkTimer < 200){
+			en->blinkTimer = 200;
+		}else if(en->blinkTimer < 205){
+			en->eyeTextureIndex = 0;
+			++en->blinkTimer;
+		}else if(en->blinkTimer < 210){
+			en->eyeTextureIndex = 1;
+			++en->blinkTimer;
+		}else{
+			en->eyeTextureIndex = 2;
+		}
 	}else{
-		--en->blinkTimer;
+		if(en->blinkTimer >= 200){
+			en->blinkTimer = 1;
+		}else if(en->blinkTimer == 0){
+			en->blinkTimer = Rand_S16Offset(60, 60);
+		}else{
+			--en->blinkTimer;
+		}
+		en->eyeTextureIndex = (en->blinkTimer < 3) ? en->blinkTimer : 0;
 	}
-	en->eyeTextureIndex = (en->blinkTimer < 3) ? en->blinkTimer : 0;
+}
+
+static void updateTurnInfo(Entity *en, GlobalContext *globalCtx){
+	if(PARAM != 6) return;
+	Vec3f target;
+	s16 pitch = 0;
+	if(en->sheikLookAwayFlag){
+		target = en->actor.world.pos;
+		target.x += 40.0f;
+		target.z += 150.0f;
+		pitch = 0x0800;
+	}else{
+		target = PLAYER->actor.world.pos;
+		pitch = 0;
+	}
+	s16 yaw = Math_Vec3f_Yaw(&en->actor.world.pos, &target) - en->actor.shape.rot.y;
+	yaw = CLAMP(yaw, -0x3000, 0x3000);
+	Math_SmoothStepToS(&en->sheikHeadY, yaw, 6, 2000, 1);
+	Math_SmoothStepToS(&en->sheikHeadX, pitch, 6, 2000, 1);
 }
 
 static void updateCollision(Entity *en, GlobalContext *globalCtx){
@@ -143,6 +180,7 @@ static s32 updateCommon(Entity *en, GlobalContext *globalCtx){
 	if(en->initted == 0) return 0;
 	else if(en->initted == 1 && !finishInit(en, globalCtx)) return 0;
 	updateEyes(en);
+	updateTurnInfo(en, globalCtx);
 	updateCollision(en, globalCtx);
 	return 1;
 }
@@ -176,7 +214,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			en->state = SAGE_STATE_BLESSING_IDLE;
 			if(AnimBlessingIdle[PARAM] != NULL){
 				Animation_Change(&en->skelAnime, AnimBlessingIdle[PARAM], 1.0f, 0.0f,
-					Animation_GetLastFrame(AnimBlessingIdle[PARAM]), ANIMMODE_LOOP, 0.0f);
+					Animation_GetLastFrame(AnimBlessingIdle[PARAM]), ANIMMODE_LOOP, -6.0f);
 			}
 		}
 	}else if(en->state == SAGE_STATE_BLESSING_IDLE){
@@ -207,21 +245,49 @@ static void updateSheik(Entity *en, GlobalContext *globalCtx){
 		}
 		if(animDone){
 			en->state = SAGE_STATE_IDLE;
+			en->actor.textId = 0;
 			Animation_Change(&en->skelAnime, &gSheikIdleAnim, 1.0f, 0.0f,
 				Animation_GetLastFrame(&gSheikIdleAnim), ANIMMODE_LOOP, 0.0f);
 		}
 	}else if(en->state == SAGE_STATE_IDLE){
-		if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 2)){
+		if(en->actor.textId == 0){
+			if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 2)){
+				en->actor.textId = 0x0A72;
+				MESSAGE_START;
+			}
+		}else if(en->actor.textId == 0x0A72){
+			globalCtx->csCtx.frames--;
+			if(MESSAGE_ADVANCE_CHOICE){
+				if(globalCtx->msgCtx.choiceIndex == 0){
+					en->actor.textId = 0x0A73;
+				}else{
+					en->actor.textId = 0x0A75;
+				}
+				Message_Close(globalCtx);
+			}
+		}else if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 3)){
+			MESSAGE_START;
 			en->state = SHEIK_STATE_ANGRY;
 			Animation_Change(&en->skelAnime, &gSheikArmsCrossedIdleAnim, 1.0f, 0.0f,
-				Animation_GetLastFrame(&gSheikArmsCrossedIdleAnim), ANIMMODE_ONCE, -8.0f);
+				Animation_GetLastFrame(&gSheikArmsCrossedIdleAnim), ANIMMODE_LOOP, -8.0f);
 		}
 	}else if(en->state == SHEIK_STATE_ANGRY){
-		if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 3)){
-			en->state = SAGE_STATE_BLESSING;
-			en->sfxTimer = 13;
-			Animation_Change(&en->skelAnime, &gSheikShowingTriforceOnHandAnim, 1.0f, 0.0f,
-				Animation_GetLastFrame(&gSheikShowingTriforceOnHandAnim), ANIMMODE_ONCE, -4.0f);
+		globalCtx->csCtx.frames--;
+		if(MESSAGE_ADVANCE_EVENT){
+			++en->actor.textId;
+			MESSAGE_CONTINUE;
+			en->sheikLookAwayFlag = true;
+		}else if(MESSAGE_ADVANCE_END){
+			if(en->actor.textId != 0x0A77){
+				en->actor.textId = 0x0A77;
+				MESSAGE_CONTINUE;
+				en->sheikLookAwayFlag = false;
+			}else{
+				en->state = SAGE_STATE_BLESSING;
+				en->sfxTimer = 13;
+				Animation_Change(&en->skelAnime, &gSheikShowingTriforceOnHandAnim, 1.0f, 0.0f,
+					Animation_GetLastFrame(&gSheikShowingTriforceOnHandAnim), ANIMMODE_ONCE, -4.0f);
+			}
 		}
 	}else if(en->state == SAGE_STATE_BLESSING){
 		if(en->sfxTimer > 0){
@@ -240,6 +306,22 @@ static void updateSheik(Entity *en, GlobalContext *globalCtx){
 	}else if(en->state == SAGE_STATE_BLESSING_IDLE){
 		(void)0;
 	}
+}
+
+s32 CoSSages_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, 
+		Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
+	Entity *en = (Entity*)thisx;
+	if(PARAM != 6) return false;
+	if(limbIndex == 16){
+		rot->x += en->sheikHeadY;
+		rot->z += en->sheikHeadX;
+	}
+	return false;
+}
+
+void CoSSages_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, 
+		Vec3s* rot, void* thisx, Gfx** gfx) {
+	(void)0;
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
@@ -274,7 +356,7 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 	//Saria has an override for the ocarina hand, Nabooru for a surprised head.
 	//Impa has several including rotation changes, but hopefully we don't need those.
 	*gfx = SkelAnime_DrawFlex(globalCtx, en->skelAnime.skeleton, en->skelAnime.jointTable,
-		en->skelAnime.dListCount, NULL, NULL, en, *gfx);
+		en->skelAnime.dListCount, CoSSages_OverrideLimbDraw, CoSSages_PostLimbDraw, en, *gfx);
 }
 
 const ActorInitExplPad init_vars = {
