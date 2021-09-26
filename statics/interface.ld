@@ -20,3 +20,5 @@ KaleidoScope_UpdateEquipAnim = 0x8081AA60;
 
 gDrawItemTable = 0x800EFE30;
 linkGetItemTable = 0x808514E4; /* in Link VRAM domain */
+
+gItemIcons = 0x800F8D2C;

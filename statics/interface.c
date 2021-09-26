@@ -1,6 +1,7 @@
 #include "ootmain.h"
 #include "interface.h"
 #include "statics.h"
+#include "../loader/debugger/debugger.h"
 
 extern void Construct_Icon_Start();
 extern void Construct_Icon_Target();
@@ -164,6 +165,24 @@ void Statics_HandleEquipMedallionsToC(){
     }
 }
 
+#define NUM_PATCHED_ITEM_NAMES 3
+static u8 patchedItemNameCount = 0;
+static struct { u8 item; void *ram_addr; } PatchedItemNameTable[NUM_PATCHED_ITEM_NAMES] = {
+    {0, NULL}, {0, NULL}, {0, NULL}
+};
+
+void Patched_LoadItemName(void *dest, u32 srcRom, u32 size){
+    u8 item = (srcRom - 0x880000) >> 10;
+    if(item >= 123) item -= 123; //Japanese / English
+    for(u8 i=0; i<patchedItemNameCount; ++i){
+        if(PatchedItemNameTable[i].item == item){
+            bcopy(PatchedItemNameTable[i].ram_addr, dest, size);
+            return;
+        }
+    }
+    DmaMgr_SendRequest1(dest, srcRom, size);
+}
+
 typedef struct {
     /* 0x00 */ void (*drawFunc)(GlobalContext*, s16);
     /* 0x04 */ u32 dlists[8];
@@ -212,4 +231,24 @@ void Statics_InterfacePlayerUpdate(){
     //repeatedly.
     GetItemEntry *relocGetItemTable = (GetItemEntry*)PlayerVRAMtoRAM(linkGetItemTable);
     relocGetItemTable[GI_SAGES_CHARM-1].objectId = OBJECT_GI_SAGESCHARM;
+}
+
+extern void *gItemIcons[];
+
+void Statics_InterfaceRegisterStaticData(void *ram_addr, u8 type, s32 data1){
+    if(data1 < 0 || data1 > ITEM_NUT_UPGRADE_40) return;
+    if(type == 4){
+        gItemIcons[data1] = ram_addr;
+    }else if(type == 5){
+        for(u8 i=0; i<patchedItemNameCount; ++i){
+            if(PatchedItemNameTable[i].item == data1){
+                PatchedItemNameTable[i].ram_addr = ram_addr;
+                return;
+            }
+        }
+        if(patchedItemNameCount >= NUM_PATCHED_ITEM_NAMES) return;
+        PatchedItemNameTable[patchedItemNameCount].item = data1;
+        PatchedItemNameTable[patchedItemNameCount].ram_addr = ram_addr;
+        ++patchedItemNameCount;
+    }
 }

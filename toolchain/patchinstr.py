@@ -7,6 +7,7 @@ Supported instructions:
     j, jal
     beq, bne
     nop
+    .byte, .short, .word
 Use: python3 patchinstr.py target.zovl patch.txt [ldfile1.ld ldfile2.ld ...]
 patch text file format:
 
@@ -20,6 +21,7 @@ patch text file format:
 80ZZZZZZ addiu $v0, $t1, %hi(symbol) [symbol is taken from one of the input ld files]
 80WWWWWW lb $v1, %lo(symbol)(s3) [hi and lo supported with signed immediate]
 !80UUUUUU sw t2, 0x2222(t3) [! means null the reloc entry for this instruction]
+80TTTTTT .byte 0x3C [signed, unsigned, decimal, hex]
 
 '''
 import sys
@@ -56,6 +58,7 @@ def patchinstr(data, patchfile):
     meminstr = {'lb': 0x80, 'lh': 0x84, 'lw': 0x8C, 'lbu': 0x90, 'lhu': 0x94, 
         'sb': 0xA0, 'sh': 0xA4, 'sw': 0xAC}
     jumpinstr = {'beq': 0x10, 'bne': 0x14}
+    dotinstr = {'.byte': 8, '.short': 16, '.word': 32}
     def getreg(tok, dest=True):
         tok = tok.lower()
         if tok[0] == '$':
@@ -96,7 +99,8 @@ def patchinstr(data, patchfile):
             doreloc = True
         assert len(toks) >= 2
         addr = int(toks[0], 16) - baseaddr
-        assert addr >= 0 and addr < len(data) and (addr & 3) == 0
+        assert addr >= 0 and addr < len(data)
+        assert (addr & 3) == 0 or (len(toks) >= 2 and toks[1][0] == '.')
         if doreloc:
             for r in range(numreloc):
                 rta = relocaddr + r*4
@@ -119,6 +123,18 @@ def patchinstr(data, patchfile):
             instr = 0x08000000 if toks[1] == 'j' else 0x0C000000
             instr |= (symaddr >> 2) & 0x03FFFFFF
             data[addr:addr+4] = instr.to_bytes(4, 'big')
+        elif toks[1][0] == '.':
+            if toks[1] not in dotinstr:
+                raise RuntimeError('Invalid dot command: ' + toks[1])
+            val = int(toks[2], 0)
+            nbits = dotinstr[toks[1]]
+            nbytes = nbits >> 3
+            assert (addr & (nbytes - 1)) == 0
+            if val < -(1 << (nbits - 1)) or val >= (1 << nbits):
+                raise RuntimeError('Value ' + str(val) + ' does not fit in ' + toks[1])
+            if val < 0:
+                val += (1 << nbits)
+            data[addr:addr+nbytes] = val.to_bytes(nbytes, 'big')
         elif toks[1] in jumpinstr:
             assert len(toks) == 5
             rs = getreg(toks[2], False)

@@ -1,0 +1,8 @@
+# base addr
+808137C0
+
+# Patch DmaMgr_SendRequest1 for item name loading
+80822E74 jal Patched_LoadItemName
+
+# Patch Magic Powder / Odd Potion to be enabled for both ages
+80829DCD .byte 9

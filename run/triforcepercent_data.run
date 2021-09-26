@@ -1,5 +1,6 @@
 //Patched actors
 PATCH 0xBCDB70 ../actor/z_player/ovl_player_actor.pat
+PATCH 0xBB11E0 ../actor/z_kaleido_scope/ovl_kaleido_scope.pat
 PATCH 0xEA7360 ../actor/z_oceff_wipe/actor.pat
 PATCH 0xC7B1F0 ../actor/z_en_xc/actor.pat
 PATCH 0xCC8430 ../actor/z_demo_effect/actor.pat
@@ -35,20 +36,28 @@ ACTOR 83 ../actor/WSRCutscene/wsrcutscene.zovl
 
 //Custom icons
 //icon_item_static starts at 0x7BD000, each image is 0x1000 (32x32x32b)
+//icon_item_24_static starts at 0x846000, each image is 0x900 (24x24x32b)
+//item_name_static starts at 0x880000, each image is 0x800 (128x16x8b)
+
+//Butterfly. Included in statics for interface patch, also need ROM
+//patch for text, also need staticdata for pause screen.
 //Image 0x1E
 PATCH 0x7DB000 ../textures/butterfly_bottle.rgba32.pat
-//icon_item_24_static starts at 0x846000, each image is 0x900 (24x24x32b)
-//Image 0x09
+STATICDATA ../textures/butterfly_bottle.rgba32.bin 4 0x1E 0
+
+//Sages' Charm. Need ROM patch for text, also staticdata for pause screen.
+//Image 0x09 in icon_item_24_static
 PATCH 0x84B100 ../textures/sages_charm_24.rgba32.pat
+STATICDATA ../textures/sages_charm_24.rgba32.bin 4 0x6F 0
+
+//Triforce. Only need ROM patch for text.
 //Image 0x0D
 PATCH 0x84D500 ../textures/triforce.rgba32.pat
-//item_name_static starts at 0x880000, each image is 0x800 (128x16x8b)
-//Image 0x1E
-PATCH 0x88F000 ../textures/item_butterfly.ia4.pat
-//Image 0x31
-PATCH 0x898800 ../textures/item_magic_powder.ia4.pat
-//Image 0x6F
-PATCH 0x8B7800 ../textures/item_sages_charm.ia4.pat
+
+//Item names. Only staticdata for pause screen.
+STATICDATA ../textures/item_butterfly.ia4.bin 5 0x1E 0
+STATICDATA ../textures/item_magic_powder.ia4.bin 5 0x31 0
+STATICDATA ../textures/item_sages_charm.ia4.bin 5 0x6F 0
 
 //Custom Link animations
 STATICDATA ../anim/anim.bin 0 0x0 0x0

@@ -36,11 +36,11 @@ ROOMROMGOAWAY = \
 TITLEFILES = \
 	UnicornFountain/title.ia8 \
 	ChamberOfSages/title.ia8
-UNICORNFOUNTAINDIR = ../build-romhack/scene/38
-TESTVALPHADIR = ../build-romhack/scene/41
-CHAMBEROFSAGESDIR = ../build-romhack/scene/41
-TRIFORCEROOMDIR = ../build-romhack/scene/39
-ENDINGDEMODIR = ../build-romhack/scene/41
+UNICORNFOUNTAINDIR = ../build-romhack/scene/78
+#TESTVALPHADIR = ../build-romhack/scene/41
+CHAMBEROFSAGESDIR = ../build-romhack/scene/68
+TRIFORCEROOMDIR = ../build-romhack/scene/46
+ENDINGDEMODIR = ../build-romhack/scene/58
 
 CCFLAGS += $(ROOMROMGOAWAY) -Wno-incompatible-pointer-types -Wno-missing-braces -DNO_Z64HDR_GARBAGE
 
@@ -53,10 +53,10 @@ default: $(OUTFILES) $(TITLEFILES)
 	cp UnicornFountain/conf.txt $(UNICORNFOUNTAINDIR)/conf.txt
 	#cp TestVAlpha/TestVAlpha_scene.zscene $(TESTVALPHADIR)/scene.zscene
 	#cp TestVAlpha/TestVAlpha_room_0.zmap $(TESTVALPHADIR)/room_0.zmap
-	#cp ChamberOfSages/ChamberOfSages_scene.zscene $(CHAMBEROFSAGESDIR)/scene.zscene
-	#cp ChamberOfSages/ChamberOfSages_room_0.zmap $(CHAMBEROFSAGESDIR)/room_0.zmap
-	#cp ChamberOfSages/title.ia8.png $(CHAMBEROFSAGESDIR)/title.png
-	#cp ChamberOfSages/conf.txt $(CHAMBEROFSAGESDIR)/conf.txt
+	cp ChamberOfSages/ChamberOfSages_scene.zscene $(CHAMBEROFSAGESDIR)/scene.zscene
+	cp ChamberOfSages/ChamberOfSages_room_0.zmap $(CHAMBEROFSAGESDIR)/room_0.zmap
+	cp ChamberOfSages/title.ia8.png $(CHAMBEROFSAGESDIR)/title.png
+	cp ChamberOfSages/conf.txt $(CHAMBEROFSAGESDIR)/conf.txt
 	cp TriforceRoom/TriforceRoom_scene.zscene $(TRIFORCEROOMDIR)/scene.zscene
 	cp TriforceRoom/TriforceRoom_room_0.zmap $(TRIFORCEROOMDIR)/room_0.zmap
 	cp TriforceRoom/conf.txt $(TRIFORCEROOMDIR)/conf.txt

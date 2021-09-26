@@ -331,10 +331,12 @@ void Statics_RegisterStaticData(void* ram_addr, s32 type_and_size,
         Statics_AnimeRegisterStaticData(ram_addr);
     }else if(type >= 1 && type <= 3){
         Statics_AudioRegisterStaticData(ram_addr, size, type, data1, data2);
+    }else if(type == 4 || type == 5){
+        Statics_InterfaceRegisterStaticData(ram_addr, type, data1);
     }
 }
 
-//Data here is the four parameters to RegisterInjectedFile
+//Data here is the four parameters to Statics_RegisterStaticData
 #define MAX_STATICDATA 32
 static s32 romhackFileInfo[4*MAX_STATICDATA] = { 
     0xDEADBEEF, 0x04206969, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 

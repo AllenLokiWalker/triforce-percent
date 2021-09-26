@@ -21,6 +21,7 @@ z_en_owl/ \
 z_en_skj/ \
 z_en_wonder_item/ \
 z_en_xc/ \
+z_kaleido_scope/ \
 z_oceff_wipe/ \
 z_player/
 
