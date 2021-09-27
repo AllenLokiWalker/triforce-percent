@@ -91,9 +91,9 @@ typedef struct {
 #define OVERLAY_DISP gGlobalContext.state.gfxCtx->overlay.p
 
 #define CHECK_NPC_ACTION(slot, num) \
-	(globalCtx->csCtx.state != 0) \
+	((globalCtx->csCtx.state != 0) \
 	&& (globalCtx->csCtx.npcActions[slot] != NULL) \
-	&& (globalCtx->csCtx.npcActions[slot]->action == num)
+	&& (globalCtx->csCtx.npcActions[slot]->action == num))
 
 extern Gfx gActorXluSetup[3]; //D_80116280
 

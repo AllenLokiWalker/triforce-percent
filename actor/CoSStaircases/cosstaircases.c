@@ -49,6 +49,7 @@ typedef struct {
 	u8 alpha;
 	u8 collision;
 	u8 cutscene_activated;
+	u8 init_timer;
 } Entity;
 
 /*
@@ -127,9 +128,13 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	en->alpha = 0;
 	en->collision = 0;
 	en->cutscene_activated = 0;
+	en->init_timer = 0;
 	if((u16)en->dyna.actor.params > 9){
 		Actor_Kill(&en->dyna.actor);
 		return;
+	}
+	if(en->dyna.actor.params >= 7){
+		Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &en->dyna.actor, ACTORCAT_BG);
 	}
 	DynaPolyActor_Init(&en->dyna, DPM_UNK);
 	Actor_SetScale(&en->dyna.actor, 0.1f);
@@ -140,6 +145,7 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void update(Entity *en, GlobalContext *globalCtx) {
+	if(en->init_timer < 100) ++en->init_timer;
 	//Actor specific parameters
 	u16 target_action;
 	s32 fade_speed;
@@ -151,10 +157,11 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	if(en->dyna.actor.params <= 5){
 		fade_speed = 4;
 	}else{
-		fade_speed = 3;
+		fade_speed = 8;
 	}
 	//Fade in or out, handle collision
-	if(!en->collision && CHECK_NPC_ACTION(STAIRS_SLOT, target_action)){
+	if(!en->collision && (CHECK_NPC_ACTION(STAIRS_SLOT, target_action) ||
+			(en->dyna.actor.params == 0 && en->init_timer == 10 && globalCtx->csCtx.state == 0))){
 		CreateCollision(en, globalCtx);
 		en->state = 1;
 	}else if(en->collision && CHECK_NPC_ACTION(STAIRS_SLOT, 0)){
@@ -188,7 +195,6 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	if(en->dyna.actor.params == 9){
 		if(en->state == 0 && CHECK_NPC_ACTION(STAIRS_SLOT, 9)){
 			en->state = 3;
-			Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_STONE_STATUE_OPEN - SFX_FLAG);
 		}
 		if(en->state == 3){
 			en->dyna.actor.world.pos.y += DOOR_OPEN_SPEED;
@@ -196,7 +202,9 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 				en->state = 4;
 				Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_STONEDOOR_STOP);
 				Actor_Kill(&en->dyna.actor);
-			}
+			}else{
+                Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_STONE_STATUE_OPEN - SFX_FLAG);
+            }
 		}
 	}
 }

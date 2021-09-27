@@ -262,7 +262,7 @@ DECLARE_MESSAGE(0x0B67, BOX_BLACK, POS_MIDDLE,
     "Do you know what lies beyond the" NEWLINE
     "desert?" BOX_BREAK UNSKIPPABLE
     "There's a place there known as the" NEWLINE
-    COLOR(TYPE1_ORANGE) "Desert Colossus" COLOR(WHITE) "." BOX_BREAK UNSKIPPABLE
+    COLOR(YELLOW) "Desert Colossus" COLOR(WHITE) "." BOX_BREAK UNSKIPPABLE
     "We Gerudo have used it as a temple" NEWLINE
     "for generations, but it was built" NEWLINE
     "by the ancient Sages." BOX_BREAK UNSKIPPABLE
@@ -286,7 +286,7 @@ DECLARE_MESSAGE(0x0B69, BOX_BLACK, POS_MIDDLE,
     "are, I can teach you both halves" NEWLINE
     "of the " COLOR(BLUE) "Song of Time" COLOR(WHITE) "." BOX_BREAK UNSKIPPABLE
     "By playing it, you'll be able to" NEWLINE
-    "overcome the trials of the " COLOR(TYPE1_ORANGE) "Desert" NEWLINE
+    "overcome the trials of the " COLOR(YELLOW) "Desert" NEWLINE
     "Colossus" COLOR(WHITE) "..." BOX_BREAK UNSKIPPABLE
     "...and you'll become a man who" NEWLINE
     "can stand against Ganondorf."
@@ -522,29 +522,29 @@ DECLARE_MESSAGE(0x0A11, BOX_BLACK, POS_MIDDLE,
 )
 
 DECLARE_MESSAGE(0x0A20, BOX_BLACK, POS_MIDDLE,
-    UNSKIPPABLE COLOR(GREEN)
+    UNSKIPPABLE
     "Link, the promise I made to you" NEWLINE
     "stays true. I will always be your" NEWLINE
     "friend."
 )
 
 DECLARE_MESSAGE(0x0A30, BOX_BLACK, POS_MIDDLE,
-    UNSKIPPABLE COLOR(RED)
+    UNSKIPPABLE
     "The bond between the Goron race" NEWLINE
     "and the Royal Family is rock solid!" NEWLINE
     "Let's go, brother!"
 )
 
 DECLARE_MESSAGE(0x0A40, BOX_BLACK, POS_MIDDLE,
-    UNSKIPPABLE COLOR(BLUE)
+    UNSKIPPABLE
     "I knew the hero would turn out" NEWLINE
-    "to be a handsome man!" BOX_BREAK UNSKIPPABLE COLOR(BLUE)
+    "to be a handsome man!" BOX_BREAK UNSKIPPABLE
     "Once this is all over, you must" NEWLINE
     "come visit me, all right?"
 )
 
 DECLARE_MESSAGE(0x0A50, BOX_BLACK, POS_MIDDLE,
-    UNSKIPPABLE COLOR(TYPE1_ORANGE)
+    UNSKIPPABLE
     "Nice work! It looks like our" NEWLINE
     "song worked for you." BOX_BREAK UNSKIPPABLE
     "From all the Gerudos," NEWLINE
@@ -552,12 +552,12 @@ DECLARE_MESSAGE(0x0A50, BOX_BLACK, POS_MIDDLE,
 )
 
 DECLARE_MESSAGE(0x0A60, BOX_BLACK, POS_MIDDLE,
-    UNSKIPPABLE COLOR(TYPE1_PURPLE)
+    UNSKIPPABLE
     "Undoubtedly, you are the boy" NEWLINE
     "from the forest who appeared" NEWLINE
-    "in Princess Zelda's dreams." BOX_BREAK UNSKIPPABLE COLOR(TYPE1_PURPLE)
+    "in Princess Zelda's dreams." BOX_BREAK UNSKIPPABLE
     "I am glad my charm found its" NEWLINE
-    "way into your hands." BOX_BREAK UNSKIPPABLE COLOR(TYPE1_PURPLE)
+    "way into your hands." BOX_BREAK UNSKIPPABLE
     "I wish you well in fulfilling the" NEWLINE
     "great destiny that is before you."
 )
@@ -596,7 +596,7 @@ DECLARE_MESSAGE(0x0A72, BOX_BLACK, POS_MIDDLE,
 DECLARE_MESSAGE(0x0A73, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "I guess that hasn't been much of" NEWLINE
-    "a secret since " COLOR(RED) "Melee" COLOR(WHITE) ", huh?" EVENT
+    "a secret since " COLOR(LIGHTBLUE) "Melee" COLOR(WHITE) ", huh?" EVENT
 )
 
 DECLARE_MESSAGE(0x0A74, BOX_BLACK, POS_MIDDLE,
