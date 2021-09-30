@@ -9,7 +9,7 @@ def jumpcmd(addr):
     j = ((addr >> 2) & 0x03FFFFFF) | 0x08000000
     return j.to_bytes(4, byteorder='big')
 
-def bootstrapper1and3(bsidx, smart, data, regstartoffset, jrraaddr):
+def bootstrapper1and3(bsidx, smart, data, regstartoffset, jrraaddr, doubleup):
     assert(len(data) % 2 == 0)
     assert(bsidx == 1 or bsidx == 3)
     
@@ -27,7 +27,7 @@ def bootstrapper1and3(bsidx, smart, data, regstartoffset, jrraaddr):
     
     def write_frame(c1data):
         frame = c1data + bytes([0]*4) + jumpcmd(jrraaddr) + bytes([0]*4)
-        ret.extend(frame if bsidx == 3 else frame * 3)
+        ret.extend(frame if bsidx == 3 else (frame * 6 if doubleup else frame * 3))
     
     if(regstartoffset < 0):
         assert regstartoffset >= -0x8000
@@ -108,17 +108,19 @@ def ootbootstraprun(bs2data, bs4data, maindata):
     kargaroc_loader_entry = 0x80400000
     ret = bytearray()
     slingshot_or_shortcut = True
+    doubleup = True
+    threeorsix = 6 if doubleup else 3
     if slingshot_or_shortcut:
         ret.extend(walk_into_bs1(jrraaddr) * 120) #frames of walking
-        ret.extend(holdr_nop(jrraaddr) * 3)
-        ret.extend(bootstrapper1and3(1, True, bs2data, bs2loc - bs1s1, jrraaddr))
+        ret.extend(holdr_nop(jrraaddr) * threeorsix)
+        ret.extend(bootstrapper1and3(1, True, bs2data, bs2loc - bs1s1, jrraaddr, doubleup))
     else:
-        ret.extend(unpause(jstackrestore) * 3)
+        ret.extend(unpause(jstackrestore) * threeorsix)
         ret.extend(jumpsingle3(jstackrestore) * 240) #frames of waiting for the camera to rotate
-        ret.extend(holdr_nop(jstackrestore) * 3)
-        ret.extend(bootstrapper1and3(1, True, bs2data, bs2loc - bs1s1, jstackrestore))
-    ret.extend(jumpsingle3(bs2loc) * 3)
-    ret.extend(bootstrapper1and3(3, True, bs4data, bs4loc - bs3a0, jrraaddr))
+        ret.extend(holdr_nop(jstackrestore) * threeorsix)
+        ret.extend(bootstrapper1and3(1, True, bs2data, bs2loc - bs1s1, jstackrestore, doubleup))
+    ret.extend(jumpsingle3(bs2loc) * threeorsix)
+    ret.extend(bootstrapper1and3(3, True, bs4data, bs4loc - bs3a0, jrraaddr, doubleup))
     ret.extend(dataforbootstrapper4(maindata, bs4loc))
     ret.extend(jumpsingle3(kargaroc_loader_entry) * 3) #frames of running K's loader--should get overwritten on first frame
     return m64.create_header(4, len(ret) // 16) + ret

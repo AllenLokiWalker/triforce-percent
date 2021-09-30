@@ -1,0 +1,1960 @@
+; Nintendo 64 Music Macro Language (Audioseq) (.mus) sequence: Trailer
+; Converted by SEQ64 V2.0 [https://github.com/sauraen/seq64]
+
+; Sequence Header
+
+_start
+    mutebhv	, 32
+    mutescale	, 50
+    initchan	, $FFFB
+15Marimba
+    startchan	, 0, 15Marimba_chn0
+    startchan	, 1, 15Marimba_chn1
+    startchan	, 3, 15Marimba_chn3
+    startchan	, 4, 15Marimba_chn4
+    startchan	, 5, 15Marimba_chn5
+    startchan	, 6, 15Marimba_chn6
+    startchan	, 7, 15Marimba_chn7
+    startchan	, 8, 15Marimba_chn8
+    startchan	, 9, 15Marimba_chn9
+    startchan	, 10, 15Marimba_chn10
+    startchan	, 11, 15Marimba_chn11
+    startchan	, 12, 15Marimba_chn12
+    startchan	, 13, 15Marimba_chn13
+    startchan	, 14, 15Marimba_chn14
+    startchan	, 15, 15Marimba_chn15
+    tempo	, 115
+    svol	, 96
+    delay	, 96
+    tempo	, 50
+    delay	, 144
+    tempo	, 115
+    delay	, 3984
+    tempo	, 54
+    delay	, 192
+    tempo	, 165
+    delay	, 5712
+    tempo	, 50
+    delay	, 96
+    tempo	, 115
+    delay	, 768
+    tempo	, 125
+    delay	, 576
+    tempo	, 109
+    delay	, 144
+    tempo	, 122
+    delay	, 576
+    tempo	, 44
+    delay	, 192
+    tempo	, 80
+    delay	, 72
+    tempo	, 75
+    delay	, 48
+    tempo	, 64
+    delay	, 216
+    disablechan	, $FFFB
+    end	
+; Section total ticks: 12816
+
+; Channel Headers
+
+; tsec0
+
+15Marimba_chn0
+    shortoff	
+    startlayer	, 0, 15Marimba_chn0_ly0
+    cpan	, 50
+    reverb	, 16
+    cvol	, 127
+    instr	, 0
+    delay	, 288
+    cvol	, 94
+    delay	, 8928
+    cvol	, 105
+    delay	, 3600
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn1
+    shortoff	
+    startlayer	, 0, 15Marimba_chn1_ly0
+    cpan	, 58
+    vibdepth	, 0
+    cvol	, 127
+    reverb	, 12
+    instr	, 1
+    delay	, 1056
+    cvol	, 99
+    delay	, 5856
+    cvol	, 95
+    delay	, 5904
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn3
+    shortoff	
+    startlayer	, 0, 15Marimba_chn3_ly0
+    cvol	, 110
+    cpan	, 78
+    reverb	, 8
+    instr	, 3
+    delay	, 8256
+    loop	, 3
+    call	, _chn3_call8
+    delay	, 216
+    loopend	
+    call	, _chn3_call8
+    delay	, 1416
+    cvol	, 63
+    delay	, 24
+    cvol	, 68
+    delay	, 24
+    cvol	, 72
+    delay	, 24
+    cvol	, 75
+    delay	, 1752
+    end	
+; Section total ticks: 0
+
+15Marimba_chn4
+    shortoff	
+    startlayer	, 0, 15Marimba_chn4_ly0
+    cvol	, 113
+    reverb	, 12
+    cpan	, 20
+    instr	, 4
+    delay	, 2688
+    cvol	, 105
+    delay	, 5568
+    loop	, 3
+    call	, _chn3_call8
+    delay	, 216
+    loopend	
+    call	, _chn3_call8
+    delay	, 648
+    cvol	, 72
+    delay	, 2592
+    end	
+; Section total ticks: 0
+
+15Marimba_chn5
+    shortoff	
+    startlayer	, 0, 15Marimba_chn5_ly0
+    startlayer	, 1, 15Marimba_chn5_ly1
+    cvol	, 127
+    cpan	, 64
+    reverb	, 12
+    instr	, 5
+    delay	, 3840
+    cvol	, 95
+    delay	, 2880
+    cvol	, 109
+    delay	, 3312
+    cvol	, 113
+    cdelay	, 12
+    cvol	, 116
+    cdelay	, 12
+    cvol	, 119
+    cdelay	, 12
+    cvol	, 122
+    cdelay	, 12
+    cvol	, 125
+    delay	, 1632
+    cvol	, 98
+    delay	, 360
+    call	, _chn5_call24
+    call	, _chn5_call25
+    cvol	, 109
+    cdelay	, 12
+    cvol	, 115
+    delay	, 684
+    end	
+; Section total ticks: 0
+
+15Marimba_chn6
+    shortoff	
+    startlayer	, 0, 15Marimba_chn6_ly0
+    startlayer	, 1, 15Marimba_chn6_ly1
+    reverb	, 12
+    cvol	, 127
+    cpan	, 90
+    instr	, 6
+    delay	, 1848
+    cvol	, 95
+    delay	, 1608
+    cvol	, 104
+    delay	, 4800
+    loop	, 3
+    call	, _chn3_call8
+    delay	, 216
+    loopend	
+    call	, _chn3_call8
+    delay	, 456
+    cvol	, 113
+    cdelay	, 12
+    cvol	, 116
+    cdelay	, 12
+    cvol	, 119
+    cdelay	, 12
+    cvol	, 122
+    cdelay	, 12
+    cvol	, 125
+    delay	, 1632
+    cvol	, 95
+    delay	, 336
+    call	, _chn5_call24
+    call	, _chn5_call25
+    cvol	, 112
+    delay	, 24
+    cvol	, 119
+    delay	, 696
+    end	
+; Section total ticks: 0
+
+15Marimba_chn7
+    shortoff	
+    startlayer	, 0, 15Marimba_chn7_ly0
+    startlayer	, 1, 15Marimba_chn7_ly1
+    cvol	, 127
+    cpan	, 115
+    reverb	, 12
+    instr	, 7
+    delay	, 8280
+    loop	, 3
+    call	, _chn7_call9
+    delay	, 216
+    cvol	, 127
+    delay	, 24
+    loopend	
+    call	, _chn7_call9
+    delay	, 120
+    cvol	, 110
+    delay	, 2016
+    cvol	, 101
+    delay	, 1104
+    end	
+; Section total ticks: 0
+
+15Marimba_chn8
+    shortoff	
+    startlayer	, 0, 15Marimba_chn8_ly0
+    startlayer	, 1, 15Marimba_chn8_ly1
+    cpan	, 54
+    reverb	, 14
+    cvol	, 127
+    instr	, 8
+    delay	, 288
+    cvol	, 112
+    delay	, 1824
+    cvol	, 79
+    delay	, 10368
+    cvol	, 102
+    delay	, 336
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn9
+    shortoff	
+    startlayer	, 0, 15Marimba_chn9_ly0
+    startlayer	, 1, 15Marimba_chn9_ly1
+    startlayer	, 2, 15Marimba_chn9_ly2
+    startlayer	, 3, 15Marimba_chn9_ly3
+    cvol	, 127
+    cpan	, 64
+    reverb	, 4
+    instr	, 127
+    delay	, 12816
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn10
+    shortoff	
+    startlayer	, 0, 15Marimba_chn10_ly0
+    startlayer	, 1, 15Marimba_chn10_ly1
+    startlayer	, 2, 15Marimba_chn10_ly2
+    cvol	, 110
+    cpan	, 49
+    reverb	, 8
+    instr	, 10
+    delay	, 4992
+    cvol	, 103
+    delay	, 4704
+    cvol	, 107
+    delay	, 528
+    loop	, 2
+    call	, _chn10_call14
+    call	, _chn5_call24
+    call	, _chn5_call25
+    call	, _chn10_call17
+    call	, _chn10_call18
+    call	, _chn5_call24
+    cvol	, 94
+    delay	, 24
+    cvol	, 89
+    delay	, 48
+    call	, _chn10_call24
+    call	, _chn5_call24
+    call	, _chn5_call25
+    call	, _chn10_call17
+    cvol	, 114
+    delay	, 72
+    call	, _chn10_call17
+    call	, _chn5_call25
+    call	, _chn5_call24
+    cvol	, 98
+    delay	, 24
+    cvol	, 92
+    delay	, 48
+    loopend	
+    call	, _chn10_call14
+    call	, _chn5_call24
+    call	, _chn5_call25
+    call	, _chn10_call17
+    call	, _chn5_call24
+    cvol	, 94
+    delay	, 24
+    cvol	, 99
+    delay	, 24
+    cvol	, 103
+    delay	, 24
+    call	, _chn5_call25
+    cvol	, 112
+    delay	, 24
+    cvol	, 116
+    delay	, 24
+    cvol	, 120
+    delay	, 720
+    end	
+; Section total ticks: 0
+
+15Marimba_chn11
+    shortoff	
+    startlayer	, 0, 15Marimba_chn11_ly0
+    startlayer	, 1, 15Marimba_chn11_ly1
+    cvol	, 106
+    cpan	, 79
+    reverb	, 16
+    instr	, 10
+    delay	, 8256
+    loop	, 3
+    call	, _chn3_call8
+    delay	, 216
+    loopend	
+    call	, _chn3_call8
+    delay	, 120
+    cvol	, 109
+    delay	, 528
+    call	, _chn10_call14
+    call	, _chn5_call24
+    call	, _chn5_call25
+    call	, _chn10_call17
+    call	, _chn10_call18
+    call	, _chn5_call24
+    cvol	, 94
+    delay	, 24
+    cvol	, 89
+    delay	, 48
+    call	, _chn10_call24
+    call	, _chn5_call24
+    call	, _chn5_call25
+    call	, _chn10_call17
+    cvol	, 114
+    delay	, 72
+    call	, _chn10_call17
+    call	, _chn5_call25
+    call	, _chn5_call24
+    cvol	, 98
+    delay	, 24
+    cvol	, 92
+    delay	, 48
+    call	, _chn10_call14
+    call	, _chn5_call24
+    call	, _chn5_call25
+    call	, _chn10_call17
+    call	, _chn10_call18
+    call	, _chn5_call24
+    cvol	, 94
+    delay	, 1152
+    cvol	, 100
+    cdelay	, 12
+    cvol	, 103
+    delay	, 36
+    cvol	, 97
+    cdelay	, 12
+    cvol	, 90
+    cdelay	, 12
+    cvol	, 84
+    cdelay	, 12
+    cvol	, 75
+    cdelay	, 12
+    cvol	, 64
+    cdelay	, 12
+    cvol	, 55
+    cdelay	, 12
+    cvol	, 46
+    cdelay	, 12
+    cvol	, 36
+    cdelay	, 12
+    cvol	, 29
+    cdelay	, 12
+    cvol	, 21
+    delay	, 156
+    end	
+; Section total ticks: 0
+
+15Marimba_chn12
+    shortoff	
+    startlayer	, 0, 15Marimba_chn12_ly0
+    startlayer	, 1, 15Marimba_chn12_ly1
+    cvol	, 127
+    cpan	, 64
+    reverb	, 32
+    instr	, 12
+    delay	, 12816
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn13
+    shortoff	
+    startlayer	, 0, 15Marimba_chn13_ly0
+    startlayer	, 1, 15Marimba_chn13_ly1
+    startlayer	, 2, 15Marimba_chn13_ly2
+    cpan	, 100
+    cvol	, 127
+    reverb	, 4
+    release	, 239
+    instr	, 13
+    delay	, 4608
+    cvol	, 103
+    delay	, 7872
+    cvol	, 119
+    delay	, 336
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn14
+    shortoff	
+    startlayer	, 0, 15Marimba_chn14_ly0
+    startlayer	, 1, 15Marimba_chn14_ly1
+    cpan	, 45
+    cvol	, 127
+    reverb	, 4
+    release	, 239
+    instr	, 14
+    delay	, 12816
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn15
+    shortoff	
+    startlayer	, 0, 15Marimba_chn15_ly0
+    reverb	, 4
+    cpan	, 64
+    cvol	, 127
+    instr	, 15
+    delay	, 5376
+    cvol	, 103
+    delay	, 7440
+    end	
+; Section total ticks: 12816
+
+; Note Layers
+
+15Marimba_chn0_ly0
+    ltp	, 0
+    ldelay	, 816
+    notedv	, 58, 24, 84
+    notevg	, 55, 84, 128
+    notedv	, 53, 48, 88
+    ldelay	, 8304
+    loop	, 4
+    call	, _chn0_ly0_call7
+    notedvg	, 63, 24, 57, 128
+    loopend	
+    call	, _chn0_ly0_call7
+    notedvg	, 63, 24, 81, 128
+    notedv	, 63, 12, 57
+    ldelay	, 2460
+    notedvg	, 61, 768, 80, 208
+    end	
+; Section total ticks: 12600
+
+15Marimba_chn1_ly0
+    ltp	, 0
+    ldelay	, 1104
+    notedv	, 51, 12, 71
+    notevg	, 50, 71, 0
+    notevg	, 48, 71, 0
+    notevg	, 46, 71, 0
+    notevg	, 48, 71, 0
+    notevg	, 50, 71, 0
+    notedv	, 48, 60, 71
+    ldelay	, 5676
+    call	, _chn1_ly0_call10
+    notedv	, 59, 72, 66
+    notevg	, 58, 66, 0
+    notedv	, 61, 48, 66
+    call	, _chn1_ly0_call10
+    notedv	, 63, 48, 63
+    notedv	, 61, 24, 63
+    notedv	, 59, 48, 63
+    notedv	, 58, 24, 63
+    notevg	, 56, 63, 0
+    notevg	, 54, 63, 0
+    call	, _chn1_ly0_call10
+    notedv	, 51, 24, 63
+    notedv	, 56, 12, 63
+    notevg	, 58, 63, 0
+    notedv	, 59, 24, 63
+    notedv	, 63, 48, 63
+    notedv	, 61, 24, 63
+    notevg	, 59, 63, 0
+    notevg	, 61, 63, 0
+    notevg	, 63, 63, 0
+    ldelay	, 1608
+    notedv	, 52, 96, 76
+    notevg	, 53, 76, 0
+    notevg	, 54, 76, 0
+    notedvg	, 55, 2832, 76, 242
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn3_ly0
+    ltp	, 0
+    ldelay	, 1704
+    notedvg	, 38, 24, 70, 128
+    notevg	, 36, 70, 128
+    notedvg	, 32, 480, 70, 243
+    notedv	, 29, 24, 62
+    notedv	, 34, 12, 62
+    ldelay	, 2340
+    loop	, 5
+    call	, _chn3_ly0_call9
+    notedvg	, 40, 24, 67, 128
+    notevg	, 37, 67, 128
+    call	, _chn3_ly0_call12
+    notedvg	, 37, 24, 67, 128
+    notevg	, 34, 67, 128
+    call	, _chn3_ly0_call9
+    notedvg	, 44, 24, 67, 128
+    notevg	, 39, 67, 128
+    notevg	, 42, 67, 128
+    notevg	, 40, 67, 128
+    call	, _chn3_ly0_call12
+    loopend	
+    call	, _chn3_ly0_call9
+    notedvg	, 40, 24, 67, 128
+    notevg	, 37, 67, 128
+    call	, _chn3_ly0_call12
+    notedvg	, 37, 24, 67, 128
+    notevg	, 34, 67, 128
+    call	, _chn3_ly0_call9
+    notedvg	, 46, 24, 67, 128
+    notevg	, 39, 67, 128
+    notevg	, 44, 67, 128
+    notevg	, 42, 67, 128
+    notevg	, 40, 67, 128
+    notedv	, 39, 12, 67
+    ldelay	, 1356
+    loop	, 3
+    notedvg	, 15, 384, 105, 128
+    loopend	
+    notedvg	, 15, 1584, 105, 224
+    notedv	, 32, 192, 64
+    notevg	, 34, 64, 0
+    notevg	, 32, 64, 0
+    notedv	, 34, 144, 64
+    notedv	, 35, 192, 67
+    notedvg	, 37, 912, 67, 175
+    end	
+; Section total ticks: 10512
+
+15Marimba_chn4_ly0
+    ltp	, 0
+    ldelay	, 2688
+    notedv	, 27, 96, 57
+    notevg	, 30, 57, 0
+    loop	, 2
+    notedv	, 33, 96, 57
+    notevg	, 36, 57, 0
+    loopend	
+    notevg	, 39, 57, 0
+    loop	, 2
+    notedv	, 33, 96, 57
+    loopend	
+    notevg	, 36, 57, 0
+    notevg	, 39, 57, 0
+    notevg	, 42, 57, 0
+    notevg	, 36, 57, 0
+    notevg	, 39, 57, 0
+    notevg	, 45, 57, 0
+    notedvg	, 48, 1152, 57, 234
+    notedv	, 33, 96, 60
+    notedv	, 35, 192, 52
+    notevg	, 37, 48, 0
+    loop	, 2
+    notedv	, 32, 192, 48
+    loopend	
+    notevg	, 35, 48, 0
+    notevg	, 37, 48, 0
+    notevg	, 32, 48, 0
+    notedv	, 34, 96, 48
+    notedv	, 32, 24, 68
+    notevg	, 34, 68, 0
+    notevg	, 37, 68, 0
+    notevg	, 39, 68, 0
+    ldelay	, 1344
+    loop	, 3
+    notedvg	, 27, 384, 105, 128
+    loopend	
+    notedvg	, 27, 288, 105, 85
+    notedv	, 43, 96, 92
+    notevg	, 44, 92, 0
+    notevg	, 45, 92, 0
+    notedvg	, 46, 240, 92, 102
+    notedv	, 33, 192, 53
+    notevg	, 35, 53, 0
+    notedv	, 36, 96, 53
+    notedv	, 36, 48, 80
+    notevg	, 41, 80, 0
+    notedv	, 43, 104, 80
+    notedv	, 38, 88, 80
+    notedv	, 39, 192, 88
+    notevg	, 41, 91, 0
+    notevg	, 44, 91, 0
+    notedvg	, 46, 48, 105, 21
+    notevg	, 41, 105, 21
+    notevg	, 50, 105, 21
+    notedv	, 51, 192, 87
+    notedvg	, 44, 912, 87, 175
+    end	
+; Section total ticks: 11568
+
+15Marimba_chn5_ly0
+    ltp	, 0
+    ldelay	, 2136
+    notedv	, 53, 12, 64
+    notevg	, 55, 64, 0
+    notedvg	, 56, 24, 64, 128
+    notevg	, 55, 64, 128
+    notedvg	, 50, 72, 64, 42
+    notedv	, 50, 12, 64
+    notevg	, 51, 64, 0
+    notedvg	, 50, 24, 64, 128
+    notevg	, 51, 64, 128
+    notedvg	, 50, 1680, 64, 246
+    notedv	, 48, 96, 87
+    notedvg	, 51, 2760, 92, 247
+    notedv	, 51, 24, 96
+    call	, _chn5_ly0_call15
+    notedvg	, 54, 72, 87, 213
+    notevg	, 47, 87, 0
+    notevg	, 46, 87, 0
+    notedv	, 49, 48, 87
+    call	, _chn5_ly0_call20
+    notedv	, 47, 48, 87
+    notedv	, 46, 24, 87
+    notedv	, 47, 48, 87
+    notedv	, 49, 24, 87
+    notevg	, 47, 87, 0
+    notevg	, 51, 87, 0
+    call	, _chn5_ly0_call15
+    notedvg	, 54, 96, 87, 224
+    loop	, 2
+    notedvg	, 51, 24, 87, 128
+    loopend	
+    notedv	, 56, 48, 87
+    call	, _chn5_ly0_call33
+    notedvg	, 52, 24, 87, 128
+    notevg	, 58, 87, 0
+    ldelay	, 3948
+    notedvg	, 49, 780, 101, 204
+    end	
+; Section total ticks: 12792
+
+15Marimba_chn5_ly1
+    ltp	, 0
+    ldelay	, 2136
+    notedv	, 50, 12, 64
+    notevg	, 51, 64, 0
+    notedvg	, 53, 24, 64, 128
+    notevg	, 51, 64, 128
+    notedvg	, 53, 72, 64, 42
+    notedv	, 53, 12, 64
+    notevg	, 55, 64, 0
+    notedvg	, 53, 24, 64, 128
+    notevg	, 48, 64, 128
+    notedvg	, 46, 1488, 64, 245
+    notedv	, 39, 96, 78
+    notedvg	, 42, 2880, 85, 247
+    notedv	, 44, 24, 96
+    notevg	, 46, 96, 0
+    notedvg	, 47, 48, 96, 128
+    call	, _chn5_ly0_call20
+    notedv	, 51, 72, 87
+    notevg	, 49, 87, 0
+    notedv	, 54, 48, 87
+    call	, _chn5_ly0_call15
+    notedvg	, 54, 72, 87, 213
+    notedv	, 56, 48, 87
+    notedv	, 54, 24, 87
+    notedv	, 51, 48, 87
+    notedv	, 42, 24, 87
+    loop	, 2
+    notedv	, 44, 24, 87
+    loopend	
+    call	, _chn5_ly0_call20
+    notedv	, 46, 24, 87
+    ldelay	, 936
+    notedvg	, 39, 384, 103, 8
+    notedvg	, 44, 480, 103, 57
+    notedvg	, 48, 96, 114, 32
+    notevg	, 49, 114, 32
+    notevg	, 50, 114, 32
+    notedvg	, 51, 1824, 114, 235
+    notedvg	, 51, 32, 101, 40
+    notevg	, 53, 101, 40
+    notevg	, 54, 101, 40
+    notedv	, 53, 72, 101
+    notedvg	, 56, 840, 101, 190
+    end	
+; Section total ticks: 12792
+
+15Marimba_chn6_ly0
+    ltp	, 0
+    ldelay	, 1848
+    notedv	, 27, 24, 106
+    notedvg	, 32, 504, 94, 182
+    notedv	, 38, 12, 107
+    notevg	, 39, 107, 0
+    notedvg	, 41, 24, 107, 128
+    notevg	, 39, 107, 128
+    notedvg	, 38, 72, 107, 42
+    notedv	, 34, 12, 107
+    notevg	, 36, 107, 0
+    notedvg	, 38, 24, 107, 128
+    notevg	, 36, 107, 128
+    notevg	, 34, 107, 128
+    notedv	, 31, 12, 107
+    notevg	, 32, 107, 0
+    notedvg	, 34, 24, 107, 128
+    notevg	, 32, 107, 128
+    notedv	, 30, 18, 107
+    ldelay	, 750
+    notedv	, 30, 96, 90
+    notevg	, 33, 90, 0
+    notevg	, 36, 90, 0
+    notevg	, 33, 86, 0
+    notevg	, 30, 101, 0
+    notevg	, 36, 105, 0
+    notevg	, 39, 96, 0
+    notedvg	, 42, 480, 111, 204
+    loop	, 5
+    call	, _chn6_ly0_call29
+    call	, _chn6_ly0_call30
+    call	, _chn6_ly0_call29
+    notedvg	, 44, 24, 98, 128
+    notevg	, 39, 98, 128
+    call	, _chn6_ly0_call34
+    notedvg	, 35, 24, 98, 128
+    loopend	
+    call	, _chn6_ly0_call29
+    call	, _chn6_ly0_call30
+    call	, _chn6_ly0_call29
+    notedvg	, 46, 24, 98, 128
+    notevg	, 39, 98, 128
+    notevg	, 44, 98, 128
+    call	, _chn6_ly0_call34
+    call	, _chn6_ly0_call44
+    notedv	, 39, 72, 99
+    notevg	, 37, 99, 0
+    notedv	, 42, 48, 99
+    call	, _chn6_ly0_call44
+    notedv	, 35, 48, 99
+    notedv	, 37, 24, 99
+    notedv	, 39, 48, 99
+    notedv	, 37, 24, 99
+    notevg	, 39, 99, 0
+    notevg	, 42, 99, 0
+    call	, _chn6_ly0_call44
+    notedvg	, 34, 24, 99, 128
+    notedvg	, 34, 48, 99, 64
+    notedv	, 35, 72, 99
+    notedv	, 37, 48, 99
+    notedvg	, 34, 192, 99, 224
+    loop	, 3
+    notedvg	, 15, 384, 95, 128
+    loopend	
+    notedvg	, 15, 3408, 95, 241
+    end	
+; Section total ticks: 10512
+
+15Marimba_chn6_ly1
+    ltp	, 0
+    ldelay	, 8256
+    loop	, 3
+    notedvg	, 27, 384, 102, 128
+    loopend	
+    notedvg	, 27, 288, 102, 85
+    notedv	, 38, 96, 101
+    notevg	, 37, 101, 0
+    notevg	, 36, 101, 0
+    notedvg	, 35, 1824, 101, 235
+    notedvg	, 39, 32, 112, 40
+    notevg	, 41, 112, 40
+    notevg	, 42, 112, 40
+    notedv	, 41, 72, 112
+    notedvg	, 44, 840, 112, 190
+    end	
+; Section total ticks: 12048
+
+15Marimba_chn7_ly0
+    ltp	, 0
+    ldelay	, 432
+    notedvg	, 22, 48, 94, 160
+    notedvg	, 17, 696, 82, 233
+    notedv	, 15, 24, 79
+    notedv	, 20, 12, 82
+    ldelay	, 540
+    notedvg	, 26, 24, 76, 128
+    notevg	, 24, 76, 128
+    notevg	, 20, 76, 128
+    notevg	, 17, 76, 0
+    notedvg	, 15, 528, 76, 244
+    notedv	, 29, 12, 72
+    notevg	, 31, 72, 0
+    notedvg	, 34, 24, 72, 128
+    notevg	, 31, 72, 128
+    notedvg	, 29, 72, 72, 42
+    notedv	, 26, 12, 72
+    notevg	, 27, 72, 0
+    notedvg	, 29, 24, 72, 128
+    notevg	, 27, 72, 128
+    notevg	, 26, 72, 128
+    notedv	, 22, 12, 72
+    notevg	, 24, 72, 0
+    notedvg	, 26, 24, 72, 128
+    notevg	, 24, 72, 128
+    notedvg	, 21, 768, 72, 248
+    notedv	, 18, 384, 84
+    notedv	, 20, 192, 84
+    notedvg	, 21, 1248, 84, 216
+    notedv	, 28, 96, 86
+    notedv	, 20, 192, 73
+    notevg	, 22, 73, 0
+    notevg	, 23, 73, 0
+    notevg	, 25, 73, 0
+    notevg	, 20, 73, 0
+    notevg	, 22, 73, 0
+    notevg	, 23, 73, 0
+    notevg	, 27, 73, 0
+    call	, _chn7_ly0_call39
+    notedvg	, 30, 24, 74, 128
+    notedvg	, 30, 72, 74, 213
+    notevg	, 32, 74, 0
+    notevg	, 30, 75, 0
+    notedv	, 27, 48, 75
+    call	, _chn7_ly0_call39
+    call	, _chn7_ly0_call39
+    notedv	, 32, 72, 75
+    notevg	, 30, 75, 0
+    notedv	, 27, 48, 75
+    call	, _chn7_ly0_call39
+    notedvg	, 30, 24, 75, 128
+    notedvg	, 30, 72, 75, 213
+    notevg	, 27, 75, 42
+    notevg	, 32, 75, 0
+    notedv	, 30, 48, 75
+    notedvg	, 27, 192, 75, 224
+    loop	, 3
+    notedvg	, 3, 384, 114, 128
+    loopend	
+    notedvg	, 3, 3408, 114, 241
+    end	
+; Section total ticks: 12048
+
+15Marimba_chn7_ly1
+    ltp	, 0
+    ldelay	, 8256
+    loop	, 3
+    notedvg	, 15, 384, 93, 128
+    loopend	
+    notedvg	, 15, 288, 93, 85
+    notedv	, 14, 96, 99
+    notevg	, 13, 99, 0
+    notevg	, 12, 99, 0
+    notedvg	, 11, 1824, 99, 235
+    loop	, 2
+    notedvg	, 35, 32, 103, 48
+    loopend	
+    notevg	, 39, 103, 48
+    notedv	, 37, 72, 95
+    notedvg	, 32, 840, 95, 190
+    end	
+; Section total ticks: 12016
+
+15Marimba_chn8_ly0
+    ltp	, 0
+    ldelay	, 528
+    notedv	, 58, 24, 82
+    notevg	, 62, 82, 0
+    ltp	, 12
+    notevg	, 53, 82, 128
+    notedvg	, 53, 18, 82, 99
+    notedvg	, 53, 14, 82, 54
+    notedvg	, 53, 16, 82, 80
+    notedv	, 53, 6, 82
+    notevg	, 55, 66, 0
+    notevg	, 53, 58, 0
+    notevg	, 55, 53, 0
+    notevg	, 53, 45, 0
+    notevg	, 55, 37, 0
+    notevg	, 53, 34, 0
+    notevg	, 55, 30, 0
+    notevg	, 53, 25, 0
+    notevg	, 55, 18, 0
+    ldelay	, 324
+    notedv	, 39, 24, 75
+    ldelay	, 11621
+    notedvg	, 61, 139, 73, 1
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn8_ly1
+    ltp	, 0
+    ldelay	, 540
+    notedv	, 60, 24, 82
+    notedvg	, 63, 492, 82, 243
+    notedvg	, 63, 816, 97, 240
+    ltp	, 12
+    notedvg	, 53, 240, 72, 217
+    loop	, 3
+    notedv	, 46, 12, 63
+    notevg	, 53, 63, 0
+    notevg	, 48, 63, 0
+    notevg	, 46, 63, 0
+    notevg	, 43, 63, 0
+    notevg	, 48, 63, 0
+    notevg	, 50, 63, 0
+    notevg	, 55, 63, 0
+    loopend	
+    notedv	, 58, 24, 63
+    ldelay	, 10248
+    notedv	, 49, 144, 73
+    end	
+; Section total ticks: 12624
+
+15Marimba_chn9_ly0
+    ltp	, 0
+    ldelay	, 2760
+    notedv	, 45, 12, 76
+    notedvg	, 45, 84, 63, 219
+    notedv	, 17, 12, 66
+    notedvg	, 18, 36, 67, 170
+    notedvg	, 45, 120, 89, 179
+    notedv	, 51, 12, 89
+    notevg	, 51, 75, 0
+    notedvg	, 45, 72, 89, 170
+    call	, _chn9_ly0_call10
+    notedvg	, 18, 156, 56, 236
+    notedv	, 51, 12, 90
+    notevg	, 45, 57, 0
+    notevg	, 45, 76, 0
+    notevg	, 45, 60, 0
+    notedvg	, 51, 24, 82, 128
+    notedv	, 51, 12, 81
+    ldelay	, 1788
+    notedvg	, 44, 96, 77, 128
+    loop	, 2
+    notedv	, 44, 8, 42
+    loopend	
+    loop	, 3
+    notedv	, 44, 8, 52
+    loopend	
+    notevg	, 44, 62, 0
+    notevg	, 44, 70, 0
+    loop	, 3
+    notedv	, 44, 8, 77
+    loopend	
+    loop	, 2
+    notedv	, 44, 8, 85
+    loopend	
+    notedvg	, 44, 1536, 78, 240
+    notedvg	, 52, 24, 70, 128
+    notedvg	, 52, 72, 70, 213
+    notedvg	, 54, 24, 70, 128
+    notedvg	, 54, 264, 70, 244
+    notedvg	, 52, 24, 80, 128
+    notedvg	, 52, 72, 80, 213
+    notedvg	, 54, 24, 80, 128
+    notedvg	, 54, 264, 80, 244
+    notedvg	, 52, 24, 80, 128
+    notedvg	, 52, 72, 80, 213
+    notedvg	, 54, 24, 80, 128
+    notedv	, 54, 12, 80
+    ldelay	, 444
+    loop	, 2
+    notedvg	, 39, 384, 72, 128
+    loopend	
+    notevg	, 39, 72, 128
+    notedvg	, 39, 3408, 72, 241
+    end	
+; Section total ticks: 12384
+
+15Marimba_chn9_ly1
+    ltp	, 0
+    ldelay	, 3312
+    call	, _chn9_ly0_call10
+    notedv	, 18, 12, 56
+    notedv	, 17, 24, 83
+    notevg	, 17, 96, 0
+    notedv	, 17, 6, 89
+    notevg	, 18, 78, 0
+    notevg	, 18, 70, 0
+    notevg	, 18, 63, 0
+    notevg	, 18, 57, 0
+    notevg	, 18, 51, 0
+    notevg	, 18, 44, 0
+    notedvg	, 18, 78, 40, 236
+    notedv	, 17, 12, 83
+    notevg	, 18, 83, 0
+    notedvg	, 17, 72, 83, 213
+    call	, _chn9_ly1_call17
+    loop	, 2
+    notedv	, 18, 6, 60
+    loopend	
+    notedv	, 17, 24, 83
+    notedvg	, 17, 48, 83, 128
+    notedv	, 17, 24, 83
+    call	, _chn9_ly0_call10
+    notedv	, 18, 12, 56
+    notedvg	, 17, 120, 83, 204
+    call	, _chn9_ly1_call17
+    loop	, 2
+    notedv	, 18, 6, 60
+    loopend	
+    notedvg	, 17, 72, 83, 170
+    call	, _chn9_ly1_call17
+    loop	, 2
+    notedv	, 18, 6, 60
+    loopend	
+    loop	, 2
+    notedv	, 17, 12, 95
+    notevg	, 18, 61, 0
+    call	, _chn9_ly1_call39
+    loopend	
+    notedv	, 17, 6, 89
+    loop	, 2
+    notedv	, 18, 6, 73
+    loopend	
+    loop	, 2
+    notedv	, 18, 6, 66
+    loopend	
+    loop	, 4
+    notedv	, 18, 6, 60
+    loopend	
+    loop	, 2
+    notedv	, 18, 6, 69
+    loopend	
+    loop	, 2
+    notedv	, 18, 6, 78
+    loopend	
+    loop	, 2
+    notedv	, 18, 6, 87
+    loopend	
+    notevg	, 18, 95, 0
+    ldelay	, 336
+    notedv	, 17, 8, 77
+    notevg	, 18, 69, 0
+    notevg	, 18, 60, 0
+    notevg	, 18, 68, 0
+    notevg	, 18, 76, 0
+    notevg	, 18, 84, 0
+    notedvg	, 28, 768, 69, 192
+    notedvg	, 28, 1584, 71, 224
+    loop	, 2
+    notedvg	, 28, 96, 80, 128
+    notedvg	, 28, 288, 80, 213
+    loopend	
+    notedvg	, 28, 96, 80, 128
+    notedvg	, 28, 241, 80, 205
+    loop	, 2
+    call	, _chn9_ly1_call77
+    notedvg	, 19, 24, 62, 10
+    loopend	
+    notevg	, 16, 75, 10
+    notedvg	, 19, 23, 62, 133
+    loop	, 3
+    notedv	, 17, 24, 65
+    call	, _chn9_ly1_call84
+    notedv	, 17, 24, 71
+    call	, _chn9_ly1_call84
+    notedv	, 17, 12, 73
+    notevg	, 18, 44, 0
+    notevg	, 18, 72, 0
+    notevg	, 18, 63, 0
+    notedv	, 17, 24, 75
+    call	, _chn9_ly1_call84
+    notedv	, 17, 24, 75
+    call	, _chn9_ly1_call84
+    notedv	, 17, 24, 75
+    call	, _chn9_ly1_call96
+    loopend	
+    notedv	, 17, 24, 65
+    call	, _chn9_ly1_call84
+    notedv	, 17, 24, 71
+    call	, _chn9_ly1_call84
+    notedv	, 17, 12, 77
+    notevg	, 18, 63, 0
+    notevg	, 18, 96, 0
+    notevg	, 18, 83, 0
+    notedvg	, 17, 384, 83, 248
+    notedv	, 17, 8, 103
+    loop	, 4
+    notedv	, 18, 8, 63
+    loopend	
+    loop	, 3
+    notedv	, 18, 8, 73
+    loopend	
+    loop	, 2
+    notedv	, 18, 8, 81
+    loopend	
+    loop	, 2
+    notedv	, 18, 8, 88
+    loopend	
+    loop	, 2
+    notedv	, 18, 8, 95
+    loopend	
+    loop	, 3
+    notedv	, 18, 8, 103
+    loopend	
+    notevg	, 18, 115, 0
+    ldelay	, 2688
+    end	
+; Section total ticks: 11398
+
+15Marimba_chn9_ly2
+    ltp	, 0
+    ldelay	, 5376
+    loop	, 15
+    notedv	, 16, 24, 66
+    notevg	, 18, 59, 0
+    notedv	, 16, 12, 64
+    notevg	, 18, 58, 0
+    notevg	, 18, 59, 0
+    notevg	, 18, 59, 0
+    loopend	
+    notedv	, 16, 24, 66
+    notevg	, 18, 59, 0
+    notedv	, 17, 8, 77
+    notevg	, 18, 69, 0
+    notevg	, 18, 60, 0
+    notevg	, 18, 68, 0
+    notevg	, 18, 76, 0
+    notevg	, 18, 84, 0
+    loop	, 3
+    notedvg	, 17, 192, 73, 224
+    notedv	, 17, 24, 88
+    call	, _chn9_ly1_call39
+    notedv	, 18, 24, 73
+    notevg	, 17, 73, 0
+    call	, _chn9_ly1_call39
+    notedv	, 18, 24, 73
+    notedv	, 16, 12, 64
+    notevg	, 18, 58, 0
+    notevg	, 18, 59, 0
+    notevg	, 18, 59, 0
+    loopend	
+    loop	, 2
+    notedv	, 17, 24, 75
+    call	, _chn9_ly1_call84
+    loopend	
+    notedv	, 17, 24, 75
+    call	, _chn9_ly1_call96
+    loop	, 3
+    notedvg	, 3, 384, 118, 128
+    loopend	
+    notedvg	, 3, 576, 118, 170
+    notedvg	, 3, 2832, 113, 242
+    end	
+; Section total ticks: 9864
+
+15Marimba_chn9_ly3
+    ltp	, 0
+    ldelay	, 8257
+    loop	, 3
+    notedvg	, 16, 24, 65, 10
+    notevg	, 19, 58, 138
+    notevg	, 19, 58, 10
+    call	, _chn9_ly1_call77
+    notedvg	, 19, 24, 60, 10
+    notedvg	, 16, 12, 73, 21
+    notedvg	, 19, 36, 44, 177
+    call	, _chn9_ly1_call77
+    notedvg	, 19, 24, 62, 10
+    call	, _chn9_ly1_call77
+    notedvg	, 19, 24, 62, 10
+    call	, _chn9_ly1_call77
+    loopend	
+    notedvg	, 16, 24, 65, 10
+    notevg	, 19, 58, 138
+    notevg	, 19, 58, 10
+    call	, _chn9_ly1_call77
+    notedv	, 19, 23, 60
+    notedv	, 19, 1, 64
+    notedvg	, 16, 12, 77, 21
+    notedvg	, 19, 35, 63, 175
+    notedv	, 28, 96, 78
+    ldelay	, 3120
+    end	
+; Section total ticks: 12048
+
+15Marimba_chn10_ly0
+    ltp	, 0
+    ldelay	, 1464
+    notedv	, 50, 12, 82
+    notevg	, 51, 82, 0
+    notedvg	, 53, 24, 82, 128
+    notevg	, 50, 82, 128
+    notedvg	, 48, 72, 82, 42
+    notedv	, 46, 12, 86
+    notevg	, 48, 86, 0
+    notedvg	, 50, 24, 86, 128
+    notevg	, 48, 86, 128
+    notedvg	, 44, 336, 86, 210
+    notedv	, 44, 48, 82
+    notevg	, 48, 82, 0
+    notedvg	, 50, 384, 82, 192
+    notedvg	, 34, 192, 88, 232
+    notedv	, 30, 96, 83
+    notevg	, 33, 83, 0
+    loop	, 2
+    notedv	, 36, 96, 83
+    notevg	, 39, 83, 0
+    loopend	
+    notevg	, 42, 83, 0
+    loop	, 2
+    notedv	, 36, 96, 83
+    loopend	
+    notevg	, 39, 87, 0
+    notevg	, 42, 89, 0
+    notevg	, 48, 92, 0
+    notevg	, 39, 94, 0
+    notevg	, 42, 97, 0
+    notevg	, 48, 99, 0
+    notedvg	, 51, 864, 102, 227
+    loop	, 4
+    call	, _chn10_ly0_call34
+    call	, _chn10_ly0_call35
+    call	, _chn10_ly0_call34
+    notedvg	, 56, 24, 86, 128
+    notevg	, 51, 86, 128
+    notevg	, 54, 86, 128
+    call	, _chn5_ly0_call33
+    notedvg	, 47, 24, 86, 128
+    loopend	
+    call	, _chn10_ly0_call34
+    call	, _chn10_ly0_call35
+    call	, _chn10_ly0_call34
+    notedvg	, 58, 24, 86, 128
+    notevg	, 51, 86, 128
+    notedv	, 43, 12, 104
+    notevg	, 44, 104, 0
+    notevg	, 46, 104, 0
+    notevg	, 47, 104, 0
+    notevg	, 49, 104, 0
+    notevg	, 51, 104, 0
+    notevg	, 52, 104, 0
+    notevg	, 55, 104, 0
+    notevg	, 56, 87, 0
+    notevg	, 42, 87, 0
+    notevg	, 56, 87, 0
+    notedvg	, 39, 24, 87, 128
+    notedvg	, 39, 36, 87, 170
+    notedvg	, 58, 24, 87, 128
+    notedvg	, 58, 72, 87, 213
+    notevg	, 59, 74, 0
+    notevg	, 58, 74, 0
+    notedv	, 61, 48, 74
+    notedvg	, 56, 24, 74, 128
+    notedvg	, 56, 72, 74, 213
+    notedvg	, 58, 24, 74, 128
+    notedvg	, 58, 72, 74, 213
+    notedv	, 63, 48, 74
+    notedv	, 61, 24, 74
+    notedv	, 59, 48, 74
+    notedv	, 58, 24, 74
+    notevg	, 56, 74, 0
+    notevg	, 54, 74, 0
+    notevg	, 56, 74, 128
+    notedvg	, 56, 72, 74, 213
+    notedvg	, 58, 24, 74, 128
+    notedvg	, 58, 72, 74, 213
+    notedv	, 51, 24, 74
+    notedv	, 56, 12, 74
+    notevg	, 58, 74, 0
+    notedv	, 59, 24, 74
+    notedv	, 63, 48, 74
+    notedv	, 61, 24, 74
+    notevg	, 59, 74, 0
+    notevg	, 61, 74, 0
+    notedvg	, 63, 768, 74, 248
+    loop	, 4
+    call	, _chn0_ly0_call7
+    notedvg	, 63, 24, 57, 128
+    loopend	
+    call	, _chn0_ly0_call7
+    call	, _chn0_ly0_call7
+    call	, _chn0_ly0_call7
+    loop	, 4
+    notedvg	, 63, 24, 57, 128
+    call	, _chn0_ly0_call7
+    loopend	
+    notedvg	, 63, 24, 81, 128
+    notedvg	, 63, 120, 57, 230
+    notedv	, 60, 96, 73
+    notevg	, 61, 73, 0
+    notevg	, 62, 73, 0
+    notedvg	, 63, 240, 73, 102
+    loop	, 2
+    notedv	, 41, 192, 74
+    notevg	, 38, 74, 0
+    loopend	
+    notevg	, 36, 74, 0
+    notevg	, 38, 74, 0
+    notevg	, 39, 74, 0
+    notedv	, 41, 144, 74
+    notedv	, 47, 192, 74
+    notedvg	, 49, 912, 74, 175
+    end	
+; Section total ticks: 10560
+
+15Marimba_chn10_ly1
+    ltp	, 0
+    ldelay	, 6912
+    notedvg	, 44, 24, 87, 128
+    loop	, 2
+    notedvg	, 40, 24, 87, 128
+    loopend	
+    call	, _chn10_ly1_call7
+    call	, _chn10_ly1_call7
+    call	, _chn10_ly1_call9
+    notedv	, 39, 72, 87
+    notevg	, 37, 87, 0
+    notedv	, 42, 48, 87
+    notedv	, 44, 12, 87
+    notevg	, 42, 87, 0
+    loop	, 2
+    notedv	, 40, 12, 87
+    notevg	, 39, 87, 0
+    loopend	
+    call	, _chn10_ly1_call7
+    call	, _chn10_ly1_call7
+    call	, _chn10_ly1_call9
+    notedv	, 44, 48, 87
+    notedv	, 42, 24, 87
+    notedv	, 39, 48, 87
+    notedv	, 37, 24, 87
+    notevg	, 35, 87, 0
+    notevg	, 39, 87, 0
+    notedv	, 44, 12, 87
+    notevg	, 42, 87, 0
+    loop	, 2
+    notedv	, 40, 12, 87
+    notevg	, 39, 87, 0
+    loopend	
+    call	, _chn10_ly1_call7
+    call	, _chn10_ly1_call7
+    call	, _chn10_ly1_call9
+    notedv	, 34, 12, 87
+    notevg	, 35, 87, 0
+    notevg	, 37, 87, 0
+    loop	, 2
+    notedv	, 39, 12, 87
+    notevg	, 40, 87, 0
+    notevg	, 42, 87, 0
+    notevg	, 44, 87, 0
+    loopend	
+    notevg	, 46, 87, 0
+    notevg	, 47, 87, 0
+    notevg	, 49, 87, 0
+    notevg	, 51, 87, 0
+    notevg	, 52, 87, 0
+    notedv	, 55, 24, 87
+    ldelay	, 2136
+    notedv	, 45, 192, 96
+    notevg	, 47, 96, 0
+    notevg	, 48, 96, 0
+    notevg	, 50, 96, 0
+    notevg	, 51, 96, 0
+    notevg	, 53, 96, 0
+    notevg	, 55, 96, 0
+    notedv	, 58, 96, 96
+    notedv	, 53, 48, 96
+    notedv	, 54, 192, 96
+    notedvg	, 56, 912, 96, 175
+    end	
+; Section total ticks: 12696
+
+15Marimba_chn10_ly2
+    ltp	, 0
+    ldelay	, 11712
+    notedv	, 39, 192, 81
+    notedvg	, 41, 912, 81, 175
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn11_ly0
+    ltp	, 0
+    ldelay	, 888
+    notedv	, 34, 24, 90
+    notevg	, 36, 90, 0
+    notedvg	, 38, 624, 90, 246
+    notedv	, 15, 24, 90
+    notedvg	, 20, 216, 90, 241
+    notedvg	, 32, 24, 85, 128
+    notevg	, 29, 85, 0
+    notedvg	, 27, 48, 85, 128
+    notedv	, 15, 24, 80
+    notedv	, 20, 192, 81
+    notevg	, 10, 84, 0
+    notedv	, 22, 72, 88
+    notedv	, 36, 24, 59
+    notedvg	, 38, 48, 67, 128
+    notedvg	, 29, 72, 74, 85
+    notedv	, 14, 12, 89
+    notevg	, 15, 89, 0
+    notedvg	, 17, 24, 89, 128
+    notevg	, 15, 89, 128
+    notevg	, 14, 89, 128
+    notedv	, 19, 12, 89
+    notedvg	, 20, 36, 89, 170
+    notedvg	, 20, 24, 89, 128
+    notedv	, 15, 384, 87
+    notevg	, 17, 87, 0
+    notevg	, 18, 83, 0
+    notedv	, 20, 192, 83
+    notedvg	, 21, 1248, 105, 216
+    notedv	, 15, 96, 86
+    notedv	, 8, 192, 104
+    notevg	, 10, 104, 0
+    notevg	, 11, 104, 0
+    notevg	, 13, 104, 0
+    notevg	, 8, 104, 0
+    notevg	, 10, 104, 0
+    notevg	, 11, 104, 0
+    notevg	, 15, 104, 0
+    loop	, 2
+    notedvg	, 16, 24, 93, 128
+    notedvg	, 16, 72, 93, 213
+    notedvg	, 18, 24, 93, 128
+    notedvg	, 18, 72, 93, 213
+    notevg	, 8, 106, 0
+    notevg	, 10, 106, 0
+    notedv	, 11, 48, 106
+    loopend	
+    notedvg	, 16, 24, 93, 128
+    notedvg	, 16, 72, 93, 213
+    notedvg	, 18, 24, 93, 128
+    notedvg	, 18, 72, 93, 213
+    notevg	, 10, 103, 0
+    notevg	, 11, 103, 0
+    notedv	, 13, 48, 103
+    notedvg	, 15, 192, 111, 208
+    loop	, 3
+    notedvg	, 15, 384, 101, 128
+    loopend	
+    notedvg	, 15, 288, 101, 85
+    notedv	, 26, 96, 114
+    notevg	, 25, 114, 0
+    notevg	, 24, 114, 0
+    notedvg	, 23, 240, 114, 102
+    loop	, 2
+    notedv	, 17, 384, 71
+    loopend	
+    notevg	, 20, 87, 0
+    notedv	, 20, 336, 101
+    notedvg	, 11, 1104, 106, 144
+    end	
+; Section total ticks: 11280
+
+15Marimba_chn11_ly1
+    ltp	, 0
+    ldelay	, 2376
+    notedvg	, 22, 264, 75, 186
+    notedv	, 22, 12, 89
+    ldelay	, 2628
+    notedv	, 34, 96, 70
+    loop	, 3
+    notedv	, 39, 192, 67
+    loopend	
+    notevg	, 40, 67, 0
+    loop	, 3
+    notedv	, 39, 192, 67
+    loopend	
+    notedvg	, 39, 2976, 67, 239
+    notedv	, 40, 96, 99
+    notevg	, 41, 99, 0
+    notevg	, 42, 99, 0
+    notedvg	, 43, 240, 99, 102
+    notedv	, 36, 192, 59
+    notevg	, 31, 59, 0
+    notevg	, 33, 59, 0
+    notevg	, 35, 59, 0
+    notevg	, 32, 73, 0
+    notevg	, 34, 77, 0
+    notevg	, 36, 77, 0
+    notedv	, 38, 144, 77
+    notedv	, 30, 192, 77
+    notedvg	, 32, 576, 77, 128
+    notedvg	, 30, 336, 83, 109
+    end	
+; Section total ticks: 12048
+
+15Marimba_chn12_ly0
+    ltp	, 0
+    ldelay	, 264
+    notedvg	, 17, 24, 104, 128
+    notevg	, 22, 104, 128
+    notevg	, 29, 74, 128
+    notedvg	, 34, 192, 74, 240
+    notedvg	, 53, 168, 76, 237
+    notedvg	, 29, 24, 76, 128
+    notevg	, 36, 76, 128
+    notedvg	, 38, 216, 76, 241
+    notedv	, 20, 24, 106
+    notevg	, 27, 98, 0
+    notedvg	, 48, 384, 82, 240
+    notedvg	, 51, 216, 82, 227
+    notedv	, 27, 24, 53
+    notedvg	, 32, 240, 73, 230
+    notedvg	, 53, 72, 71, 213
+    notedv	, 27, 24, 72
+    notevg	, 32, 72, 0
+    notevg	, 34, 72, 0
+    notevg	, 36, 72, 0
+    notedvg	, 39, 48, 72, 128
+    notedv	, 48, 24, 72
+    notedvg	, 50, 360, 72, 238
+    notedv	, 46, 24, 71
+    notedv	, 58, 48, 87
+    ldelay	, 10272
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn12_ly1
+    ltp	, 0
+    ldelay	, 1008
+    notedv	, 44, 24, 82
+    ldelay	, 1032
+    notevg	, 44, 72, 0
+    ldelay	, 10728
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn13_ly0
+    ltp	, 0
+    ldelay	, 2616
+    notedv	, 43, 12, 50
+    notevg	, 44, 50, 0
+    notedvg	, 46, 24, 50, 128
+    notevg	, 44, 50, 128
+    notedvg	, 42, 240, 50, 230
+    notedvg	, 9, 528, 80, 232
+    notedvg	, 18, 168, 72, 109
+    notedv	, 12, 24, 72
+    notedvg	, 18, 168, 72, 109
+    notedv	, 18, 24, 72
+    notedvg	, 20, 168, 74, 109
+    notedv	, 20, 24, 72
+    notedv	, 21, 96, 74
+    notedvg	, 21, 480, 72, 204
+    loop	, 5
+    call	, _chn6_ly0_call29
+    call	, _chn6_ly0_call30
+    call	, _chn6_ly0_call29
+    notedvg	, 44, 24, 98, 128
+    notevg	, 39, 98, 128
+    call	, _chn6_ly0_call34
+    notedvg	, 35, 24, 98, 128
+    loopend	
+    call	, _chn6_ly0_call29
+    call	, _chn6_ly0_call30
+    call	, _chn6_ly0_call29
+    notedvg	, 46, 24, 98, 128
+    notevg	, 39, 98, 128
+    notevg	, 44, 98, 128
+    notevg	, 42, 98, 128
+    notevg	, 40, 98, 128
+    notedv	, 39, 12, 98
+    ldelay	, 5628
+    notedv	, 46, 48, 69
+    notedv	, 44, 240, 69
+    end	
+; Section total ticks: 11280
+
+15Marimba_chn13_ly1
+    ltp	, 0
+    ldelay	, 2688
+    notedv	, 15, 144, 53
+    ldelay	, 9696
+    notedv	, 42, 48, 69
+    notedv	, 40, 240, 69
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn13_ly2
+    ltp	, 0
+    ldelay	, 12552
+    notedv	, 37, 264, 69
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn14_ly0
+    ltp	, 0
+    ldelay	, 600
+    notedv	, 29, 24, 76
+    notevg	, 34, 76, 0
+    notedvg	, 36, 576, 76, 234
+    notedv	, 27, 24, 82
+    notevg	, 32, 82, 0
+    ldelay	, 840
+    notedv	, 34, 48, 49
+    notevg	, 29, 49, 0
+    notevg	, 36, 49, 0
+    notevg	, 29, 49, 0
+    notevg	, 34, 49, 0
+    ldelay	, 10464
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn14_ly1
+    ltp	, 0
+    ldelay	, 2136
+    notedv	, 38, 48, 49
+    notevg	, 34, 49, 0
+    notevg	, 38, 49, 0
+    notedvg	, 36, 240, 49, 204
+    notedv	, 46, 12, 53
+    notevg	, 48, 53, 0
+    notedvg	, 50, 24, 53, 128
+    notevg	, 48, 53, 128
+    notedv	, 46, 12, 53
+    ldelay	, 10212
+    end	
+; Section total ticks: 12816
+
+15Marimba_chn15_ly0
+    ltp	, 0
+    ldelay	, 336
+    notedvg	, 46, 48, 82, 192
+    notedv	, 41, 6, 82
+    notedv	, 41, 7, 69
+    loop	, 2
+    notedv	, 41, 7, 55
+    loopend	
+    loop	, 2
+    notedv	, 41, 7, 43
+    loopend	
+    notevg	, 41, 33, 0
+    ldelay	, 840
+    notedv	, 39, 24, 82
+    notevg	, 44, 82, 0
+    notedvg	, 48, 72, 82, 170
+    notedvg	, 48, 360, 82, 238
+    notedvg	, 50, 24, 74, 128
+    notevg	, 48, 74, 128
+    notevg	, 44, 74, 128
+    notevg	, 41, 74, 0
+    notevg	, 39, 74, 128
+    notedv	, 53, 12, 64
+    ldelay	, 3492
+    loop	, 3
+    call	, _chn10_ly0_call34
+    call	, _chn10_ly0_call35
+    call	, _chn10_ly0_call34
+    notedvg	, 56, 24, 88, 128
+    notevg	, 51, 88, 128
+    notevg	, 54, 88, 128
+    call	, _chn5_ly0_call33
+    notedvg	, 47, 24, 88, 128
+    loopend	
+    call	, _chn10_ly0_call34
+    call	, _chn10_ly0_call35
+    call	, _chn10_ly0_call34
+    notedvg	, 58, 24, 88, 128
+    notevg	, 51, 88, 128
+    notevg	, 56, 88, 128
+    notevg	, 54, 88, 128
+    notevg	, 52, 88, 128
+    notedv	, 51, 12, 88
+    ldelay	, 5916
+    end	
+; Section total ticks: 12034
+
+; Channel Headers
+
+_chn3_call8
+    cvol	, 127
+    delay	, 24
+    call	, _chn7_call9
+    end	
+; Section total ticks: 0
+
+_chn5_call24
+    cvol	, 101
+    delay	, 24
+    end	
+; Section total ticks: 24
+
+_chn5_call25
+    cvol	, 106
+    delay	, 24
+    end	
+; Section total ticks: 24
+
+_chn7_call9
+    cvol	, 123
+    delay	, 24
+    cvol	, 118
+    delay	, 24
+    cvol	, 113
+    delay	, 24
+    cvol	, 108
+    delay	, 24
+    cvol	, 104
+    delay	, 24
+    cvol	, 99
+    delay	, 24
+    cvol	, 94
+    end	
+; Section total ticks: 144
+
+_chn10_call14
+    cvol	, 84
+    delay	, 24
+    cvol	, 88
+    delay	, 24
+    call	, _chn10_call24
+    end	
+; Section total ticks: 0
+
+_chn10_call17
+    cvol	, 110
+    delay	, 24
+    end	
+; Section total ticks: 24
+
+_chn10_call18
+    cvol	, 114
+    delay	, 144
+    cvol	, 108
+    delay	, 24
+    end	
+; Section total ticks: 168
+
+_chn10_call24
+    cvol	, 92
+    delay	, 24
+    cvol	, 97
+    delay	, 24
+    end	
+; Section total ticks: 48
+
+; Note Layers
+
+_chn0_ly0_call7
+    notedvg	, 63, 24, 81, 128
+    notevg	, 63, 57, 128
+    end	
+; Section total ticks: 48
+
+; Calls
+
+_chn1_ly0_call10
+    notedvg	, 56, 24, 66, 128
+    notedvg	, 56, 72, 66, 213
+    notedvg	, 58, 24, 66, 128
+    notedvg	, 58, 72, 66, 213
+    end	
+; Section total ticks: 192
+
+; Note Layers
+
+_chn3_ly0_call9
+    notedvg	, 32, 24, 67, 128
+    notevg	, 39, 67, 128
+    end	
+; Section total ticks: 48
+
+; Calls
+
+_chn3_ly0_call12
+    notedvg	, 39, 24, 67, 128
+    notevg	, 35, 67, 128
+    end	
+; Section total ticks: 48
+
+; Note Layers
+
+_chn5_ly0_call15
+    notedvg	, 52, 24, 87, 128
+    notedvg	, 52, 72, 87, 213
+    notedvg	, 54, 24, 87, 128
+    end	
+; Section total ticks: 120
+
+; Calls
+
+_chn5_ly0_call20
+    notedvg	, 47, 24, 87, 128
+    notedvg	, 47, 72, 87, 213
+    notedvg	, 49, 24, 87, 128
+    notedvg	, 49, 72, 87, 213
+    end	
+; Section total ticks: 192
+
+; Note Layers
+
+_chn5_ly0_call33
+    notedvg	, 52, 24, 87, 128
+    notevg	, 51, 87, 128
+    end	
+; Section total ticks: 48
+
+; Calls
+
+_chn6_ly0_call29
+    notedvg	, 32, 24, 98, 128
+    notevg	, 39, 98, 128
+    end	
+; Section total ticks: 48
+
+; Note Layers
+
+_chn6_ly0_call30
+    notedvg	, 40, 24, 98, 128
+    notevg	, 37, 98, 128
+    notevg	, 39, 98, 128
+    notevg	, 35, 98, 128
+    notevg	, 37, 98, 128
+    notevg	, 34, 98, 128
+    end	
+; Section total ticks: 144
+
+; Calls
+
+_chn6_ly0_call34
+    notedvg	, 42, 24, 98, 128
+    notevg	, 40, 98, 128
+    notevg	, 39, 98, 128
+    end	
+; Section total ticks: 72
+
+; Note Layers
+
+_chn6_ly0_call44
+    notedvg	, 40, 24, 99, 128
+    notedvg	, 40, 72, 99, 213
+    notedvg	, 42, 24, 99, 128
+    notedvg	, 42, 72, 99, 213
+    end	
+; Section total ticks: 192
+
+; Calls
+
+_chn7_ly0_call39
+    notedvg	, 28, 24, 74, 128
+    notedvg	, 28, 72, 74, 213
+    end	
+; Section total ticks: 96
+
+; Note Layers
+
+_chn9_ly0_call10
+    notedv	, 17, 12, 83
+    notevg	, 18, 61, 0
+    notevg	, 18, 83, 0
+    end	
+; Section total ticks: 36
+
+; Calls
+
+_chn9_ly1_call17
+    notedv	, 17, 6, 83
+    notevg	, 18, 70, 0
+    end	
+; Section total ticks: 12
+
+; Note Layers
+
+_chn9_ly1_call39
+    notedv	, 18, 12, 70
+    notevg	, 18, 56, 0
+    end	
+; Section total ticks: 24
+
+; Calls
+
+_chn9_ly1_call77
+    notedvg	, 16, 24, 75, 10
+    notevg	, 19, 62, 138
+    end	
+; Section total ticks: 48
+
+; Note Layers
+
+_chn9_ly1_call84
+    call	, _chn9_ly1_call96
+    notedv	, 18, 24, 58
+    end	
+; Section total ticks: 48
+
+; Calls
+
+_chn9_ly1_call96
+    notedv	, 18, 12, 62
+    notevg	, 18, 46, 0
+    end	
+; Section total ticks: 24
+
+; Note Layers
+
+_chn10_ly0_call34
+    notedvg	, 44, 24, 86, 128
+    notevg	, 51, 86, 128
+    end	
+; Section total ticks: 48
+
+; Calls
+
+_chn10_ly0_call35
+    notedvg	, 52, 24, 86, 128
+    notevg	, 49, 86, 128
+    notevg	, 51, 86, 128
+    notevg	, 47, 86, 128
+    notevg	, 49, 86, 128
+    notevg	, 46, 86, 128
+    end	
+; Section total ticks: 144
+
+; Note Layers
+
+_chn10_ly1_call7
+    notedv	, 37, 12, 87
+    notevg	, 35, 87, 0
+    end	
+; Section total ticks: 24
+
+; Calls
+
+_chn10_ly1_call9
+    notedv	, 34, 12, 87
+    notevg	, 32, 87, 0
+    notevg	, 30, 87, 0
+    notevg	, 32, 87, 0
+    notevg	, 34, 87, 0
+    notevg	, 37, 87, 0
+    end	
+; Section total ticks: 72
+
