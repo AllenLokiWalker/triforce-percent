@@ -53,8 +53,8 @@ SAURAEN \
 REBECCAETRIPP
 
 Animation \
-AEROARTWORK \
-SAURAEN
+SAURAEN \
+AEROARTWORK
 
 Cinema Scenes \
 SAURAEN
@@ -62,7 +62,7 @@ SAURAEN
 Textures \
 KIM-SUKLEY \
 \/ZEL\/ \
-AEROARTWORK \
+CDI-FAILS \
 SAURAEN
 
 Scenario \
@@ -78,6 +78,12 @@ YUKLOJ
 
 Voice Actor \
 ZERO
+
+Motion Capture Actor \
+TBD
+
+Motion Capture Technician \
+TBD
 
 ### PROGRAM UNIT
 
@@ -106,49 +112,35 @@ SAURAEN \
 Game / Actor Patches \
 SAURAEN
 
-### TOOL UNIT
-
 Build Toolchain \
 SAURAEN
-
-z64hdr \
-RANKAISIJA \
-Z64ME \
-SAURAEN
-
-fast64 \
-KURETHEDEAD \
-SAURAEN \
-\/ZEL\/
-
-seq64 \
-SAURAEN
-
-OoT Decomp \
-A BUNCH OF CLEVER FOLKS
 
 ### SUPPORT UNIT
 
 Technical Support \
-MZXRULES \
+\/ZEL\/ \
 Z64ME \
+MZXRULES \
 THARO \
 JACK WALKER
 
-GDQ / TASbot Liaison \
-DWANGOAC
-
 Video Editing \
 MUSKET012 \
-GRAVATOS
+GRAVATOS \
+SAVESTATE \
+SAURAEN
 
 YouTube Partner Channels \
-SWANKYBOX
+SWANKYBOX \
+TBD
 
 Special Thanks \
 KAZE EMANUAR \
 XDANIEL \
 ARIANA ALMANDOZ
+
+Producer \
+DWANGOAC
 
 ### PRESENTED AT
 
