@@ -73,7 +73,7 @@ static s32 updateCommon(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void update_Wait(Entity *en, GlobalContext *globalCtx){
-	if(gSaveContext.timer2Value >= -SECONDS_RUN_IN){
+	if(gSaveContext.timer2Value >= -SECONDS_RUN_IN - 1){
 		en->invisible = 0;
 		en->timer = 0;
 		en->actor.update = (ActorFunc)update_RunIn;

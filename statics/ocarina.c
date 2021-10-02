@@ -38,7 +38,7 @@ static const DetectableSong VanillaPatchedDetectableSongs[12] = {
 };
 
 static const DetectableSong LongOfTime_Detectable = {
-    8, {0x9, 0xC, 0xB, 0x7, 0x5, 0x7, 0x9, 0x2} //Long
+    8, {0x7, 0x5, 0x7, 0x9, 0x2, 0x0, 0x4, 0x2} //Long
 };
 
 static const DetectableSong OvertureOfSages_Detectable = {

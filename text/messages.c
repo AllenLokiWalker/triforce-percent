@@ -22,7 +22,7 @@ DECLARE_MESSAGE(0x0B11, BOX_BLACK, POS_MIDDLE,
 DECLARE_MESSAGE(0x0B12, BOX_BLACK, POS_MIDDLE,
     "No, no! These are crawlies!" NEWLINE
     "Crawlies are dumb. I want a flying" NEWLINE
-    "bug. You know, colorful, with wings." BOX_BREAK
+    "bug. You know, colorful, with wings." BOX_BREAK UNSKIPPABLE
     "They like flowers, so you might" NEWLINE
     "find one somewhere people grow lots" NEWLINE
     "of different kinds of flowers."

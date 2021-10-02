@@ -34,9 +34,10 @@ void Statics_SetGameState(){
     gSaveContext.eventChkInf[0xC] |= 0x0002; //Spoke to Saria on Lost Woods Bridge
     gSaveContext.itemGetInf[0x2] |= 0x0478; //Obtained Mask of Truth, all trading masks
     gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
-    //WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
-    //Statics_GiveLongOfTime();
-    //Statics_GiveOvertureOfSages();
+    //TODO
+    WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+    Statics_GiveLongOfTime();
+    Statics_GiveOvertureOfSages();
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
@@ -271,6 +272,13 @@ void Statics_FixWaterSpawn(){
     }
 }
 
+void Statics_KeepTimerNegative(){
+    if((gSaveContext.eventInf[1] & 1) && (LINK_IS_CHILD) 
+            && gSaveContext.timer2Value < -15 && gSaveContext.timer2Value > -20){
+        gSaveContext.timer2Value = -90;
+    }
+}
+
 void Statics_Player_Init(){
     //Patch overwrote 
     //globalCtx->shootingGalleryStatus = globalCtx->bombchuBowlingStatus = 0;
@@ -289,6 +297,7 @@ void Statics_Player_Update(){
     Statics_PatchShop();
     Statics_MoveOddPotionToChild();
     Statics_FixWaterSpawn();
+    Statics_KeepTimerNegative();
     Statics_AnimePlayerUpdate();
     Statics_InterfacePlayerUpdate();
 }
