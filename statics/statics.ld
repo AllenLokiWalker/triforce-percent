@@ -6,6 +6,7 @@ INCLUDE ../loader/fast_loader/fast_loader.out.ld
 INCLUDE ../loader/debugger/debugger.out.ld
 INCLUDE ../loader/dma_patcher/dma_patcher.out.ld
 INCLUDE ../scene/TriforceRoom/TriforceRoom_scene.out.ld
+INCLUDE ../scene/Ending/Ending_scene.out.ld
 INCLUDE ../model/SagesCharm/object_gi_sagescharm.out.ld
 
 INCLUDE interface.ld

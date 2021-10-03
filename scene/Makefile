@@ -20,8 +20,9 @@ OUTFILES = \
 	TriforceRoom/TriforceRoom_scene.zscene \
 	TriforceRoom/TriforceRoom_room_0.zmap \
 	TriforceRoom/TriforceRoom_scene.out.ld \
-	EndingDemo/EndingDemo_scene.zscene \
-	EndingDemo/EndingDemo_room_0.zmap
+	Ending/Ending_scene.zscene \
+	Ending/Ending_room_0.zmap \
+	Ending/Ending_scene.out.ld
 ROOMROMGOAWAY = \
 	-D_UnicornFountain_room_0SegmentRomStart=0xDEADBEEF \
 	-D_UnicornFountain_room_0SegmentRomEnd=0xDEADBEEF \
@@ -31,8 +32,8 @@ ROOMROMGOAWAY = \
 	-D_ChamberOfSages_room_0SegmentRomEnd=0xDEADBEEF \
 	-D_TriforceRoom_room_0SegmentRomStart=0xDEADBEEF \
 	-D_TriforceRoom_room_0SegmentRomEnd=0xDEADBEEF \
-	-D_EndingDemo_room_0SegmentRomStart=0xDEADBEEF \
-	-D_EndingDemo_room_0SegmentRomEnd=0xDEADBEEF
+	-D_Ending_room_0SegmentRomStart=0xDEADBEEF \
+	-D_Ending_room_0SegmentRomEnd=0xDEADBEEF
 TITLEFILES = \
 	UnicornFountain/title.ia8 \
 	ChamberOfSages/title.ia8
@@ -40,7 +41,7 @@ UNICORNFOUNTAINDIR = ../build-romhack/scene/78
 #TESTVALPHADIR = ../build-romhack/scene/41
 CHAMBEROFSAGESDIR = ../build-romhack/scene/68
 TRIFORCEROOMDIR = ../build-romhack/scene/46
-ENDINGDEMODIR = ../build-romhack/scene/58
+ENDINGDIR = ../build-romhack/scene/58
 
 CCFLAGS += $(ROOMROMGOAWAY) -Wno-incompatible-pointer-types -Wno-missing-braces -DNO_Z64HDR_GARBAGE
 
@@ -60,8 +61,8 @@ default: $(OUTFILES) $(TITLEFILES)
 	cp TriforceRoom/TriforceRoom_scene.zscene $(TRIFORCEROOMDIR)/scene.zscene
 	cp TriforceRoom/TriforceRoom_room_0.zmap $(TRIFORCEROOMDIR)/room_0.zmap
 	cp TriforceRoom/conf.txt $(TRIFORCEROOMDIR)/conf.txt
-	cp EndingDemo/EndingDemo_scene.zscene $(ENDINGDEMODIR)/scene.zscene
-	cp EndingDemo/EndingDemo_room_0.zmap $(ENDINGDEMODIR)/room_0.zmap
+	cp Ending/Ending_scene.zscene $(ENDINGDIR)/scene.zscene
+	cp Ending/Ending_room_0.zmap $(ENDINGDIR)/room_0.zmap
 
 default clean: $(MAKESUBDIRS)
 

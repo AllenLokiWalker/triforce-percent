@@ -123,6 +123,7 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 #define OVERTUREOFSAGES_VAR gSaveContext.eventChkInf[5] //0x0EDE bit 1<<15
 #define OVERTUREOFSAGES_BIT 0x8000
 #define TRIFORCE_ROOM_ENTRANCE_CS_EVENTCHKFLAG 0xCF //0x0EEC bit 1<<15
+#define ENDING_ENTRANCE_CS_EVENTCHKFLAG 0xCE //0x0EEC bit 1<<14
 
 #define Actor_IsTalking func_8002F194
 #define Actor_RequestToTalk func_8002F2F4

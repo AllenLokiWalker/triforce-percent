@@ -2,6 +2,7 @@
 #include "scene.h"
 
 #include "../scene/TriforceRoom/TriforceRoom_scene.h"
+#include "../scene/Ending/Ending_scene.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Scene Draw Configs
@@ -260,6 +261,19 @@ static void Statics_SetUpRouting(){
         .spawn = 8, .keepMusic = 0, .titleCard = 0, .transitionIn = 5, .transitionOut = 5
     };
     PatchEntranceTable(0x04A7, 4, &return_to_nabooru_entry);
+    //
+    //Debugging
+    //Kokiri Forest to House of the Know-It-All Brothers -> Kokiri Forest to Ending Scene
+    static const EntranceTableEntry forest_to_knowitall_entry = {
+        .scene = SCENE_ENDING, 
+        .spawn = 0, .keepMusic = 0, .titleCard = 0, .transitionIn = 7, .transitionOut = 7
+    };
+    PatchEntranceTable(0x00C9, 4, &forest_to_knowitall_entry);
+    static const EntranceCutsceneTableEntry dmc2_entry = {
+        .entrance = 0x00C9, .age = 2, .eventChkFlag = ENDING_ENTRANCE_CS_EVENTCHKFLAG, 
+        .segAddr = EndingCS
+    };
+    gEntranceCutsceneTable[32] = dmc2_entry;
 }
 
 void Statics_SceneCodePatches(){
