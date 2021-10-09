@@ -62,6 +62,8 @@ extern FakePadMgr padmgr;
 #define COMMAND_LEN ((DATA_LEN) - 5)
 #define HUGE_T_SIZE 23 /* ceiling((30 bits * 3 pads * 8 polls) / 32)*/
 
+#define EXTRA_FAKE_POLLS 0
+
 // Command format:
 // 4 poll format: struct { u32 crc32; u8 data[40]; u8 command_id; }
 // 8 poll format: struct { u32 crc32; u8 data[85]; u8 command_id; }
@@ -129,6 +131,14 @@ void(*fp_precmd)(void);
 void(*fp_postcmd)(void);
 s32 fl_disable_green_bar;
 
+//Profiling
+
+// #define NUM_FL_COUNTS 16
+// static u32 recent_fl_counts[NUM_FL_COUNTS];
+// static u8 recent_count_counter;
+u32 last_fl_count;
+u32 avg_fl_count;
+
 //Function prototypes
 
 void fl_init();
@@ -170,6 +180,9 @@ __attribute__((section(".start"))) void fl_init() {
 	}
 	
 	fl_disable_green_bar = 0;
+	//recent_count_counter = 0;
+	last_fl_count = 0;
+	avg_fl_count = 0;
 }
 
 // called by padmgr
@@ -180,6 +193,8 @@ static void fl_run(OSMesgQueue* queue) {
 		(*((volatile u64**)0x8011F56C))[1286] = green64; // shifted two pixels to the right of the "real" one
 		(*((volatile u64**)0x8011F56C))[1287] = green64; // due to longword alignment
 	}
+	
+	//u32 count_start = osGetCount();
 	
 	// Poll controllers
 	u32 i;
@@ -222,6 +237,23 @@ static void fl_run(OSMesgQueue* queue) {
 			for(temp = p[2].halves[1], k=0; k<8; ++k, j+=4, temp>>=2) out_data.bytes[j] |= (u8)(temp&3)<<6;
 		}
 	}
+	
+	/*
+	for(i=0; i<EXTRA_FAKE_POLLS; ++i){
+		while(osContStartQuery(queue) != 0){
+			//Wait until ready
+			osWritebackDCache(NULL, 0x4000); //busy wait, this should take a little time
+		}
+		// msg = NULL, to_block = 1
+		osRecvMesg(queue, NULL, 1);
+		OSContStatus status;
+		osContGetQuery(&status);
+	}
+	*/
+	
+	// zero pads 1 and 3 ourselves
+	bzero(&padmgr.pads[1], 6);
+	bzero(&padmgr.pads[3], 6);
 	
 	if(fp_precmd) fp_precmd();
 	
@@ -294,13 +326,23 @@ static void fl_run(OSMesgQueue* queue) {
 	}
 	fl_rumble_message(rumble_result);
 	
+	// Profiling
+	
+	/*
+	last_fl_count = osGetCount() - count_start;
+	recent_fl_counts[recent_count_counter] = last_fl_count;
+	++recent_count_counter;
+	if(recent_count_counter == NUM_FL_COUNTS) recent_count_counter = 0;
+	avg_fl_count = 0;
+	for(i=0; i<NUM_FL_COUNTS; ++i){
+		avg_fl_count += recent_fl_counts[i];
+	}
+	avg_fl_count /= NUM_FL_COUNTS;
+	*/
+	
+	// Finally 
+	
 	if(fp_postcmd) fp_postcmd();
-	
-	// zero pads 1 and 3 ourselves
-	bzero(&padmgr.pads[1], 6);
-	bzero(&padmgr.pads[3], 6);
-	
-	return;
 }
 
 static void fl_rumble_message(u32 bits) {

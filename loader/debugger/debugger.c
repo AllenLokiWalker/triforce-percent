@@ -277,6 +277,14 @@ static void Debugger_Draw()
 		globalCtx->nextEntranceIndex, gSaveContext.cutsceneIndex, gSaveContext.nextCutsceneIndex);
 	*/
 	
+	/*
+	static u32 last_frame_count = 0;
+	u32 count = osGetCount();
+	_printf(8, 8, "last %d avg %d 60hz %d",
+		last_fl_count, avg_fl_count, count - last_frame_count);
+	last_frame_count = count;
+	*/
+	
 	u8 msg;
 	for(msg=0; msg<N_DBG_MSGS; ++msg){
 		if(debugger.messages[msg].timeout){

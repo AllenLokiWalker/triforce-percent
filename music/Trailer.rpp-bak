@@ -1,4 +1,4 @@
-<REAPER_PROJECT 0.1 "5.99/x64" 1632980415
+<REAPER_PROJECT 0.1 "5.99/x64" 1633241508
   RIPPLE 0
   GROUPOVERRIDE 0 0 0
   AUTOXFADE 1
@@ -15,7 +15,7 @@
   VIDEO_CONFIG 1280 720 256
   PANMODE 3
   CURSOR 0
-  ZOOM 15.08323759476048 0 0
+  ZOOM 15.08323759476052 0 0
   VZOOMEX 3
   USE_REC_CFG 0
   RECMODE 1
@@ -113,7 +113,7 @@
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 0
+    SEL 1
     REC 0 0 0 0 0 0 0
     VU 2
     TRACKHEIGHT 169 0 0
@@ -124,6 +124,91 @@
     PERF 0
     MIDIOUT -1
     MAINSEND 1 0
+    <FXCHAIN
+      WNDRECT 928 1568 722 436
+      SHOW 0
+      LASTSEL 1
+      DOCKED 0
+      BYPASS 0 0 0
+      <VIDEO_EFFECT "Video processor" ""
+        <CODE
+          |// Track opacity/zoom/pan
+          |//@param1:opacity 'opacity' 1
+          |//@param2:zoom 'zoom' 0 -10 10 0
+          |//@param3:xoffs 'X offset' 0 -1 1 0
+          |//@param4:yoffs 'Y offset' 0 -1 1 0
+          |//@param5:rotate 'rotate' 0 -360 360 0 1
+          |//@param7:filter 'filter' 0 0 1 0.5 1
+          |//@param8:clear 'clear bg' 1 0 1 0.5 1
+          |//@param9:force_w 'force width' 0 0 2600 1024 2
+          |//@param10:force_h 'force height' 0 0 2600 1024 2
+          |//@param11:paspect 'preserve aspect' 1 0 1 0.5 1
+          |
+          |(bg_img=input_ismaster() ? -2 : input_track(0)) ? (
+          |  force_w &= -2; force_h &= -2;
+          |  force_w && !force_h ? force_h = (force_w * project_h / project_w)&-2;
+          |  force_h && !force_w ? force_w = (force_h * project_w / project_h)&-2;
+          |  force_w>0 && force_h>0 ? ( project_w=force_w; project_h=force_h );
+          |
+          |  w = opacity < 0.01 ? 0 : opacity > 0.99 ? 1 : opacity;
+          |  gfx_a2=0;
+          |  gfx_blit((w < 1 || clear < 0.5) ? bg_img : -2,1);
+          |
+          |  w > 0 ? (
+          |    gfx_mode = filter>0.5 ? 256 : 0;
+          |    gfx_a=w;
+          |    z = 10^(zoom/10);
+          |    dw = (project_w*z)&-2;
+          |    dh = (project_h*z)&-2;
+          |    x = (project_w - dw + xoffs*(project_w+dw))*.5;
+          |    y = (project_h - dh + yoffs*(project_h+dh))*.5;
+          |    rotate == 0 ? gfx_blit(0,paspect, x|0,y|0,dw,dh) : (
+          |      input_info(0,srcw,srch);
+          |      sc=2.0; sc2=sc*.5 - 0.5;
+          |      gfx_rotoblit(0,rotate*$pi/180,(x-dw*sc2)|0,(y-dh*sc2)|0,dw*sc,dh*sc, -srcw*sc2, -srch*sc2, srcw*sc, srch*sc);
+          |    );
+          |  );
+          |);
+        >
+        CODEPARM 1.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 1.0000000000 0.0000000000 0.0000000000 1.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000
+      >
+      FLOATPOS 0 0 0 0
+      FXID {00274910-D2D5-4847-8255-1B411DE5A7E1}
+      <PARMENV 0 0 1 0.5
+        ACT 1 -1
+        VIS 1 0 1
+        LANEHEIGHT 0 0
+        ARM 1
+        DEFSHAPE 0 -1 -1
+        PT 0 1 0
+        PT 118.78116148 1 0
+        PT 118.81510953 0 0
+        PT 119.39531267 0 0
+        PT 119.42926072 1 0
+      >
+      WAK 0
+      BYPASS 0 0 0
+      <VST "VST: ReaDelay (Cockos)" readelay.dll 0 "" 1919247468<5653547265646C72656164656C617900> ""
+        bGRlcu5e7f4CAAAAAQAAAAAAAAACAAAAAAAAAAIAAAABAAAAAAAAAAIAAAAAAAAATAAAAAEAAAAAABAA
+        AAAAAAAAAAABAAAALAAAAAIAAAAAAAAAAAAAAAAAgD8AAAAAAACAP9SYGTwAAAAAD38DPwAAgD8AAAAAAACAPwAAgD8AAIA/AAAAPw==
+        AAAQAAAA
+      >
+      FLOATPOS 0 0 0 0
+      FXID {D00558C2-7107-4D7F-B68B-6DFF302C6236}
+      <PARMENV 0 0 2 1
+        ACT 1 -1
+        VIS 1 0 1
+        LANEHEIGHT 0 0
+        ARM 1
+        DEFSHAPE 0 -1 -1
+        PT 0 0 0
+        PT 118.68914263 0 0
+        PT 118.83283039 0.22483987 0
+        PT 119.72858596 0.22483987 0
+        PT 119.86004497 0 0
+      >
+      WAK 0
+    >
     <ITEM
       POSITION 1.07813110434472
       SNAPOFFS 0
@@ -426,24 +511,24 @@
     <ITEM
       POSITION 117.26090554349767
       SNAPOFFS 0
-      LENGTH 1.45334495990191
+      LENGTH 1.79184037924431
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0.01 0 1 0 0
-      FADEOUT 1 0.01 0 1 0 0
+      FADEOUT 1 0.120361 0 1 0 0
       MUTE 0
       BEAT 0
       SEL 0
-      IGUID {9056228D-28F1-466B-8A7C-D7E573EEE8AB}
-      IID 4227
-      NAME a_voice.mp4
-      VOLPAN 1 0 1 -1
-      SOFFS 12.64549692877408
+      IGUID {597D75F8-04C7-4B04-86C3-F9F8104DAE9C}
+      IID 4583
+      NAME ending2.mp4
+      VOLPAN 3.466667 0 1 -1
+      SOFFS 21.26864112660584
       PLAYRATE 1 1 0 -1 0 0.0025
       CHANMODE 0
-      GUID {2BC86B95-3DB5-4A36-9284-B2A5FEC46BDD}
+      GUID {3E0162BD-1B72-4434-9695-ED578FE37B4A}
       <SOURCE VIDEO
-        FILE "D:\Videos\triforce-percent trailer\a_voice.mp4"
+        FILE "D:\Videos\triforce-percent trailer\ending2.mp4"
       >
       <VOLENV
         ACT 1 -1
@@ -451,15 +536,15 @@
         LANEHEIGHT 0 0
         ARM 0
         DEFSHAPE 0 -1 -1
-        PT -0.19709591 0 0
-        PT 1.25207524 0 0
-        PT 1.28906187 0 0
-        PT 1.59313994 0 0
-        PT 1.80165061 0 0 0 1
+        PT 0 0 0
+        PT 0.66229597 0 0 0 1
+        PT 0.72247662 0.6 0
+        PT 1.23169746 0.6 0
+        PT 1.27490407 0.49 0
       >
     >
     <ITEM
-      POSITION 119.65173466542338
+      POSITION 120.24000001224357
       SNAPOFFS 0
       LENGTH 2.18660482834424
       LOOP 1
@@ -491,7 +576,7 @@
       >
     >
     <ITEM
-      POSITION 121.83833949376762
+      POSITION 122.42660484058781
       SNAPOFFS 0
       LENGTH 0.72723277199454
       LOOP 1
@@ -523,7 +608,7 @@
       >
     >
     <ITEM
-      POSITION 122.56557226576216
+      POSITION 123.15383761258235
       SNAPOFFS 0
       LENGTH 0.72723277199454
       LOOP 1
@@ -673,6 +758,22 @@
     PERF 0
     MIDIOUT -1
     MAINSEND 1 0
+    <FXCHAIN
+      WNDRECT 835 1507 742 466
+      SHOW 0
+      LASTSEL 0
+      DOCKED 0
+      BYPASS 0 0 0
+      <VST "VST: ReaEQ (Cockos)" reaeq.dll 0 "" 1919247729<56535472656571726561657100000000> ""
+        cWVlcu5e7f4CAAAAAQAAAAAAAAACAAAAAAAAAAIAAAABAAAAAAAAAAIAAAAAAAAAqAAAAAEAAAAAABAA
+        IQAAAAQAAAAAAAAAAQAAAFQHBD8x5m1AsOj7cCW74z8ArBxaZDvvPwEIAAAAAQAAAAAAAAAAwHJAAAAAAAAA8D8AAAAAAAAAQAEIAAAAAQAAAAAAAAAAQI9AAAAAAAAA
+        8D8AAAAAAAAAQAEBAAAAAQAAAAAAAAAAiLNAAAAAAAAA8D8AAAAAAAAAQAEBAAAAAQAAAAAAAAAAAPA/AAAAAA8CAABhAQAA
+        AAAQAAAA
+      >
+      FLOATPOS 0 0 0 0
+      FXID {FBE9EE03-62F2-4F3C-8441-F3944801FE64}
+      WAK 0
+    >
     <ITEM
       POSITION 4.82539467861455
       SNAPOFFS 0
@@ -709,7 +810,7 @@
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 1
+    SEL 0
     REC 0 0 0 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0
