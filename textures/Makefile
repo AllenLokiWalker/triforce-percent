@@ -13,7 +13,8 @@ TEXTURES = \
 	ddn.ia8.inc \
 	dup.ia8.inc \
 	flat.ia8.inc \
-	sharp.ia8.inc
+	sharp.ia8.inc \
+	username_font.i4.inc
 
 STATICDATADIR := ../build-romhack/staticdata
 

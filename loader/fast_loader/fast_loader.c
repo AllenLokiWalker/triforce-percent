@@ -139,6 +139,10 @@ s32 fl_disable_green_bar;
 u32 last_fl_count;
 u32 avg_fl_count;
 
+//Twitch messages
+TwitchMessage twitch_msg_buf[MAX_TWITCH_MESSAGES];
+static u16 twitch_write_idx;
+
 //Function prototypes
 
 void fl_init();
@@ -183,6 +187,10 @@ __attribute__((section(".start"))) void fl_init() {
 	//recent_count_counter = 0;
 	last_fl_count = 0;
 	avg_fl_count = 0;
+	
+	// Twitch
+	twitch_write_idx = 0;
+	bzero(twitch_msg_buf, sizeof(TwitchMessage) * MAX_TWITCH_MESSAGES);
 }
 
 // called by padmgr
@@ -317,6 +325,16 @@ static void fl_run(OSMesgQueue* queue) {
 					out_data.command.cmd07.a2,
 					out_data.command.cmd07.a3
 				);
+			} break;
+			
+			case 10: { // Twitch message
+				for(i=0; i<4; ++i){
+					bcopy(&out_data.command.bytes[21*i], 
+						&twitch_msg_buf[twitch_write_idx], 21);
+					twitch_msg_buf[twitch_write_idx].timer = 0xFF;
+					++twitch_write_idx;
+					if(twitch_write_idx >= MAX_TWITCH_MESSAGES) twitch_write_idx = 0;
+				}
 			} break;
 			
 			default: {

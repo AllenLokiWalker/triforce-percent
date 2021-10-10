@@ -671,99 +671,12 @@ DECLARE_MESSAGE(0x0E06, BOX_BLACK, POS_MIDDLE,
     "Now, Link... What do you wish for?" NEWLINE TEXT_SPEED("\x00")
     THREE_CHOICE COLOR(GREEN) "Be King of Hyrule" NEWLINE
     "Rupees" NEWLINE
-    "A voice"
+    "See the future"
 )
 
 DECLARE_MESSAGE(0x0E07, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(YELLOW) TEXT_SPEED("\x01")
     SHIFT("\x15") "Your wish has been granted." FADE("\x46")
-)
-
-DECLARE_MESSAGE(0x0E10, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE COLOR(GREEN) TEXT_SPEED("\x02")
-    SHIFT("\x10") "I... " TEXT_SPEED("\x00") "I can talk now?"
-)
-
-DECLARE_MESSAGE(0x0E11, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE COLOR(GREEN)
-    SHIFT("\x08") "It looks like a lot of people are" NEWLINE
-    SHIFT("\x28") "listening to me." BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x28") "I must deliver a" NEWLINE
-    SHIFT("\x20") "very important message."
-)
-
-DECLARE_MESSAGE(0x0E12, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE QUICKTEXT_ENABLE COLOR(GREEN)
-    SHIFT("\x00") "Through The Legend of Zelda" NEWLINE
-    SHIFT("\x00") "series, Nintendo has created" NEWLINE
-    SHIFT("\x00") "powerful experiences for" NEWLINE
-    SHIFT("\x00") "generations of players." FADE("\x46")
-)
-
-DECLARE_MESSAGE(0x0E13, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE QUICKTEXT_ENABLE COLOR(GREEN)
-    SHIFT("\x00") "From the simple joy of" NEWLINE
-    SHIFT("\x00") "exploration to the richness of" NEWLINE
-    SHIFT("\x00") "self-discovery," FADE("\x30")
-)
-
-DECLARE_MESSAGE(0x0E14, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE QUICKTEXT_ENABLE COLOR(GREEN)
-    SHIFT("\x00") "these experiences bring" NEWLINE
-    SHIFT("\x00") "tremendous value and inspiration" NEWLINE
-    SHIFT("\x00") "to players' lives." FADE("\x46")
-)
-
-DECLARE_MESSAGE(0x0E15, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE QUICKTEXT_ENABLE COLOR(GREEN)
-    SHIFT("\x00") "It is this value which is" NEWLINE
-    SHIFT("\x00") "responsible for the series" NEWLINE
-    SHIFT("\x00") "being successful and beloved." FADE("\x46")
-)
-
-DECLARE_MESSAGE(0x0E16, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE QUICKTEXT_ENABLE COLOR(GREEN)
-    SHIFT("\x00") "We wish for this success to" NEWLINE
-    SHIFT("\x00") "continue with many future Zelda" NEWLINE
-    SHIFT("\x00") "games from Nintendo." FADE("\x46")
-)
-
-DECLARE_MESSAGE(0x0E17, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE QUICKTEXT_ENABLE COLOR(GREEN)
-    SHIFT("\x00") "We understand that protecting" NEWLINE
-    SHIFT("\x00") "intellectual property is a" NEWLINE
-    SHIFT("\x00") "necessary component of this." FADE("\x46")
-)
-
-DECLARE_MESSAGE(0x0E18, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE QUICKTEXT_ENABLE COLOR(GREEN)
-    SHIFT("\x00") "Nevertheless, we feel that there" NEWLINE
-    SHIFT("\x00") "are many ways that Nintendo can" NEWLINE
-    SHIFT("\x00") "cooperate constructively with" NEWLINE
-    SHIFT("\x00") "fan creators." FADE("\x46")
-)
-
-DECLARE_MESSAGE(0x0E19, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE QUICKTEXT_ENABLE COLOR(GREEN)
-    SHIFT("\x00") "Please, Nintendo, support our" NEWLINE
-    SHIFT("\x00") "work, and allow us to contribute" NEWLINE
-    SHIFT("\x00") "to your success." FADE("\x46")
-)
-
-DECLARE_MESSAGE(0x0E1A, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE QUICKTEXT_ENABLE COLOR(GREEN)
-    SHIFT("\x00") "Together, we will create" NEWLINE
-    SHIFT("\x00") "a bright future for" NEWLINE
-    SHIFT("\x00") "The Legend of Zelda." FADE("\x46")
-)
-
-DECLARE_MESSAGE(0x0E1B, BOX_NONE_BOTTOM, POS_VARIABLE,
-    UNSKIPPABLE COLOR(GREEN)
-    SHIFT("\x00") "Now! I have some business to" NEWLINE
-    SHIFT("\x00") "attend to in the far future." BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x00") "Thank you! I look forward to" NEWLINE
-    SHIFT("\x00") "seeing you there." BOX_BREAK_DELAYED("\x28")
-    SHIFT("\x00") TEXT_SPEED("\x01") "Hiyaaaaaaaaaah!" FADE("\x46")
 )
 
 

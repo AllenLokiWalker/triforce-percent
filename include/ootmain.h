@@ -157,6 +157,8 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 
 extern void Audio_FadeOut(u16 frames);
 
+#define Math_GetProjectionPos func_8002BE04
+
 //Inline functions
 
 static inline const void* InjectRomRamMap(u32 rom)

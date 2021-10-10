@@ -8,6 +8,7 @@ Nabooru/ \
 TriforcePiece/ \
 TriforceChest/ \
 TriforceLight/ \
+TwitchMessages/ \
 WSRCutscene/ \
 z_bg_mjin/ \
 z_bg_spot07_taki/ \
