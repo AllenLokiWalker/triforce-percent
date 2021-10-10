@@ -1,6 +1,7 @@
 INCLUDE z64hdr/oot_u10/syms.ld
 
 Audio_FadeOut = 0x800C7684;
+func_8002BE04 = 0x8001F7A0;
 func_80037F30 = 0x8002ACB8;
 
 gActorXluSetup = 0x800E8510;

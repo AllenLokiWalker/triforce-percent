@@ -5,6 +5,5 @@ extern EntranceEntry Ending_scene_header00_entranceList[];
 extern LightSettings Ending_scene_header00_lightSettings[4];
 extern u32 Ending_polygonTypes[];
 extern CollisionPoly Ending_polygons[];
-extern Vec3s Ending_vertices[431];
+extern Vec3s Ending_vertices[427];
 extern CollisionHeader Ending_collisionHeader;
-extern s32 EndingCS[];

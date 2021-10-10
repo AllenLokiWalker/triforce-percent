@@ -285,6 +285,12 @@ static void Debugger_Draw()
 	last_frame_count = count;
 	*/
 	
+	s32 tcount = 0;
+	for(int i=0; i<MAX_TWITCH_MESSAGES; ++i){
+		if(twitch_msg_buf[i].timer != 0) ++tcount;
+	}
+	_printf(8, 8, "%d msgs", tcount);
+	
 	u8 msg;
 	for(msg=0; msg<N_DBG_MSGS; ++msg){
 		if(debugger.messages[msg].timeout){
