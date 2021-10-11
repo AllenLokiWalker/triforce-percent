@@ -1,4 +1,4 @@
-include ../toolchain/make/main.mk
+include ../../toolchain/make/main.mk
 
 default: badges.inc
 
