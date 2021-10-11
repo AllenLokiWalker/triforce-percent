@@ -5,9 +5,32 @@ __attribute__((aligned(16))) static const u64 username_font[] = {
     #include "../../textures/username_font.i4.inc"
 };
 
-#define UNAME_TEX_COLS 128
-#define FRAMES_FADE 20
+__attribute__((aligned(16))) static const u64 tw_msg_case0[] = {
+    #include "../../textures/tw_msg_case0.i4.inc"
+};
 
+__attribute__((aligned(16))) static const u64 tw_msg_case1[] = {
+    #include "../../textures/tw_msg_case1.i4.inc"
+};
+
+__attribute__((aligned(16))) static const u64 tw_msg_case2[] = {
+    #include "../../textures/tw_msg_case2.i4.inc"
+};
+
+__attribute__((aligned(16))) static const u64 tw_msg_case3[] = {
+    #include "../../textures/tw_msg_case3.i4.inc"
+};
+
+__attribute__((aligned(16))) static const u64 tw_msg_exclam[] = {
+    #include "../../textures/tw_msg_exclam.i4.inc"
+};
+
+#include "../../textures/badges/badges.inc"
+
+#define UNAME_TEX_COLS 128
+#define ST_SCALE_PWR 7
+
+#define FRAMES_FADE 20
 #define MSG_POS_EXTENT_X 1000.0f
 #define MSG_POS_EXTENT_Y 300.0f
 #define MSG_POS_EXTENT_Z 300.0f
@@ -25,11 +48,15 @@ static const u16 char_starts[64] = {
     428, 436, 444, 452, 457, 464, 469, 477, 484, 496, 503, 511, 518
 };
 
-static const u16 casing_widths[4] = {
-    100, 120, 140, 160 //TODO
+static const u64 *const tw_msg_cases[4] = {
+    tw_msg_case0, tw_msg_case1, tw_msg_case2, tw_msg_case3
 };
 
-#define EXCLAM_WIDTH 5
+static const u16 casing_widths[4] = {
+    87, 89, 91, 107
+};
+
+#define EXCLAM_WIDTH 4
 
 static const Color_RGB8 uname_colors[16] = {
     {0x00, 0x00, 0xFF}, //0: Blue
@@ -63,6 +90,7 @@ static const Gfx uname_setup_dl[] = {
         AA_EN | Z_CMP | Z_UPD | IM_RD | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL |
         GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA) |
         GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)),
+    gsSPTexture(0x4000, 0x4000, 0, 0, 1),
     gsSPEndDisplayList(),
 };
 
@@ -93,10 +121,10 @@ static inline void SetupRectangle(Vtx *verts, s16 basex, s16 basey, s16 basez, s
     verts[3].v.ob[0] += sx;
     verts[2].v.ob[1] += sy;
     verts[3].v.ob[1] += sy;
-    verts[1].v.tc[1] += sx * 32;
-    verts[3].v.tc[1] += sx * 32;
-    verts[2].v.tc[0] += sy * 32;
-    verts[3].v.tc[0] += sy * 32;
+    verts[1].v.tc[1] += sx * (1 << ST_SCALE_PWR);
+    verts[3].v.tc[1] += sx * (1 << ST_SCALE_PWR);
+    verts[2].v.tc[0] += sy * (1 << ST_SCALE_PWR);
+    verts[3].v.tc[0] += sy * (1 << ST_SCALE_PWR);
 }
 
 static void SetUpMessage(u16 m, TwitchMessage *msg) {
@@ -155,7 +183,7 @@ static void SetUpMessage(u16 m, TwitchMessage *msg) {
         x += 18;
     }
     SetupRectangle(verts + 8, basex + x, basey, basez, 128, 16);
-    x += texcol;
+    x += texcol + 2;
     s16 w = casing_widths[(msg->flags & 0x30) >> 4];
     SetupRectangle(verts + 12, basex + x, basey, basez, w, 16);
     x += w;
@@ -189,6 +217,24 @@ static void update(Entity *en, GlobalContext *globalCtx){
     }
 }
 
+static inline void LoadI4Clamp(const u64 *tex, s16 cols){
+    gDPLoadMultiBlock_4b(POLY_OPA_DISP++, tex,
+        0, G_TX_RENDERTILE, G_IM_FMT_I, 16, cols, 0,
+        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 
+        G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+}
+
+static inline void LoadI4WrapT(const u64 *tex, s16 cols){
+    gDPLoadMultiBlock_4b(POLY_OPA_DISP++, tex,
+        0, G_TX_RENDERTILE, G_IM_FMT_I, 16, cols, 0,
+        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_WRAP,
+        G_TX_NOMASK, 2, G_TX_NOLOD, G_TX_NOLOD);
+}
+
+static inline void VertsAndTris(s32 m, u32 voffset){
+    gSPVertex(POLY_OPA_DISP++, GetMessageVerts(m) + voffset, 4, 0);
+    gSP2Triangles(POLY_OPA_DISP++, 0, 1, 2, 0, 2, 1, 3, 0);
+}
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
     Matrix_Translate(en->actor.world.pos.x, en->actor.world.pos.y,
@@ -222,12 +268,28 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
         TwitchMessage *msg = &twitch_msg_buf[m];
         if(msg->culled) continue;
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, msg->rgb.r, msg->rgb.g, msg->rgb.b, msg->a);
-        gDPLoadMultiBlock_4b(POLY_OPA_DISP++, GetMessageTexture(m),
-            0, G_TX_RENDERTILE, G_IM_FMT_I, 16, UNAME_TEX_COLS, 0,
-            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 
-            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSPVertex(POLY_OPA_DISP++, GetMessageVerts(m) + 8, 4, 0);
-        gSP2Triangles(POLY_OPA_DISP++, 0, 1, 2, 0, 2, 1, 3, 0);
+        LoadI4Clamp(GetMessageTexture(m), UNAME_TEX_COLS);
+        VertsAndTris(m, 8);
+    }
+    //Messages
+    for(s32 casing=0; casing<4; ++casing){
+        LoadI4Clamp(tw_msg_cases[casing], casing_widths[casing]);
+        for(s32 m=0; m<MAX_TWITCH_MESSAGES; ++m){
+            TwitchMessage *msg = &twitch_msg_buf[m];
+            if(msg->culled) continue;
+            if(((msg->flags & 0x30) >> 4) != casing) continue;
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, msg->a);
+            VertsAndTris(m, 12);
+        }
+    }
+    //Exclamation points
+    LoadI4WrapT(tw_msg_exclam, EXCLAM_WIDTH);
+    for(s32 m=0; m<MAX_TWITCH_MESSAGES; ++m){
+        TwitchMessage *msg = &twitch_msg_buf[m];
+        if(msg->culled) continue;
+        if(!((msg->flags & 0xC0) >> 6)) continue;
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, msg->a);
+        VertsAndTris(m, 16);
     }
 }
 

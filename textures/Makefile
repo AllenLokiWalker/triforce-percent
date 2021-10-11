@@ -1,5 +1,8 @@
 include ../toolchain/make/main.mk
 
+SUBDIRS = \
+	badges
+
 TEXTURES = \
 	butterfly_bottle.rgba32.inc \
 	butterfly_bottle.rgba32.bin \
@@ -14,13 +17,18 @@ TEXTURES = \
 	dup.ia8.inc \
 	flat.ia8.inc \
 	sharp.ia8.inc \
-	username_font.i4.inc
+	username_font.i4.inc \
+	tw_msg_case0.i4.inc \
+	tw_msg_case1.i4.inc \
+	tw_msg_case2.i4.inc \
+	tw_msg_case3.i4.inc \
+	tw_msg_exclam.i4.inc
 
 STATICDATADIR := ../build-romhack/staticdata
 
-.PHONY: default clean
+.PHONY: default clean $(SUBDIRS)
 
-default: $(TEXTURES)
+default: $(TEXTURES) $(SUBDIRS)
 	mkdir -p                              $(STATICDATADIR)/1
 	cp butterfly_bottle.rgba32.bin        $(STATICDATADIR)/1/staticdata.bin
 	echo "dtype 4\ndata1 0x1E\ndata2 0" > $(STATICDATADIR)/1/conf.txt
@@ -37,7 +45,10 @@ default: $(TEXTURES)
 	cp item_sages_charm.ia4.bin           $(STATICDATADIR)/5/staticdata.bin
 	echo "dtype 5\ndata1 0x6F\ndata2 0" > $(STATICDATADIR)/5/conf.txt
 
-clean: texclean
+clean: texclean $(SUBDIRS)
+
+$(SUBDIRS):
+	$(MAKE) -C $@ $(MAKECMDGOALS)
 
 include ../toolchain/make/textures.mk
 include ../toolchain/make/c.mk
