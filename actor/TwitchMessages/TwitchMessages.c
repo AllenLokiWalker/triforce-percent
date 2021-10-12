@@ -1,6 +1,22 @@
 #include "ootmain.h" 
 #include "../../loader/fast_loader/fast_loader.h"
 
+#define NUM_BADGES 34
+#define NUM_PALETTES 4
+#define BADGE_SIZE 24
+#define BADGES_PER_GROUP 7
+#define NUM_BADGE_GROUPS ((NUM_BADGES + BADGES_PER_GROUP - 1) / BADGES_PER_GROUP)
+#define NUM_CMDS_PER_TILE_SETUP_DL 11
+
+#define UNAME_TEX_COLS 128
+#define ST_SCALE_PWR 7
+
+#define FRAMES_FADE 20
+#define MSG_POS_EXTENT_X 1000.0f
+#define MSG_POS_EXTENT_Y 300.0f
+#define MSG_POS_EXTENT_Z 300.0f
+#define MSG_SCALE 1.5f
+
 __attribute__((aligned(16))) static const u64 username_font[] = {
     #include "../../textures/username_font.i4.inc"
 };
@@ -26,15 +42,6 @@ __attribute__((aligned(16))) static const u64 tw_msg_exclam[] = {
 };
 
 #include "../../textures/badges/badges.inc"
-
-#define UNAME_TEX_COLS 128
-#define ST_SCALE_PWR 7
-
-#define FRAMES_FADE 20
-#define MSG_POS_EXTENT_X 1000.0f
-#define MSG_POS_EXTENT_Y 300.0f
-#define MSG_POS_EXTENT_Z 300.0f
-#define MSG_SCALE 1.5f
 
 static const u16 char_starts[64] = {
     0, 
@@ -94,6 +101,30 @@ static const Gfx uname_setup_dl[] = {
     gsSPEndDisplayList(),
 };
 
+#define SETTILESIZEVAL ((BADGE_SIZE-1)<<G_TEXTURE_IMAGE_FRAC)
+
+static const Gfx badge_setup_dl[] = {
+    //Rest of load palettes
+    gsDPTileSync(),
+    gsDPSetTile(0, 0, 0, 256 /* word addr */,
+        7, 0, 0, 0, 0, 0, 0, 0),
+    gsDPLoadSync(),
+    gsDPLoadTLUTCmd(7, NUM_PALETTES*16 - 1),
+    gsDPPipeSync(),
+    //Badge tile sizes
+    gsDPSetTileSize(0, 0, 0, SETTILESIZEVAL, SETTILESIZEVAL),
+    gsDPSetTileSize(1, 0, 0, SETTILESIZEVAL, SETTILESIZEVAL),
+    gsDPSetTileSize(2, 0, 0, SETTILESIZEVAL, SETTILESIZEVAL),
+    gsDPSetTileSize(3, 0, 0, SETTILESIZEVAL, SETTILESIZEVAL),
+    gsDPSetTileSize(4, 0, 0, SETTILESIZEVAL, SETTILESIZEVAL),
+    gsDPSetTileSize(5, 0, 0, SETTILESIZEVAL, SETTILESIZEVAL),
+    gsDPSetTileSize(6, 0, 0, SETTILESIZEVAL, SETTILESIZEVAL),
+    //Badge load tile info
+    gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_16b, 0, 0, 7, 
+        0, 0, 0, 0, 0, 0, 0),
+    gsSPEndDisplayList(),
+};
+
 #define RAM_END 0x80800000
 #define UNAME_TEX_SZ (UNAME_TEX_COLS * sizeof(u64))
 #define UNAME_TEX_BEGIN (RAM_END - MAX_TWITCH_MESSAGES * UNAME_TEX_SZ)
@@ -109,7 +140,7 @@ static inline Vtx *GetMessageVerts(u16 m) {
     return (Vtx*)(VTX_BEGIN + m * VTX_PERMSG_SZ);
 }
 
-static inline void SetupRectangle(Vtx *verts, s16 basex, s16 basey, s16 basez, s16 sx, s16 sy){
+static inline void SetupRectangleInternal(Vtx *verts, s16 basex, s16 basey, s16 basez){
     for(s32 i=0; i<4; ++i){
         verts[i].v.ob[0] = basex;
         verts[i].v.ob[1] = basey;
@@ -117,6 +148,10 @@ static inline void SetupRectangle(Vtx *verts, s16 basex, s16 basey, s16 basez, s
         verts[i].v.tc[0] = -16;
         verts[i].v.tc[1] = -16;
     }
+}
+
+static inline void SetupRectangle(Vtx *verts, s16 basex, s16 basey, s16 basez, s16 sx, s16 sy){
+    SetupRectangleInternal(verts, basex, basey, basez);
     verts[1].v.ob[0] += sx;
     verts[3].v.ob[0] += sx;
     verts[2].v.ob[1] += sy;
@@ -125,6 +160,18 @@ static inline void SetupRectangle(Vtx *verts, s16 basex, s16 basey, s16 basez, s
     verts[3].v.tc[1] += sx * (1 << ST_SCALE_PWR);
     verts[2].v.tc[0] += sy * (1 << ST_SCALE_PWR);
     verts[3].v.tc[0] += sy * (1 << ST_SCALE_PWR);
+}
+
+static inline void SetupRectangleBadges(Vtx *verts, s16 basex, s16 basey, s16 basez){
+    SetupRectangleInternal(verts, basex, basey, basez);
+    verts[1].v.ob[0] += 16;
+    verts[3].v.ob[0] += 16;
+    verts[2].v.ob[1] += 16;
+    verts[3].v.ob[1] += 16;
+    verts[1].v.tc[1] += BADGE_SIZE * (1 << ST_SCALE_PWR);
+    verts[3].v.tc[1] += BADGE_SIZE * (1 << ST_SCALE_PWR);
+    verts[2].v.tc[0] += BADGE_SIZE * (1 << ST_SCALE_PWR);
+    verts[3].v.tc[0] += BADGE_SIZE * (1 << ST_SCALE_PWR);
 }
 
 static void SetUpMessage(u16 m, TwitchMessage *msg) {
@@ -175,11 +222,11 @@ static void SetUpMessage(u16 m, TwitchMessage *msg) {
     
     s16 x = 0;
     if((msg->badges & 0x1F)){
-        SetupRectangle(verts, basex + x, basey, basez, 16, 16);
+        SetupRectangleBadges(verts, basex + x, basey, basez);
         x += 18;
     }
     if((msg->badges & 0x60)){
-        SetupRectangle(verts + 4, basex + x, basey, basez, 16, 16);
+        SetupRectangleBadges(verts + 4, basex + x, basey, basez);
         x += 18;
     }
     SetupRectangle(verts + 8, basex + x, basey, basez, 128, 16);
@@ -290,6 +337,33 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
         if(!((msg->flags & 0xC0) >> 6)) continue;
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, msg->a);
         VertsAndTris(m, 16);
+    }
+    //Badge palettes
+    gDPSetTextureImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, badge_palettes);
+    gSPDisplayList(POLY_OPA_DISP++, badge_setup_dl);
+    //Badges
+    u8 badge = 1;
+    for(s32 badgegroup=0; badgegroup<NUM_BADGE_GROUPS; ++badgegroup){
+        gDPSetTextureImage(POLY_OPA_DISP++, G_IM_FMT_I, G_IM_SIZ_16b, 1, 
+            (u8*)badge_textures + BADGE_SIZE * BADGE_SIZE / 2 * BADGES_PER_GROUP * badgegroup);
+        gSPDisplayList(POLY_OPA_DISP++, &badge_tile_setup_dls[NUM_CMDS_PER_TILE_SETUP_DL*badgegroup]);
+        for(s32 m=0; m<MAX_TWITCH_MESSAGES; ++m){
+            TwitchMessage *msg = &twitch_msg_buf[m];
+            if(msg->culled) continue;
+            u8 global_badge = msg->badges & 0x1F;
+            u8 channel_badge = (msg->badges & 0x60) >> 5;
+            if(global_badge >= badge && global_badge < badge + BADGES_PER_GROUP){
+                gSPTexture(POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, global_badge - badge, G_ON);
+                VertsAndTris(m, 0);
+                gSPTexture(POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, global_badge - badge, G_OFF);
+            }
+            if(channel_badge != 0 && badgegroup == NUM_BADGE_GROUPS-1){
+                gSPTexture(POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, channel_badge + 2, G_ON);
+                VertsAndTris(m, 4);
+                gSPTexture(POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, channel_badge + 2, G_OFF);
+            }
+        }
+        badge += BADGES_PER_GROUP;
     }
 }
 

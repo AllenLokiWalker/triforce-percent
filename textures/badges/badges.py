@@ -85,15 +85,7 @@ with open('badges.inc', 'w') as f:
                     i += 1
                 f.write(', ')
             f.write('\n')
-    f.write('};\n\nstatic const u8 badge_plt_idx[] = {\n    ')
-    i = 0
-    for badge in badges_data:
-        f.write(str(badge['plt']) + ', ')
-        i += 1
-        if i == 16:
-            f.write('\n    ')
-            i = 0
-    f.write('\n};\n\n__attribute__((aligned(16))) static const u16 badge_palettes[] = {\n')
+    f.write('};\n\n__attribute__((aligned(16))) static const u16 badge_palettes[] = {\n')
     for p in palettes:
         f.write('    ')
         for i in range(16):
@@ -103,4 +95,17 @@ with open('badges.inc', 'w') as f:
                 val = ((p[4*i+0] >> 3) << 11) | ((p[4*i+1] >> 3) << 6) | ((p[4*i+2] >> 3) << 1) | 1
             f.write('0x' + format(val, '04x') + ', ')
         f.write('\n')
+    f.write('};\n\nstatic const Gfx badge_tile_setup_dls[] = {\n')
+    bi = 0
+    while bi < len(badges_data):
+        f.write('    gsDPLoadSync(),\n')
+        f.write('    gsDPLoadBlock(7, 0, 0, ((BADGE_SIZE*BADGE_SIZE+3)>>2)-1, CALC_DXT_4b(BADGE_SIZE)),\n')
+        f.write('    gsDPPipeSync(),\n')
+        for t in range(7):
+            if bi >= len(badges_data): break
+            p = badges_data[bi]['plt']
+            f.write('    gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_4b, ((((BADGE_SIZE)>>1)+7)>>3), 0,\n')
+            f.write('        ' + str(t) + ', ' + str(p) + ', 0, 0, 0, 0, 0, 0),\n')
+            bi += 1
+        f.write('    gsSPEndDisplayList(),\n')
     f.write('};\n\n')

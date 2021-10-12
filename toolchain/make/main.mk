@@ -41,7 +41,7 @@ OC = mips64-objcopy
 
 # Main flags
 
-CCFLAGS := -mips3 -mabi=32 -mtune=vr4300 -mno-gpopt -fomit-frame-pointer \
+CCFLAGS := -mips3 -mabi=32 -mtune=vr4300 -mfix4300 -mno-gpopt -fomit-frame-pointer \
 	-mno-check-zero-division -mno-explicit-relocs -mno-memcpy \
 	-fno-toplevel-reorder -fno-reorder-blocks -fno-builtin \
 	--std=gnu99 -Wall -Werror -Wno-main \
