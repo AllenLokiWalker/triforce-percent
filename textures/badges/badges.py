@@ -28,7 +28,7 @@ for p in palette_files:
         #print('Palette ' + str(len(palettes)) + ': ' + b.hex())
         palettes.append(ib)
 
-outsz = 24
+outsz = 32
 
 for badge in badges_data:
     print('Badge ' + badge['path'])
@@ -99,13 +99,16 @@ with open('badges.inc', 'w') as f:
     bi = 0
     while bi < len(badges_data):
         f.write('    gsDPLoadSync(),\n')
-        f.write('    gsDPLoadBlock(7, 0, 0, ((BADGE_SIZE*BADGE_SIZE+3)>>2)-1, CALC_DXT_4b(BADGE_SIZE)),\n')
+        f.write('    gsDPLoadBlock(7, 0, 0, ((BADGE_SIZE*BADGE_SIZE*BADGES_PER_GROUP+3)>>2)-1,\n')
+        f.write('        CALC_DXT_4b(BADGE_SIZE)),\n')
         f.write('    gsDPPipeSync(),\n')
-        for t in range(7):
+        for t in range(4):
             if bi >= len(badges_data): break
             p = badges_data[bi]['plt']
-            f.write('    gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_4b, ((((BADGE_SIZE)>>1)+7)>>3), 0,\n')
-            f.write('        ' + str(t) + ', ' + str(p) + ', 0, 0, 0, 0, 0, 0),\n')
+            f.write('    gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_4b, ((((BADGE_SIZE)>>1)+7)>>3),\n')
+            f.write('        ' + str(t) + '*(BADGE_SIZE*BADGE_SIZE)/16, ' + str(t) + ', ' + str(p) + ', 0, 0, 0, 0, 0, 0),\n')
+            #f.write('    gsDPSetTileSize(' + str(t) + ', 0, 0, (BADGE_SIZE-1)<<G_TEXTURE_IMAGE_FRAC,\n')
+            #f.write('        (BADGE_SIZE-1)<<G_TEXTURE_IMAGE_FRAC),\n')
             bi += 1
         f.write('    gsSPEndDisplayList(),\n')
     f.write('};\n\n')
