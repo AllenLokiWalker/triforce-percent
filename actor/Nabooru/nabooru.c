@@ -1,8 +1,12 @@
 #include "ootmain.h"
 #include "object_nb.h"
-
-#include "gerudoway_cs.c"
 #include "../../statics/statics.h"
+
+#include "NbXtraAnimPullingoutshehnaiAnim.c"
+#include "NbXtraAnimHoldingshehnaiAnim.c"
+#include "NbXtraAnimPlayingshehnaiAnim.c"
+#include "ShehnaiDL.c"
+#include "gerudoway_cs.c"
 
 #define DEP_OBJECT_NUM 0xB3
 #define NPC_ACTION_NUM 40
@@ -10,6 +14,7 @@
 #define SHADOW_SIZE 25.0f
 #define NUM_LIMBS 19
 #define NB_LIMB_TORSO 0x08
+#define NB_LIMB_LHAND 0x0B
 #define NB_LIMB_HEAD 0x0F
 
 static ColliderCylinderInitType1 sCylinderInit = {
@@ -33,6 +38,8 @@ typedef struct {
 	u8 initted;
 	u8 eyeTextureIndex;
 	u8 blinkTimer;
+	u8 eyeState;
+	u8 drawShehnai;
 	s16 timer;
 	Actor *guardActor;
 } Entity;
@@ -68,9 +75,9 @@ static void update_Reload(Entity *en, GlobalContext *globalCtx);
 static void update_WaitAction1(Entity *en, GlobalContext *globalCtx);
 static void update_WaitChoice(Entity *en, GlobalContext *globalCtx);
 static void update_WaitAction2(Entity *en, GlobalContext *globalCtx);
-static void update_PreTakeOutInstrument(Entity *en, GlobalContext *globalCtx);
-static void update_TakingOutInstrument(Entity *en, GlobalContext *globalCtx);
-static void update_PlayingInstrument(Entity *en, GlobalContext *globalCtx);
+static void update_PullingOutShehnai(Entity *en, GlobalContext *globalCtx);
+static void update_HoldingShehnai(Entity *en, GlobalContext *globalCtx);
+static void update_PlayingShehnai(Entity *en, GlobalContext *globalCtx);
 static void update_Done(Entity *en, GlobalContext *globalCtx);
 
 static void init(Entity *en, GlobalContext *globalCtx) {
@@ -83,15 +90,18 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 		NABOORU_CONTINUE_VAR &= ~NABOORU_CONTINUE_BIT;
 		en->actor.update = (ActorFunc)update_Reload;
 		en->actor.textId = 0x0B68;
+	/*
 	}else if((LONGOFTIME_VAR & LONGOFTIME_BIT)){
 		en->actor.update = (ActorFunc)update_Done;
-		en->actor.textId = 0x0B6C;
+		en->actor.textId = 0x0B6D;*/ //TODO TESTING
 	}else{
 		en->actor.update = (ActorFunc)update_Init;
 		en->actor.textId = 0x0B60;
 	}
 	en->eyeTextureIndex = 0;
 	en->blinkTimer = 0;
+	en->eyeState = 0;
+	en->drawShehnai = 0;
 	en->timer = 0;
 	en->guardActor = NULL;
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, SHADOW_SIZE);
@@ -109,12 +119,29 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void updateEyes(Entity *en){
-	if(en->blinkTimer == 0){
-		en->blinkTimer = Rand_S16Offset(60, 60);
+	if(en->eyeState == 1){
+		++en->blinkTimer;
+		en->eyeTextureIndex = 1;
+		if(en->blinkTimer > 5){
+			en->eyeState = 2;
+		}
+	}else if(en->eyeState == 2){
+		en->eyeTextureIndex = 2;
+	}else if(en->eyeState == 3){
+		++en->blinkTimer;
+		en->eyeTextureIndex = 1;
+		if(en->blinkTimer > 5){
+			en->eyeState = 0;
+			en->blinkTimer = 20;
+		}
 	}else{
-		--en->blinkTimer;
+		if(en->blinkTimer == 0){
+			en->blinkTimer = Rand_S16Offset(60, 60);
+		}else{
+			--en->blinkTimer;
+		}
+		en->eyeTextureIndex = (en->blinkTimer < 3) ? en->blinkTimer : 0;
 	}
-	en->eyeTextureIndex = (en->blinkTimer < 3) ? en->blinkTimer : 0;
 }
 
 static Actor *FindGuardToTalk(Actor *nabooru, GlobalContext *globalCtx){
@@ -350,37 +377,42 @@ static void update_WaitChoice(Entity *en, GlobalContext *globalCtx){
 static void update_WaitAction2(Entity *en, GlobalContext *globalCtx){
 	updateCommon(en, globalCtx, 0);
 	if(CHECK_NPC_ACTION(NPC_ACTION_SLOT, 2)){
-		Animation_Change(&en->skelAnime, &gNabooruSittingCrossLeggedTurningToLookUpRightTransitionAnim, 1.0f, 0.0f, 
-			Animation_GetLastFrame(&gNabooruSittingCrossLeggedTurningToLookUpRightTransitionAnim), ANIMMODE_ONCE, -4.0f);
-		en->actor.update = (ActorFunc)update_PreTakeOutInstrument;
-		en->timer = 0;
+		Animation_Change(&en->skelAnime, &NbXtraAnimPullingoutshehnaiAnim, 1.0f, 0.0f, 
+			Animation_GetLastFrame(&NbXtraAnimPullingoutshehnaiAnim), ANIMMODE_ONCE, -8.0f);
+		en->actor.update = (ActorFunc)update_PullingOutShehnai;
 	}
 }
 
-static void update_PreTakeOutInstrument(Entity *en, GlobalContext *globalCtx){
-	updateCommon(en, globalCtx, -1); //Let return to center position
-	if(en->timer >= 8){
-		en->actor.update = (ActorFunc)update_TakingOutInstrument;
-	}
-	++en->timer;
-}
-
-static void update_TakingOutInstrument(Entity *en, GlobalContext *globalCtx){
+static void update_PullingOutShehnai(Entity *en, GlobalContext *globalCtx){
 	s32 animFinished = updateCommon(en, globalCtx, -1);
 	if(animFinished){
-		Animation_Change(&en->skelAnime, &gNabooruSittingCrossLeggedLookingUpRightAnim, 1.0f, 0.0f, 
-			Animation_GetLastFrame(&gNabooruSittingCrossLeggedLookingUpRightAnim), ANIMMODE_LOOP, -4.0f);
-		en->actor.update = (ActorFunc)update_PlayingInstrument;
+		Animation_Change(&en->skelAnime, &NbXtraAnimHoldingshehnaiAnim, 1.0f, 0.0f, 
+			Animation_GetLastFrame(&NbXtraAnimHoldingshehnaiAnim), ANIMMODE_LOOP, 0.0f);
+		en->actor.update = (ActorFunc)update_HoldingShehnai;
+	}
+	if(en->skelAnime.curFrame >= 12.0f){
+		en->drawShehnai = 1;
 	}
 }
 
-static void update_PlayingInstrument(Entity *en, GlobalContext *globalCtx){
-	updateCommon(en, globalCtx, -1);
+static void update_HoldingShehnai(Entity *en, GlobalContext *globalCtx){
+	updateCommon(en, globalCtx, 0);
 	if(CHECK_NPC_ACTION(NPC_ACTION_SLOT, 3)){
-		Animation_Change(&en->skelAnime, &gNabooruSittingCrossLeggedAnim, 1.0f, 0.0f, 
-			Animation_GetLastFrame(&gNabooruSittingCrossLeggedAnim), ANIMMODE_LOOP, -8.0f);
+		Animation_Change(&en->skelAnime, &NbXtraAnimPlayingshehnaiAnim, 1.0f, 0.0f, 
+			Animation_GetLastFrame(&NbXtraAnimPlayingshehnaiAnim), ANIMMODE_LOOP, -8.0f);
+		en->actor.update = (ActorFunc)update_PlayingShehnai;
+		en->eyeState = 1;
+	}
+}
+
+static void update_PlayingShehnai(Entity *en, GlobalContext *globalCtx){
+	updateCommon(en, globalCtx, -1);
+	if(CHECK_NPC_ACTION(NPC_ACTION_SLOT, 4)){
+		Animation_Change(&en->skelAnime, &NbXtraAnimHoldingshehnaiAnim, 1.0f, 0.0f, 
+			Animation_GetLastFrame(&NbXtraAnimHoldingshehnaiAnim), ANIMMODE_LOOP, -8.0f);
 		en->actor.update = (ActorFunc)update_Done;
-		en->actor.textId = 0x0B6C;
+		en->actor.textId = 0x0B6D;
+		en->eyeState = 3;
 	}
 }
 
@@ -397,6 +429,11 @@ s32 Nabooru_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
 	}else if(limbIndex == NB_LIMB_HEAD){
 		rot->x += en->turnInfo.unk_08.y;
 		rot->z += en->turnInfo.unk_08.x;
+	}else if(limbIndex == NB_LIMB_LHAND){
+		if(en->drawShehnai){
+			gSPDisplayList(POLY_OPA_DISP++, ShehnaiDL);
+			func_80093D18(globalCtx->state.gfxCtx);
+		}
 	}
 	return false;
 }
