@@ -86,18 +86,18 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 		Actor_Kill(&en->actor);
 		return;
 	}
-	if((NABOORU_CONTINUE_VAR & NABOORU_CONTINUE_BIT)){
+	/*
+	if((NABOORU_CONTINUE_VAR & NABOORU_CONTINUE_BIT)){*/
 		NABOORU_CONTINUE_VAR &= ~NABOORU_CONTINUE_BIT;
 		en->actor.update = (ActorFunc)update_Reload;
-		en->actor.textId = 0x0B68;
-	/*
+		en->actor.textId = 0x0B68;/*
 	}else if((LONGOFTIME_VAR & LONGOFTIME_BIT)){
 		en->actor.update = (ActorFunc)update_Done;
-		en->actor.textId = 0x0B6D;*/ //TODO TESTING
+		en->actor.textId = 0x0B6D;
 	}else{
 		en->actor.update = (ActorFunc)update_Init;
 		en->actor.textId = 0x0B60;
-	}
+	}*/ //TODO TESTING
 	en->eyeTextureIndex = 0;
 	en->blinkTimer = 0;
 	en->eyeState = 0;
@@ -429,11 +429,6 @@ s32 Nabooru_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
 	}else if(limbIndex == NB_LIMB_HEAD){
 		rot->x += en->turnInfo.unk_08.y;
 		rot->z += en->turnInfo.unk_08.x;
-	}else if(limbIndex == NB_LIMB_LHAND){
-		if(en->drawShehnai){
-			gSPDisplayList(POLY_OPA_DISP++, ShehnaiDL);
-			func_80093D18(globalCtx->state.gfxCtx);
-		}
 	}
 	return false;
 }
@@ -452,7 +447,12 @@ void Nabooru_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, 
         en->actor.focus.rot.x = en->actor.world.rot.x;
         en->actor.focus.rot.y = en->actor.world.rot.y;
         en->actor.focus.rot.z = en->actor.world.rot.z;
-    }
+    }else if(limbIndex == NB_LIMB_LHAND){
+		if(en->drawShehnai){
+			gSPDisplayList(POLY_OPA_DISP++, ShehnaiDL);
+			func_80093D18(globalCtx->state.gfxCtx);
+		}
+	}
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
