@@ -268,10 +268,12 @@ static s32 is_thread_crashed(OSThread *th){
 
 extern OSThread padmgrth;
 
+/*
 static const u32 rsp_target_code[8] = {
 	0x4a1bef67, 0x48802300, 0x4b0018e7, 0x48802700,
 	0x4bffad68, 0xc9223016, 0x4bffe728, 0xc9343013
 };
+*/
 
 static void Debugger_Draw()
 {
@@ -290,6 +292,7 @@ static void Debugger_Draw()
 	last_frame_count = count;
 	*/
 	
+	/*
 	static s32 searchaddr = 0x80000000;
 	static s32 searchstate = 0;
 	if(searchstate == 0){
@@ -298,7 +301,7 @@ static void Debugger_Draw()
 			u32* ptr = (u32*)searchaddr;
 			s32 c;
 			for(c=0; c<8; ++c){
-				if(*ptr != rsp_target_code[c]) break;
+				if(*(ptr+c) != rsp_target_code[c]) break;
 			}
 			if(c == 8){
 				searchstate = 1;
@@ -315,6 +318,7 @@ static void Debugger_Draw()
 	}else{
 		_printf(8, 8, "Could not find F3DZEX sec");
 	}
+	*/
 	
 	/*
 	s32 tcount = 0;

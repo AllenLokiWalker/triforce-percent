@@ -278,6 +278,36 @@ static void Statics_SetUpRouting(){
     */
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// F3DZEX Cel Shading Patch
+////////////////////////////////////////////////////////////////////////////////
+
+#define CELSHADING_PATCH_ADDR 0x800E523C
+
+static const u32 CelShadingPatch1[14] = {
+    0x4bffad68, 0xc9223016, 0x4bffe728, 0xc9343013,
+    0x4bffef40, 0x4a952748, 0x156dffee, 0x4a9c1f48,
+    0x4a1bef67, 0x30ac0040, 0x4bbf00e7, 0x11800002,
+    0xc9d61206, 0x4abd0750
+};
+
+static const u32 CelShadingPatch2[7] = {
+    0x4bffad68, 0x4bffef40, 0x4a952748, 0xc9223010,
+    0x4a1bef67, 0x0800050e, 0x4afff8e1
+};
+
+void Statics_CelShadingPatch(){
+    s32 i = __osDisableInt();
+    bcopy(CelShadingPatch1, (void*)CELSHADING_PATCH_ADDR, 14*4);
+    bcopy(CelShadingPatch2, (void*)(CELSHADING_PATCH_ADDR + 0x9C), 7*4);
+    osWritebackDCache(NULL, 0x4000);
+    __osRestoreInt(i);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Common
+////////////////////////////////////////////////////////////////////////////////
+
 void Statics_SceneCodePatches(){
     //Scene Draw Configs
     sceneDrawConfigJumpTable[0x20] = Patched_CoSSceneDrawConfig;
@@ -292,4 +322,6 @@ void Statics_SceneCodePatches(){
     }
     //Entrance Table && Entrance Cutscene Table Patches
     Statics_SetUpRouting();
+    //F3DZEX Cel Shading Patch
+    Statics_CelShadingPatch();
 }

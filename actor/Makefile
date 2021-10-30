@@ -5,6 +5,7 @@ BossRunningMan/ \
 CoSSages/ \
 CoSStaircases/ \
 Nabooru/ \
+TestCelShading/ \
 TriforcePiece/ \
 TriforceChest/ \
 TriforceLight/ \
