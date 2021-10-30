@@ -268,6 +268,11 @@ static s32 is_thread_crashed(OSThread *th){
 
 extern OSThread padmgrth;
 
+static const u32 rsp_target_code[8] = {
+	0x4a1bef67, 0x48802300, 0x4b0018e7, 0x48802700,
+	0x4bffad68, 0xc9223016, 0x4bffe728, 0xc9343013
+};
+
 static void Debugger_Draw()
 {
 	/*
@@ -285,11 +290,39 @@ static void Debugger_Draw()
 	last_frame_count = count;
 	*/
 	
+	static s32 searchaddr = 0x80000000;
+	static s32 searchstate = 0;
+	if(searchstate == 0){
+		_printf(8, 8, "Searching %08X", searchaddr);
+		for(s32 i=0; i<0x1000; i+=4){
+			u32* ptr = (u32*)searchaddr;
+			s32 c;
+			for(c=0; c<8; ++c){
+				if(*ptr != rsp_target_code[c]) break;
+			}
+			if(c == 8){
+				searchstate = 1;
+				break;
+			}else{
+				searchaddr += 4;
+			}
+		}
+		if(searchaddr >= 0x80400000){
+			searchstate = 2;
+		}
+	}else if(searchstate == 1){
+		_printf(8, 8, "Found F3DZEX sec at %08X", searchaddr);
+	}else{
+		_printf(8, 8, "Could not find F3DZEX sec");
+	}
+	
+	/*
 	s32 tcount = 0;
-	for(int i=0; i<MAX_TWITCH_MESSAGES; ++i){
+	for(s32 i=0; i<MAX_TWITCH_MESSAGES; ++i){
 		if(twitch_msg_buf[i].timer != 0) ++tcount;
 	}
 	_printf(8, 8, "%d msgs", tcount);
+	*/
 	
 	u8 msg;
 	for(msg=0; msg<N_DBG_MSGS; ++msg){

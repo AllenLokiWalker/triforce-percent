@@ -11,7 +11,7 @@
 #define UNAME_TEX_COLS 128
 #define ST_SCALE_PWR 7
 
-#define FRAMES_FADE 14
+#define FRAMES_FADE 100
 #define MSG_POS_EXTENT_X 1000.0f
 #define MSG_POS_EXTENT_Y 300.0f
 #define MSG_POS_EXTENT_Z 300.0f

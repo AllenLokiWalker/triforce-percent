@@ -18,7 +18,7 @@ use this power for?
 - Install Linux (Debian / Ubuntu / other Debian derivative), either directly or through WSL/WSL2 if you're on Windows.
 - Make sure you got the Git submodules (ZAP2/ZAPD, novl, z64hdr). You will need libpng (`libpng-dev`, `libelf-dev`, and `libglib2.0-dev` for these to compile.
 - If you don't already have it, install the N64 toolchain from https://github.com/glankk/n64.
-- Get a copy of zzrtl which is stable enough to work on Linux with the default (i.e. non-Jared Johnson) scripts, e.g. 0.01r4. Put this somewhere outside the Git repo (i.e. not in the `toolchain` folder).
+- Get a copy of zzrtl which is stable enough to work on Linux with the default (i.e. non-Jared Johnson) scripts, e.g. 0.01r4. https://old.z64.me/tools/zzrtl/zzrtl-0.01-r4.zip Put this somewhere outside the Git repo (i.e. not in the `toolchain` folder).
 - Copy local.mk.example to local.mk and edit the paths defined there to point to the relevant tools on your computer, i.e. zzrtl and python 3.
 - Make a `build-shortcut` folder and paste the OoT 1.0U compressed ROM into it, with the name `oot_1.0U_comp.z64`.
 - Make a `build-romhack` and paste the OoT 1.0U uncompressed ROM into it, with the name `oot_1.0U_uncomp.z64`.
@@ -34,6 +34,11 @@ SAURAEN
 
 RTA Speedrunner \
 SAVESTATE
+
+Scenario \
+SAURAEN \
+REBECCAETRIPP \
+DWANGOAC
 
 ### ASSET UNIT
 
@@ -52,22 +57,8 @@ Music \
 SAURAEN \
 REBECCAETRIPP
 
-Animation \
-SAURAEN \
-AEROARTWORK
-
 Cinema Scenes \
 SAURAEN
-
-Textures \
-KIM-SUKLEY \
-\/ZEL\/ \
-CDI-FAILS \
-SAURAEN
-
-Scenario \
-SAURAEN \
-REBECCAETRIPP
 
 Screen Text \
 KIM-SUKLEY \
@@ -76,7 +67,10 @@ SAURAEN
 Translator \
 YUKLOJ
 
-Voice Actor \
+Zelda (English Voice) \
+TBD
+
+Link (Japanese Voice) \
 ZERO
 
 Motion Capture Actor \
@@ -85,10 +79,28 @@ TBD
 Motion Capture Technician \
 TBD
 
+Additional Animation \
+SAURAEN
+
+BotW Model Conversion \
+ALI1234 \
+PURPULPANCAKES
+
+Cel Shading \
+SAURAEN \
+GLANK
+
+Textures \
+KIM-SUKLEY \
+\/ZEL\/ \
+CDI-FAILS \
+SAURAEN
+
 ### PROGRAM UNIT
 
 Host Frontend \
-SAURAEN
+SAURAEN \
+THEMAS3212
 
 TAStm32 Firmware \
 OWNASAURUS \
@@ -113,7 +125,8 @@ Game / Actor Patches \
 SAURAEN
 
 Build Toolchain \
-SAURAEN
+SAURAEN \
+Z64ME
 
 ### SUPPORT UNIT
 
@@ -130,8 +143,14 @@ GRAVATOS \
 SAVESTATE \
 SAURAEN
 
+Promotional Artwork \
+KIM-SUKLEY
+
 YouTube Partner Channels \
 SWANKYBOX \
+TBD
+
+YouTube Reactors \
 TBD
 
 Special Thanks \
@@ -139,12 +158,12 @@ KAZE EMANUAR \
 XDANIEL \
 ARIANA ALMANDOZ
 
-Producer \
+Executive Producer \
 DWANGOAC
 
 ### PRESENTED AT
 
-Awesome Games Done Quick 2022
+Summer Games Done Quick 2022
 
 ### 
 

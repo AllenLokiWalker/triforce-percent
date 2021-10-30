@@ -21,6 +21,17 @@ PATCH 0x253C000 ../scene/tokinoma/tokinoma_room_0.pat
 //Custom Link animations
 STATICDATA ../anim/anim.bin 0 0x0 0x0
 
+
+//Ending scene
+ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
+SCENE 58 ../scene/Ending/Ending_scene.zscene
+//Entrance table 0x800F9C90 entries 0x437-43A
+//WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
+//Entrance cutscene table 0x800EFD04 entry 24. (originally Ganon's Forest Trial)
+//Entrance 0x437, age 0, flag 0, segment offset 0x0200012C (from 0x17 cutscene command in scene)
+//WRITE 8 0x800EFDC4 0x04 0x37 0x00 0x00 0x02 0x00 0x01 0x2C
+
+
 //Object patches
 PATCH 0x18C1000 ../model/object_gi_butterfly/object_gi_butterfly.pat
 OBJECT 120 ../model/SagesCharm/object_gi_sagescharm.bin
@@ -102,12 +113,3 @@ SCENE 46 ../scene/TriforceRoom/TriforceRoom_scene.zscene
 //Entrance cutscene table 0x800EFD04 entry 17 (originally Inside Jabu)
 //Entrance 0x9C, age 2, flag 0, segment offset 0x020002E4 (from 0x17 cutscene command in scene)
 //WRITE 8 0x800EFD8C 0x00 0x9C 0x02 0x00 0x02 0x00 0x02 0xE4
-
-//Ending scene
-ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
-SCENE 58 ../scene/Ending/Ending_scene.zscene
-//Entrance table 0x800F9C90 entries 0x437-43A
-//WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
-//Entrance cutscene table 0x800EFD04 entry 24. (originally Ganon's Forest Trial)
-//Entrance 0x437, age 0, flag 0, segment offset 0x0200012C (from 0x17 cutscene command in scene)
-//WRITE 8 0x800EFDC4 0x04 0x37 0x00 0x00 0x02 0x00 0x01 0x2C
