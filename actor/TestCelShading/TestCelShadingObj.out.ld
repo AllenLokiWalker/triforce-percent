@@ -1,2 +1,2 @@
-TestCelShadingMesh = 0x6001850;
-TestCelShadingMoveAnim = 0x6001af8;
+TestCelShadingMesh = 0x60017c0;
+TestCelShadingMoveAnim = 0x6001a68;

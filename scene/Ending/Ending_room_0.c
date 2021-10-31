@@ -15,12 +15,18 @@ SCmdBase Ending_room_0_header00[] = {
 	SCENE_CMD_SKYBOX_DISABLES(false, false),
 	SCENE_CMD_TIME_SETTINGS(6, 29, 1),
 	SCENE_CMD_MESH(&Ending_room_0_meshHeader),
-	SCENE_CMD_ACTOR_LIST(1, &Ending_room_0_header00_actorList),
+	SCENE_CMD_OBJECT_LIST(1, &Ending_room_0_header00_objectList),
+	SCENE_CMD_ACTOR_LIST(2, &Ending_room_0_header00_actorList),
 	SCENE_CMD_END(),
 };
 
-ActorEntry Ending_room_0_header00_actorList[1] = {
+s16 Ending_room_0_header00_objectList[1] = {
+	121,
+};
+
+ActorEntry Ending_room_0_header00_actorList[2] = {
 	{ 116, 1066, 191, 896, 0, 41890, 0, 0x0000 },
+	{ 117, 410, -21, 344, 0, 41870, 0, 0x0000 },
 };
 
 MeshHeader0 Ending_room_0_meshHeader = { {0}, 1, (u32)&Ending_room_0_meshDListEntry, (u32)&(Ending_room_0_meshDListEntry) + sizeof(Ending_room_0_meshDListEntry) };

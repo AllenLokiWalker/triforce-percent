@@ -7,15 +7,17 @@
 #define NUM_LIMBS 4
 
 typedef struct {
-	DynaPolyActor dyna;
+	Actor actor;
 	SkelAnime skelAnime;
 	Vec3s jointTable[NUM_LIMBS];
 	Vec3s morphTable[NUM_LIMBS];
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
+	Actor_SetScale(&en->actor, 0.1f);
 	SkelAnime_InitFlex(globalCtx, &en->skelAnime, &TestCelShadingMesh,
 		&TestCelShadingMoveAnim, en->jointTable, en->morphTable, NUM_LIMBS);
+	Rupees_ChangeBy(7);
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
@@ -38,7 +40,7 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 	func_80093D18(globalCtx->state.gfxCtx);
 	SkelAnime_DrawFlexOpa(globalCtx, en->skelAnime.skeleton, en->skelAnime.jointTable,
 		en->skelAnime.dListCount, TCS_OverrideLimbDraw, TCS_PostLimbDraw, en);
-	gSPClearGeometryMode(POLY_OPA_DISP++, G_CELSHADING);
+	//gSPClearGeometryMode(POLY_OPA_DISP++, G_CELSHADING); //no need if running setup DL below
 	func_80093D18(globalCtx->state.gfxCtx);
 }
 

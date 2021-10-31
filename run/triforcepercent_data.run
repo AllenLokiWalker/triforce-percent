@@ -24,6 +24,8 @@ STATICDATA ../anim/anim.bin 0 0x0 0x0
 
 //Ending scene
 ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
+OBJECT 121 ../actor/TestCelShading/zobj.zobj
+ACTOR 117 ../actor/TestCelShading/TestCelShading.zovl
 SCENE 58 ../scene/Ending/Ending_scene.zscene
 //Entrance table 0x800F9C90 entries 0x437-43A
 //WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01

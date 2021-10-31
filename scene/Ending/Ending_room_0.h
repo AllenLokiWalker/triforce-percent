@@ -1,5 +1,6 @@
 extern SCmdBase Ending_room_0_header00[];
-extern ActorEntry Ending_room_0_header00_actorList[1];
+extern s16 Ending_room_0_header00_objectList[1];
+extern ActorEntry Ending_room_0_header00_actorList[2];
 extern MeshHeader0 Ending_room_0_meshHeader;
 extern MeshEntry0 Ending_room_0_meshDListEntry[1];
 extern Gfx Ending_room_0_entry_0_opaque[];
