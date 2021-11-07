@@ -25,7 +25,7 @@ s16 Ending_room_0_header00_objectList[1] = {
 };
 
 ActorEntry Ending_room_0_header00_actorList[2] = {
-	{ 118, 410, -21, 344, 0, 41870, 0, 0x0000 },
+	{ 118, 380, -50, 329, 0, 41870, 0, 0x0000 },
 	{ 116, 1066, 191, 896, 0, 41890, 0, 0x0000 },
 };
 

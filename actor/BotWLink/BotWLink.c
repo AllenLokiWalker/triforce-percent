@@ -9,7 +9,7 @@ typedef struct {
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
-	Actor_SetScale(&en->actor, 0.1f);
+	Actor_SetScale(&en->actor, 0.035f);
 	Rupees_ChangeBy(4);
 }
 
