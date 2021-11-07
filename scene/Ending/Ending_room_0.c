@@ -21,12 +21,12 @@ SCmdBase Ending_room_0_header00[] = {
 };
 
 s16 Ending_room_0_header00_objectList[1] = {
-	121,
+	122,
 };
 
 ActorEntry Ending_room_0_header00_actorList[2] = {
+	{ 118, 410, -21, 344, 0, 41870, 0, 0x0000 },
 	{ 116, 1066, 191, 896, 0, 41890, 0, 0x0000 },
-	{ 117, 410, -21, 344, 0, 41870, 0, 0x0000 },
 };
 
 MeshHeader0 Ending_room_0_meshHeader = { {0}, 1, (u32)&Ending_room_0_meshDListEntry, (u32)&(Ending_room_0_meshDListEntry) + sizeof(Ending_room_0_meshDListEntry) };

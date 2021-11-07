@@ -2,84 +2,63 @@
 #define _AUDIOBANK_H_
 
 typedef struct {
-    s16 data[0x10];
-} ALADPCMTail;
+    /* 0x00 */ u32 start;
+    /* 0x04 */ u32 end;
+    /* 0x08 */ u32 count;
+    /* 0x0C */ u32 origSpls;
+    /* 0x10 */ s16 state[]; // elements: count != 0 ? 8 : 0.
+} AdpcmLoop; // size = 0x10 or 0x30
 
 typedef struct {
-    u32 start;
-    u32 end;
-    u32 count;
-    u32 adpcmState;
-} ALADPCMLoopMain;
+    /* 0x00 */ s32 order;
+    /* 0x04 */ s32 npredictors;
+    /* 0x08 */ s16 book[]; // elements: 8 * order * npredictors
+} AdpcmBook;
 
 typedef struct {
-    ALADPCMLoopMain main;
-    ALADPCMTail tail;
-} ALADPCMLoopTail;
-
-typedef union {
-    ALADPCMLoopMain notail;
-    ALADPCMLoopTail withtail;
-} ALADPCMLoopU;
+    /* 0x00 */ u32 len; //In memory, flags are stored in the upper bits
+    /* 0x04 */ u8* sampleAddr;
+    /* 0x08 */ AdpcmLoop* loop;
+    /* 0x0C */ AdpcmBook* book;
+} AudioBankSample; // size = 0x10
 
 typedef struct {
-    s16 data[0x10]; //size of array is order?
-} ALADPCMPredictor;
+    /* 0x00 */ AudioBankSample* sample;
+    /* 0x04 */ f32 tuning; // frequency scale factor
+} AudioBankSound; // size = 0x8
 
 typedef struct {
-    s32 order;
-    s32 numPredictors;
-    ALADPCMPredictor predictors[]; //size of array is numPredictors
-} ALADPCMBook;
+    /* 0x0 */ s16 rate;
+    /* 0x2 */ s16 level;
+} AdsrEnvelopePoint; // size = 0x4
 
 typedef struct {
-    u32 len;
-    void* addr; //Address within selected Audiotable
-    ALADPCMLoopU* loop;
-    ALADPCMBook* book; //Codebook
-} ABSample;
+    /*?0x00 */ u8 loaded;
+    /* 0x01 */ u8 normalRangeLo;
+    /* 0x02 */ u8 normalRangeHi;
+    /* 0x03 */ u8 releaseRate;
+    /* 0x04 */ AdsrEnvelope* envelope;
+    /* 0x08 */ AudioBankSound lowNotesSound;
+    /* 0x10 */ AudioBankSound normalNotesSound;
+    /* 0x18 */ AudioBankSound highNotesSound;
+} Instrument; // size >= 0x20
 
 typedef struct {
-    ABSample* sample;
-    f32 tuning;
-} ABSound;
+    /* 0x00 */ u8 releaseRate;
+    /* 0x01 */ u8 pan;
+    /* 0x02 */ u8 loaded;
+    /* 0x04 */ AudioBankSound sound;
+    /* 0x14 */ AdsrEnvelope *envelope;
+} Drum; // size >= 0x14
 
 typedef struct {
-    s16 rate;
-    u16 level;
-} ABEnvelopePoint;
+    Drum** drums; //size of array-of-pointers is numDrum
+    AudioBankSound* sfx; //size of array is numSfx;
+    Instrument* instruments[]; //size of array is numInst
+} AudioBank;
 
 typedef struct {
-    ABEnvelopePoint points[4]; //Usually 4 in music sounds, but actually defined
-    //to be any number of points up to a point with rate -1 and level 0
-} ABEnvelope;
-
-typedef struct {
-    u8 unk_00;
-    u8 unk_01;
-    u8 unk_02; //0
-    u8 unk_03; //0
-    ABSound sound;
-    ABEnvelope* envelope;
-} ABDrum;
-
-typedef struct {
-    u8 unk_00;
-    u8 splitLow;
-    u8 splitHigh;
-    u8 releaseRate;
-    ABEnvelope* envelope;
-    ABSound splits[3];
-} ABInstrument;
-
-typedef struct {
-    ABDrum** drums; //size of array-of-pointers is numDrum
-    ABSound* sfx; //size of array is numSfx;
-    ABInstrument* instruments[]; //size of array is numInst
-} ABBank;
-
-typedef struct {
-    ABBank* addr; //Pointer to bank, relative to start of Audiobank
+    AudioBank* addr; //Pointer to bank, relative to start of Audiobank
     u32 len; //Bank Length
     s8 loadLocation; //00 == RAM, 02 == ROM, maybe 01 or 03 are disk
     s8 seqPlayerIdx; //00 == SFX, 01 == fanfares, 02 == BGM, 03 == cutscene SFX
@@ -87,8 +66,7 @@ typedef struct {
     u8 unk_0D; //0xFF
     u8 numInst;
     u8 numDrum;
-    u8 unk_0E; //0x00
-    u8 numSfx;
-} ABIndexEntry;
+    u16 numSfx;
+} AudiobankIndexEntry;
 
 #endif
