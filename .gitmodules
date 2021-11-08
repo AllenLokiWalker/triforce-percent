@@ -7,3 +7,9 @@
 [submodule "include/z64hdr"]
 	path = include/z64hdr
 	url = https://github.com/turpaan64/z64hdr
+[submodule "toolchain/AudiobankToC"]
+	path = toolchain/AudiobankToC
+	url = https://github.com/sauraen/AudiobankToC.git
+[submodule "toolchain/z64audio"]
+	path = toolchain/z64audio
+	url = https://github.com/sauraen/z64audio.git
