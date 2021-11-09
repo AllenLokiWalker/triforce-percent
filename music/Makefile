@@ -2,8 +2,6 @@ include ../toolchain/make/main.mk
 
 .PHONY: default clean
 
-STATICDATADIR := ../build-romhack/staticdata
-
 default: OvertureOfSages.aseq triforce.aseq
 	mkdir -p                                             $(STATICDATADIR)/6
 	cp OvertureOfSages.aseq                              $(STATICDATADIR)/6/staticdata.bin

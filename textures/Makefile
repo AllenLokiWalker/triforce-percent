@@ -24,8 +24,6 @@ TEXTURES = \
 	tw_msg_case3.i4.inc \
 	tw_msg_exclam.i4.inc
 
-STATICDATADIR := ../build-romhack/staticdata
-
 .PHONY: default clean $(SUBDIRS)
 
 default: $(TEXTURES) $(SUBDIRS)

@@ -31,6 +31,8 @@ Z64HDRINCLUDEDIR := $(PROJECT_DIR)/include/z64hdr/include
 OOTMAINH := $(PROJECT_DIR)/include/ootmain.h
 OOTMAINLD := $(PROJECT_DIR)/include/ootmain.ld
 ACTORLD := $(PROJECT_DIR)/include/z64hdr/common/z64hdr_actor.ld
+STATICDATADIR := $(PROJECT_DIR)/build-romhack/staticdata
+
 
 # Main tools
 

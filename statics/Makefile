@@ -36,7 +36,12 @@ ocarina.o: \
 	../textures/flat.ia8.inc \
 	../textures/sharp.ia8.inc
 
-audio.o: audio.h
+audio.o: \
+	audio.h \
+	../toolchain/AudiobankToC/include/audiobank.h \
+	../voice/link_demo_1_32.c \
+	../voice/link_demo_2_32.c \
+	../voice/link_demo_3_32.c
 
 scene.o: scene.h
 

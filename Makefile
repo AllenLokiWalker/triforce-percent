@@ -1,6 +1,6 @@
 include toolchain/make/main.mk
 
-CONTENTS = actor/ anim/ model/ music/ scene/ textures/
+CONTENTS = actor/ anim/ model/ music/ scene/ textures/ voice/
 SUBDIRS = toolchain/ $(CONTENTS) loader/ statics/ bootstrap/ rom-setup/
 DUMP = build-romhack/project.zzrpl
 
@@ -16,7 +16,7 @@ actor/: toolchain/ $(DUMP) statics/ scene/
 
 scene/: $(DUMP)
 
-statics/: anim/ loader/ model/ scene/ textures/
+statics/: anim/ loader/ model/ scene/ textures/ voice/
 
 bootstrap/: loader/
 
@@ -33,8 +33,14 @@ rom-setup/: statics/ $(CONTENTS)
 	rm $*scene/48/title.png
 	rm $*scene/49/title.png
 	rm $*scene/50/title.png
+	rm $*scene/51/title.png
 	rm $*scene/54/title.png
 	rm $*scene/58/title.png
+	rm $*scene/69/title.png
+	rm $*scene/70/title.png
+	rm $*scene/72/title.png
+	rm $*scene/75/title.png
+	rm $*scene/78/title.png
 
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)

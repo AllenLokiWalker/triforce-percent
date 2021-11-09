@@ -1,5 +1,56 @@
+#define AdsrEnvelope BADAdsrEnvelope
+#define AdpcmLoop BADAdpcmLoop
+#define AdpcmBook BADAdpcmBook
+#define AudioBankSample BADAudioBankSample
+#define AudioBankSound BADAudioBankSound
+#define Instrument BADInstrument
+#define Drum BADDrum
+
 #include "ootmain.h"
+
+#undef AdsrEnvelope
+#undef AdpcmLoop
+#undef AdpcmBook
+#undef AudioBankSample
+#undef AudioBankSound
+#undef Instrument
+#undef Drum
+
 #include "audio.h"
+#include "../toolchain/AudiobankToC/include/audiobank.h"
+
+#define link_demo_1_32Table NULL
+#define link_demo_2_32Table NULL
+#define link_demo_3_32Table NULL
+
+#include "../voice/link_demo_1_32.c"
+#include "../voice/link_demo_2_32.c"
+#include "../voice/link_demo_3_32.c"
+
+#define NUM_CUST_SAMPLES 3
+AudioBankSample *cust_samples[NUM_CUST_SAMPLES] = {
+    &link_demo_1_32Sample,
+    &link_demo_2_32Sample,
+    &link_demo_3_32Sample,
+};
+float cust_sample_tuning[NUM_CUST_SAMPLES] = {
+    1.0f,
+    1.0f,
+    1.0f
+};
+s32 sound_replace_offset[NUM_CUST_SAMPLES] = {
+    0x1660 + 8*23, // EN_GANON_LAUGH
+    0x1660 + 8*24, // EN_GANON_VOICE_DEMO
+    0x1660 + 8*25, // EN_GANON_THROW
+};
+u8 cust_sample_bank_idx[NUM_CUST_SAMPLES] = {
+    1, 1, 1,
+};
+s32 bank_ram_addr[2] = {
+    0x80192A10, // Master Bank
+    0x80191260  // Actor Bank
+};
+//#define AUDIOTABLE0_ROM 0x00079470
 
 //These max values come from the sizes of the LoadStatus fields in AudioContext
 #define MAX_SEQS 0x80
@@ -12,10 +63,6 @@
 #define SEQ_AWAKENINGTHESAGES     (NUM_ORIG_SEQS+2)
 #define SEQ_OBTAINTHETRIFORCE     (NUM_ORIG_SEQS+3)
 #define SEQ_POWEROFTHEGODS        (NUM_ORIG_SEQS+4)
-#define SEQ_INITSPEECH1           (NUM_ORIG_SEQS+5)
-#define SEQ_INITSPEECH2           (NUM_ORIG_SEQS+6)
-#define SEQ_AVOICETOTHEHEAVENS    (NUM_ORIG_SEQS+7)
-#define SEQ_STAFFROLL             (NUM_ORIG_SEQS+8)
 
 // For normal seqs: 2 bytes for u16 offset, 1 byte for length (1), 1 byte for bank
 // Some seqs have 2 banks, so add a bit after that
@@ -147,13 +194,26 @@ void Statics_AudioCodePatches(u8 isLiveRun)
     __osRestoreInt(i);
 }
 
+void Statics_AudioRegisterSample(void* ram_addr, s32 cspl)
+{
+    if(cspl < 0 || cspl >= NUM_CUST_SAMPLES) return;
+    AudioBankSound *replaceSound = (AudioBankSound*)(
+        bank_ram_addr[cust_sample_bank_idx[cspl]] + sound_replace_offset[cspl]);
+    replaceSound->sample = cust_samples[cspl];
+    replaceSound->tuning = cust_sample_tuning[cspl];
+    cust_samples[cspl]->sampleAddr = (u8*)(InjectRamRomMap(ram_addr));
+}
+
 void Statics_AudioRegisterStaticData(void* ram_addr, s32 size, 
     u8 type, s32 data1, s32 data2)
 {
     AudioIndex* index;
     if(type == 1) index = &NewAudioseqIndex;
     else if(type == 2) index = &NewAudiobankIndex;
-    else return;
+    else if(type == 3){
+        Statics_AudioRegisterSample(ram_addr, data1);
+        return;
+    }else return;
     u8 idx = (data1 >> 24) & 0xFF;
     //Fix counts
     if(index->header.entryCnt <= idx){

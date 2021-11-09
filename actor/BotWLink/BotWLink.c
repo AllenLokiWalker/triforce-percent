@@ -17,8 +17,22 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 	
 }
 
+static f32 VoiceFreqScale = 1.0f;
+static f32 VoiceVol = 4.0f;
+static u32 VoiceReverbAdd = 0;
+
 static void update(Entity *en, GlobalContext *globalCtx) {
-	
+	s16 sfx = 0;
+	if((CTRLR_PRESS & BTN_DLEFT)){
+		sfx = NA_SE_EN_GANON_LAUGH;
+	}else if((CTRLR_PRESS & BTN_DDOWN)){
+		sfx = NA_SE_EN_GANON_VOICE_DEMO;
+	}else if((CTRLR_PRESS & BTN_DRIGHT)){
+		sfx = NA_SE_EN_GANON_THROW;
+	}
+	if(sfx == 0) return;
+	Audio_PlaySoundGeneral(sfx, &en->actor.projectedPos, 4, &VoiceFreqScale, &VoiceVol,
+		(f32*)&VoiceReverbAdd);
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
