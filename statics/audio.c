@@ -50,7 +50,14 @@ s32 bank_ram_addr[2] = {
     0x80192A10, // Master Bank
     0x80191260  // Actor Bank
 };
-//#define AUDIOTABLE0_ROM 0x00079470
+#define AUDIOTABLE_01_ROM 0x00079470
+#define AUDIOTABLE_2_ROM (AUDIOTABLE_01_ROM + 0x3FA9E0)
+#define AUDIOTABLE_3_ROM (AUDIOTABLE_01_ROM + 0x4006B0)
+#define AUDIOTABLE_4_ROM (AUDIOTABLE_01_ROM + 0x41D760)
+#define AUDIOTABLE_5_ROM (AUDIOTABLE_01_ROM + 0x427D30)
+#define AUDIOTABLE_6_ROM (AUDIOTABLE_01_ROM + 0x4377E0)
+
+#include "bankdata.c"
 
 //These max values come from the sizes of the LoadStatus fields in AudioContext
 #define MAX_SEQS 0x80
@@ -191,6 +198,10 @@ void Statics_AudioCodePatches(u8 isLiveRun)
     // Patch Audio_DMA
     *( (u32*)Audio_DMA   ) = JUMPINSTR(Patched_AudioDMA);
     *(((u32*)Audio_DMA)+1) = 0;
+    // Patch instruments in Master Bank
+    AudioBank *bank0 = (AudioBank*)(bank_ram_addr[0]);
+    bank0->instruments[85] = &Shehnai_Inst; //replacing accordion
+    bank0->instruments[87] = &Choir_Inst; //replacing Malon
     __osRestoreInt(i);
 }
 

@@ -18,7 +18,7 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 }
 
 static f32 VoiceFreqScale = 1.0f;
-static f32 VoiceVol = 4.0f;
+static f32 VoiceVol = 1.5f;
 static u32 VoiceReverbAdd = 0;
 
 static void update(Entity *en, GlobalContext *globalCtx) {

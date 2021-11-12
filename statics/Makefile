@@ -38,6 +38,7 @@ ocarina.o: \
 
 audio.o: \
 	audio.h \
+	bankdata.c \
 	../toolchain/AudiobankToC/include/audiobank.h \
 	../voice/link_demo_1_32.c \
 	../voice/link_demo_2_32.c \

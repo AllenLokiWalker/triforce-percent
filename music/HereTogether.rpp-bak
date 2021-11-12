@@ -1,4 +1,4 @@
-<REAPER_PROJECT 0.1 "5.99/x64" 1636265545
+<REAPER_PROJECT 0.1 "5.99/x64" 1636613251
   RIPPLE 0
   GROUPOVERRIDE 0 0 0
   AUTOXFADE 1
@@ -14,8 +14,8 @@
   TIMEMODE 1 5 -1 30 0 0 -1
   VIDEO_CONFIG 0 0 256
   PANMODE 3
-  CURSOR 105.15686274509771
-  ZOOM 71.04526910529626 6575 0
+  CURSOR 5.98039215686241
+  ZOOM 25.47655226000045 10 0
   VZOOMEX 3
   USE_REC_CFG 0
   RECMODE 1
@@ -1305,8 +1305,8 @@
         E 240 85 41 00
         E 240 95 41 62
         E 240 85 41 00
-        e 240 95 43 56
-        e 720 85 43 00
+        e 240 95 3e 56
+        e 720 85 3e 00
         E 240 95 47 60
         E 720 85 47 00
         E 240 95 45 60
@@ -1363,7 +1363,7 @@
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 1
+    SEL 0
     REC 0 0 0 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0
@@ -1602,7 +1602,7 @@
       FADEIN 1 0 0 1 0 0
       FADEOUT 1 0 0 1 0 0
       MUTE 0
-      SEL 1
+      SEL 0
       IGUID {A4A04034-D549-45A2-A4A4-9756AEEC06F9}
       IID 3676
       NAME "6 Trombone untitled MIDI item-glued"
@@ -1639,10 +1639,8 @@
         E 240 86 3c 00
         E 0 86 39 00
         E 240 96 37 5b
-        e 0 96 3e 59
-        e 842 86 3e 00
-        E 34 86 37 00
-        E 84 96 3e 5b
+        E 919 86 37 00
+        E 41 96 3e 5b
         E 0 96 3b 5b
         E 720 86 3e 00
         E 0 86 3b 00
@@ -1694,7 +1692,7 @@
         SRCCOLOR 87637
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW -4251.643783 0.055286 34 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW -139200 0.055286 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
         EVTFILTER 64 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
@@ -1714,7 +1712,7 @@
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 0
+    SEL 1
     REC 0 0 0 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0
