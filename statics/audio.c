@@ -200,8 +200,8 @@ void Statics_AudioCodePatches(u8 isLiveRun)
     *(((u32*)Audio_DMA)+1) = 0;
     // Patch instruments in Master Bank
     AudioBank *bank0 = (AudioBank*)(bank_ram_addr[0]);
-    bank0->instruments[85] = &Shehnai_Inst; //replacing accordion
-    bank0->instruments[87] = &Choir_Inst; //replacing Malon
+    bank0->instruments[83] = &Shehnai_Inst; //replacing accordion
+    bank0->instruments[85] = &Choir_Inst; //replacing Malon
     __osRestoreInt(i);
 }
 

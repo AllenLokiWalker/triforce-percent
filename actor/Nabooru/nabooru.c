@@ -384,7 +384,8 @@ static void update_WaitAction2(Entity *en, GlobalContext *globalCtx){
 }
 
 static void update_PullingOutShehnai(Entity *en, GlobalContext *globalCtx){
-	s32 animFinished = updateCommon(en, globalCtx, -1);
+	s32 animFinished = updateCommon(en, globalCtx, 
+		en->skelAnime.curFrame >= 26.0f ? 0 : -1);
 	if(animFinished){
 		Animation_Change(&en->skelAnime, &NbXtraAnimHoldingshehnaiAnim, 1.0f, 0.0f, 
 			Animation_GetLastFrame(&NbXtraAnimHoldingshehnaiAnim), ANIMMODE_LOOP, 0.0f);

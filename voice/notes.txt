@@ -1,2 +1,5 @@
 0x80191260 - start of ActorBank
 0x80192A10 - start of MasterBank
+
+medium = 2
+unk_bit25 = 1

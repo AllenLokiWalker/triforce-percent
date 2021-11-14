@@ -218,8 +218,8 @@ void Statics_OcarinaCodePatches(){
     if((OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)) Ocarina_GiveOvertureOfSages();
     //800DEF90: instruction for setting a0 to instrument for Sheik songs teach
     *((u8*)0x800DEF93) = 0x02; //change from 1, ocarina, to 2, Malon -> choir
-    //800DEFD4: instruction for setting at to ocarina action which uses 5 accordion -> shehnai
-    *((u8*)0x800DEFD7) = 0x0C; //change from 0xD, storms, to 0xC, time
+    //800DEFC0: instruction for setting at to ocarina action which uses 5 accordion -> shehnai
+    *((u8*)0x800DEFC3) = 0x0C; //change from 0xD, storms, to 0xC, time
     //Patches for chromatic Ocarina
     int nPatches = sizeof(OcaPatchAddrs) / sizeof(s32);
     for(int i=0; i<nPatches; ++i){
