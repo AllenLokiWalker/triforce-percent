@@ -11,9 +11,9 @@ extern void InterfaceEffectTex_Target();
 
 extern void KaleidoScope_UpdateEquipAnim(GlobalContext *globalCtx);
 
-extern s16 sEquipAnimState;
+extern s16 sEquipState;
 extern s16 sEquipAnimTimer;
-extern s16 sEquipAnimNumFrames;
+extern s16 sEquipMoveTimer;
 
 extern Vec3f sSoundParam1;
 extern float sSoundParam34;
@@ -126,6 +126,7 @@ s32 *Patched_EquipEffectTexLoad(s32 *dl, s32 dummy, PauseContext *pauseCtx){
 }
 
 void Statics_HandleEquipMedallionsToC(){
+    static s16 lastCurX, lastCurY;
     PauseContext *pauseCtx = &gGlobalContext.pauseCtx;
     if(!pauseCtx->state) return;
     if(!(SAGES_CHARM_VAR & SAGES_CHARM_BIT)) return;
@@ -139,6 +140,13 @@ void Statics_HandleEquipMedallionsToC(){
 	}
     
     if(pauseCtx->debugState || pauseCtx->pageIndex != 2) return;
+    
+    s16 curX = pauseCtx->cursorVtx[0].v.ob[0];
+    s16 curY = pauseCtx->cursorVtx[0].v.ob[1];
+    if(curX != 0 && curY != 0){
+        lastCurX = curX;
+        lastCurY = curY;
+    }
     
     u8 item = pauseCtx->cursorItem[2];
     if(item >= 0x66 && item <= 0x79 && //actually has item, not empty
@@ -154,12 +162,12 @@ void Statics_HandleEquipMedallionsToC(){
         pauseCtx->equipTargetSlot = 24 + pauseCtx->equipTargetCBtn;
         pauseCtx->equipTargetItem = item;
         pauseCtx->unk_1E4 = 3;
-        pauseCtx->equipAnimX = 770; //TODO
-        pauseCtx->equipAnimY = 50; //TODO
+        pauseCtx->equipAnimX = lastCurX * 10; //770;
+        pauseCtx->equipAnimY = lastCurY * 10; //50;
         pauseCtx->equipAnimAlpha = 255;
         sEquipAnimTimer = 0;
-        sEquipAnimState = 3;
-        sEquipAnimNumFrames = 10;
+        sEquipState = 3;
+        sEquipMoveTimer = 10;
         Audio_PlaySoundGeneral(NA_SE_SY_DECIDE,
             &sSoundParam1, 4, &sSoundParam34, &sSoundParam34, &sSoundParam5);
     }

@@ -4,9 +4,9 @@ Construct_Icon_Target = 0x800E1E90;
 InterfaceEffectTex_Start = 0x80076828;
 InterfaceEffectTex_Target = 0x800768FC;
 
-sEquipAnimState = 0x8039EAB0; /*0x80829710;*/
+sEquipState = 0x8039EAB0; /*0x80829710;*/
 sEquipAnimTimer = 0x8039EAB4; /*0x80829714;*/
-sEquipAnimNumFrames = 0x8039EAB8; /*0x80829718;*/
+sEquipMoveTimer = 0x8039EAB8; /*0x80829718;*/
 
 sSoundParam1 = 0x80104394;
 sSoundParam34 = 0x801043A0;

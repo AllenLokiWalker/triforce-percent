@@ -1,7 +1,7 @@
 '''
 Small assembler to patch specific instructions in a file.
 Supported instructions:
-    addiu
+    addi, addiu, slti, sltiu, andi, ori, xori
     lui
     lb, lh, lw, lbu, lhu, sb, sh, sw
     j, jal
@@ -57,8 +57,16 @@ def patchinstr(data, patchfile):
         't8', 't9', 'k0', 'k1', 'gp', 'sp', 's8', 'ra']
     meminstr = {'lb': 0x80, 'lh': 0x84, 'lw': 0x8C, 'lbu': 0x90, 'lhu': 0x94, 
         'sb': 0xA0, 'sh': 0xA4, 'sw': 0xAC}
-    jumpinstr = {'beq': 0x10, 'bne': 0x14}
+    branchinstr = {'beq': 0x10, 'bne': 0x14}
     dotinstr = {'.byte': 8, '.short': 16, '.word': 32}
+    imm2opmath = {'addi': 0x20, 'addiu': 0x24, 'slti': 0x28, 'sltiu': 0x2C,
+        'andi': 0x30, 'ori': 0x34, 'xori': 0x38}
+    math3op = {'sllv': 0x04, 'srlv': 0x06, 'srav': 0x07,
+        'dsllv': 0x14, 'dsrlv': 0x16, 'dsrav': 0x17,
+        'add': 0x20, 'addu': 0x21, 'sub': 0x22, 'subu': 0x23,
+        'and': 0x24, 'or': 0x25, 'xor': 0x26, 'nor': 0x27,
+        'slt': 0x2A, 'sltu': 0x2B,
+        'dadd': 0x2C, 'daddu': 0x2D, 'dsub': 0x2E, 'dsubu': 0x2F}
     def getreg(tok, dest=True):
         tok = tok.lower()
         if tok[0] == '$':
@@ -135,7 +143,7 @@ def patchinstr(data, patchfile):
             if val < 0:
                 val += (1 << nbits)
             data[addr:addr+nbytes] = val.to_bytes(nbytes, 'big')
-        elif toks[1] in jumpinstr:
+        elif toks[1] in branchinstr:
             assert len(toks) == 5
             rs = getreg(toks[2], False)
             rt = getreg(toks[3], False)
@@ -145,7 +153,16 @@ def patchinstr(data, patchfile):
             if branchoff < 0:
                 branchoff += 0x10000
             assert branchoff >= 0 and branchoff <= 0xFFFF
-            instr = (jumpinstr[toks[1]] << 24) | (rs << 21) | (rt << 16) | branchoff
+            instr = (branchinstr[toks[1]] << 24) | (rs << 21) | (rt << 16) | branchoff
+            data[addr:addr+4] = instr.to_bytes(4, 'big')
+        elif toks[1] in math3op:
+            assert len(toks) == 5
+            rd = getreg(toks[2], False)
+            rs = getreg(toks[3], False)
+            rt = getreg(toks[4], False)
+            special = math3op[toks[1]]
+            assert special < 0x3F
+            instr = (rs << 21) | (rt << 16) | (rd << 11) | special
             data[addr:addr+4] = instr.to_bytes(4, 'big')
         else:
             # Immediate/offset instructions
@@ -179,11 +196,11 @@ def patchinstr(data, patchfile):
                 assert len(toks) == 4
                 reg = getreg(toks[2])
                 topval = 0x3C00 | reg
-            elif toks[1] == 'addiu':
+            elif toks[1] in imm2opmath:
                 assert len(toks) == 5
                 rt = getreg(toks[2])
                 rs = getreg(toks[3], False)
-                topval = 0x2400 | (rs << 5) | rt
+                topval = (imm2opmath[toks[1]] << 8) | (rs << 5) | rt
             elif toks[1] in meminstr:
                 assert len(toks) == 4
                 assert relreg is not None
