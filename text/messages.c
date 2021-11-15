@@ -269,7 +269,7 @@ DECLARE_MESSAGE(0x0B67, BOX_BLACK, POS_MIDDLE,
     "by the ancient Sages." BOX_BREAK_DELAYED("\x38") UNSKIPPABLE
     "It is a two-sided dungeon made for" NEWLINE
     "a time-traveling Hero who can go" NEWLINE
-    "from child to adult and back." FADE("\x46")
+    "from child to adult and back." FADE("\x38")
 )
 
 //  "text text text text text text te"
