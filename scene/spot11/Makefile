@@ -21,12 +21,12 @@ room_%.zmap: ${SCENEDIR}/room_%.zmap.orig room%_patch.txt
 	cp ${SCENEDIR}/room_$*.zmap.orig $@
 	${PYTHON3} ../../toolchain/patchinstr.py $@ room$*_patch.txt
 
-scene.zscene: ${SCENEDIR}/scene.zscene.orig scene_patch.txt
+scene.zscene: ${SCENEDIR}/scene.zscene.orig scene_patch.txt spot11cs.bin
 	cp ${SCENEDIR}/scene.zscene.orig $@
 	${PYTHON3} ../../toolchain/patchinstr.py $@ scene_patch.txt
 
 room_%.pat: room_%.zmap
-	${PYTHON3} ../../toolchain/create_patch.py ${SCENEDIR}/room_%.zmap.orig $< $@
+	${PYTHON3} ../../toolchain/create_patch.py ${SCENEDIR}/room_$*.zmap.orig $< $@
 
 scene.pat: scene.zscene
 	${PYTHON3} ../../toolchain/create_patch.py ${SCENEDIR}/scene.zscene.orig $< $@

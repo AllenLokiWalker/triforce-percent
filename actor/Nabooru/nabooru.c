@@ -322,6 +322,7 @@ static void update_Talk2(Entity *en, GlobalContext *globalCtx){
 	}
 	if(MESSAGE_ADVANCE_EVENT){
 		if(en->actor.textId == 0x0B65){
+			gSaveContext.environmentTime = gSaveContext.dayTime = 0x9000;
 			NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
 			globalCtx->csCtx.segment = &NabooruPanAwayCS;
 			gSaveContext.cutsceneTrigger = 1;
@@ -384,7 +385,7 @@ static void update_WaitAction2(Entity *en, GlobalContext *globalCtx){
 
 static void update_PullingOutShehnai(Entity *en, GlobalContext *globalCtx){
 	s32 animFinished = updateCommon(en, globalCtx, 
-		en->skelAnime.curFrame >= 26.0f ? 0 : -1);
+		en->skelAnime.curFrame >= 24.0f ? 0 : -1);
 	if(animFinished){
 		Animation_Change(&en->skelAnime, &NbXtraAnimHoldingshehnaiAnim, 1.0f, 0.0f, 
 			Animation_GetLastFrame(&NbXtraAnimHoldingshehnaiAnim), ANIMMODE_LOOP, 0.0f);

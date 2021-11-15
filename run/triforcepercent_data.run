@@ -13,6 +13,8 @@ PATCH 0x217C000 ../scene/spot10/spot10_room_7.pat
 PATCH 0x2171000 ../scene/spot10/spot10_room_5.pat
 PATCH 0x28E4000 ../scene/shop1/shop1_room_0.pat
 PATCH 0x32B1000 ../scene/gerudoway/gerudoway_room_3.pat
+PATCH 0x2186000 ../scene/spot11/scene.pat
+PATCH 0x21A0000 ../scene/spot11/room_0.pat
 PATCH 0x1FE3000 ../scene/spot00/spot00_room_0.pat
 PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat
 PATCH 0x2103000 ../scene/spot07_scene/zoras_room1.pat

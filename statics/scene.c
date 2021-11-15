@@ -143,7 +143,7 @@ extern void DemoTerminatorReturn();
 #define TERMINATOR_RETURN asm(".set noat\n .set noreorder\nj DemoTerminatorReturn\nnop\n.set at\n .set reorder")
 
 void Statics_TerminatorNabooruToDesertColossus(){
-    gGlobalContext.nextEntranceIndex = 0x0128;
+    gGlobalContext.nextEntranceIndex = 0x0123;
     gGlobalContext.sceneLoadFlag = 0x14;
     gSaveContext.cutsceneIndex = 0xFFF1;
     gGlobalContext.fadeTransition = 0x7;
@@ -151,7 +151,7 @@ void Statics_TerminatorNabooruToDesertColossus(){
 }
 
 void Statics_TerminatorReturnToNabooru(){
-    gGlobalContext.nextEntranceIndex = 0x04A7;
+    gGlobalContext.nextEntranceIndex = 0x04A6;
     gGlobalContext.sceneLoadFlag = 0x14;
     gSaveContext.cutsceneIndex = 0;
     gGlobalContext.fadeTransition = 0x7;
@@ -260,6 +260,7 @@ static void Statics_SetUpRouting(){
         .scene = SCENE_GERUDOWAY, 
         .spawn = 8, .keepMusic = 0, .titleCard = 0, .transitionIn = 5, .transitionOut = 5
     };
+    PatchEntranceTable(0x04A6, 4, &return_to_nabooru_entry);
     PatchEntranceTable(0x04A7, 4, &return_to_nabooru_entry);
     //
     //Debugging

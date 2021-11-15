@@ -406,7 +406,7 @@ void RunningMan_BossUpdate(BossRunningMan* this, GlobalContext* globalCtx) {
 		this->actionFunc(this, globalCtx);
 	
 	// Lock time
-	gSaveContext.dayTime = 0xAAAB;
+	gSaveContext.environmentTime = gSaveContext.dayTime = 0xAAAB;
 	
 	if (state->targetPos == true) {
 		s16 dirYaw = Math_Vec3f_Yaw(&this->actor.world.pos, &this->boss.targetPos);

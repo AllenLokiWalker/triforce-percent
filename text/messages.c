@@ -242,7 +242,8 @@ DECLARE_MESSAGE(0x0B65, BOX_BLACK, POS_MIDDLE,
     "But while your goal is admirable," NEWLINE
     "you're still a child. No kid will" NEWLINE
     "stop Ganondorf." BOX_BREAK UNSKIPPABLE
-    "An adult with your desire, however..." EVENT
+    "An adult with your courage," NEWLINE
+    "however..." EVENT
 )
 
 DECLARE_MESSAGE(0x0B66, BOX_BLACK, POS_MIDDLE,
@@ -257,18 +258,18 @@ DECLARE_MESSAGE(0x0B66, BOX_BLACK, POS_MIDDLE,
 )
 
 //  "text text text text text text te"
-DECLARE_MESSAGE(0x0B67, BOX_NONE_BOTTOM, POS_VARIABLE,
+DECLARE_MESSAGE(0x0B67, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE
     "Do you know what lies beyond the" NEWLINE
-    "desert?" BOX_BREAK_DELAYED("\x28") UNSKIPPABLE
+    "desert?" BOX_BREAK_DELAYED("\x38") UNSKIPPABLE
     "There's a place there known as the" NEWLINE
-    COLOR(YELLOW) "Desert Colossus" COLOR(WHITE) "." BOX_BREAK_DELAYED("\x28") UNSKIPPABLE
+    COLOR(YELLOW) "Desert Colossus" COLOR(WHITE) "." BOX_BREAK_DELAYED("\x38") UNSKIPPABLE
     "We Gerudo have used it as a temple" NEWLINE
     "for generations, but it was built" NEWLINE
-    "by the ancient Sages." BOX_BREAK_DELAYED("\x28") UNSKIPPABLE
+    "by the ancient Sages." BOX_BREAK_DELAYED("\x38") UNSKIPPABLE
     "It is a two-sided dungeon made for" NEWLINE
     "a time-traveling Hero who can go" NEWLINE
-    "from child to adult and back." BOX_BREAK_DELAYED("\x28")
+    "from child to adult and back." FADE("\x46")
 )
 
 //  "text text text text text text te"
