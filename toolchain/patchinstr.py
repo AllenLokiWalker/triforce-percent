@@ -8,6 +8,7 @@ Supported instructions:
     beq, bne
     nop
     .byte, .short, .word
+    .include (binary file)
 Use: python3 patchinstr.py target.zovl patch.txt [ldfile1.ld ldfile2.ld ...]
 patch text file format:
 
@@ -131,6 +132,12 @@ def patchinstr(data, patchfile):
             instr = 0x08000000 if toks[1] == 'j' else 0x0C000000
             instr |= (symaddr >> 2) & 0x03FFFFFF
             data[addr:addr+4] = instr.to_bytes(4, 'big')
+        elif toks[1] == '.include':
+            assert len(toks) == 3
+            with open(toks[2], 'rb') as f:
+                incdata = f.read()
+            assert addr + len(incdata) <= len(data)
+            data[addr:addr+len(incdata)] = incdata
         elif toks[1][0] == '.':
             if toks[1] not in dotinstr:
                 raise RuntimeError('Invalid dot command: ' + toks[1])

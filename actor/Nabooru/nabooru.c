@@ -86,18 +86,17 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 		Actor_Kill(&en->actor);
 		return;
 	}
-	/*
-	if((NABOORU_CONTINUE_VAR & NABOORU_CONTINUE_BIT)){*/
+	if((NABOORU_CONTINUE_VAR & NABOORU_CONTINUE_BIT)){
 		NABOORU_CONTINUE_VAR &= ~NABOORU_CONTINUE_BIT;
 		en->actor.update = (ActorFunc)update_Reload;
-		en->actor.textId = 0x0B68;/*
+		en->actor.textId = 0x0B68;
 	}else if((LONGOFTIME_VAR & LONGOFTIME_BIT)){
 		en->actor.update = (ActorFunc)update_Done;
 		en->actor.textId = 0x0B6D;
 	}else{
 		en->actor.update = (ActorFunc)update_Init;
 		en->actor.textId = 0x0B60;
-	}*/ //TODO TESTING
+	}
 	en->eyeTextureIndex = 0;
 	en->blinkTimer = 0;
 	en->eyeState = 0;

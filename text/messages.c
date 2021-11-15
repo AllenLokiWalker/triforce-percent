@@ -257,18 +257,18 @@ DECLARE_MESSAGE(0x0B66, BOX_BLACK, POS_MIDDLE,
 )
 
 //  "text text text text text text te"
-DECLARE_MESSAGE(0x0B67, BOX_BLACK, POS_MIDDLE,
+DECLARE_MESSAGE(0x0B67, BOX_NONE_BOTTOM, POS_VARIABLE,
     UNSKIPPABLE
     "Do you know what lies beyond the" NEWLINE
-    "desert?" BOX_BREAK UNSKIPPABLE
+    "desert?" BOX_BREAK_DELAYED("\x28") UNSKIPPABLE
     "There's a place there known as the" NEWLINE
-    COLOR(YELLOW) "Desert Colossus" COLOR(WHITE) "." BOX_BREAK UNSKIPPABLE
+    COLOR(YELLOW) "Desert Colossus" COLOR(WHITE) "." BOX_BREAK_DELAYED("\x28") UNSKIPPABLE
     "We Gerudo have used it as a temple" NEWLINE
     "for generations, but it was built" NEWLINE
-    "by the ancient Sages." BOX_BREAK UNSKIPPABLE
+    "by the ancient Sages." BOX_BREAK_DELAYED("\x28") UNSKIPPABLE
     "It is a two-sided dungeon made for" NEWLINE
     "a time-traveling Hero who can go" NEWLINE
-    "from child to adult and back."
+    "from child to adult and back." BOX_BREAK_DELAYED("\x28")
 )
 
 //  "text text text text text text te"

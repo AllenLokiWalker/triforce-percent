@@ -6,6 +6,7 @@ MAKESUBDIRS = \
 	spot00 \
 	spot07_scene \
 	spot10 \
+	spot11 \
 	tokinoma
 
 OUTFILES = \

@@ -143,10 +143,10 @@ extern void DemoTerminatorReturn();
 #define TERMINATOR_RETURN asm(".set noat\n .set noreorder\nj DemoTerminatorReturn\nnop\n.set at\n .set reorder")
 
 void Statics_TerminatorNabooruToDesertColossus(){
-    //gGlobalContext.nextEntranceIndex = 0x0127;
+    gGlobalContext.nextEntranceIndex = 0x0128;
     gGlobalContext.sceneLoadFlag = 0x14;
-    //gSaveContext.cutsceneIndex = 0xFFF0;
-    gGlobalContext.fadeTransition = 3;
+    gSaveContext.cutsceneIndex = 0xFFF1;
+    gGlobalContext.fadeTransition = 0x7;
     TERMINATOR_RETURN;
 }
 
@@ -154,7 +154,7 @@ void Statics_TerminatorReturnToNabooru(){
     gGlobalContext.nextEntranceIndex = 0x04A7;
     gGlobalContext.sceneLoadFlag = 0x14;
     gSaveContext.cutsceneIndex = 0;
-    gGlobalContext.fadeTransition = 3;
+    gGlobalContext.fadeTransition = 0x7;
     TERMINATOR_RETURN;
 }
 
