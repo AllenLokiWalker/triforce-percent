@@ -90,10 +90,10 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 		NABOORU_CONTINUE_VAR &= ~NABOORU_CONTINUE_BIT;
 		en->actor.update = (ActorFunc)update_Reload;
 		en->actor.textId = 0x0B68;
-	}else if((LONGOFTIME_VAR & LONGOFTIME_BIT)){
+	}/*else if((LONGOFTIME_VAR & LONGOFTIME_BIT)){
 		en->actor.update = (ActorFunc)update_Done;
 		en->actor.textId = 0x0B6D;
-	}else{
+	}*/else{
 		en->actor.update = (ActorFunc)update_Init;
 		en->actor.textId = 0x0B60;
 	}

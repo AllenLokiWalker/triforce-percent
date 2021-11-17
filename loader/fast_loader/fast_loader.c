@@ -188,6 +188,8 @@ __attribute__((section(".start"))) void fl_init() {
 	last_fl_count = 0;
 	avg_fl_count = 0;
 	
+	gSaveContext.naviTimer = 1;
+	
 	// Twitch
 	twitch_write_idx = 0;
 	bzero(twitch_msg_buf, sizeof(TwitchMessage) * MAX_TWITCH_MESSAGES);

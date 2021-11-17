@@ -146,7 +146,7 @@ void Statics_TerminatorNabooruToDesertColossus(){
     gGlobalContext.nextEntranceIndex = 0x0123;
     gGlobalContext.sceneLoadFlag = 0x14;
     gSaveContext.cutsceneIndex = 0xFFF1;
-    gGlobalContext.fadeTransition = 0x7;
+    gGlobalContext.fadeTransition = 3;
     TERMINATOR_RETURN;
 }
 
@@ -154,7 +154,7 @@ void Statics_TerminatorReturnToNabooru(){
     gGlobalContext.nextEntranceIndex = 0x04A6;
     gGlobalContext.sceneLoadFlag = 0x14;
     gSaveContext.cutsceneIndex = 0;
-    gGlobalContext.fadeTransition = 0x7;
+    gGlobalContext.fadeTransition = 3;
     TERMINATOR_RETURN;
 }
 

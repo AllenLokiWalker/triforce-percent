@@ -313,6 +313,7 @@ void Statics_Update(){
     }
     Statics_InventoryEditor();
     Statics_HandleEquipMedallionsToC();
+	gSaveContext.naviTimer = 1;
 }
 
 __attribute__((section(".start"))) void Statics_Init(){
