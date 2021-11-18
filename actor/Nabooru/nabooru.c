@@ -90,10 +90,10 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 		NABOORU_CONTINUE_VAR &= ~NABOORU_CONTINUE_BIT;
 		en->actor.update = (ActorFunc)update_Reload;
 		en->actor.textId = 0x0B68;
-	}/*else if((LONGOFTIME_VAR & LONGOFTIME_BIT)){
+	}else if((LONGOFTIME_VAR & LONGOFTIME_BIT)){
 		en->actor.update = (ActorFunc)update_Done;
 		en->actor.textId = 0x0B6D;
-	}*/else{
+	}else{
 		en->actor.update = (ActorFunc)update_Init;
 		en->actor.textId = 0x0B60;
 	}
@@ -183,13 +183,54 @@ static void BetterStepToAngleS(s16 *angle, s16 target, s32 shift){
 	Math_StepToAngleS(angle, target, step);
 }
 
+static void GuardSetAnim(EnGe2 *en, AnimationHeader *anim, float spd){
+	Animation_Change(&en->skelAnime, anim, spd, 0.0f, 
+		Animation_GetLastFrame(anim), ANIMMODE_LOOP, -8.0f);
+}
+
+static void GuardUpdateEavesdrop(Actor *thisx, GlobalContext *globalCtx){
+	EnGe2 *en = (EnGe2*)thisx;
+	if(en->unk_304 == 0xFF){ //signal to init
+		en->unk_304 = 0;
+		en->timer = 30;
+		GuardSetAnim(en, &gGerudoPurpleLookingAboutAnim, 1.0f);
+		en->eyeIndex = 0;
+	}
+	//660, 721, 790
+	const float center = -720.0f;
+	if(en->unk_304 == 0){
+		++en->timer;
+		if(en->timer == 85){
+			en->unk_304 = 1;
+			GuardSetAnim(en, &gGerudoPurpleWalkingAnim, 1.0f);
+			if(en->actor.world.pos.z > center){
+				en->actor.shape.rot.y = 0x8000;
+			}else{
+				en->actor.shape.rot.y = 0;
+			}
+		}
+	}else{
+		float speed = 2.5f;
+		if(en->actor.shape.rot.y != 0){
+			speed = -speed;
+		}
+		const float dist = 55.0f;
+		en->actor.world.pos.z += speed;
+		float dp = en->actor.world.pos.z - center;
+		if(fabsf(dp) > dist && dp * speed > 0.0f){
+			en->unk_304 = 0;
+			en->timer = 0;
+			GuardSetAnim(en, &gGerudoPurpleLookingAboutAnim, 1.0f);
+		}
+	}
+	GuardUpdateCommon(en, globalCtx);
+}
+
 static void GuardUpdateTurn(Actor *thisx, GlobalContext *globalCtx){
 	EnGe2 *en = (EnGe2*)thisx;
 	if(en->unk_304 == 0xFF){ //signal to init
 		en->unk_304 = 0;
-		Animation_Change(&en->skelAnime, &gGerudoPurpleLookingAboutAnim, 1.0f, 0.0f, 
-			Animation_GetLastFrame(&gGerudoPurpleLookingAboutAnim), ANIMMODE_LOOP, -8.0f);
-		en->eyeIndex = 0;
+		GuardSetAnim(en, &gGerudoPurpleLookingAboutAnim, 1.0f);
 	}
 	BetterStepToAngleS(&en->actor.shape.rot.y, en->actor.yawTowardsPlayer, 3);
 	GuardUpdateCommon(en, globalCtx);
@@ -199,8 +240,7 @@ static void GuardUpdateExit(Actor *thisx, GlobalContext *globalCtx){
 	EnGe2 *en = (EnGe2*)thisx;
 	if(en->unk_304 == 0xFF){ //signal to init
 		en->unk_304 = 0; //used as state index
-		Animation_Change(&en->skelAnime, &gGerudoPurpleWalkingAnim, 1.5f, 0.0f, 
-			Animation_GetLastFrame(&gGerudoPurpleWalkingAnim), ANIMMODE_LOOP, -8.0f);
+		GuardSetAnim(en, &gGerudoPurpleWalkingAnim, 1.5f);
 		en->timer = 0;
 	}
 	static const Vec3f pathPoints[5] = {
@@ -268,22 +308,32 @@ static void update_Init(Entity *en, GlobalContext *globalCtx){
 	if(Actor_IsTalking(&en->actor, globalCtx)){
 		//MESSAGE_START;
 		en->actor.update = (ActorFunc)update_Talk1;
+		en->guardActor = FindGuardToTalk(&en->actor, globalCtx);
+		en->timer = 0;
 	}else{
 		Actor_RequestToTalk(&en->actor, globalCtx);
 	}
 }
 
+static inline void SetGuardAction(Entity *en, ActorFunc upd){
+	if(en->guardActor != NULL){
+		((EnGe2*)en->guardActor)->unk_304 = 0xFF; //signal to init
+		en->guardActor->update = upd;
+	}
+}
+
 static void update_Talk1(Entity *en, GlobalContext *globalCtx){
 	updateCommon(en, globalCtx, 0);
+	++en->timer;
+	if(en->timer == 20){
+		//wait for camera to finish moving in before killing them
+		KillGuards(en, globalCtx, 0);
+		SetGuardAction(en, GuardUpdateEavesdrop);
+	}
 	if(MESSAGE_ADVANCE_EVENT){
 		en->actor.update = (ActorFunc)update_TalkGuards;
 		en->actor.textId = 0x0B61;
-		en->guardActor = FindGuardToTalk(&en->actor, globalCtx);
-		KillGuards(en, globalCtx, 0);
-		if(en->guardActor != NULL){
-			((EnGe2*)en->guardActor)->unk_304 = 0xFF; //signal to init
-			en->guardActor->update = GuardUpdateTurn;
-		}
+		SetGuardAction(en, GuardUpdateTurn);
 		MESSAGE_CONTINUE;
 	}
 }
@@ -291,10 +341,7 @@ static void update_Talk1(Entity *en, GlobalContext *globalCtx){
 static void update_TalkGuards(Entity *en, GlobalContext *globalCtx){
 	updateCommon(en, globalCtx, 1);
 	if(MESSAGE_ADVANCE_EVENT){
-		if(en->guardActor != NULL){
-			((EnGe2*)en->guardActor)->unk_304 = 0xFF; //signal to init
-			en->guardActor->update = GuardUpdateExit;
-		}
+		SetGuardAction(en, GuardUpdateExit);
 		en->actor.update = (ActorFunc)update_WaitGuards;
 		en->timer = 0;
 	}
@@ -335,6 +382,15 @@ static void update_Talk2(Entity *en, GlobalContext *globalCtx){
 
 static void update_Reload(Entity *en, GlobalContext *globalCtx){
 	updateCommon(en, globalCtx, 0);
+    Vec3f pos = en->actor.world.pos;
+	pos.y += 50.0f;
+    pos.z += 70.0f;
+	globalCtx->mainCamera.eye = globalCtx->mainCamera.eyeNext = pos;
+    pos.x -= 50.0f;
+	pos.y -= 30.0f;
+	pos.z -= 20.0f;
+	globalCtx->mainCamera.at = pos;
+	globalCtx->mainCamera.xzSpeed = 0.0f;
 	/*
 	static const Vec3f reloadLinkPos = {1904.0f, 0.0f, -688.0f};
 	static const Vec3s reloadLinkRot = {0, 0x5555, 0};
