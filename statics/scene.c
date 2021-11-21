@@ -262,6 +262,11 @@ static void Statics_SetUpRouting(){
     };
     PatchEntranceTable(0x04A6, 4, &return_to_nabooru_entry);
     PatchEntranceTable(0x04A7, 4, &return_to_nabooru_entry);
+    //Outside Temple of Time -> always child versions
+    gFakeEntranceTable[0x0173] = gFakeEntranceTable[0x0171];
+    gFakeEntranceTable[0x0174] = gFakeEntranceTable[0x0172];
+    gFakeEntranceTable[0x0474] = gFakeEntranceTable[0x0472];
+    gFakeEntranceTable[0x0475] = gFakeEntranceTable[0x0473];
     //
     //Debugging
     //Kokiri Forest to House of the Know-It-All Brothers -> Kokiri Forest to Ending Scene

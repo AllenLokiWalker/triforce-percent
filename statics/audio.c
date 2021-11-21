@@ -165,9 +165,15 @@ extern void Message_Use_PlayFanfare();
 
 void Patched_PlayWarpSong(u16 song)
 {
-    if(song == 0x33){ // Bolero of Fire -> Overture of Sages
+    if(song == 0x33 /* Bolero of Fire -> Overture of Sages */ 
+            && (OVERTUREOFSAGES_VAR & OVERTUREOFSAGES_BIT)
+            && gGlobalContext.sceneNum == SCENE_TOKINOMA){
         func_800F5E18(0, song, 0, 7, -1); // Main internal start sequence, on player 0
         Audio_SeqCmd1(1, 0); // Stop player 1
+        //Audio_ClearBGMMute(0xD); // Was set by Audio_OcaSetInstrument
+        D_801333D0 = 0;
+        Audio_SetVolScale(0, 2, 0x7F, 2); // modified to fade back in in 2 frames
+        Audio_SetVolScale(3, 2, 0x7F, 2);
     }else{
         func_800F5C64(song); // Normal play fanfare on player 1
     }

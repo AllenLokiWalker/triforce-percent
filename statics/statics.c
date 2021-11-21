@@ -28,6 +28,7 @@ void Statics_SetGameState(){
     gSaveContext.event_chk_inf[0xA] |= 1 << 0x9; //Learned Song of Time
     gSaveContext.inf_table    [0x0] |= 1 << 0x0; //Greeted by Saria
     */
+    gSaveContext.eventChkInf[0x2] |= 0x8000; //Death Mountain not on fire
     gSaveContext.eventChkInf[0x9] |= 0xF; //Rescued carpenters (not get arrested by Gerudos)
     gSaveContext.eventChkInf[0xA] |= 0x0011; //Entered Hyrule Field and Zora's Domain
     gSaveContext.eventChkInf[0xB] |= 0x010C; //Entered Gerudo Valley, Gerudo's Fortress, Desert Colossus
