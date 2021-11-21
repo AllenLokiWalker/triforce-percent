@@ -159,6 +159,20 @@ static s32 Patched_AudioDMA(OSIoMesg* mesg, u32 priority, s32 direction, u32 dev
     return 0;
 }
 
+#define Audio_SeqCmd1(playerIdx, a) Audio_QueueSeqCmd(0x100000FF | ((u8)playerIdx << 24) | ((u8)(a) << 16))
+
+extern void Message_Use_PlayFanfare();
+
+void Patched_PlayWarpSong(u16 song)
+{
+    if(song == 0x33){ // Bolero of Fire -> Overture of Sages
+        func_800F5E18(0, song, 0, 7, -1); // Main internal start sequence, on player 0
+        Audio_SeqCmd1(1, 0); // Stop player 1
+    }else{
+        func_800F5C64(song); // Normal play fanfare on player 1
+    }
+}
+
 static inline void CopyReplaceIndex(AudioIndex** origIdx, AudioIndex* newIdx, u32 entries)
 {
     bcopy((const void*)*origIdx, (void*)newIdx, 
@@ -198,6 +212,8 @@ void Statics_AudioCodePatches(u8 isLiveRun)
     // Patch Audio_DMA
     *( (u32*)Audio_DMA   ) = JUMPINSTR(Patched_AudioDMA);
     *(((u32*)Audio_DMA)+1) = 0;
+    // Patch play warp song, originally Audio_PlayFanfare in z_message_PAL
+    *((u32*)Message_Use_PlayFanfare) = JALINSTR(Patched_PlayWarpSong);
     // Patch instruments in Master Bank
     AudioBank *bank0 = (AudioBank*)(bank_ram_addr[0]);
     bank0->instruments[83] = &Shehnai_Inst; //replacing accordion

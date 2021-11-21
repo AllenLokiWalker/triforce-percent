@@ -54,6 +54,7 @@ STATICDATA ../textures/item_sages_charm.ia4.bin 5 0x6F 0
 
 //Custom music
 STATICDATA ../music/OvertureOfSages.aseq 1 0x6E020201 0x09000000
+STATICDATA ../music/OvertureOfSagesWarp.aseq 1 0x33020201 0x09000000
 STATICDATA ../music/triforce.aseq 1 0x71020201 0x03000000
 //STATICDATA ../music/Trailer.aseq 1 0x1F020201 0x03000000
 
