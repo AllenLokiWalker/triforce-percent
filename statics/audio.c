@@ -172,8 +172,8 @@ void Patched_PlayWarpSong(u16 song)
         Audio_SeqCmd1(1, 0); // Stop player 1
         //Audio_ClearBGMMute(0xD); // Was set by Audio_OcaSetInstrument
         D_801333D0 = 0;
-        Audio_SetVolScale(0, 2, 0x7F, 2); // modified to fade back in in 2 frames
-        Audio_SetVolScale(3, 2, 0x7F, 2);
+        Audio_SetVolScale(0, 2, 0x7F, 1); // modified to fade back in after 1 frame
+        Audio_SetVolScale(3, 2, 0x7F, 1);
     }else{
         func_800F5C64(song); // Normal play fanfare on player 1
     }
