@@ -1,6 +1,7 @@
 .set noat
 .set noreorder
 .set gp=64
+
 /* Bootstrapper 2 (new version) */
 sw $v0, -0x20($sp) /*v0 contains 0x7FFF so unlikely to be useful*/
 

@@ -1,8 +1,6 @@
 #include "ultra64.h"
 #include "global.h"
 
-#define G_CELSHADING 0x00400000
-
 u64 TestCelShadingMesh_blue_ci4[] = {
 	0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 
 	0x0000001222222222, 0x2222222222222222, 0x2222222222222222, 0x2222222222222200, 0x0000322100000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 
@@ -95,7 +93,8 @@ Vtx TestCelShadingMesh_Torso_mesh_layer_Opaque_vtx_0[45] = {
 	{{{-124, 268, 40},0, {948, 562},{0x7A, 0x7, 0xDE, 0xFF}}},
 };
 
-Gfx TestCelShadingMesh_Torso_mesh_layer_Opaque_tri_0_cel0[] = {
+Gfx TestCelShadingMesh_Torso_mesh_layer_Opaque_tri_0[] = {
+	gsSPVertex(TestCelShadingMesh_Torso_mesh_layer_Opaque_vtx_0 + 0, 30, 0),
 	gsSP2Triangles(0, 1, 2, 0, 3, 4, 5, 0),
 	gsSP2Triangles(5, 4, 6, 0, 5, 6, 7, 0),
 	gsSP2Triangles(8, 9, 10, 0, 11, 12, 13, 0),
@@ -106,42 +105,13 @@ Gfx TestCelShadingMesh_Torso_mesh_layer_Opaque_tri_0_cel0[] = {
 	gsSP2Triangles(21, 20, 22, 0, 21, 22, 1, 0),
 	gsSP2Triangles(23, 24, 25, 0, 23, 25, 26, 0),
 	gsSP2Triangles(23, 26, 27, 0, 11, 28, 29, 0),
-	gsSPEndDisplayList(),
-};
-
-Gfx TestCelShadingMesh_Torso_mesh_layer_Opaque_tri_0_cel1[] = {
+	gsSPVertex(TestCelShadingMesh_Torso_mesh_layer_Opaque_vtx_0 + 30, 15, 0),
 	gsSP2Triangles(0, 1, 2, 0, 0, 3, 1, 0),
 	gsSP2Triangles(3, 4, 1, 0, 5, 4, 3, 0),
 	gsSP2Triangles(4, 5, 6, 0, 7, 4, 6, 0),
 	gsSP2Triangles(8, 7, 6, 0, 8, 9, 7, 0),
 	gsSP2Triangles(9, 8, 10, 0, 10, 11, 9, 0),
 	gsSP2Triangles(10, 12, 11, 0, 0, 13, 14, 0),
-	gsSPEndDisplayList(),
-};
-
-Gfx TestCelShadingMesh_Torso_mesh_layer_Opaque_tri_0[] = {
-	gsSPVertex(TestCelShadingMesh_Torso_mesh_layer_Opaque_vtx_0 + 0, 30, 0),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 140),
-	gsDPSetBlendColor(255, 255, 255, 127),
-	gsSPDisplayList(TestCelShadingMesh_Torso_mesh_layer_Opaque_tri_0_cel0),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0, 1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 86),
-	gsDPSetBlendColor(255, 255, 255, 128),
-	gsSPDisplayList(TestCelShadingMesh_Torso_mesh_layer_Opaque_tri_0_cel0),
-	gsSPVertex(TestCelShadingMesh_Torso_mesh_layer_Opaque_vtx_0 + 30, 15, 0),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 140),
-	gsDPSetBlendColor(255, 255, 255, 127),
-	gsSPDisplayList(TestCelShadingMesh_Torso_mesh_layer_Opaque_tri_0_cel1),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0, 1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 86),
-	gsDPSetBlendColor(255, 255, 255, 128),
-	gsSPDisplayList(TestCelShadingMesh_Torso_mesh_layer_Opaque_tri_0_cel1),
 	gsSPEndDisplayList(),
 };
 
@@ -190,7 +160,10 @@ Vtx TestCelShadingMesh_LArm_mesh_layer_Opaque_vtx_0[42] = {
 	{{{-17, -24, 69},0, {1212, 643},{0xFE, 0x7C, 0x1D, 0xFF}}},
 };
 
-Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_0_cel0[] = {
+Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_0[] = {
+	gsSPVertex(TestCelShadingMesh_LArm_mesh_layer_Opaque_vtx_0 + 0, 22, 0),
+	gsSPMatrix(0x0d000000, G_MTX_LOAD),
+	gsSPVertex(TestCelShadingMesh_LArm_mesh_layer_Opaque_vtx_0 + 22, 10, 22),
 	gsSP2Triangles(22, 0, 23, 0, 1, 23, 0, 0),
 	gsSP2Triangles(24, 23, 1, 0, 1, 2, 24, 0),
 	gsSP2Triangles(2, 25, 24, 0, 3, 26, 27, 0),
@@ -205,43 +178,12 @@ Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_0_cel0[] = {
 	gsSP2Triangles(14, 16, 17, 0, 17, 16, 18, 0),
 	gsSP2Triangles(17, 18, 19, 0, 19, 18, 20, 0),
 	gsSP2Triangles(19, 20, 31, 0, 31, 20, 21, 0),
-	gsSPEndDisplayList(),
-};
-
-Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_0_cel1[] = {
-	gsSP2Triangles(0, 6, 1, 0, 2, 7, 3, 0),
-	gsSP2Triangles(7, 8, 3, 0, 4, 3, 8, 0),
-	gsSP2Triangles(9, 4, 8, 0, 5, 4, 9, 0),
-	gsSPEndDisplayList(),
-};
-
-Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_0[] = {
-	gsSPVertex(TestCelShadingMesh_LArm_mesh_layer_Opaque_vtx_0 + 0, 22, 0),
-	gsSPMatrix(0x0d000000, G_MTX_LOAD),
-	gsSPVertex(TestCelShadingMesh_LArm_mesh_layer_Opaque_vtx_0 + 22, 10, 22),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 140),
-	gsDPSetBlendColor(255, 255, 255, 127),
-	gsSPDisplayList(TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_0_cel0),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0, 1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 86),
-	gsDPSetBlendColor(255, 255, 255, 128),
-	gsSPDisplayList(TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_0_cel0),
 	gsSPVertex(TestCelShadingMesh_LArm_mesh_layer_Opaque_vtx_0 + 32, 6, 0),
 	gsSPMatrix(0x0d000040, G_MTX_LOAD),
 	gsSPVertex(TestCelShadingMesh_LArm_mesh_layer_Opaque_vtx_0 + 38, 4, 6),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 140),
-	gsDPSetBlendColor(255, 255, 255, 127),
-	gsSPDisplayList(TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_0_cel1),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0, 1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 86),
-	gsDPSetBlendColor(255, 255, 255, 128),
-	gsSPDisplayList(TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_0_cel1),
+	gsSP2Triangles(0, 6, 1, 0, 2, 7, 3, 0),
+	gsSP2Triangles(7, 8, 3, 0, 4, 3, 8, 0),
+	gsSP2Triangles(9, 4, 8, 0, 5, 4, 9, 0),
 	gsSPEndDisplayList(),
 };
 
@@ -258,7 +200,8 @@ Vtx TestCelShadingMesh_LArm_mesh_layer_Opaque_vtx_1[10] = {
 	{{{19, 342, 69},0, {-2, 482},{0xAA, 0x22, 0x57, 0xFF}}},
 };
 
-Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_1_cel0[] = {
+Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_1[] = {
+	gsSPVertex(TestCelShadingMesh_LArm_mesh_layer_Opaque_vtx_1 + 0, 10, 0),
 	gsSP2Triangles(0, 1, 2, 0, 0, 3, 1, 0),
 	gsSP2Triangles(3, 4, 1, 0, 3, 5, 4, 0),
 	gsSP2Triangles(6, 4, 5, 0, 6, 7, 4, 0),
@@ -266,58 +209,7 @@ Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_1_cel0[] = {
 	gsSPEndDisplayList(),
 };
 
-Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_1[] = {
-	gsSPVertex(TestCelShadingMesh_LArm_mesh_layer_Opaque_vtx_1 + 0, 10, 0),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 143),
-	gsDPSetBlendColor(255, 255, 255, 127),
-	gsSPDisplayList(TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_1_cel0),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0, 1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 81),
-	gsDPSetBlendColor(255, 255, 255, 128),
-	gsSPDisplayList(TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_1_cel0),
-	gsSPEndDisplayList(),
-};
-
-Vtx TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_0[10] = {
-	{{{13, 288, -69},0, {36, -23},{0x49, 0xB, 0x98, 0xFF}}},
-	{{{-11, 375, -69},0, {36, 492},{0x58, 0x18, 0xA7, 0xFF}}},
-	{{{18, 377, -40},0, {268, 492},{0x6A, 0x1D, 0xC0, 0xFF}}},
-	{{{42, 290, -40},0, {268, -23},{0x70, 0xA, 0xC5, 0xFF}}},
-	{{{28, 378, 0},0, {503, 492},{0x7A, 0x22, 0x0, 0xFF}}},
-	{{{53, 291, 0},0, {503, -23},{0x7F, 0x8, 0xFF, 0xFF}}},
-	{{{42, 290, 40},0, {738, -23},{0x6F, 0xC, 0x3C, 0xFF}}},
-	{{{18, 377, 40},0, {738, 492},{0x6A, 0x1D, 0x40, 0xFF}}},
-	{{{13, 288, 69},0, {970, -23},{0x49, 0xB, 0x68, 0xFF}}},
-	{{{-11, 375, 69},0, {970, 492},{0x58, 0x18, 0x59, 0xFF}}},
-};
-
-Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0_cel0[] = {
-	gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
-	gsSP2Triangles(3, 2, 4, 0, 3, 4, 5, 0),
-	gsSP2Triangles(6, 5, 4, 0, 6, 4, 7, 0),
-	gsSP2Triangles(8, 6, 7, 0, 8, 7, 9, 0),
-	gsSPEndDisplayList(),
-};
-
-Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0[] = {
-	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_0 + 0, 10, 0),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 143),
-	gsDPSetBlendColor(255, 255, 255, 127),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0_cel0),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0, 1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 81),
-	gsDPSetBlendColor(255, 255, 255, 128),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0_cel0),
-	gsSPEndDisplayList(),
-};
-
-Vtx TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1[42] = {
+Vtx TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_0[42] = {
 	{{{30, -3, -69},0, {935, 642},{0xBB, 0x55, 0xC0, 0xFF}}},
 	{{{-5, 29, -80},0, {943, 670},{0xFB, 0xF, 0x82, 0xFF}}},
 	{{{-54, 83, -69},0, {963, 701},{0xAE, 0xF5, 0x9F, 0xFF}}},
@@ -362,7 +254,10 @@ Vtx TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1[42] = {
 	{{{30, -3, 69},0, {1010, 598},{0xBB, 0x54, 0x41, 0xFF}}},
 };
 
-Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel0[] = {
+Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0[] = {
+	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_0 + 0, 22, 0),
+	gsSPMatrix(0x0d000000, G_MTX_LOAD),
+	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_0 + 22, 10, 22),
 	gsSP2Triangles(22, 23, 0, 0, 1, 0, 23, 0),
 	gsSP2Triangles(24, 1, 23, 0, 1, 24, 2, 0),
 	gsSP2Triangles(2, 24, 25, 0, 3, 26, 27, 0),
@@ -377,49 +272,40 @@ Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel0[] = {
 	gsSP2Triangles(14, 17, 16, 0, 17, 18, 16, 0),
 	gsSP2Triangles(17, 19, 18, 0, 19, 20, 18, 0),
 	gsSP2Triangles(19, 31, 20, 0, 31, 21, 20, 0),
-	gsSPEndDisplayList(),
-};
-
-Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel1[] = {
+	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_0 + 32, 6, 0),
+	gsSPMatrix(0x0d000080, G_MTX_LOAD),
+	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_0 + 38, 4, 6),
 	gsSP2Triangles(0, 1, 6, 0, 2, 3, 7, 0),
 	gsSP2Triangles(7, 3, 8, 0, 4, 8, 3, 0),
 	gsSP2Triangles(9, 8, 4, 0, 5, 9, 4, 0),
 	gsSPEndDisplayList(),
 };
 
+Vtx TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1[10] = {
+	{{{13, 288, -69},0, {36, -23},{0x49, 0xB, 0x98, 0xFF}}},
+	{{{-11, 375, -69},0, {36, 492},{0x58, 0x18, 0xA7, 0xFF}}},
+	{{{18, 377, -40},0, {268, 492},{0x6A, 0x1D, 0xC0, 0xFF}}},
+	{{{42, 290, -40},0, {268, -23},{0x70, 0xA, 0xC5, 0xFF}}},
+	{{{28, 378, 0},0, {503, 492},{0x7A, 0x22, 0x0, 0xFF}}},
+	{{{53, 291, 0},0, {503, -23},{0x7F, 0x8, 0xFF, 0xFF}}},
+	{{{42, 290, 40},0, {738, -23},{0x6F, 0xC, 0x3C, 0xFF}}},
+	{{{18, 377, 40},0, {738, 492},{0x6A, 0x1D, 0x40, 0xFF}}},
+	{{{13, 288, 69},0, {970, -23},{0x49, 0xB, 0x68, 0xFF}}},
+	{{{-11, 375, 69},0, {970, 492},{0x58, 0x18, 0x59, 0xFF}}},
+};
+
 Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1[] = {
-	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1 + 0, 22, 0),
-	gsSPMatrix(0x0d000000, G_MTX_LOAD),
-	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1 + 22, 10, 22),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 140),
-	gsDPSetBlendColor(255, 255, 255, 127),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel0),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0, 1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 86),
-	gsDPSetBlendColor(255, 255, 255, 128),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel0),
-	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1 + 32, 6, 0),
-	gsSPMatrix(0x0d000080, G_MTX_LOAD),
-	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1 + 38, 4, 6),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 140),
-	gsDPSetBlendColor(255, 255, 255, 127),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel1),
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0, 1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 86),
-	gsDPSetBlendColor(255, 255, 255, 128),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel1),
+	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1 + 0, 10, 0),
+	gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
+	gsSP2Triangles(3, 2, 4, 0, 3, 4, 5, 0),
+	gsSP2Triangles(6, 5, 4, 0, 6, 4, 7, 0),
+	gsSP2Triangles(8, 6, 7, 0, 8, 7, 9, 0),
 	gsSPEndDisplayList(),
 };
 
 Gfx mat_TestCelShadingMesh_blue_layerOpaque[] = {
 	gsDPPipeSync(),
-	gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH | G_CELSHADING),
+	gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
 	gsSPClearGeometryMode(G_CULL_FRONT | G_FOG | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
 	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_1CYCLE | G_PM_NPRIMITIVE),
 	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_THRESHOLD | G_ZS_PIXEL | AA_EN | Z_CMP | Z_UPD | CVG_DST_CLAMP | ZMODE_OPA | GBL_c1(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1) | GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1)),
@@ -444,7 +330,7 @@ Gfx mat_TestCelShadingMesh_blue_layerOpaque[] = {
 
 Gfx mat_TestCelShadingMesh_brown_layerOpaque[] = {
 	gsDPPipeSync(),
-	gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH | G_CELSHADING),
+	gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
 	gsSPClearGeometryMode(G_CULL_FRONT | G_FOG | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
 	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_1CYCLE | G_PM_NPRIMITIVE),
 	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_THRESHOLD | G_ZS_PIXEL | AA_EN | Z_CMP | Z_UPD | CVG_DST_CLAMP | ZMODE_OPA | GBL_c1(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1) | GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1)),
@@ -468,6 +354,7 @@ Gfx TestCelShadingMesh_Torso_mesh_layer_Opaque[] = {
 };
 
 Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque[] = {
+	gsSPDisplayList(mat_TestCelShadingMesh_blue_layerOpaque),
 	gsSPDisplayList(TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_0),
 	gsSPDisplayList(mat_TestCelShadingMesh_brown_layerOpaque),
 	gsSPDisplayList(TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_1),
@@ -475,8 +362,9 @@ Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque[] = {
 };
 
 Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque[] = {
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0),
 	gsSPDisplayList(mat_TestCelShadingMesh_blue_layerOpaque),
+	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0),
+	gsSPDisplayList(mat_TestCelShadingMesh_brown_layerOpaque),
 	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1),
 	gsSPEndDisplayList(),
 };
