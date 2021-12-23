@@ -39,8 +39,8 @@ SCENE 58 ../scene/Ending/Ending_scene.zscene
 
 //Voice acting
 STATICDATA ../voice/link_demo_1_32Raw.bin 3 0 0
-STATICDATA ../voice/link_demo_2_32Raw.bin 3 1 0
-STATICDATA ../voice/link_demo_3_32Raw.bin 3 2 0
+//STATICDATA ../voice/link_demo_2_32Raw.bin 3 1 0
+//STATICDATA ../voice/link_demo_3_32Raw.bin 3 2 0
 
 
 //Object patches

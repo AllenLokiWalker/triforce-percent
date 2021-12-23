@@ -1,6 +1,7 @@
 #include "ootmain.h"
 #include "BotWLinkMesh.h"
 #include "BotWLinkMeshIdleAnim.h"
+#include "BotWLinkMeshBobokuwaAnim.h"
 
 // Actor Information
 #define OBJ_ID 122 // primary object dependency
@@ -22,6 +23,7 @@ typedef struct {
 	ColliderCylinder collider;
 	Vec3s jointTable[NUM_LIMBS];
 	Vec3s morphTable[NUM_LIMBS];
+	u8 timer;
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
@@ -44,6 +46,7 @@ static f32 VoiceFreqScale = 1.0f;
 static f32 VoiceVol = 1.5f;
 static u32 VoiceReverbAdd = 0;
 
+/*
 static void updateVoice(Entity *en, GlobalContext *globalCtx) {
 	s16 sfx = 0;
 	if((CTRLR_PRESS & BTN_DLEFT)){
@@ -57,10 +60,29 @@ static void updateVoice(Entity *en, GlobalContext *globalCtx) {
 	Audio_PlaySoundGeneral(sfx, &en->actor.projectedPos, 4, &VoiceFreqScale, &VoiceVol,
 		(f32*)&VoiceReverbAdd);
 }
+*/
 
 static void update(Entity *en, GlobalContext *globalCtx) {
-	SkelAnime_Update(&en->skelAnime);
-	updateVoice(en, globalCtx);
+	//updateVoice(en, globalCtx);
+	if((CTRLR_PRESS & BTN_DLEFT)){
+		en->timer = 1;
+		Animation_Change(&en->skelAnime, &BotWLinkMeshBobokuwaAnim, 1.0f, 0.0f, 
+			Animation_GetLastFrame(&BotWLinkMeshBobokuwaAnim), ANIMMODE_ONCE, -4.0f);
+	}
+	if(en->timer > 0){
+		if(en->timer == 5){
+			Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &en->actor.projectedPos, 4, 
+				&VoiceFreqScale, &VoiceVol, (f32*)&VoiceReverbAdd);
+			en->timer = 0;
+		}else{
+			++en->timer;
+		}
+	}
+	s32 animFinished = SkelAnime_Update(&en->skelAnime);
+	if(animFinished){
+		Animation_Change(&en->skelAnime, &BotWLinkMeshIdleAnim, 1.0f, 0.0f, 
+			Animation_GetLastFrame(&BotWLinkMeshIdleAnim), ANIMMODE_LOOP, -8.0f);
+	}
 }
 
 s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
