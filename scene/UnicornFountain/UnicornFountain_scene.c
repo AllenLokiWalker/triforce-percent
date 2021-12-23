@@ -27,6 +27,9 @@ ActorEntry UnicornFountain_scene_header00_startPositionList[] = {
 	{ ACTOR_PLAYER, 0, 22, -25, 0, 32768, 0, 0x0FFF },
 };
 
+extern u8 _UnicornFountain_room_0SegmentRomStart[];
+extern u8 _UnicornFountain_room_0SegmentRomEnd[];
+
 RomFile UnicornFountain_scene_roomList[] = {
 	{ (u32)_UnicornFountain_room_0SegmentRomStart, (u32)_UnicornFountain_room_0SegmentRomEnd },
 };
@@ -621,4 +624,3 @@ s32 UnicornFountain_scene_header00_cutscene[] = {
 		CS_NPC_ACTION(2, 1010, 1011, 0x0, 0x0, 0x0, 15, 0, 0, 15, 0, -10, 0, 0, 0),
 	CS_END(),
 };
-

@@ -1,13 +1,12 @@
 #include "ultra64.h"
 #include "z64.h"
 #include "macros.h"
-#include "Ending_room_0.h"
+#include "Ending_scene.h"
 
 #include "segment_symbols.h"
 #include "command_macros_base.h"
 #include "z64cutscene_commands.h"
 #include "variables.h"
-#include "Ending_scene.h"
 
 SCmdBase Ending_room_0_header00[] = {
 	SCENE_CMD_ECHO_SETTINGS(0x00),
@@ -25,8 +24,8 @@ s16 Ending_room_0_header00_objectList[1] = {
 };
 
 ActorEntry Ending_room_0_header00_actorList[2] = {
-	{ 118, 380, -50, 329, 0, 41870, 0, 0x0000 },
 	{ 116, 1066, 191, 896, 0, 41890, 0, 0x0000 },
+	{ 118, 429, -50, 367, 0, 25486, 0, 0x0000 },
 };
 
 MeshHeader0 Ending_room_0_meshHeader = { {0}, 1, (u32)&Ending_room_0_meshDListEntry, (u32)&(Ending_room_0_meshDListEntry) + sizeof(Ending_room_0_meshDListEntry) };

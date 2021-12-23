@@ -38,7 +38,7 @@ void Statics_SetGameState(){
     //TODO
     WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
     WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
-    //Statics_GiveLongOfTime();
+    Statics_GiveLongOfTime();
     SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
     Statics_GiveOvertureOfSages();
     //Set up Adult Link inventory to not have the Master Sword

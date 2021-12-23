@@ -1,4 +1,4 @@
-<REAPER_PROJECT 0.1 "5.99/x64" 1636613704
+<REAPER_PROJECT 0.1 "5.99/x64" 1639899031
   RIPPLE 0
   GROUPOVERRIDE 0 0 0
   AUTOXFADE 1
@@ -14,8 +14,8 @@
   TIMEMODE 1 5 -1 30 0 0 -1
   VIDEO_CONFIG 0 0 256
   PANMODE 3
-  CURSOR 65.27450980392123
-  ZOOM 18.09988511371221 0 0
+  CURSOR 107.1642156862745
+  ZOOM 71.04526910529633 6526 0
   VZOOMEX 3
   USE_REC_CFG 0
   RECMODE 1
@@ -58,8 +58,8 @@
   GLOBAL_AUTO -1
   TEMPO 96 4 4
   PLAYRATE 1 0 0.25 4
-  SELECTION 0 0
-  SELECTION2 0 0
+  SELECTION 51.15686274509804 51.15686274509804
+  SELECTION2 51.15686274509804 51.15686274509804
   MASTERAUTOMODE 0
   MASTERTRACKHEIGHT 0 0
   MASTERPEAKCOL 16576
@@ -85,9 +85,11 @@
     DEFSHAPE 1 -1 -1
     PT 0.000000000000 180.0000000000 1 262145 0 1
     PT 0.333333333333 85.0000000000 1 262147 0 1
-    PT 108.333333333333 80.0000000000 1 0 1
-    PT 109.833333333333 70.0000000000 1
-    PT 110.690476190476 115.0000000000 1
+    PT 97.039215686275 80.0000000000 1
+    PT 109.039215686275 75.0000000000 1 0 1
+    PT 110.639215686275 65.0000000000 1
+    PT 111.100754147813 55.0000000000 1
+    PT 111.646208693268 115.0000000000 1
   >
   <PROJBAY
   >
@@ -103,7 +105,7 @@
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 0
+    SEL 1
     REC 0 0 0 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0
@@ -156,7 +158,7 @@
     <ITEM
       POSITION 0.00000000000024
       SNAPOFFS 0
-      LENGTH 0.3333333333336
+      LENGTH 0.33333333333323
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -353,7 +355,7 @@
     <ITEM
       POSITION 0.00000000000024
       SNAPOFFS 0
-      LENGTH 0.33333333333317
+      LENGTH 0.33333333333309
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -385,15 +387,15 @@
         SRCCOLOR 20634
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW 0 0.165664 32 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW 0 0.073629 37 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 0 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 32 -1 -1 -1 -1 5 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 6 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 23.62745098039182
+      POSITION 23.62745098039144
       SNAPOFFS 0
       LENGTH 8.47058823529412
       LOOP 1
@@ -419,8 +421,8 @@
         E 960 81 46 00
         E 0 91 45 4d
         E 960 81 45 00
-        e 0 91 48 4d
-        e 1920 81 48 00
+        E 0 91 48 4d
+        E 1920 81 48 00
         E 5760 b0 7b 00
         CHASE_CC_TAKEOFFS 1
         GUID {EF0BFDBF-83F1-482B-BA72-65F9E2473781}
@@ -428,15 +430,15 @@
         SRCCOLOR 90367
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW -994.518333 0.072492 40 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW -994.518333 0.073629 37 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 731 1858 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 32 -1 -1 -1 -1 5 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 6 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 55.39215686274477
+      POSITION 55.39215686274439
       SNAPOFFS 0
       LENGTH 4.23529411764706
       LOOP 1
@@ -456,13 +458,13 @@
       <SOURCE MIDI
         HASDATA 1 960 QN
         POOLEDEVTS {D336009F-E37E-4F22-AC9C-30A39D3C86E4}
-        e 0 91 48 41
+        e 0 91 48 48
         e 1920 81 48 00
-        e 0 91 4f 41
+        e 0 91 4f 48
         e 960 81 4f 00
-        e 0 91 4e 41
+        e 0 91 4e 48
         e 960 81 4e 00
-        e 0 91 47 41
+        e 0 91 47 48
         e 1920 81 47 00
         E 0 b0 7b 00
         CHASE_CC_TAKEOFFS 1
@@ -471,17 +473,17 @@
         SRCCOLOR 88766
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW -5755.917539 0.165664 32 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW -7836.467058 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 0 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 101.98039215686273
+      POSITION 102.2892156862741
       SNAPOFFS 0
-      LENGTH 16.53617099013475
+      LENGTH 17.18307996351444
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -502,13 +504,31 @@
         E 960 91 43 41
         E 720 81 43 00
         E 240 91 41 41
-        E 2640 81 41 00
-        E 2160 91 43 41
+        E 2160 81 41 00
+        E 240 91 41 4e
+        E 128 81 41 00
+        E 112 91 41 4e
+        E 128 81 41 00
+        E 112 91 41 4e
+        E 240 81 41 00
+        E 240 91 41 4e
+        E 240 81 41 00
+        E 240 91 43 42
+        E 960 81 43 00
+        E 0 91 43 41
         E 720 81 43 00
         E 240 91 41 41
-        E 2640 81 41 00
-        E 1200 b1 07 72
-        E 0 91 4f 41
+        E 2160 81 41 00
+        E 240 91 41 52
+        E 128 81 41 00
+        E 112 91 41 52
+        E 128 81 41 00
+        E 112 91 41 52
+        E 240 81 41 00
+        E 240 91 41 52
+        E 240 81 41 00
+        E 240 b1 07 72
+        e 0 91 4f 41
         E 480 b1 07 69
         E 480 b1 07 61
         E 480 b1 07 5b
@@ -521,7 +541,7 @@
         E 480 b1 07 75
         E 480 b1 07 79
         E 480 b1 07 7d
-        E 1826 81 4f 00
+        e 1826 81 4f 00
         E 574 91 4f 41
         E 641 81 4f 00
         E 5119 b0 7b 00
@@ -531,11 +551,11 @@
         SRCCOLOR 87665
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW 327.582571 0.165664 32 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW -6371.450863 0.073629 37 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 0 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 32 -1 -1 -1 -1 5 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 6 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
   >
@@ -646,6 +666,100 @@
         CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
+    <ITEM
+      POSITION 59.62745098039216
+      SNAPOFFS 0
+      LENGTH 8.47058823529411
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0
+      FADEOUT 1 0 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {9C3CFDBB-9CFE-4B2B-B4EF-0BCBC5C2399B}
+      IID 3800
+      NAME "2 Clarinet untitled MIDI item"
+      VOLPAN 1 0 1 -1
+      SOFFS 0 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {5AA76D35-0485-41DE-A4FC-4E30A37F58F7}
+      <SOURCE MIDI
+        HASDATA 1 960 QN
+        POOLEDEVTS {256C9248-C1C1-40F4-824E-D417433DF4B4}
+        E 0 92 47 4e
+        E 960 82 47 00
+        E 0 92 45 4e
+        E 960 82 45 00
+        E 0 92 4c 4e
+        E 960 82 4c 00
+        E 8640 b0 7b 00
+        CHASE_CC_TAKEOFFS 1
+        GUID {1707A5EF-707B-4CC1-B298-991A9BA35426}
+        IGNTEMPO 0 120 4 4
+        SRCCOLOR 91185
+        VELLANE 7 135 0
+        VELLANE -1 124 0
+        CFGEDITVIEW -5910.981375 0.031172 43 12 0 -1 0 0 0 0.5
+        KEYSNAP 0
+        TRACKSEL 252
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+      >
+    >
+    <ITEM
+      POSITION 102.2892156862745
+      SNAPOFFS 0
+      LENGTH 17.18307996351474
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0
+      FADEOUT 1 0 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {4B8C2D27-141F-4A29-9584-64B08A1EC792}
+      IID 3791
+      NAME "2 Clarinet untitled MIDI item"
+      VOLPAN 1 0 1 -1
+      SOFFS 0 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {A2D6E07D-2686-41D4-810F-7EFD0857E9DA}
+      <SOURCE MIDI
+        HASDATA 1 960 QN
+        POOLEDEVTS {4712F4CA-0E28-40E4-A86F-0307752C4BD2}
+        E 4320 92 3c 57
+        E 117 82 3c 00
+        E 123 92 3c 57
+        E 110 82 3c 00
+        E 130 92 3c 57
+        E 240 82 3c 00
+        E 240 92 3c 57
+        E 240 82 3c 00
+        E 240 92 3e 57
+        E 889 82 3e 00
+        e 3431 92 3c 5b
+        e 117 82 3c 00
+        e 123 92 3c 5b
+        e 110 82 3c 00
+        e 130 92 3c 5b
+        e 240 82 3c 00
+        e 240 92 3c 5b
+        e 240 82 3c 00
+        E 14640 b0 7b 00
+        CHASE_CC_TAKEOFFS 1
+        GUID {F816E38A-4FCE-4A76-8A5E-73B28F3FD1E4}
+        IGNTEMPO 0 120 4 4
+        SRCCOLOR 90524
+        VELLANE 7 135 0
+        VELLANE -1 124 0
+        CFGEDITVIEW -464.734437 0.073629 37 12 0 -1 0 0 0 0.5
+        KEYSNAP 0
+        TRACKSEL 252
+        EVTFILTER 32 -1 -1 -1 -1 5 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 6 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+      >
+    >
   >
   <TRACK {D011D1ED-A909-44F4-A5F1-56EDBFD952DC}
     NAME "3 Bassoon"
@@ -698,7 +812,7 @@
     <ITEM
       POSITION 0.00000000000024
       SNAPOFFS 0
-      LENGTH 0.33333333333315
+      LENGTH 0.33333333333309
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -737,7 +851,7 @@
       >
     >
     <ITEM
-      POSITION 19.39215686274477
+      POSITION 19.3921568627444
       SNAPOFFS 0
       LENGTH 4.23529411764706
       LOOP 1
@@ -779,6 +893,60 @@
         TRACKSEL 252
         EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
         CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 731 1858 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+      >
+    >
+    <ITEM
+      POSITION 102.2892156862745
+      SNAPOFFS 0
+      LENGTH 17.18307996351474
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0
+      FADEOUT 1 0 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {4F179A91-309E-43EC-AF89-F56C6F249227}
+      IID 3792
+      NAME "3 Bassoon untitled MIDI item"
+      VOLPAN 1 0 1 -1
+      SOFFS 0 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {554D2A0C-BC33-4AA8-B41B-258A7F2107DF}
+      <SOURCE MIDI
+        HASDATA 1 960 QN
+        POOLEDEVTS {11AC73F5-96C3-4E2E-A1C0-BF68734F0A0A}
+        E 0 b3 07 72
+        E 4320 93 39 64
+        E 92 83 39 00
+        E 148 93 39 64
+        E 110 83 39 00
+        E 130 93 39 64
+        E 240 83 39 00
+        E 240 93 39 64
+        E 240 83 39 00
+        E 240 93 37 62
+        E 899 83 37 00
+        e 3421 93 39 67
+        e 92 83 39 00
+        e 148 93 39 67
+        e 110 83 39 00
+        e 130 93 39 67
+        e 240 83 39 00
+        e 240 93 39 67
+        e 240 83 39 00
+        E 14640 b0 7b 00
+        CHASE_CC_TAKEOFFS 1
+        GUID {4E3EC56A-FFB8-409D-8D88-1C0A9EB3F779}
+        IGNTEMPO 0 120 4 4
+        SRCCOLOR 90599
+        VELLANE 7 135 0
+        VELLANE -1 124 0
+        CFGEDITVIEW -464.734437 0.073629 37 12 0 -1 0 0 0 0.5
+        KEYSNAP 0
+        TRACKSEL 252
+        EVTFILTER 32 -1 -1 -1 -1 5 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 6 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
   >
@@ -872,7 +1040,7 @@
       >
     >
     <ITEM
-      POSITION 6.68627450980359
+      POSITION 6.68627450980322
       SNAPOFFS 0
       LENGTH 8.47058823529412
       LOOP 1
@@ -923,7 +1091,7 @@
       >
     >
     <ITEM
-      POSITION 19.39215686274477
+      POSITION 19.3921568627444
       SNAPOFFS 0
       LENGTH 4.23529411764706
       LOOP 1
@@ -968,7 +1136,56 @@
       >
     >
     <ITEM
-      POSITION 55.39215686274477
+      POSITION 51.15686274509804
+      SNAPOFFS 0
+      LENGTH 4.23529411764707
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0
+      FADEOUT 1 0 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {4FEDD1E7-1917-4C1A-BFD8-E61717CD5F4F}
+      IID 3793
+      NAME "4 Horn untitled MIDI item"
+      VOLPAN 1 0 1 -1
+      SOFFS 0 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {BAB15577-64FE-4DDF-BC3F-C57B2CD9E094}
+      <SOURCE MIDI
+        HASDATA 1 960 QN
+        POOLEDEVTS {1AD2EC14-67D3-4D95-BCBB-ED749CD6C66E}
+        E 480 94 43 60
+        E 370 84 43 00
+        E 110 94 4a 60
+        E 960 84 4a 00
+        E 0 94 43 60
+        E 960 84 43 00
+        E 0 94 45 60
+        E 960 84 45 00
+        E 0 94 47 60
+        E 480 84 47 00
+        E 0 94 45 60
+        E 480 84 45 00
+        e 0 94 3e 60
+        e 960 84 3e 00
+        E 0 b0 7b 00
+        CHASE_CC_TAKEOFFS 1
+        GUID {7FDF5075-A327-4FA1-852F-A4729A3D5F1F}
+        IGNTEMPO 0 120 4 4
+        SRCCOLOR 90651
+        VELLANE 7 135 0
+        VELLANE -1 124 0
+        CFGEDITVIEW -4577.757526 0.073629 37 12 0 -1 0 0 0 0.5
+        KEYSNAP 0
+        TRACKSEL 252
+        EVTFILTER 32 -1 -1 -1 -1 5 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 6 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+      >
+    >
+    <ITEM
+      POSITION 55.39215686274439
       SNAPOFFS 0
       LENGTH 4.23529411764706
       LOOP 1
@@ -988,14 +1205,14 @@
       <SOURCE MIDI
         HASDATA 1 960 QN
         POOLEDEVTS {61BB408F-4867-4F60-9B09-AB7152087B86}
-        E 0 94 3c 37
-        E 1920 84 3c 00
-        E 0 94 43 37
-        E 960 84 43 00
-        E 0 94 42 37
-        E 960 84 42 00
-        E 0 94 3b 37
-        E 1920 84 3b 00
+        e 0 94 3c 45
+        e 1920 84 3c 00
+        e 0 94 43 45
+        e 960 84 43 00
+        e 0 94 42 45
+        e 960 84 42 00
+        e 0 94 3b 45
+        e 1920 84 3b 00
         E 0 b0 7b 00
         CHASE_CC_TAKEOFFS 1
         GUID {4E53C688-929C-418D-9584-D724B0C8140B}
@@ -1003,17 +1220,17 @@
         SRCCOLOR 88785
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW -5755.917539 0.06651 38 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW -8992.167107 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 16 -1 -1 -1 -1 4 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 5 1 1 0.25 731 1858 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 97.74509803921535
+      POSITION 97.78921568627376
       SNAPOFFS 0
-      LENGTH 4.23529411764706
+      LENGTH 4.5
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -1054,9 +1271,9 @@
       >
     >
     <ITEM
-      POSITION 101.98039215686273
+      POSITION 102.2892156862741
       SNAPOFFS 0
-      LENGTH 16.53617099013475
+      LENGTH 17.18307996351444
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -1134,7 +1351,7 @@
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 1
+    SEL 0
     REC 0 0 0 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0
@@ -1222,17 +1439,115 @@
         SRCCOLOR 20642
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW 0 0.165664 32 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW 0 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 0 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 99.86274509803889
+      POSITION 51.15686274509804
       SNAPOFFS 0
-      LENGTH 2.11764705882352
+      LENGTH 8.47058823529412
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0
+      FADEOUT 1 0 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {4774B369-B0BB-463D-9690-8D14647AADEC}
+      IID 3796
+      NAME "5 Trumpet untitled MIDI item-glued"
+      VOLPAN 1 0 1 -1
+      SOFFS 0 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {2C4217AE-CBAD-4BA6-BA3A-6404BDC33C60}
+      <SOURCE MIDI
+        HASDATA 1 960 QN
+        POOLEDEVTS {02C29EB9-B465-47D2-A036-34D7FF7758BF}
+        E 480 95 40 45
+        E 128 85 40 00
+        E 112 95 40 45
+        E 128 85 40 00
+        E 112 95 40 45
+        E 960 85 40 00
+        E 0 95 3e 45
+        E 960 85 3e 00
+        E 0 95 3e 45
+        E 2880 85 3e 00
+        E 0 95 40 45
+        E 1920 85 40 00
+        E 0 95 43 45
+        E 960 85 43 00
+        E 0 95 42 45
+        E 960 85 42 00
+        E 0 95 3e 45
+        E 1920 85 3e 00
+        E 0 b0 7b 00
+        CHASE_CC_TAKEOFFS 1
+        GUID {A719D2E7-9793-44C1-904F-ADC43DCA23A7}
+        IGNTEMPO 0 120 4 4
+        SRCCOLOR 90759
+        VELLANE 7 135 0
+        VELLANE -1 124 0
+        CFGEDITVIEW -3232.167107 0.031172 43 12 0 -1 0 0 0 0.5
+        KEYSNAP 0
+        TRACKSEL 252
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+      >
+    >
+    <ITEM
+      POSITION 59.62745098039216
+      SNAPOFFS 0
+      LENGTH 8.47058823529411
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0
+      FADEOUT 1 0 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {BEF22C72-A60E-4A4A-8C4B-9682278C2A79}
+      IID 3801
+      NAME "5 Trumpet untitled MIDI item"
+      VOLPAN 1 0 1 -1
+      SOFFS 0 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {5C93EAC1-6117-4853-A2A0-23F66F33DE7E}
+      <SOURCE MIDI
+        HASDATA 1 960 QN
+        POOLEDEVTS {16238F53-3726-4E13-B733-85FE6A2BFBE4}
+        E 2880 95 47 4e
+        E 960 85 47 00
+        E 0 95 45 4e
+        E 960 85 45 00
+        E 0 95 41 4e
+        E 960 85 41 00
+        E 0 95 43 4e
+        E 2880 85 43 00
+        E 0 95 42 4e
+        E 2400 85 42 00
+        E 480 b0 7b 00
+        CHASE_CC_TAKEOFFS 1
+        GUID {B7B50135-DB3E-45B3-8F98-6EB96EFEF92A}
+        IGNTEMPO 0 120 4 4
+        SRCCOLOR 91242
+        VELLANE 7 135 0
+        VELLANE -1 124 0
+        CFGEDITVIEW -19672.686646 0.031172 43 12 0 -1 0 0 0 0.5
+        KEYSNAP 0
+        TRACKSEL 252
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+      >
+    >
+    <ITEM
+      POSITION 100.03921568627376
+      SNAPOFFS 0
+      LENGTH 2.25
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -1250,14 +1565,14 @@
       <SOURCE MIDI
         HASDATA 1 960 QN
         POOLEDEVTS {8EA597BD-F66A-4AB8-A073-75102352175B}
-        e 1440 95 4a 4e
-        e 136 85 4a 00
-        e 104 95 4a 4e
-        e 136 85 4a 00
-        e 104 95 4a 4e
-        e 240 85 4a 00
-        e 240 95 4a 4e
-        e 240 85 4a 00
+        E 1440 95 4a 4e
+        E 136 85 4a 00
+        E 104 95 4a 4e
+        E 136 85 4a 00
+        E 104 95 4a 4e
+        E 240 85 4a 00
+        E 240 95 4a 4e
+        E 240 85 4a 00
         E 240 b0 7b 00
         CHASE_CC_TAKEOFFS 1
         GUID {A1DCDFA3-7753-470E-AA48-8DF2CAAC4826}
@@ -1265,17 +1580,17 @@
         SRCCOLOR 89221
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW 4376.361667 0.165664 32 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW 4376.361667 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 0 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 101.98039215686273
+      POSITION 102.2892156862741
       SNAPOFFS 0
-      LENGTH 16.53617099013475
+      LENGTH 17.18307996351444
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -1297,29 +1612,11 @@
         E 720 85 47 00
         E 240 95 45 60
         E 2400 85 45 00
-        E 0 95 41 62
-        E 128 85 41 00
-        E 112 95 41 62
-        E 128 85 41 00
-        E 112 95 41 62
-        E 240 85 41 00
-        E 240 95 41 62
-        E 240 85 41 00
-        e 240 95 3e 56
-        e 720 85 3e 00
-        E 240 95 47 60
+        E 2400 95 47 60
         E 720 85 47 00
         E 240 95 45 60
         E 2400 85 45 00
-        E 0 95 41 62
-        E 128 85 41 00
-        E 112 95 41 62
-        E 128 85 41 00
-        E 112 95 41 62
-        E 240 85 41 00
-        E 240 95 41 62
-        E 240 85 41 00
-        E 240 b5 07 72
+        E 1440 b5 07 72
         E 0 95 4a 60
         E 480 b5 07 69
         E 480 b5 07 61
@@ -1343,11 +1640,11 @@
         SRCCOLOR 87635
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW -464.736489 0.098056 34 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW -86935.177282 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 64 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
   >
@@ -1451,15 +1748,15 @@
         SRCCOLOR 20644
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW 0 0.165664 32 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW 0 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 0 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 15.15686274509771
+      POSITION 15.15686274509734
       SNAPOFFS 0
       LENGTH 8.47058823529412
       LOOP 1
@@ -1494,15 +1791,64 @@
         SRCCOLOR 90002
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW -3257.806487 0.072492 40 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW -3257.806487 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
         EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 731 1858 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 55.39215686274477
+      POSITION 51.15686274509804
+      SNAPOFFS 0
+      LENGTH 4.23529411764707
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0
+      FADEOUT 1 0 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {DAC8A891-B2EF-4044-A2A2-9CACFDC8DC0A}
+      IID 3794
+      NAME "6 Trombone untitled MIDI item"
+      VOLPAN 1 0 1 -1
+      SOFFS 0 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {E2F325BA-36DC-434A-8974-B636BCF15D2C}
+      <SOURCE MIDI
+        HASDATA 1 960 QN
+        POOLEDEVTS {E9504EC2-6A09-4888-843A-3E829D21DFBC}
+        E 480 96 37 4e
+        E 117 86 37 00
+        E 123 96 37 4e
+        E 117 86 37 00
+        E 123 96 37 4e
+        E 960 86 37 00
+        E 0 96 37 4e
+        E 960 86 37 00
+        E 0 96 32 4e
+        E 960 86 32 00
+        E 0 96 39 4e
+        E 960 86 39 00
+        E 0 96 3b 4e
+        E 960 86 3b 00
+        E 0 b0 7b 00
+        CHASE_CC_TAKEOFFS 1
+        GUID {5FC147F0-8706-4D12-9ABD-40095A9CAD50}
+        IGNTEMPO 0 120 4 4
+        SRCCOLOR 90696
+        VELLANE 7 135 0
+        VELLANE -1 124 0
+        CFGEDITVIEW -1977.95338 0.031172 43 12 0 -1 0 0 0 0.5
+        KEYSNAP 0
+        TRACKSEL 252
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+      >
+    >
+    <ITEM
+      POSITION 55.39215686274439
       SNAPOFFS 0
       LENGTH 4.23529411764706
       LOOP 1
@@ -1537,17 +1883,17 @@
         SRCCOLOR 88731
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW -12970.765466 0.165664 32 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW -14652.049455 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 0 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 97.03921568627418
+      POSITION 97.03921568627403
       SNAPOFFS 0
-      LENGTH 4.94117647058823
+      LENGTH 5.24999999999973
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -1586,17 +1932,17 @@
         SRCCOLOR 89090
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW 3278.714901 0.165664 32 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW 3278.714901 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 0 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 101.98039215686273
+      POSITION 102.2892156862741
       SNAPOFFS 0
-      LENGTH 16.53617099013475
+      LENGTH 17.18307996351444
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -1622,25 +1968,7 @@
         E 0 96 39 5b
         E 2400 86 3c 00
         E 0 86 39 00
-        E 0 96 3c 65
-        E 0 96 39 5d
-        E 92 86 39 00
-        E 25 86 3c 00
-        E 123 96 3c 65
-        E 0 96 39 5d
-        E 110 86 3c 00
-        E 0 86 39 00
-        E 130 96 3c 65
-        E 0 96 39 5d
-        E 240 86 3c 00
-        E 0 86 39 00
-        E 240 96 3c 65
-        E 0 96 39 5d
-        E 240 86 3c 00
-        E 0 86 39 00
-        E 240 96 37 5b
-        E 919 86 37 00
-        E 41 96 3e 5b
+        E 2400 96 3e 5b
         E 0 96 3b 5b
         E 720 86 3e 00
         E 0 86 3b 00
@@ -1648,23 +1976,7 @@
         E 0 96 39 5b
         E 2400 86 3c 00
         E 0 86 39 00
-        E 0 96 3c 65
-        E 0 96 39 5d
-        E 92 86 39 00
-        E 25 86 3c 00
-        E 123 96 3c 65
-        E 0 96 39 5d
-        E 110 86 3c 00
-        E 0 86 39 00
-        E 130 96 3c 65
-        E 0 96 39 5d
-        E 240 86 3c 00
-        E 0 86 39 00
-        E 240 96 3c 65
-        E 0 96 39 5d
-        E 240 86 3c 00
-        E 0 86 39 00
-        E 240 b6 07 78
+        E 1440 b6 07 78
         E 0 96 3b 4f
         E 0 96 37 4f
         E 480 b6 07 74
@@ -1692,11 +2004,11 @@
         SRCCOLOR 87637
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW -63657.539363 0.055286 43 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW -464.734437 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 64 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
   >
@@ -1808,9 +2120,9 @@
       >
     >
     <ITEM
-      POSITION 101.98039215686273
+      POSITION 102.2892156862741
       SNAPOFFS 0
-      LENGTH 16.53617099013475
+      LENGTH 17.18307996351444
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -1966,7 +2278,7 @@
       >
     >
     <ITEM
-      POSITION 6.68627450980359
+      POSITION 6.68627450980322
       SNAPOFFS 0
       LENGTH 8.47058823529412
       LOOP 1
@@ -2014,6 +2326,49 @@
         TRACKSEL 252
         EVTFILTER 16 -1 -1 -1 -1 4 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
         CFGEDIT 1 1 0 1 0 0 1 0 5 1 1 0.25 731 1858 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+      >
+    >
+    <ITEM
+      POSITION 55.3921568627451
+      SNAPOFFS 0
+      LENGTH 4.23529411764706
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0
+      FADEOUT 1 0 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {51FDDFD4-9919-4834-A8E1-0A442E705541}
+      IID 3797
+      NAME "8 Glockenspiel untitled MIDI item"
+      VOLPAN 1 0 1 -1
+      SOFFS 0 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {EEB99D2D-C2E3-4785-ACEA-FFDEFA67EE7B}
+      <SOURCE MIDI
+        HASDATA 1 960 QN
+        POOLEDEVTS {CDD245C3-913D-4738-A45B-A3F0673E9711}
+        e 0 98 3c 50
+        e 1920 88 3c 00
+        e 0 98 43 50
+        e 960 88 43 00
+        e 0 98 42 50
+        e 960 88 42 00
+        e 0 98 3b 50
+        e 1920 88 3b 00
+        E 0 b0 7b 00
+        CHASE_CC_TAKEOFFS 1
+        GUID {9AF406D6-08CC-4650-B480-576D896E7016}
+        IGNTEMPO 0 120 4 4
+        SRCCOLOR 90841
+        VELLANE 7 135 0
+        VELLANE -1 124 0
+        CFGEDITVIEW -8992.167107 0.031172 43 12 0 -1 0 0 0 0.5
+        KEYSNAP 0
+        TRACKSEL 252
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
   >
@@ -2194,9 +2549,9 @@
       >
     >
     <ITEM
-      POSITION 51.1568627450977
+      POSITION 51.15686274509733
       SNAPOFFS 0
-      LENGTH 8.47058823529413
+      LENGTH 8.47058823529412
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -2231,9 +2586,9 @@
       >
     >
     <ITEM
-      POSITION 101.98039215686273
+      POSITION 102.2892156862741
       SNAPOFFS 0
-      LENGTH 16.53617099013506
+      LENGTH 17.18307996351477
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -2618,7 +2973,7 @@
       >
     >
     <ITEM
-      POSITION 5.98039215686241
+      POSITION 5.98039215686204
       SNAPOFFS 0
       LENGTH 9.1764705882353
       LOOP 1
@@ -2655,7 +3010,7 @@
       >
     >
     <ITEM
-      POSITION 15.15686274509771
+      POSITION 15.15686274509734
       SNAPOFFS 0
       LENGTH 8.47058823529412
       LOOP 1
@@ -2706,9 +3061,9 @@
       >
     >
     <ITEM
-      POSITION 51.1568627450977
+      POSITION 51.15686274509733
       SNAPOFFS 0
-      LENGTH 8.47058823529413
+      LENGTH 8.47058823529412
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -2726,24 +3081,44 @@
       <SOURCE MIDI
         HASDATA 1 960 QN
         POOLEDEVTS {909D99AC-5AEC-4DDC-9F60-A2CF4F325AF7}
+        E 0 9a 4a 49
         E 0 9a 56 49
-        E 1920 8a 56 00
+        E 1920 8a 4a 00
+        E 0 8a 56 00
+        E 0 9a 48 49
         E 0 9a 54 49
-        E 480 8a 54 00
+        E 480 8a 48 00
+        E 0 8a 54 00
+        E 0 9a 47 49
         E 0 9a 53 49
-        E 480 8a 53 00
+        E 480 8a 47 00
+        E 0 8a 53 00
+        E 0 9a 48 49
         E 0 9a 54 49
-        E 480 8a 54 00
+        E 480 8a 48 00
+        E 0 8a 54 00
+        E 0 9a 47 49
         E 0 9a 53 49
-        E 480 8a 53 00
+        E 480 8a 47 00
+        E 0 8a 53 00
+        E 0 9a 43 49
         E 0 9a 4f 49
-        E 1920 8a 4f 00
+        E 1920 8a 43 00
+        E 0 8a 4f 00
+        E 0 9a 43 37
         E 0 9a 4f 37
-        E 2880 8a 4f 00
+        E 2400 8a 43 00
+        E 0 9a 42 37
+        E 480 8a 4f 00
+        E 0 8a 42 00
+        E 0 9a 45 37
         E 0 9a 51 37
-        E 960 8a 51 00
+        E 960 8a 45 00
+        E 0 8a 51 00
+        e 0 9a 43 37
         E 0 9a 53 37
-        E 1920 8a 53 00
+        e 1920 8a 43 00
+        E 0 8a 53 00
         E 0 b0 7b 00
         CHASE_CC_TAKEOFFS 1
         GUID {974ED985-9A9B-44C3-AA02-3D2843DC60F5}
@@ -2751,17 +3126,17 @@
         SRCCOLOR 88617
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW -1666.878332 0.165664 32 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW -1692.918116 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 0 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 97.03921568627418
+      POSITION 97.03921568627403
       SNAPOFFS 0
-      LENGTH 4.94117647058823
+      LENGTH 5.24999999999973
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -2815,9 +3190,9 @@
       >
     >
     <ITEM
-      POSITION 101.98039215686273
+      POSITION 102.2892156862741
       SNAPOFFS 0
-      LENGTH 16.53617099013506
+      LENGTH 17.18307996351477
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -3161,7 +3536,7 @@
       >
     >
     <ITEM
-      POSITION 12.68627450980359
+      POSITION 12.68627450980322
       SNAPOFFS 0
       LENGTH 2.47058823529412
       LOOP 1
@@ -3206,7 +3581,7 @@
       >
     >
     <ITEM
-      POSITION 15.15686274509771
+      POSITION 15.15686274509734
       SNAPOFFS 0
       LENGTH 8.47058823529412
       LOOP 1
@@ -3269,7 +3644,7 @@
       >
     >
     <ITEM
-      POSITION 23.62745098039182
+      POSITION 23.62745098039144
       SNAPOFFS 0
       LENGTH 8.47058823529412
       LOOP 1
@@ -3310,9 +3685,9 @@
       >
     >
     <ITEM
-      POSITION 51.1568627450977
+      POSITION 51.15686274509733
       SNAPOFFS 0
-      LENGTH 8.47058823529413
+      LENGTH 8.47058823529412
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -3335,11 +3710,33 @@
         E 0 9b 2f 5e
         E 2880 8b 2f 00
         E 0 9b 2d 5e
-        E 1920 8b 2d 00
+        E 480 9b 34 57
+        E 480 8b 34 00
+        E 0 9b 3b 57
+        E 480 8b 3b 00
+        E 0 9b 39 57
+        E 480 8b 2d 00
+        E 0 8b 39 00
         E 0 9b 26 5e
-        E 960 8b 26 00
+        e 0 9b 3e 57
+        e 480 8b 3e 00
+        E 0 9b 3c 57
+        E 480 8b 26 00
+        E 0 8b 3c 00
         E 0 9b 2b 5e
-        E 2880 8b 2b 00
+        E 0 9b 3b 57
+        E 480 8b 3b 00
+        E 0 9b 39 57
+        E 480 8b 39 00
+        E 0 9b 32 57
+        E 480 8b 32 00
+        E 0 9b 37 57
+        E 480 8b 37 00
+        E 0 9b 39 57
+        E 480 8b 39 00
+        E 0 9b 3b 57
+        E 480 8b 2b 00
+        E 0 8b 3b 00
         E 0 b0 7b 00
         CHASE_CC_TAKEOFFS 1
         GUID {3F560D4B-110F-4234-809F-3766B17C3E61}
@@ -3347,17 +3744,56 @@
         SRCCOLOR 88839
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW 129254.4 0.072492 40 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW 725.690555 0.031172 43 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
         EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 731 1858 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
-      POSITION 97.03921568627418
+      POSITION 59.62745098039216
       SNAPOFFS 0
-      LENGTH 4.94117647058823
+      LENGTH 8.47058823529411
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0
+      FADEOUT 1 0 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {D91265F0-8B1F-45B6-8673-75A8B9AE8474}
+      IID 3802
+      NAME "11 Strings untitled MIDI item"
+      VOLPAN 1 0 1 -1
+      SOFFS 0 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {17AB4DE5-1A6A-4ACC-8FB6-10048B47CA9A}
+      <SOURCE MIDI
+        HASDATA 1 960 QN
+        POOLEDEVTS {AB8EE47E-A474-4798-B385-083C30D91B2A}
+        E 0 9b 29 59
+        E 5760 8b 29 00
+        E 0 9b 26 59
+        E 5760 8b 26 00
+        E 0 b0 7b 00
+        CHASE_CC_TAKEOFFS 1
+        GUID {F8A00F73-AF96-4EDF-BC3B-F3E25C8E5601}
+        IGNTEMPO 0 120 4 4
+        SRCCOLOR 91359
+        VELLANE 7 135 0
+        VELLANE -1 124 0
+        CFGEDITVIEW 53524.713909 0.073629 43 12 0 -1 0 0 0 0.5
+        KEYSNAP 0
+        TRACKSEL 252
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+      >
+    >
+    <ITEM
+      POSITION 97.03921568627403
+      SNAPOFFS 0
+      LENGTH 5.24999999999973
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -3420,9 +3856,9 @@
       >
     >
     <ITEM
-      POSITION 101.98039215686273
+      POSITION 102.2892156862741
       SNAPOFFS 0
-      LENGTH 16.53617099013475
+      LENGTH 17.18307996351444
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -3560,7 +3996,7 @@
     <ITEM
       POSITION 0.00000000000024
       SNAPOFFS 0
-      LENGTH 0.33333333333315
+      LENGTH 0.33333333333309
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -3740,6 +4176,109 @@
         CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
+    <ITEM
+      POSITION 51.15686274509804
+      SNAPOFFS 0
+      LENGTH 8.47058823529341
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0
+      FADEOUT 1 0 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {CA3D78CA-40A2-414E-8448-B05DE30EB4E8}
+      IID 3798
+      NAME "13 Piano untitled MIDI item"
+      VOLPAN 1 0 1 -1
+      SOFFS 0 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {0D6978A3-088F-4C18-B1B3-097AFF159443}
+      <SOURCE MIDI
+        HASDATA 1 960 QN
+        POOLEDEVTS {D881E555-43B3-486F-A99B-A03CE4F990A4}
+        E 0 9d 4a 5a
+        e 480 9d 37 4b
+        e 480 8d 37 00
+        e 0 9d 40 4b
+        e 0 9d 3c 4b
+        e 480 8d 40 00
+        e 0 8d 3c 00
+        e 0 9d 37 4b
+        E 480 8d 4a 00
+        e 0 8d 37 00
+        E 0 9d 48 5a
+        e 0 9d 3c 4b
+        e 0 9d 3e 4b
+        E 480 8d 48 00
+        e 0 8d 3c 00
+        e 0 8d 3e 00
+        E 0 9d 47 4a
+        E 480 8d 47 00
+        E 0 9d 48 5a
+        E 480 8d 48 00
+        e 0 9d 37 4b
+        E 0 9d 47 52
+        e 480 8d 37 00
+        E 0 8d 47 00
+        e 0 9d 3b 4b
+        E 0 9d 43 5a
+        e 0 9d 3e 4b
+        e 480 8d 3b 00
+        e 0 8d 3e 00
+        e 0 9d 32 4b
+        e 480 8d 32 00
+        E 0 9d 39 53
+        E 480 8d 39 00
+        E 0 9d 3b 53
+        E 480 8d 43 00
+        E 0 8d 3b 00
+        E 0 9d 3c 5a
+        e 480 9d 34 4b
+        e 480 8d 34 00
+        e 0 9d 39 4b
+        e 0 9d 3b 4b
+        e 480 8d 39 00
+        e 0 8d 3b 00
+        e 0 9d 34 4b
+        E 480 8d 3c 00
+        e 0 8d 34 00
+        E 0 9d 43 5a
+        e 0 9d 39 4b
+        e 0 9d 3c 4b
+        e 480 8d 39 00
+        e 0 8d 3c 00
+        e 0 9d 40 4b
+        E 480 8d 43 00
+        e 0 8d 40 00
+        E 0 9d 42 5a
+        e 480 9d 32 4b
+        E 480 8d 42 00
+        e 0 8d 32 00
+        E 0 9d 3b 5a
+        e 0 9d 39 4b
+        e 480 8d 39 00
+        e 0 9d 32 4b
+        E 480 8d 3b 00
+        e 0 8d 32 00
+        e 0 9d 37 4b
+        e 0 9d 3b 4b
+        e 960 8d 37 00
+        e 0 8d 3b 00
+        E 0 b0 7b 00
+        CHASE_CC_TAKEOFFS 1
+        GUID {C7584972-97B5-47DB-81DC-D4668E717141}
+        IGNTEMPO 0 120 4 4
+        SRCCOLOR 90987
+        VELLANE 7 135 0
+        VELLANE -1 124 0
+        CFGEDITVIEW -7590.960437 0.031172 43 12 0 -1 0 0 0 0.5
+        KEYSNAP 0
+        TRACKSEL 252
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+      >
+    >
   >
   <TRACK {A5F60779-2023-4826-B9DC-0C318CDC16E2}
     NAME "14 Harp"
@@ -3827,7 +4366,7 @@
     <ITEM
       POSITION 0.00000000000024
       SNAPOFFS 0
-      LENGTH 0.33333333333317
+      LENGTH 0.33333333333309
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -3866,9 +4405,54 @@
       >
     >
     <ITEM
-      POSITION 104.09803921568594
+      POSITION 51.15686274509804
       SNAPOFFS 0
-      LENGTH 2.82352941176468
+      LENGTH 8.47058823529412
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0
+      FADEOUT 1 0 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {A1EEEEC2-3604-4D2A-9B60-6BCB8DB7D0E6}
+      IID 3799
+      NAME "14 Harp untitled MIDI item"
+      VOLPAN 1 0 1 -1
+      SOFFS 0 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {4943BCAA-1C67-4D32-8637-0FD8C6FB2371}
+      <SOURCE MIDI
+        HASDATA 1 960 QN
+        POOLEDEVTS {EA9A0610-7D17-4331-8890-07C9C6278992}
+        e 0 9e 30 5a
+        e 2880 8e 30 00
+        E 0 9e 2f 5a
+        E 2880 8e 2f 00
+        E 0 9e 2d 5a
+        E 1920 8e 2d 00
+        E 0 9e 26 5a
+        E 960 8e 26 00
+        E 0 9e 2b 5a
+        E 2880 8e 2b 00
+        E 0 b0 7b 00
+        CHASE_CC_TAKEOFFS 1
+        GUID {EB5FC5AC-CDF5-482E-81B0-C4A16F3A732F}
+        IGNTEMPO 0 120 4 4
+        SRCCOLOR 91055
+        VELLANE 7 135 0
+        VELLANE -1 124 0
+        CFGEDITVIEW -5730.56726 0.031172 43 12 0 -1 0 0 0 0.5
+        KEYSNAP 0
+        TRACKSEL 252
+        EVTFILTER 2048 -1 -1 -1 -1 11 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 12 1 1 0.25 715 1842 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+      >
+    >
+    <ITEM
+      POSITION 104.53921568627376
+      SNAPOFFS 0
+      LENGTH 3
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -3951,9 +4535,9 @@
       >
     >
     <ITEM
-      POSITION 108.33333333337899
+      POSITION 109.03921568632275
       SNAPOFFS 0
-      LENGTH 2.8788819875795
+      LENGTH 3.12873213742682
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0
@@ -4144,9 +4728,9 @@
       >
     >
     <ITEM
-      POSITION 101.98039215686273
+      POSITION 102.2892156862741
       SNAPOFFS 0
-      LENGTH 10.27530142491766
+      LENGTH 10.92221039829737
       LOOP 1
       ALLTAKES 0
       FADEIN 1 0 0 1 0 0

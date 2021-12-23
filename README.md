@@ -38,6 +38,7 @@ SAVESTATE
 Scenario \
 SAURAEN \
 REBECCAETRIPP \
+TERUSTHEBIRD \
 DWANGOAC
 
 ### ASSET UNIT
@@ -58,6 +59,14 @@ SAURAEN \
 REBECCAETRIPP
 
 Cinema Scenes \
+SAURAEN \
+\/ZEL\/
+
+BotW Model Conversion \
+ALI1234
+
+Animation \
+PURPULPANCAKES \
 SAURAEN
 
 Screen Text \
@@ -68,7 +77,7 @@ Translator \
 YUKLOJ
 
 Zelda (English Voice) \
-TBD
+SAOIRSE
 
 Link (Japanese Voice) \
 ZERO
@@ -78,13 +87,6 @@ TBD
 
 Motion Capture Technician \
 TBD
-
-Additional Animation \
-SAURAEN
-
-BotW Model Conversion \
-ALI1234 \
-PURPULPANCAKES
 
 Cel Shading \
 SAURAEN \
@@ -122,7 +124,9 @@ SAURAEN \
 \/ZEL\/
 
 Game / Actor Patches \
-SAURAEN
+SAURAEN \
+MNGOLDENEAGLE \
+\/ZEL\/
 
 Build Toolchain \
 SAURAEN \

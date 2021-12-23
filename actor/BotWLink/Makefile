@@ -5,7 +5,7 @@ ACTORNUM = 118
 
 OBJECTNAME = BotWLinkObj
 OBJECTNUM = 122
-OBJECTOBJS = BotWLinkMesh.o
+OBJECTOBJS = BotWLinkMesh.o BotWLinkMeshIdleAnim.o
 
 default: copyactor copyobject
 

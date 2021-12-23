@@ -786,6 +786,7 @@ DECLARE_MESSAGE(0x109D, BOX_NONE_BOTTOM, POS_VARIABLE,
     SHIFT("\x08") "and one wish to the Goddesses..." BOX_BREAK_DELAYED("\x28")
     SHIFT("\x02") "would you create something great?" FADE("\x50")
 )
+*/
 
 DECLARE_MESSAGE(0x109D, BOX_CREDITS, POS_VARIABLE,
     QUICKTEXT_ENABLE NEWLINE NEWLINE NEWLINE NEWLINE NEWLINE
@@ -793,20 +794,19 @@ DECLARE_MESSAGE(0x109D, BOX_CREDITS, POS_VARIABLE,
     SHIFT("\x28") "OoT ACE Showcase" 
     QUICKTEXT_DISABLE BOX_BREAK_DELAYED("\x28")
     QUICKTEXT_ENABLE NEWLINE NEWLINE NEWLINE
-    SHIFT("\x18")   "Sauraen"    SHIFT("\x36") "Savestate"     NEWLINE
+    SHIFT("\x18")   "Sauraen"    /*SHIFT("\x36") "Savestate"     NEWLINE
     SHIFT("\x20")    "/zel/"     SHIFT("\x40") "CDi-Fails"     NEWLINE
     SHIFT("\x14")  "rankaisija"  SHIFT("\x3A") "z64me"         NEWLINE
     SHIFT("\x0D") "TerusTheBird" SHIFT("\x25") "Kim-SukLey"    NEWLINE
     SHIFT("\x15")   "MrCheeze"   SHIFT("\x26") "RebeccaETripp" NEWLINE
     SHIFT("\x1E")    "Yukloj"    SHIFT("\x48") "Zero"          NEWLINE
-    SHIFT("\x0B")  "AeroArtwork" SHIFT("\x26") "musket012"
+    SHIFT("\x0B")  "AeroArtwork" SHIFT("\x26") "musket012"*/
     QUICKTEXT_DISABLE BOX_BREAK_DELAYED("\x28")
     QUICKTEXT_ENABLE NEWLINE NEWLINE NEWLINE NEWLINE NEWLINE NEWLINE
-    SHIFT("\x3E") "AGDQ 2022"
+    SHIFT("\x3E") "SGDQ 2022"
     QUICKTEXT_DISABLE BOX_BREAK_DELAYED("\x28")
     "dummy"
 )
-*/
 
 //This one needs to come at the end
 DECLARE_MESSAGE(0xFFFF, BOX_BLUE, POS_MIDDLE,

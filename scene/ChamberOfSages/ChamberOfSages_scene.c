@@ -34,6 +34,9 @@ ActorEntry ChamberOfSages_scene_header00_startPositionList[] = {
 	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
 };
 
+extern u8 _ChamberOfSages_room_0SegmentRomStart[];
+extern u8 _ChamberOfSages_room_0SegmentRomEnd[];
+
 RomFile ChamberOfSages_scene_roomList[] = {
 	{ (u32)_ChamberOfSages_room_0SegmentRomStart, (u32)_ChamberOfSages_room_0SegmentRomEnd },
 };
@@ -1094,4 +1097,3 @@ s32 CS6Sheik[] = {
 		CS_NPC_ACTION(3, 369, 1000, 0x0, 0x0, 0x0, 34, 0, -200, 34, 0, -300, 0, 0, 0),
 	CS_END(),
 };
-

@@ -25,6 +25,9 @@ ActorEntry TestVAlpha_scene_header00_startPositionList[] = {
 	{ ACTOR_PLAYER, 0, -120, 0, 0, 0, 0, 0x0FFF },
 };
 
+extern u8 _TestVAlpha_room_0SegmentRomStart[];
+extern u8 _TestVAlpha_room_0SegmentRomEnd[];
+
 RomFile TestVAlpha_scene_roomList[] = {
 	{ (u32)_TestVAlpha_room_0SegmentRomStart, (u32)_TestVAlpha_room_0SegmentRomEnd },
 };
@@ -257,4 +260,3 @@ Vec3s TestVAlpha_vertices[81] = {
 };
 
 CollisionHeader TestVAlpha_collisionHeader = { -1438, -120, -1438, 1438, -120, 1438, 81, TestVAlpha_vertices, 128, TestVAlpha_polygons, TestVAlpha_polygonTypes, 0, 0, 0 };
-

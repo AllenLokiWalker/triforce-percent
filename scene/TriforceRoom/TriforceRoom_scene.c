@@ -26,6 +26,9 @@ ActorEntry TriforceRoom_scene_header00_startPositionList[] = {
 	{ ACTOR_PLAYER, 0, -48, 460, 0, 32768, 0, 0x0FFF },
 };
 
+extern u8 _TriforceRoom_room_0SegmentRomStart[];
+extern u8 _TriforceRoom_room_0SegmentRomEnd[];
+
 RomFile TriforceRoom_scene_roomList[] = {
 	{ (u32)_TriforceRoom_room_0SegmentRomStart, (u32)_TriforceRoom_room_0SegmentRomEnd },
 };
@@ -186,4 +189,3 @@ s32 TriforceRoom_scene_header00_cutscene[] = {
 		CS_PLAYER_ACTION(0x0008, 420, 540, 0x0, 0x0, 0x0, 0, 0, 55, 0, 0, 55, 0, 0, 0),
 	CS_END(),
 };
-

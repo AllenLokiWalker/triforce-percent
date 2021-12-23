@@ -25,6 +25,9 @@ ActorEntry Ending_scene_header00_startPositionList[] = {
 	{ ACTOR_PLAYER, 42, 0, 35, 0, 9102, 0, 0x0FFF },
 };
 
+extern u8 _Ending_room_0SegmentRomStart[];
+extern u8 _Ending_room_0SegmentRomEnd[];
+
 RomFile Ending_scene_roomList[] = {
 	{ (u32)_Ending_room_0SegmentRomStart, (u32)_Ending_room_0SegmentRomEnd },
 };
@@ -40,10 +43,10 @@ LightSettings Ending_scene_header00_lightSettings[4] = {
 	{ 0x28, 0x46, 0x64, 0x49, 0x49, 0x49, 0x14, 0x14, 0x23, 0xB7, 0xB7, 0xB7, 0x32, 0x32, 0x64, 0x00, 0x00, 0x1E, 0x07E0, 0x3200 },
 };
 
-u32 Ending_polygonTypes[] = {
-	 0x00000000, 0x00000002,
-	 0x00000000, 0x00000000,
-	 0x00000000, 0x00000005,
+SurfaceType Ending_polygonTypes[] = {
+	{ 0x00000000, 0x00000002 },
+	{ 0x00000000, 0x00000000 },
+	{ 0x00000000, 0x00000005 },
 };
 
 CollisionPoly Ending_polygons[] = {
@@ -1182,5 +1185,20 @@ Vec3s Ending_vertices[427] = {
 	{ 51, -65, 242 },
 };
 
-CollisionHeader Ending_collisionHeader = { -550, -603, -354, 620, 183, 587, 427, Ending_vertices, 703, Ending_polygons, Ending_polygonTypes, 0, 0, 0 };
+CollisionHeader Ending_collisionHeader = {
+	-550,
+	-603,
+	-354,
+	620,
+	183,
+	587,
+	427,
+	Ending_vertices,
+	703,
+	Ending_polygons,
+	Ending_polygonTypes,
+	0,
+	0,
+	0
+};
 

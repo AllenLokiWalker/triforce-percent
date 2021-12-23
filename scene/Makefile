@@ -24,17 +24,6 @@ OUTFILES = \
 	Ending/Ending_scene.zscene \
 	Ending/Ending_room_0.zmap \
 	Ending/Ending_scene.out.ld
-ROOMROMGOAWAY = \
-	-D_UnicornFountain_room_0SegmentRomStart=0xDEADBEEF \
-	-D_UnicornFountain_room_0SegmentRomEnd=0xDEADBEEF \
-	-D_TestVAlpha_room_0SegmentRomStart=0xDEADBEEF \
-	-D_TestVAlpha_room_0SegmentRomEnd=0xDEADBEEF \
-	-D_ChamberOfSages_room_0SegmentRomStart=0xDEADBEEF \
-	-D_ChamberOfSages_room_0SegmentRomEnd=0xDEADBEEF \
-	-D_TriforceRoom_room_0SegmentRomStart=0xDEADBEEF \
-	-D_TriforceRoom_room_0SegmentRomEnd=0xDEADBEEF \
-	-D_Ending_room_0SegmentRomStart=0xDEADBEEF \
-	-D_Ending_room_0SegmentRomEnd=0xDEADBEEF
 TITLEFILES = \
 	UnicornFountain/title.ia8 \
 	ChamberOfSages/title.ia8
@@ -44,7 +33,7 @@ CHAMBEROFSAGESDIR = ../build-romhack/scene/68
 TRIFORCEROOMDIR = ../build-romhack/scene/46
 ENDINGDIR = ../build-romhack/scene/58
 
-CCFLAGS += $(ROOMROMGOAWAY) -Wno-incompatible-pointer-types -Wno-missing-braces -DNO_Z64HDR_GARBAGE
+CCFLAGS += -Wno-incompatible-pointer-types -Wno-missing-braces -DNO_Z64HDR_GARBAGE
 
 .PHONY: default clean $(MAKESUBDIRS)
 
