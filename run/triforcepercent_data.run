@@ -8,6 +8,15 @@ PATCH 0xCB66A0 ../actor/z_bg_toki_swd/actor.pat
 PATCH 0xE9F0D0 ../actor/z_en_ge2/actor.pat
 PATCH 0xC004E0 ../actor/z_en_girla/actor.pat
 
+
+OBJECT 122 ../actor/BotWLink/zobj.zobj
+ACTOR 118 ../actor/BotWLink/BotWLink.zovl
+
+
+
+
+
+
 //Misc scene patches
 PATCH 0x217C000 ../scene/spot10/spot10_room_7.pat
 PATCH 0x2171000 ../scene/spot10/spot10_room_5.pat
@@ -23,24 +32,6 @@ PATCH 0x253C000 ../scene/tokinoma/tokinoma_room_0.pat
 //Custom Link animations
 STATICDATA ../anim/anim.bin 0 0x0 0x0
 
-
-//Ending scene
-ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
-//OBJECT 121 ../actor/TestCelShading/zobj.zobj
-//ACTOR 117 ../actor/TestCelShading/TestCelShading.zovl
-OBJECT 122 ../actor/BotWLink/zobj.zobj
-ACTOR 118 ../actor/BotWLink/BotWLink.zovl
-SCENE 58 ../scene/Ending/Ending_scene.zscene
-//Entrance table 0x800F9C90 entries 0x437-43A
-//WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
-//Entrance cutscene table 0x800EFD04 entry 24. (originally Ganon's Forest Trial)
-//Entrance 0x437, age 0, flag 0, segment offset 0x0200012C (from 0x17 cutscene command in scene)
-//WRITE 8 0x800EFDC4 0x04 0x37 0x00 0x00 0x02 0x00 0x01 0x2C
-
-//Voice acting
-STATICDATA ../voice/link_demo_1_32Raw.bin 3 0 0
-//STATICDATA ../voice/link_demo_2_32Raw.bin 3 1 0
-//STATICDATA ../voice/link_demo_3_32Raw.bin 3 2 0
 
 
 //Object patches
@@ -87,6 +78,26 @@ ACTOR 34 ../actor/Nabooru/nabooru.zovl
 ACTOR 54 ../actor/z_en_mm3/z_en_mm3.zovl
 ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl
 ACTOR 83 ../actor/WSRCutscene/wsrcutscene.zovl
+
+
+//Ending scene
+ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
+//OBJECT 121 ../actor/TestCelShading/zobj.zobj
+//ACTOR 117 ../actor/TestCelShading/TestCelShading.zovl
+SCENE 58 ../scene/Ending/Ending_scene.zscene
+//Entrance table 0x800F9C90 entries 0x437-43A
+//WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
+//Entrance cutscene table 0x800EFD04 entry 24. (originally Ganon's Forest Trial)
+//Entrance 0x437, age 0, flag 0, segment offset 0x0200012C (from 0x17 cutscene command in scene)
+//WRITE 8 0x800EFDC4 0x04 0x37 0x00 0x00 0x02 0x00 0x01 0x2C
+
+//Voice acting
+STATICDATA ../voice/link_demo_1_32Raw.bin 3 0 0
+//STATICDATA ../voice/link_demo_2_32Raw.bin 3 1 0
+//STATICDATA ../voice/link_demo_3_32Raw.bin 3 2 0
+
+
+
 
 //Larger custom actors
 OBJECT 59 ../actor/BossRunningMan/zobj.zobj

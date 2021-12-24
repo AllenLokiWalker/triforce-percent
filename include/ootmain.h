@@ -132,6 +132,8 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 #define Actor_RequestToTalkInRange func_8002F2CC
 #define Actor_PickUp func_8002F434
 #define Actor_GetItemExchangePlayer func_8002F368
+#define Actor_OnScreenXYZW func_800314D4
+#define Actor_OnScreen func_800314B0
 #define Message_ShouldAdvance func_80106BC8
 #define MESSAGE_START func_8010B680(globalCtx, en->actor.textId, NULL)
 #define MESSAGE_CONTINUE func_8010B720(globalCtx, en->actor.textId)

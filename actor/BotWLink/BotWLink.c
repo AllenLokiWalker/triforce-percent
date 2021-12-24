@@ -2,11 +2,29 @@
 #include "BotWLinkMesh.h"
 #include "BotWLinkMeshIdleAnim.h"
 #include "BotWLinkMeshBobokuwaAnim.h"
+#include "../loader/debugger/debugger.h"
 
 // Actor Information
 #define OBJ_ID 122 // primary object dependency
-#define NUM_LIMBS 30
 #define SHADOW_SIZE 30.0f
+
+#define LIMB_IS_LOWLEGS ( \
+	(1 << BOTWLINKMESH_LCALF_LIMB) | \
+	(1 << BOTWLINKMESH_LFOOT_LIMB) | \
+	(1 << BOTWLINKMESH_RCALF_LIMB) | \
+	(1 << BOTWLINKMESH_RFOOT_LIMB))
+#define LIMB_IS_LOWERBODY ( LIMB_IS_LOWLEGS | \
+	(1 << BOTWLINKMESH_LOTNCBC_LIMB) | \
+	(1 << BOTWLINKMESH_LOTNCFC_LIMB) | \
+	(1 << BOTWLINKMESH_LTHIGH_LIMB) | \
+	(1 << BOTWLINKMESH_LOTNCBL_LIMB) | \
+	(1 << BOTWLINKMESH_LOTNCFL_LIMB) | \
+	(1 << BOTWLINKMESH_RTHIGH_LIMB) | \
+	(1 << BOTWLINKMESH_LOTNCBR_LIMB) | \
+	(1 << BOTWLINKMESH_LOTNCFR_LIMB))
+
+#define FLAG_NO_LOWLEGS (1 << 0)
+#define FLAG_NO_LOWERBODY (1 << 1)
 
 /*
 static ColliderCylinderInitType1 sCylinderInit = {
@@ -21,8 +39,10 @@ typedef struct {
 	Actor actor;
 	SkelAnime skelAnime;
 	ColliderCylinder collider;
-	Vec3s jointTable[NUM_LIMBS];
-	Vec3s morphTable[NUM_LIMBS];
+	Vec3s jointTable[BOTWLINKMESH_NUM_LIMBS];
+	Vec3s morphTable[BOTWLINKMESH_NUM_LIMBS];
+	u32 flags;
+	u32 lastflags; //debug only
 	u8 timer;
 } Entity;
 
@@ -34,12 +54,48 @@ static void init(Entity *en, GlobalContext *globalCtx) {
     Collider_SetCylinderType1(globalCtx, &en->collider, &en->actor, &sCylinderInit);
 	*/
 	SkelAnime_InitFlex(globalCtx, &en->skelAnime, &BotWLinkMesh, &BotWLinkMeshIdleAnim, 
-		en->jointTable, en->morphTable, NUM_LIMBS);
+		en->jointTable, en->morphTable, BOTWLINKMESH_NUM_LIMBS);
 	Rupees_ChangeBy(4);
+	en->flags = 0;
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
 	SkelAnime_Free(&en->skelAnime, globalCtx);
+}
+
+/*
+SkinMatrix_Vec3fMtxFMultXYZW(&globalCtx->mf_11D60, &actor->world.pos, &actor->projectedPos,
+	&actor->projectedW);
+if (func_800314B0(globalCtx, actor)) {
+   actor->flags |= 0x40;
+} else {
+   actor->flags &= ~0x40;
+}
+func_800314B0 = func_800314D4(globalCtx, actor, &actor->projectedPos, actor->projectedW);
+actor->uncullZoneForward = 1000.0f;
+actor->uncullZoneScale = 350.0f;
+actor->uncullZoneDownward = 700.0f;
+//X: scale
+//Y: bottom downward, top scale
+//Z: bottom scale, top forward + scale
+void func_8002BE04(GlobalContext* globalCtx, Vec3f* arg1, Vec3f* arg2, f32* arg3) {
+   SkinMatrix_Vec3fMtxFMultXYZW(&globalCtx->mf_11D60, arg1, arg2, arg3);
+   *arg3 = (*arg3 < 1.0f) ? 1.0f : (1.0f / *arg3);
+}
+*/
+
+static bool uncullObject(GlobalContext* globalCtx, Vec3f *center, float xsize, 
+	float yBelow, float yAbove, float zBehind, float zFar){
+	//Based on func_800314D4
+	Vec3f screen;
+	float screen_w;
+	func_8002BE04(globalCtx, center, &screen, &screen_w);
+	//Debugger_Printf("%f %f %f", screen.x * screen_w, screen.y * screen_w, screen.z);
+	return (screen.z > -zBehind) &&
+		(screen.z < zFar) &&
+		((fabsf(screen.x) - xsize) * screen_w < 1.0f) &&
+		((screen.y + yAbove) * screen_w > -1.0f) &&
+		((screen.y - yBelow) * screen_w < 1.0f);
 }
 
 static f32 VoiceFreqScale = 1.0f;
@@ -64,7 +120,7 @@ static void updateVoice(Entity *en, GlobalContext *globalCtx) {
 
 static void update(Entity *en, GlobalContext *globalCtx) {
 	//updateVoice(en, globalCtx);
-	if((CTRLR_PRESS & BTN_DLEFT)){
+	if(!(CTRLR_RAW & (BTN_R | BTN_L)) && (CTRLR_PRESS & BTN_DLEFT)){
 		en->timer = 1;
 		Animation_Change(&en->skelAnime, &BotWLinkMeshBobokuwaAnim, 1.0f, 0.0f, 
 			Animation_GetLastFrame(&BotWLinkMeshBobokuwaAnim), ANIMMODE_ONCE, -4.0f);
@@ -83,9 +139,39 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		Animation_Change(&en->skelAnime, &BotWLinkMeshIdleAnim, 1.0f, 0.0f, 
 			Animation_GetLastFrame(&BotWLinkMeshIdleAnim), ANIMMODE_LOOP, -8.0f);
 	}
+	/*
+	if((CTRLR_RAW & BTN_R)){
+		if((CTRLR_PRESS & BTN_DLEFT)){
+			en->flags ^= FLAG_NO_LOWLEGS;
+		}else if((CTRLR_PRESS & BTN_DDOWN)){
+			en->flags ^= FLAG_NO_LOWERBODY;
+		}
+	}
+	*/
+	en->lastflags = en->flags;
+	en->flags &= ~(FLAG_NO_LOWLEGS | FLAG_NO_LOWERBODY);
+	Vec3f pos = en->actor.world.pos;
+	pos.y += 20.0f;
+	if(!uncullObject(globalCtx, &pos, 12.0f, 80.0f, 0.0f, 15.0f, 1000.0f)) en->flags |= FLAG_NO_LOWLEGS;
+	pos = en->actor.world.pos;
+	pos.y += 31.0f;
+	if(!uncullObject(globalCtx, &pos, 15.0f, 100.0f, 0.0f, 15.0f, 1000.0f)) en->flags |= FLAG_NO_LOWERBODY;
+	/*
+	if(en->lastflags != en->flags){
+		Debugger_Printf("calves %s legs %s", 
+			(en->flags & FLAG_NO_LOWLEGS) ? "off" : "on",
+			(en->flags & FLAG_NO_LOWERBODY) ? "off" : "on");
+	}
+	*/
 }
 
 s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+	Entity *en = (Entity*)thisx;
+	if(((en->flags & FLAG_NO_LOWLEGS) && ((1 << limbIndex) & LIMB_IS_LOWLEGS)) ||
+		((en->flags & FLAG_NO_LOWERBODY) && ((1 << limbIndex) & LIMB_IS_LOWERBODY))){
+		*dList = NULL;
+		return false;
+	}
 	return false;
 }
 
@@ -103,7 +189,7 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 const ActorInitExplPad init_vars = {
 	.id = 0xDEAD, .padding = 0xBEEF, // <-- magic values, do not change
 	.category = ACTORCAT_PROP,
-	.flags = 0x00000030,
+	.flags = 0x00000010,
 	.objectId = OBJ_ID,
 	.instanceSize = sizeof(Entity),
 	.init = (ActorFunc)init,
