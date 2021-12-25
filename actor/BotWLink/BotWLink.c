@@ -123,12 +123,13 @@ typedef struct {
 } PhysSimpleState;
 
 typedef struct {
+	Vec3f lastFulcrum;
 	Vec3f com1; //center of mass
 	Vec3f com2;
 	Vec3f vel1;
 	Vec3f vel2;
 	s16 rot;
-	s16 v;
+	s16 rv;
 } PhysDoubleState;
 
 typedef struct {
@@ -339,8 +340,16 @@ s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
 		rot->z += s->r.z * unitRot * b->yawmult;
 	}else if(mode == 1){
 		//Double
-		//PhysDoubleState *s = &en->physDouble[iim];
-		
+		/*
+		PhysDoubleState *s = &en->physDouble[iim];
+		const PhysDouble *dbl = phys[b].dbl;
+		Vec3f fulcrum;
+		Vec3f boneposoffset;
+		boneposoffset.x = pos->x;
+		boneposoffset.y = pos->y + b->len;
+		boneposoffset.z = pos->z;
+		Matrix_MultVec3f(boneposoffset, fulcrum);
+		*/
 	}else{
 		//Tunic
 		//PhysTunicState *s = &en->physTunic[iim];

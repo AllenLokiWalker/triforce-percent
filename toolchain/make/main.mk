@@ -36,10 +36,10 @@ STATICDATADIR := $(PROJECT_DIR)/build-romhack/staticdata
 
 # Main tools
 
-CC = mips64-gcc
-AS = mips64-as
-LD = mips64-ld
-OC = mips64-objcopy
+CC = $(MIPS64PREFIX)gcc
+AS = $(MIPS64PREFIX)as
+LD = $(MIPS64PREFIX)ld
+OC = $(MIPS64PREFIX)objcopy
 
 # Main flags
 
