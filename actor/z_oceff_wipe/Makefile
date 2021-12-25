@@ -14,13 +14,13 @@ default: actor.pat actor.zovl
 	touch $(ACTORDIR)/../../update.txt
 
 %.o: %.s
-	mips64-as -Os -o $@ $<
+	${AS} -Os -o $@ $<
 
 %.elf: %.o z_oceff_wipe.ld ../../statics/statics.out.ld
-	mips64-ld -T z_oceff_wipe.ld -o $@ $<
+	${LD} -T z_oceff_wipe.ld -o $@ $<
 
 %.bin: %.elf
-	mips64-objcopy -O binary -j .text -j .data $< $@
+	${OC} -O binary -j .text -j .data $< $@
 
 ${ACTORDIR}/actor.zovl.orig:
 	cp ${ACTORDIR}/actor.zovl ${ACTORDIR}/actor.zovl.orig

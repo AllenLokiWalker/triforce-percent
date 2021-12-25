@@ -18,7 +18,9 @@ use this power for?
 - Install Linux (Debian / Ubuntu / other Debian derivative), either directly or 
 through WSL/WSL2 if you're on Windows.
 - Make sure you got the Git submodules (ZAP2/ZAPD, novl, z64hdr). You will need
-libpng (`libpng-dev`, `libelf-dev`, and `libglib2.0-dev` for these to compile.
+`libpng-dev`, `libelf-dev`, and `libglib2.0-dev` for these to compile. You will
+also need `build-essential` in order to be able to compile anything for your
+local machine.
 - If you don't already have it, install the N64 toolchain from
 https://github.com/glankk/n64. **See below for more detailed instructions.**
 - Get a copy of zzrtl which is stable enough to work on Linux with the default
