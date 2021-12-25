@@ -14,6 +14,254 @@ abs.s $f0, $f12
 .set at
  .set reorder
  #NO_APP
+	.rdata
+	.align	2
+	.type	limbToPhysMap, @object
+	.size	limbToPhysMap, 30
+limbToPhysMap:
+	.ascii	"\377\377\377\000\001\377\377\377\002\003\377\004\005\377"
+	.ascii	"\377\377\377\006\007\010\377\377\011\012\377\013\377\377"
+	.ascii	"\377\377"
+	.align	2
+	.type	tunicBasic, @object
+	.size	tunicBasic, 28
+tunicBasic:
+	.word	1065353216
+	.word	1065353216
+	.word	1090519040
+	.word	1036831949
+	.word	1050253722
+	.word	1064849900
+	.word	1092616192
+	.align	2
+	.type	bangsBasic, @object
+	.size	bangsBasic, 28
+bangsBasic:
+	.word	992204554
+	.word	1137180672
+	.word	1077936128
+	.word	1067030938
+	.word	1065353216
+	.word	1060320051
+	.word	1069547520
+	.align	2
+	.type	ponytailBasic, @object
+	.size	ponytailBasic, 28
+ponytailBasic:
+	.word	990057071
+	.word	1140457472
+	.word	1073741824
+	.word	1065353216
+	.word	1065353216
+	.word	1062836634
+	.word	1077936128
+	.align	2
+	.type	tasselsBasic, @object
+	.size	tasselsBasic, 28
+tasselsBasic:
+	.word	1045220557
+	.word	1056964608
+	.word	1077936128
+	.word	1017370378
+	.word	1084227584
+	.word	1065185444
+	.word	1109393408
+	.align	2
+	.type	tunicFrontLimits, @object
+	.size	tunicFrontLimits, 24
+tunicFrontLimits:
+	.word	3254779904
+	.word	3254779904
+	.word	3254779904
+	.word	1107296256
+	.word	1107296256
+	.word	1107296256
+	.align	2
+	.type	tunicBackLimits, @object
+	.size	tunicBackLimits, 24
+tunicBackLimits:
+	.word	3254779904
+	.word	3254779904
+	.word	3254779904
+	.word	1107296256
+	.word	1107296256
+	.word	1107296256
+	.align	2
+	.type	bangsLimits, @object
+	.size	bangsLimits, 24
+bangsLimits:
+	.word	3246391296
+	.word	3246391296
+	.word	3246391296
+	.word	1098907648
+	.word	1098907648
+	.word	1098907648
+	.align	2
+	.type	ponytailLimits, @object
+	.size	ponytailLimits, 24
+ponytailLimits:
+	.word	3263168512
+	.word	3263168512
+	.word	3263168512
+	.word	1115684864
+	.word	1115684864
+	.word	1115684864
+	.align	2
+	.type	tassels1Limits, @object
+	.size	tassels1Limits, 24
+tassels1Limits:
+	.word	3254779904
+	.word	3254779904
+	.word	3254779904
+	.word	1107296256
+	.word	1107296256
+	.word	1107296256
+	.align	2
+	.type	tassels2Limits, @object
+	.size	tassels2Limits, 24
+tassels2Limits:
+	.word	3254779904
+	.word	3254779904
+	.word	3254779904
+	.word	1107296256
+	.word	1107296256
+	.word	1107296256
+	.align	2
+	.type	tasselsDouble, @object
+	.size	tasselsDouble, 12
+tasselsDouble:
+	.word	1073741824
+	.word	1077936128
+	.word	tassels2Limits
+	.align	2
+	.type	tunicConns, @object
+	.size	tunicConns, 64
+tunicConns:
+	.byte	2
+	.space	3
+	.word	1036831949
+	.byte	4
+	.space	3
+	.word	1036831949
+	.byte	3
+	.space	3
+	.word	1036831949
+	.byte	5
+	.space	3
+	.word	1036831949
+	.byte	0
+	.space	3
+	.word	1036831949
+	.byte	0
+	.space	3
+	.word	1036831949
+	.byte	1
+	.space	3
+	.word	1036831949
+	.byte	1
+	.space	3
+	.word	1036831949
+	.align	2
+	.type	physc, @object
+	.size	physc, 288
+physc:
+	.byte	2
+	.byte	0
+	.space	2
+	.word	tunicBasic
+	.word	tunicBackLimits
+	.word	0
+	.word	tunicConns
+	.word	tunicConns+8
+	.byte	2
+	.byte	1
+	.space	2
+	.word	tunicBasic
+	.word	tunicFrontLimits
+	.word	0
+	.word	tunicConns+16
+	.word	0
+	.byte	2
+	.byte	2
+	.space	2
+	.word	tunicBasic
+	.word	tunicBackLimits
+	.word	0
+	.word	tunicConns+24
+	.word	0
+	.byte	2
+	.byte	3
+	.space	2
+	.word	tunicBasic
+	.word	tunicFrontLimits
+	.word	0
+	.word	tunicConns+32
+	.word	tunicConns+40
+	.byte	2
+	.byte	4
+	.space	2
+	.word	tunicBasic
+	.word	tunicBackLimits
+	.word	0
+	.word	tunicConns+48
+	.word	0
+	.byte	2
+	.byte	5
+	.space	2
+	.word	tunicBasic
+	.word	tunicFrontLimits
+	.word	0
+	.word	tunicConns+56
+	.word	0
+	.byte	0
+	.byte	1
+	.space	2
+	.word	bangsBasic
+	.word	bangsLimits
+	.word	0
+	.word	0
+	.word	0
+	.byte	0
+	.byte	2
+	.space	2
+	.word	bangsBasic
+	.word	bangsLimits
+	.word	0
+	.word	0
+	.word	0
+	.byte	0
+	.byte	3
+	.space	2
+	.word	bangsBasic
+	.word	bangsLimits
+	.word	0
+	.word	0
+	.word	0
+	.byte	1
+	.byte	0
+	.space	2
+	.word	tasselsBasic
+	.word	tassels1Limits
+	.word	tasselsDouble
+	.word	0
+	.word	0
+	.byte	0
+	.byte	0
+	.space	2
+	.word	ponytailBasic
+	.word	ponytailLimits
+	.word	0
+	.word	0
+	.word	0
+	.byte	1
+	.byte	1
+	.space	2
+	.word	tasselsBasic
+	.word	tassels1Limits
+	.word	tasselsDouble
+	.word	0
+	.word	0
+	.text
 	.align	2
 	.set	nomips16
 	.set	nomicromips
@@ -42,9 +290,9 @@ init:
 	sw	$2,20($sp)
 	addiu	$2,$16,460
 	addiu	$5,$16,316
-	move	$4,$17
 	la	$7,BotWLinkMeshIdleAnim
 	la	$6,BotWLinkMesh
+	move	$4,$17
 	.set	noreorder
 	.set	nomacro
 	jal	SkelAnime_InitFlex
@@ -59,9 +307,19 @@ init:
 	.set	macro
 	.set	reorder
 
+	sw	$0,1048($16)
+	addiu	$4,$16,820
+	.set	noreorder
+	.set	nomacro
+	jal	bzero
+	li	$5,224			# 0xe0
+	.set	macro
+	.set	reorder
+
 	lw	$31,44($sp)
+	lwc1	$f0,$LC1
 	lw	$17,40($sp)
-	sw	$0,820($16)
+	swc1	$f0,1044($16)
 	lw	$16,36($sp)
 	.set	noreorder
 	.set	nomacro
@@ -221,16 +479,6 @@ VoiceVol:
 	.word	1069547520
 	.local	VoiceReverbAdd
 	.comm	VoiceReverbAdd,4,4
-	.section	.rodata.str1.4,"aMS",@progbits,1
-	.align	2
-$LC3:
-	.ascii	"off\000"
-	.align	2
-$LC4:
-	.ascii	"on\000"
-	.align	2
-$LC14:
-	.ascii	"calves %s legs %s\000"
 	.text
 	.align	2
 	.set	nomips16
@@ -264,16 +512,16 @@ update:
 	andi	$2,$2,0x200
 	.set	noreorder
 	.set	nomacro
-	beql	$2,$0,$L40
-	lbu	$2,828($16)
+	beql	$2,$0,$L35
+	lbu	$2,1052($16)
 	.set	macro
 	.set	reorder
 
 	li	$2,1			# 0x1
-	sb	$2,828($4)
+	sb	$2,1052($4)
 	la	$4,BotWLinkMeshBobokuwaAnim
 	jal	Animation_GetLastFrame
-	lwc1	$f0,$LC5
+	lwc1	$f0,$LC3
 	li	$3,2			# 0x2
 	swc1	$f0,24($sp)
 	mtc1	$2,$f0
@@ -291,8 +539,8 @@ update:
 	.set	reorder
 
 $L19:
-	lbu	$2,828($16)
-$L40:
+	lbu	$2,1052($16)
+$L35:
 	.set	noreorder
 	.set	nomacro
 	beq	$2,$0,$L20
@@ -324,12 +572,12 @@ $L40:
 	.set	noreorder
 	.set	nomacro
 	b	$L20
-	sb	$0,828($16)
+	sb	$0,1052($16)
 	.set	macro
 	.set	reorder
 
 $L21:
-	sb	$2,828($16)
+	sb	$2,1052($16)
 $L20:
 	.set	noreorder
 	.set	nomacro
@@ -340,14 +588,14 @@ $L20:
 
 	.set	noreorder
 	.set	nomacro
-	beql	$2,$0,$L41
-	lw	$2,820($16)
+	beql	$2,$0,$L36
+	lw	$2,1048($16)
 	.set	macro
 	.set	reorder
 
 	la	$4,BotWLinkMeshIdleAnim
 	jal	Animation_GetLastFrame
-	lwc1	$f0,$LC6
+	lwc1	$f0,$LC4
 	lw	$6,$LC1
 	swc1	$f0,24($sp)
 	mtc1	$2,$f0
@@ -363,23 +611,22 @@ $L20:
 	.set	macro
 	.set	reorder
 
-	lw	$2,820($16)
-$L41:
+	lw	$2,1048($16)
+$L36:
 	li	$3,-4			# 0xfffffffffffffffc
-	sw	$2,824($16)
 	and	$2,$2,$3
 	lw	$3,40($16)
-	lwc1	$f2,$LC7
+	lwc1	$f2,$LC5
 	sw	$3,36($sp)
 	lwc1	$f0,36($sp)
 	lw	$4,36($16)
 	add.s	$f0,$f0,$f2
-	lwc1	$f22,$LC10
-	lwc1	$f20,$LC11
-	sw	$2,820($16)
-	lw	$7,$LC8
+	lwc1	$f22,$LC8
+	lwc1	$f20,$LC9
+	sw	$2,1048($16)
+	lw	$7,$LC6
 	lw	$2,44($16)
-	lw	$6,$LC9
+	lw	$6,$LC7
 	sw	$4,32($sp)
 	swc1	$f22,24($sp)
 	swc1	$f20,20($sp)
@@ -396,23 +643,23 @@ $L41:
 
 	.set	noreorder
 	.set	nomacro
-	bnel	$2,$0,$L42
+	bnel	$2,$0,$L37
 	lw	$3,40($16)
 	.set	macro
 	.set	reorder
 
-	lw	$2,820($16)
+	lw	$2,1048($16)
 	ori	$2,$2,0x1
-	sw	$2,820($16)
+	sw	$2,1048($16)
 	lw	$3,40($16)
-$L42:
-	lwc1	$f2,$LC12
+$L37:
+	lwc1	$f2,$LC10
 	sw	$3,36($sp)
 	lwc1	$f0,36($sp)
 	lw	$4,36($16)
 	add.s	$f0,$f0,$f2
 	lw	$2,44($16)
-	lw	$7,$LC13
+	lw	$7,$LC11
 	mfc1	$6,$f20
 	sw	$4,32($sp)
 	swc1	$f22,24($sp)
@@ -430,52 +677,16 @@ $L42:
 
 	.set	noreorder
 	.set	nomacro
-	bnel	$2,$0,$L43
-	lw	$3,824($16)
+	bne	$2,$0,$L38
+	lw	$31,60($sp)
 	.set	macro
 	.set	reorder
 
-	lw	$2,820($16)
+	lw	$2,1048($16)
 	ori	$2,$2,0x2
-	sw	$2,820($16)
-	lw	$3,824($16)
-$L43:
-	lw	$2,820($16)
-	.set	noreorder
-	.set	nomacro
-	beq	$3,$2,$L44
+	sw	$2,1048($16)
 	lw	$31,60($sp)
-	.set	macro
-	.set	reorder
-
-	.set	noreorder
-	.set	nomacro
-	jal	Debugger_GetNextMessageBuffer
-	li	$4,255			# 0xff
-	.set	macro
-	.set	reorder
-
-	lw	$3,820($16)
-	move	$4,$2
-	andi	$2,$3,0x1
-	la	$6,$LC3
-	.set	noreorder
-	.set	nomacro
-	bne	$2,$0,$L45
-	andi	$3,$3,0x2
-	.set	macro
-	.set	reorder
-
-	la	$6,$LC4
-$L45:
-	la	$7,$LC3
-	bne	$3,$0,$L27
-	la	$7,$LC4
-$L27:
-	la	$5,$LC14
-	jal	sprintf
-	lw	$31,60($sp)
-$L44:
+$L38:
 	lw	$18,56($sp)
 	lw	$17,52($sp)
 	lw	$16,48($sp)
@@ -497,42 +708,333 @@ $L44:
 	.ent	BotWLink_OverrideLimbDraw
 	.type	BotWLink_OverrideLimbDraw, @function
 BotWLink_OverrideLimbDraw:
-	.frame	$sp,0,$31		# vars= 0, regs= 0/0, args= 0, gp= 0
-	.mask	0x00000000,0
-	.fmask	0x00000000,0
-	lw	$2,20($sp)
-	lw	$3,820($2)
-	andi	$2,$3,0x1
+	.frame	$sp,64,$31		# vars= 0, regs= 7/4, args= 16, gp= 0
+	.mask	0x803f0000,-20
+	.fmask	0x00f00000,-8
+	addiu	$sp,$sp,-64
+	sw	$16,20($sp)
+	lw	$16,84($sp)
+	li	$2,1			# 0x1
+	lw	$3,1048($16)
+	sw	$18,28($sp)
+	andi	$4,$3,0x1
+	lw	$18,80($sp)
+	sw	$31,44($sp)
+	sw	$21,40($sp)
+	sw	$20,36($sp)
+	sw	$19,32($sp)
+	sw	$17,24($sp)
+	sdc1	$f22,56($sp)
+	sdc1	$f20,48($sp)
 	.set	noreorder
 	.set	nomacro
-	beq	$2,$0,$L59
+	beq	$4,$0,$L40
+	sll	$2,$2,$5
+	.set	macro
+	.set	reorder
+
+	andi	$4,$2,0x60c0
+	.set	noreorder
+	.set	nomacro
+	bnel	$4,$0,$L43
+	sw	$0,0($6)
+	.set	macro
+	.set	reorder
+
+$L40:
 	andi	$3,$3,0x2
-	.set	macro
-	.set	reorder
-
-	li	$2,24768			# 0x60c0
-	sra	$2,$2,$5
-	andi	$2,$2,0x1
 	.set	noreorder
 	.set	nomacro
-	bnel	$2,$0,$L60
+	beq	$3,$0,$L42
+	andi	$2,$2,0x7ff8
+	.set	macro
+	.set	reorder
+
+	beq	$2,$0,$L42
+	.set	noreorder
+	.set	nomacro
+	b	$L43
 	sw	$0,0($6)
 	.set	macro
 	.set	reorder
 
-$L59:
-	beq	$3,$0,$L49
-	li	$2,32760			# 0x7ff8
-	sra	$5,$2,$5
-	andi	$5,$5,0x1
-	beq	$5,$0,$L49
-	sw	$0,0($6)
-$L49:
-$L60:
+$L42:
+	la	$2,limbToPhysMap
+	addu	$5,$2,$5
+	lb	$3,0($5)
+	.set	noreorder
+	.set	nomacro
+	bltz	$3,$L43
+	sll	$2,$3,1
+	.set	macro
+	.set	reorder
+
+	addu	$2,$2,$3
+	sll	$3,$2,3
+	la	$2,physc
+	addu	$2,$2,$3
+	lbu	$21,0($2)
+	lbu	$17,1($2)
+	lw	$20,4($2)
+	.set	noreorder
+	.set	nomacro
+	jal	Rand_ZeroOne
+	lw	$19,8($2)
+	.set	macro
+	.set	reorder
+
+	.set	noreorder
+	.set	nomacro
+	jal	Rand_ZeroOne
+	mov.s	$f22,$f0
+	.set	macro
+	.set	reorder
+
+	.set	noreorder
+	.set	nomacro
+	jal	Rand_ZeroOne
+	mov.s	$f20,$f0
+	.set	macro
+	.set	reorder
+
+	.set	noreorder
+	.set	nomacro
+	bne	$21,$0,$L74
+	lw	$31,44($sp)
+	.set	macro
+	.set	reorder
+
+	sll	$3,$17,1
+	addu	$2,$3,$17
+	lwc1	$f4,24($20)
+	lwc1	$f16,1044($16)
+	sll	$2,$2,3
+	addu	$2,$16,$2
+	lwc1	$f2,12($20)
+	mul.s	$f16,$f16,$f4
+	nop
+	lwc1	$f18,$LC12
+	lwc1	$f8,820($2)
+	lwc1	$f10,824($2)
+	lwc1	$f6,828($2)
+	mul.s	$f12,$f2,$f10
+	nop
+	mtc1	$0,$f14
+	mul.s	$f4,$f2,$f8
+	nop
+	sub.s	$f22,$f22,$f18
+	sub.s	$f0,$f0,$f18
+	mul.s	$f2,$f2,$f6
+	nop
+	sub.s	$f20,$f20,$f18
+	lwc1	$f18,20($20)
+	mul.s	$f22,$f22,$f16
+	nop
+	mul.s	$f0,$f0,$f16
+	nop
+	mul.s	$f20,$f20,$f16
+	nop
+	lwc1	$f16,832($2)
+	sub.s	$f2,$f14,$f2
+	sub.s	$f4,$f14,$f4
+	sub.s	$f12,$f14,$f12
+	add.s	$f4,$f4,$f22
+	add.s	$f0,$f2,$f0
+	lwc1	$f2,840($2)
+	mul.s	$f22,$f16,$f18
+	nop
+	lwc1	$f16,836($2)
+	mul.s	$f2,$f2,$f18
+	nop
+	add.s	$f12,$f12,$f20
+	mul.s	$f20,$f16,$f18
+	nop
+	lwc1	$f18,4($20)
+	lwc1	$f16,$LC13
+	mul.s	$f0,$f0,$f18
+	nop
+	mul.s	$f4,$f4,$f18
+	nop
+	mul.s	$f12,$f12,$f18
+	nop
+	mul.s	$f0,$f0,$f16
+	nop
+	mul.s	$f4,$f4,$f16
+	nop
+	mul.s	$f12,$f12,$f16
+	nop
+	add.s	$f2,$f0,$f2
+	add.s	$f4,$f4,$f22
+	swc1	$f2,840($2)
+	add.s	$f12,$f12,$f20
+	swc1	$f4,832($2)
+	mul.s	$f2,$f2,$f16
+	nop
+	swc1	$f12,836($2)
+	mul.s	$f0,$f4,$f16
+	nop
+	mul.s	$f12,$f12,$f16
+	nop
+	add.s	$f2,$f2,$f6
+	add.s	$f0,$f0,$f8
+	swc1	$f2,828($2)
+	lwc1	$f2,0($19)
+	add.s	$f10,$f12,$f10
+	swc1	$f0,820($2)
+	c.lt.s	$f0,$f2
+	#nop
+	.set	noreorder
+	.set	nomacro
+	bc1f	$L46
+	swc1	$f10,824($2)
+	.set	macro
+	.set	reorder
+
+	swc1	$f2,820($2)
+	swc1	$f14,832($2)
+$L46:
+	addu	$2,$3,$17
+	sll	$2,$2,3
+	addu	$2,$16,$2
+	lwc1	$f0,12($19)
+	lwc1	$f2,820($2)
+	c.lt.s	$f0,$f2
+	#nop
+	.set	noreorder
+	.set	nomacro
+	bc1fl	$L75
+	addu	$2,$3,$17
+	.set	macro
+	.set	reorder
+
+	swc1	$f0,820($2)
+	sw	$0,832($2)
+	addu	$2,$3,$17
+$L75:
+	sll	$2,$2,3
+	addu	$2,$16,$2
+	lwc1	$f0,4($19)
+	lwc1	$f2,824($2)
+	c.lt.s	$f2,$f0
+	#nop
+	.set	noreorder
+	.set	nomacro
+	bc1fl	$L76
+	addu	$2,$3,$17
+	.set	macro
+	.set	reorder
+
+	swc1	$f0,824($2)
+	sw	$0,836($2)
+	addu	$2,$3,$17
+$L76:
+	sll	$2,$2,3
+	addu	$2,$16,$2
+	lwc1	$f0,16($19)
+	lwc1	$f2,824($2)
+	c.lt.s	$f0,$f2
+	#nop
+	.set	noreorder
+	.set	nomacro
+	bc1fl	$L77
+	addu	$2,$3,$17
+	.set	macro
+	.set	reorder
+
+	swc1	$f0,824($2)
+	sw	$0,836($2)
+	addu	$2,$3,$17
+$L77:
+	sll	$2,$2,3
+	addu	$2,$16,$2
+	lwc1	$f0,8($19)
+	lwc1	$f2,828($2)
+	c.lt.s	$f2,$f0
+	#nop
+	.set	noreorder
+	.set	nomacro
+	bc1fl	$L78
+	addu	$2,$3,$17
+	.set	macro
+	.set	reorder
+
+	swc1	$f0,828($2)
+	sw	$0,840($2)
+	addu	$2,$3,$17
+$L78:
+	sll	$2,$2,3
+	addu	$2,$16,$2
+	lwc1	$f0,20($19)
+	lwc1	$f2,828($2)
+	c.lt.s	$f0,$f2
+	#nop
+	.set	noreorder
+	.set	nomacro
+	bc1fl	$L79
+	lh	$2,0($18)
+	.set	macro
+	.set	reorder
+
+	swc1	$f0,828($2)
+	sw	$0,840($2)
+	lh	$2,0($18)
+$L79:
+	addu	$3,$3,$17
+	mtc1	$2,$f0
+	sll	$3,$3,3
+	addu	$16,$16,$3
+	lwc1	$f4,$LC14
+	cvt.s.w	$f2,$f0
+	lwc1	$f0,820($16)
+	lh	$2,4($18)
+	mul.s	$f0,$f0,$f4
+	nop
+	add.s	$f2,$f2,$f0
+	trunc.w.s $f0,$f2
+	mfc1	$3,$f0
+	#nop
+	sh	$3,0($18)
+	lh	$3,2($18)
+	mtc1	$3,$f0
+	#nop
+	cvt.s.w	$f2,$f0
+	lwc1	$f0,824($16)
+	mul.s	$f0,$f0,$f4
+	nop
+	add.s	$f2,$f2,$f0
+	trunc.w.s $f0,$f2
+	mfc1	$3,$f0
+	lwc1	$f0,828($16)
+	lwc1	$f2,16($20)
+	mul.s	$f0,$f0,$f4
+	nop
+	sh	$3,2($18)
+	mul.s	$f0,$f0,$f2
+	nop
+	mtc1	$2,$f2
+	#nop
+	cvt.s.w	$f2,$f2
+	add.s	$f0,$f0,$f2
+	trunc.w.s $f0,$f0
+	mfc1	$2,$f0
+	#nop
+	sh	$2,4($18)
+$L43:
+	lw	$31,44($sp)
+$L74:
+	lw	$21,40($sp)
+	lw	$20,36($sp)
+	lw	$19,32($sp)
+	lw	$18,28($sp)
+	lw	$17,24($sp)
+	lw	$16,20($sp)
+	ldc1	$f22,56($sp)
+	ldc1	$f20,48($sp)
+	move	$2,$0
 	.set	noreorder
 	.set	nomacro
 	jr	$31
-	move	$2,$0
+	addiu	$sp,$sp,64
 	.set	macro
 	.set	reorder
 
@@ -613,7 +1115,7 @@ init_vars:
 	.word	16
 	.half	122
 	.half	-16657
-	.word	832
+	.word	1056
 	.word	init
 	.word	destroy
 	.word	update
@@ -629,30 +1131,39 @@ $LC1:
 $LC2:
 	.word	3212836864
 	.align	2
-$LC5:
+$LC3:
 	.word	3229614080
 	.align	2
-$LC6:
+$LC4:
 	.word	3238002688
 	.align	2
-$LC7:
+$LC5:
 	.word	1101004800
 	.align	2
-$LC8:
+$LC6:
 	.word	1117782016
 	.align	2
-$LC9:
+$LC7:
 	.word	1094713344
 	.align	2
-$LC10:
+$LC8:
 	.word	1148846080
 	.align	2
-$LC11:
+$LC9:
 	.word	1097859072
 	.align	2
-$LC12:
+$LC10:
 	.word	1106771968
 	.align	2
-$LC13:
+$LC11:
 	.word	1120403456
+	.align	2
+$LC12:
+	.word	1056964608
+	.align	2
+$LC13:
+	.word	1028443341
+	.align	2
+$LC14:
+	.word	1132462080
 	.ident	"GCC: (GNU) 9.2.0"

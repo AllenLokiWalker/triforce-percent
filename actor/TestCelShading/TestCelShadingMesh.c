@@ -281,7 +281,7 @@ Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque_tri_1[] = {
 	gsSPEndDisplayList(),
 };
 
-Vtx TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_0[10] = {
+Vtx TestCelShadingMesh_____________mesh_layer_Opaque_vtx_0[10] = {
 	{{{13, 288, -69},0, {36, -23},{0x48, 0xB, 0x98, 0xFF}}},
 	{{{-11, 375, -69},0, {36, 492},{0x57, 0x18, 0xA7, 0xFF}}},
 	{{{18, 377, -40},0, {268, 492},{0x6A, 0x1D, 0xC0, 0xFF}}},
@@ -294,7 +294,7 @@ Vtx TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_0[10] = {
 	{{{-11, 375, 69},0, {970, 492},{0x57, 0x18, 0x59, 0xFF}}},
 };
 
-Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0_cel0[] = {
+Gfx TestCelShadingMesh_____________mesh_layer_Opaque_tri_0_cel0[] = {
 	gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
 	gsSP2Triangles(3, 2, 4, 0, 3, 4, 5, 0),
 	gsSP2Triangles(6, 5, 4, 0, 6, 4, 7, 0),
@@ -302,22 +302,22 @@ Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0_cel0[] = {
 	gsSPEndDisplayList(),
 };
 
-Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0[] = {
-	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_0 + 0, 10, 0),
+Gfx TestCelShadingMesh_____________mesh_layer_Opaque_tri_0[] = {
+	gsSPVertex(TestCelShadingMesh_____________mesh_layer_Opaque_vtx_0 + 0, 10, 0),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 143),
 	gsDPSetBlendColor(255, 255, 255, 127),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0_cel0),
+	gsSPDisplayList(TestCelShadingMesh_____________mesh_layer_Opaque_tri_0_cel0),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0, 1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 81),
 	gsDPSetBlendColor(255, 255, 255, 128),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0_cel0),
+	gsSPDisplayList(TestCelShadingMesh_____________mesh_layer_Opaque_tri_0_cel0),
 	gsSPEndDisplayList(),
 };
 
-Vtx TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1[42] = {
+Vtx TestCelShadingMesh_____________mesh_layer_Opaque_vtx_1[42] = {
 	{{{30, -3, -69},0, {935, 642},{0x58, 0xD, 0xA5, 0xFF}}},
 	{{{-5, 29, -80},0, {943, 670},{0x15, 0x16, 0x85, 0xFF}}},
 	{{{-54, 83, -69},0, {963, 701},{0xC7, 0x7, 0x8F, 0xFF}}},
@@ -362,7 +362,7 @@ Vtx TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1[42] = {
 	{{{30, -3, 69},0, {1010, 598},{0x58, 0xD, 0x5B, 0xFF}}},
 };
 
-Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel0[] = {
+Gfx TestCelShadingMesh_____________mesh_layer_Opaque_tri_1_cel0[] = {
 	gsSP2Triangles(22, 23, 0, 0, 1, 0, 23, 0),
 	gsSP2Triangles(24, 1, 23, 0, 1, 24, 2, 0),
 	gsSP2Triangles(2, 24, 25, 0, 3, 26, 27, 0),
@@ -380,40 +380,40 @@ Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel0[] = {
 	gsSPEndDisplayList(),
 };
 
-Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel1[] = {
+Gfx TestCelShadingMesh_____________mesh_layer_Opaque_tri_1_cel1[] = {
 	gsSP2Triangles(0, 1, 6, 0, 2, 3, 7, 0),
 	gsSP2Triangles(7, 3, 8, 0, 4, 8, 3, 0),
 	gsSP2Triangles(9, 8, 4, 0, 5, 9, 4, 0),
 	gsSPEndDisplayList(),
 };
 
-Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1[] = {
-	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1 + 0, 22, 0),
+Gfx TestCelShadingMesh_____________mesh_layer_Opaque_tri_1[] = {
+	gsSPVertex(TestCelShadingMesh_____________mesh_layer_Opaque_vtx_1 + 0, 22, 0),
 	gsSPMatrix(0x0d000000, G_MTX_LOAD),
-	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1 + 22, 10, 22),
+	gsSPVertex(TestCelShadingMesh_____________mesh_layer_Opaque_vtx_1 + 22, 10, 22),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 140),
 	gsDPSetBlendColor(255, 255, 255, 127),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel0),
+	gsSPDisplayList(TestCelShadingMesh_____________mesh_layer_Opaque_tri_1_cel0),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0, 1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 86),
 	gsDPSetBlendColor(255, 255, 255, 128),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel0),
-	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1 + 32, 6, 0),
+	gsSPDisplayList(TestCelShadingMesh_____________mesh_layer_Opaque_tri_1_cel0),
+	gsSPVertex(TestCelShadingMesh_____________mesh_layer_Opaque_vtx_1 + 32, 6, 0),
 	gsSPMatrix(0x0d000080, G_MTX_LOAD),
-	gsSPVertex(TestCelShadingMesh_RArm_mesh_layer_Opaque_vtx_1 + 38, 4, 6),
+	gsSPVertex(TestCelShadingMesh_____________mesh_layer_Opaque_vtx_1 + 38, 4, 6),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 140),
 	gsDPSetBlendColor(255, 255, 255, 127),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel1),
+	gsSPDisplayList(TestCelShadingMesh_____________mesh_layer_Opaque_tri_1_cel1),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0, 1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, SHADE, 0, TEXEL0, 0),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 86),
 	gsDPSetBlendColor(255, 255, 255, 128),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1_cel1),
+	gsSPDisplayList(TestCelShadingMesh_____________mesh_layer_Opaque_tri_1_cel1),
 	gsSPEndDisplayList(),
 };
 
@@ -474,16 +474,16 @@ Gfx TestCelShadingMesh_LArm_mesh_layer_Opaque[] = {
 	gsSPEndDisplayList(),
 };
 
-Gfx TestCelShadingMesh_RArm_mesh_layer_Opaque[] = {
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_0),
+Gfx TestCelShadingMesh_____________mesh_layer_Opaque[] = {
+	gsSPDisplayList(TestCelShadingMesh_____________mesh_layer_Opaque_tri_0),
 	gsSPDisplayList(mat_TestCelShadingMesh_blue_layerOpaque),
-	gsSPDisplayList(TestCelShadingMesh_RArm_mesh_layer_Opaque_tri_1),
+	gsSPDisplayList(TestCelShadingMesh_____________mesh_layer_Opaque_tri_1),
 	gsSPEndDisplayList(),
 };
 
 StandardLimb TestCelShadingMeshLimb_000 = { { 0, 0, 0 }, 1, 255, TestCelShadingMesh_Torso_mesh_layer_Opaque };
 StandardLimb TestCelShadingMeshLimb_001 = { { 168, 198, 0 }, 255, 2, TestCelShadingMesh_LArm_mesh_layer_Opaque };
-StandardLimb TestCelShadingMeshLimb_002 = { { -144, 196, 0 }, 255, 255, TestCelShadingMesh_RArm_mesh_layer_Opaque };
+StandardLimb TestCelShadingMeshLimb_002 = { { -144, 196, 0 }, 255, 255, TestCelShadingMesh_____________mesh_layer_Opaque };
 
 void* TestCelShadingMeshLimbs[3] = {
 	&TestCelShadingMeshLimb_000,
