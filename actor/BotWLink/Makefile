@@ -7,8 +7,6 @@ OBJECTNAME = BotWLinkObj
 OBJECTNUM = 122
 OBJECTOBJS = BotWLinkMesh.o BotWLinkMeshIdleAnim.o BotWLinkMeshBobokuwaAnim.o
 
-CCFLAGS += --save-temps
-
 default: copyactor copyobject
 
 $(ACTORNAME).elf: $(OBJECTNAME).out.ld

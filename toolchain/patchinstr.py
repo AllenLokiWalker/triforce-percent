@@ -58,6 +58,7 @@ def patchinstr(data, patchfile):
         't8', 't9', 'k0', 'k1', 'gp', 'sp', 's8', 'ra']
     meminstr = {'lb': 0x80, 'lh': 0x84, 'lw': 0x8C, 'lbu': 0x90, 'lhu': 0x94, 
         'sb': 0xA0, 'sh': 0xA4, 'sw': 0xAC}
+    memstoreinstr = {'sb', 'sh', 'sw'}
     branchinstr = {'beq': 0x10, 'bne': 0x14}
     dotinstr = {'.byte': 8, '.short': 16, '.word': 32}
     imm2opmath = {'addi': 0x20, 'addiu': 0x24, 'slti': 0x28, 'sltiu': 0x2C,
@@ -211,7 +212,7 @@ def patchinstr(data, patchfile):
             elif toks[1] in meminstr:
                 assert len(toks) == 4
                 assert relreg is not None
-                rt = getreg(toks[2])
+                rt = getreg(toks[2], toks[1] not in memstoreinstr)
                 topval = (meminstr[toks[1]] << 8) | (relreg << 5) | rt
             else:
                 raise RuntimeError('Unknown instruction ' + toks[1])
