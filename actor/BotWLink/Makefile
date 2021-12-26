@@ -11,7 +11,7 @@ default: copyactor copyobject
 
 $(ACTORNAME).elf: $(OBJECTNAME).out.ld
 
-ACTORLDFLAGS += -T $(OBJECTNAME).out.ld -T ../../loader/debugger/debugger.out.ld
+ACTORLDFLAGS += -T $(OBJECTNAME).out.ld -T ../../statics/statics.out.ld -T ../../loader/debugger/debugger.out.ld
 
 include ../../toolchain/make/object.mk
 include ../../toolchain/make/actor.mk

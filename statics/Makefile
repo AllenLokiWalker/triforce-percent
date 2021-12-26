@@ -54,6 +54,7 @@ LINK_OBJS = \
 	ocarina.o \
 	audio.o \
 	scene.o \
+	hairphys.o \
 	../text/build_messages_file.o
 
 LD_SCRIPTS = \

@@ -460,3 +460,17 @@ void Statics_Ge2DialogueUpdate(){
     "sb    $t3, 0x0F24($t1)\n"
     ".set at\n .set reorder");
 }
+
+bool Statics_UncullObject(GlobalContext* globalCtx, Vec3f *center, float xsize, 
+	float yBelow, float yAbove, float zBehind, float zFar){
+	//Based on func_800314D4
+	Vec3f screen;
+	float screen_w;
+	func_8002BE04(globalCtx, center, &screen, &screen_w);
+	//Debugger_Printf("%f %f %f", screen.x * screen_w, screen.y * screen_w, screen.z);
+	return (screen.z > -zBehind) &&
+		(screen.z < zFar) &&
+		((fabsf(screen.x) - xsize) * screen_w < 1.0f) &&
+		((screen.y + yAbove) * screen_w > -1.0f) &&
+		((screen.y - yBelow) * screen_w < 1.0f);
+}
