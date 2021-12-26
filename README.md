@@ -15,14 +15,15 @@ use this power for?
 
 # Setup
 
-- Install Linux (Debian / Ubuntu / other Debian derivative), either directly or 
-through WSL/WSL2 if you're on Windows.
+- Install Linux (Ubuntu / other Debian derivative), either natively or through
+WSL/WSL2 if you're on Windows.
 - Make sure you got the Git submodules (ZAP2/ZAPD, novl, z64hdr). You will need
 `libpng-dev`, `libelf-dev`, and `libglib2.0-dev` for these to compile. You will
 also need `build-essential` in order to be able to compile anything for your
 local machine.
-- If you don't already have it, install the N64 toolchain from
-https://github.com/glankk/n64. **See below for more detailed instructions.**
+- In your python3, install `pyserial` (not `serial`), `pillow`, and `psutil`.
+- Install the N64 toolchain from https://github.com/glankk/n64. **See below for
+more detailed instructions.**
 - Get a copy of zzrtl which is stable enough to work on Linux with the default
 (i.e. non-Jared Johnson) scripts, e.g. 0.01r4.
 https://old.z64.me/tools/zzrtl/zzrtl-0.01-r4.zip Put this somewhere outside the
@@ -34,25 +35,27 @@ with the name `oot_1.0U_comp.z64`.
 - Make a `build-romhack` and paste the OoT 1.0U uncompressed ROM into it, with
 the name `oot_1.0U_uncomp.z64`.
 - `make`. Do not use `-j4` etc., some of the dependencies may not be correctly
-tracked/rebuilt in this case.
+tracked/rebuilt in this case. Look for a `Done building` message at the end.
+- If you make changes to Makefiles or any other part of the build toolchain,
+make sure to `make clean`.
 
 ## N64 toolchain instructions
 
-This was tried on a mostly fresh native install of Ubuntu 20.04. These are
-modifications/notes to the installation instructions on the glank N64 toolchain
-github page.
+This was tried on a mostly fresh native install of Ubuntu 20.04, and on Ubuntu
+20.04 through WSL2 on Windows 10. These are modifications/notes to the
+installation instructions on the glank N64 toolchain github page.
 
 - Install `libgmp-dev`.
 - `git clone` the repo instead of downloading the zip file (because of the next
 step).
-- When it says "navigate to `n64-master`", I interpreted this as `git checkout
-n64-ultra`.
+- When it says "navigate to `n64-master`", this means `git checkout n64-ultra`.
 - Before ./configure, I did
 ```
 sudo mkdir /opt/n64
 sudo chown yourusername /opt/n64
 sudo chgrp yourusername /opt/n64
 ```
+- `make -j4` or whatever works OK without issues.
 - I don't think the `make install-local-exec` step is needed.
 - If you don't already know, one way to add `/opt/n64/bin` to PATH is to add the
 line
