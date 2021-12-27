@@ -46,6 +46,82 @@ static s16 Patched_GetLengthOrLastFrame(AnimationHeaderCommon *animation, s16 mi
     return anim->frameCount - minus;
 }
 
+static inline void Euler2Quat(const Vec3s *r, float *q){
+    float cx = Math_CosS(r->x / 2);
+    float sx = Math_SinS(r->x / 2);
+    float cy = Math_CosS(r->y / 2);
+    float sy = Math_SinS(r->y / 2);
+    float cz = Math_CosS(r->z / 2);
+    float sz = Math_SinS(r->z / 2);
+    q[0] = cx * cy * cz + sx * sy * sz;
+    q[1] = sx * cy * cz - cx * sy * sz;
+    q[2] = cx * sy * cz + sx * cy * sz;
+    q[3] = cx * cy * sz - sx * sy * cz;
+}
+
+static inline void Quat2Euler(const float *q, const Vec3s *r){
+    r->x = Math_Atan2S(2.0f * (q[0] * q[1] + q[2] * q[3]), 1.0f - 2.0f * (q[1] * q[1] + q[2] * q[2]));
+    float temp =       2.0f * (q[0] * q[2] - q[1] * q[3]);
+    r->y = Math_Atan2S(temp, sqrtf(1.0f - temp * temp));
+    r->z = Math_Atan2S(2.0f * (q[0] * q[3] + q[1] * q[2]), 1.0f - 2.0f * (q[2] * q[2] + q[3] * q[3]));
+}
+
+static void Patched_InterpFrameTable(s32 limbCount, Vec3s* dst, Vec3s* start, Vec3s* target, f32 weight) {
+    if(weight >= 1.0f){
+        bcopy(target, dst, limbCount * sizeof(Vec3s));
+        return;
+    }
+    for(s32 i=0; i<limbCount; i++, dst++, start++, target++){
+        s32 numLargeRot = 0;
+        s16 dx = target->x - start->x;
+        s16 dy = target->y - start->y;
+        s16 dz = target->z - start->z;
+        if(dx <= 0xC000 || dx >= 0x4000) ++numLargeRot;
+        if(dy <= 0xC000 || dy >= 0x4000) ++numLargeRot;
+        if(dz <= 0xC000 || dz >= 0x4000) ++numLargeRot;
+        if(numLargeRot >= 2){
+            //There are at least two large angles; the per-axis interpolation
+            //will be pretty far off. Do correct SLERP of quaternions. This is
+            //much more expensive, so only done in these cases.
+            //Algorithms from https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+            //and http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
+            float qs[4];
+            float qt[4];
+            Euler2Quat(start, qs);
+            Euler2Quat(target, qt);
+            float cosHalfTheta = qs[0] * qt[0] + qs[1] * qt[1] + qs[2] * qt[2] + qs[3] * qt[3];
+            float ws, wt;
+            if(fabsf(cosHalfTheta) > 0.95f){
+                //Rotations are very close
+                if(cosHalfTheta < 0.0f){
+                    //Opposite representation; still very close
+                    qt[0] = -qt[0]; qt[1] = -qt[1]; qt[2] = -qt[2]; qt[3] = -qt[3];
+                }
+                //Linear interpolation
+                ws = 1.0f - weight;
+                wt = weight;
+            }else{
+                float sinHalfTheta = sqrtf(1.0f - cosHalfTheta * cosHalfTheta);
+                float rcpSinHalfTheta = 1.0f / sinHalfTheta;
+                s16 halfTheta = Math_Atan2S(sinHalfTheta, cosHalfTheta);
+                ws = Math_SinS((1.0f - weight) * halfTheta) * rcpSinHalfTheta;
+                wt = Math_SinS(weight * halfTheta) * rcpSinHalfTheta;
+            }
+            qs[0] = ws * qs[0] + wt * qt[0];
+            qs[1] = ws * qs[1] + wt * qt[1];
+            qs[2] = ws * qs[2] + wt * qt[2];
+            qs[3] = ws * qs[3] + wt * qt[3];
+            Quat2Euler(qs, dst);
+        }else{
+            dst->x = (s16)(dx * weight) + start->x;
+            dst->y = (s16)(dy * weight) + start->y;
+            dst->z = (s16)(dz * weight) + start->z;
+        }
+    }
+}
+
+
+
 static u32 prevAnimBaseAddr = 0;
 
 //Animation table
