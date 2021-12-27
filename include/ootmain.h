@@ -160,6 +160,7 @@ extern Gfx gActorXluSetup[3]; //D_80116280
 //Functions
 
 extern void Audio_FadeOut(u16 frames);
+extern MtxF* Matrix_GetCurrent();
 
 #define Math_GetProjectionPos func_8002BE04
 

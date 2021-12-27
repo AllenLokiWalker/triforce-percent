@@ -5,9 +5,11 @@ ACTORNUM = 118
 
 OBJECTNAME = BotWLinkObj
 OBJECTNUM = 122
-OBJECTOBJS = BotWLinkMesh.o BotWLinkMeshIdleAnim.o BotWLinkMeshBobokuwaAnim.o
+OBJECTOBJS = BotWLinkMesh.o BotWLinkMeshIdleAnim.o BotWLinkMeshBobokuwaAnim.o BotWLinkMeshHeadmoveAnim.o
 
 default: copyactor copyobject
+
+BotWLink.o: ../../statics/statics.h ../../statics/hairphys.h ../../loader/debugger/debugger.h BotWLinkMesh.h BotWLinkMeshIdleAnim.h BotWLinkMeshBobokuwaAnim.h
 
 $(ACTORNAME).elf: $(OBJECTNAME).out.ld
 

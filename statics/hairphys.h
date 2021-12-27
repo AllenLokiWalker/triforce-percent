@@ -17,8 +17,8 @@ typedef struct {
 } HairPhysLimits;
 
 typedef struct {
-    float mass;
-    float len;
+    HairPhysBasic b;
+    float actorscale;
     const HairPhysLimits *lim;
 } HairPhysDouble;
 
@@ -44,13 +44,13 @@ typedef struct {
 } HairPhysSimpleState;
 
 typedef struct {
-    Vec3f lastFulcrum;
-    Vec3f com1; //center of mass
-    Vec3f com2;
-    Vec3f vel1;
-    Vec3f vel2;
-    s16 rot;
-    s16 rv;
+    Vec3f pos;
+    Vec3f vel;
+    Vec3f fnext; //Force from next segment on last frame
+} HairPhysDSegState;
+
+typedef struct {
+    HairPhysDSegState s1, s2;
 } HairPhysDoubleState;
 
 typedef struct {

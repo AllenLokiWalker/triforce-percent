@@ -2,12 +2,14 @@
 #include "BotWLinkMesh.h"
 #include "BotWLinkMeshIdleAnim.h"
 #include "BotWLinkMeshBobokuwaAnim.h"
+#include "BotWLinkMeshHeadmoveAnim.h"
 #include "../loader/debugger/debugger.h"
 #include "../statics/hairphys.h"
 #include "../statics/statics.h"
 
 // Actor Information
 #define OBJ_ID 122 // primary object dependency
+#define ACTOR_SCALE 0.035f
 
 #define LIMB_IS_LOWLEGS ( \
 	(1 << BOTWLINKMESH_LCALF_LIMB) | \
@@ -50,17 +52,17 @@ static const s8 limbToPhysMap[BOTWLINKMESH_NUM_LIMBS] = {
 };
 #define NUM_PHYS 12
 
-static const HairPhysBasic tunicBasic    = {1.0f,1.0f,      8.0f, 0.1f,  0.3f, 0.97f, 10.0f};
-static const HairPhysBasic bangsBasic    = {0.0025f,400.0f, 3.0f, 1.2f,  1.0f, 0.70f,  1.5f};
-static const HairPhysBasic ponytailBasic = {0.002f,500.0f,  2.0f, 1.0f,  1.0f, 0.85f,  3.0f};
-static const HairPhysBasic tasselsBasic  = {0.2f,0.5f,      3.0f, 0.02f, 5.0f, 0.99f, 40.0f};
 static const HairPhysLimits tunicFrontLimits = {{-32.0f, -32.0f, -32.0f}, { 32.0f,  32.0f,  32.0f}};
 static const HairPhysLimits tunicBackLimits  = {{-32.0f, -32.0f, -32.0f}, { 32.0f,  32.0f,  32.0f}};
 static const HairPhysLimits bangsLimits      = {{-16.0f, -16.0f, -16.0f}, { 16.0f,  16.0f,  16.0f}};
 static const HairPhysLimits ponytailLimits   = {{-64.0f, -64.0f, -64.0f}, { 64.0f,  64.0f,  64.0f}};
 static const HairPhysLimits tassels1Limits   = {{-32.0f, -32.0f, -32.0f}, { 32.0f,  32.0f,  32.0f}};
 static const HairPhysLimits tassels2Limits   = {{-32.0f, -32.0f, -32.0f}, { 32.0f,  32.0f,  32.0f}};
-static const HairPhysDouble tasselsDouble = {2.0f, 3.0f, &tassels2Limits};
+static const HairPhysBasic  tunicBasic    =  {1.0f,1.0f,      8.0f, 0.1f,  0.3f, 0.97f, 10.0f};
+static const HairPhysBasic  bangsBasic    =  {0.0025f,400.0f, 3.0f, 1.2f,  1.0f, 0.70f,  1.5f};
+static const HairPhysBasic  ponytailBasic =  {0.002f,500.0f,  2.0f, 1.0f,  1.0f, 0.85f,  3.0f};
+static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f, 20.0f, 1.0f, 0.97f,  0.0f};
+static const HairPhysDouble tasselsDouble = {{0.002f,500.0f,  3.0f, 20.0f, 1.0f, 0.97f,  0.0f}, ACTOR_SCALE, &tassels2Limits};
 static const HairPhysConnection tunicConns[] = {
 	{1, 0.1f}, {0, 0.1f}, {2, 0.1f}, {1, 0.1f}, 
 	{4, 0.1f}, {3, 0.1f}, {5, 0.1f}, {4, 0.1f}
@@ -98,10 +100,10 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	//General setup
 	Rupees_ChangeBy(4);
 	en->flags = 0;
-	Actor_SetScale(&en->actor, 0.035f);
+	Actor_SetScale(&en->actor, ACTOR_SCALE);
 	//Components setup
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
-	SkelAnime_InitFlex(globalCtx, &en->skelAnime, &BotWLinkMesh, &BotWLinkMeshIdleAnim, 
+	SkelAnime_InitFlex(globalCtx, &en->skelAnime, &BotWLinkMesh, &BotWLinkMeshHeadmoveAnim, 
 		en->jointTable, en->morphTable, BOTWLINKMESH_NUM_LIMBS);
 	//Physics initialization
 	s32 c = 0;
@@ -144,8 +146,10 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			BotWLink_SetAnim(en, &BotWLinkMeshBobokuwaAnim, ANIMMODE_ONCE, -4.0f);
 		}else if((CTRLR_PRESS & BTN_DDOWN)){
 			BotWLink_VO(en, VO_LINK_TAKUSAN);
+			BotWLink_SetAnim(en, &BotWLinkMeshIdleAnim, ANIMMODE_LOOP, -8.0f);
 		}else if((CTRLR_PRESS & BTN_DRIGHT)){
 			BotWLink_VO(en, VO_LINK_DAIJINA);
+			BotWLink_SetAnim(en, &BotWLinkMeshHeadmoveAnim, ANIMMODE_LOOP, -8.0f);
 		}
 	}
 	if(en->timer > 0){
@@ -158,7 +162,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	}
 	s32 animFinished = SkelAnime_Update(&en->skelAnime);
 	if(animFinished){
-		BotWLink_SetAnim(en, &BotWLinkMeshIdleAnim, ANIMMODE_LOOP, -8.0f);
+		BotWLink_SetAnim(en, &BotWLinkMeshHeadmoveAnim, ANIMMODE_LOOP, -8.0f);
 	}
 	en->flags &= ~(FLAG_NO_LOWLEGS | FLAG_NO_LOWERBODY);
 	Vec3f pos = en->actor.world.pos;
