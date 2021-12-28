@@ -15,7 +15,6 @@ static u8 sIsLiveRun = 0;
 
 void Statics_SetGameState(){
     //Set some event flags
-    //TODO disable Kaepora Gaebora in Lost Woods (or everywhere)
     //TODO set flags for have picked up item drops before (magic jar, deku
     //seeds/nuts, etc.)
     /*

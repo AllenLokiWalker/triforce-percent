@@ -6,6 +6,7 @@
 #include "../loader/debugger/debugger.h"
 #include "../statics/hairphys.h"
 #include "../statics/statics.h"
+#include "../statics/anime.h"
 
 // Actor Information
 #define OBJ_ID 122 // primary object dependency
@@ -28,6 +29,7 @@
 
 #define FLAG_NO_LOWLEGS (1 << 0)
 #define FLAG_NO_LOWERBODY (1 << 1)
+#define FLAG_USE_SLERP (1 << 2)
 
 static const s8 limbToPhysMap[BOTWLINKMESH_NUM_LIMBS] = {
 	-1, -1, -1, //root, root, hips
@@ -150,6 +152,8 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		}else if((CTRLR_PRESS & BTN_DRIGHT)){
 			BotWLink_VO(en, VO_LINK_DAIJINA);
 			BotWLink_SetAnim(en, &BotWLinkMeshHeadmoveAnim, ANIMMODE_LOOP, -8.0f);
+		}else if((CTRLR_PRESS & BTN_DUP)){
+			en->flags ^= FLAG_USE_SLERP;
 		}
 	}
 	if(en->timer > 0){
@@ -160,7 +164,9 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			++en->timer;
 		}
 	}
+	if((en->flags & FLAG_USE_SLERP)) Patched_MorphUseSlerp(1);
 	s32 animFinished = SkelAnime_Update(&en->skelAnime);
+	Patched_MorphUseSlerp(0);
 	if(animFinished){
 		BotWLink_SetAnim(en, &BotWLinkMeshHeadmoveAnim, ANIMMODE_LOOP, -8.0f);
 	}

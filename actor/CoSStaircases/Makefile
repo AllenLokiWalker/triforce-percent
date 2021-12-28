@@ -16,10 +16,23 @@ OBJECTOBJS = \
 	TriforceHallway.o \
 	TriforceDoor.o \
 	TriforceDoorCollision.o
+OBJECTHDRS = \
+	RauruStair.h \
+	RauruStairCollision.h \
+	SariaStair.h \
+	SariaStairCollision.h \
+	SheikStair.h \
+	SheikStairCollision.h \
+	TriforceFadeWall.h \
+	TriforceHallway.h \
+	TriforceDoor.h \
+	TriforceDoorCollision.h
 
 SCENEOUTLD = ../../scene/ChamberOfSages/ChamberOfSages_scene.out.ld
 
 default: copyactor copyobject
+
+$(ACTORNAME).o: $(OBJECTHDRS)
 
 $(ACTORNAME).elf: $(OBJECTNAME).out.ld $(SCENEOUTLD)
 

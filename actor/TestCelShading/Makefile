@@ -9,6 +9,8 @@ OBJECTOBJS = TestCelShadingMesh.o TestCelShadingMoveAnim.o
 
 default: copyactor copyobject
 
+$(ACTORNAME).o: TestCelShadingMesh.h TestCelShadingMoveAnim.h
+
 $(ACTORNAME).elf: $(OBJECTNAME).out.ld
 
 ACTORLDFLAGS += -T $(OBJECTNAME).out.ld

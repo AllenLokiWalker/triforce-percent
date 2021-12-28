@@ -6,4 +6,6 @@ OBJECTNUM = 4
 
 default: copyactor copyobject
 
+$(ACTORNAME).o: obj.h
+
 include ../../toolchain/make/actor.mk

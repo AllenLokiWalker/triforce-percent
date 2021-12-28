@@ -5,15 +5,33 @@ ACTORNUM = 118
 
 OBJECTNAME = BotWLinkObj
 OBJECTNUM = 122
-OBJECTOBJS = BotWLinkMesh.o BotWLinkMeshIdleAnim.o BotWLinkMeshBobokuwaAnim.o BotWLinkMeshHeadmoveAnim.o
+OBJECTOBJS = \
+	BotWLinkMesh.o \
+	BotWLinkMeshIdleAnim.o \
+	BotWLinkMeshBobokuwaAnim.o \
+	BotWLinkMeshHeadmoveAnim.o
+OBJECTHDRS = \
+	BotWLinkMesh.h \
+	BotWLinkMeshIdleAnim.h \
+	BotWLinkMeshBobokuwaAnim.h \
+	BotWLinkMeshHeadmoveAnim.h
+SHDRS = \
+	../../loader/debugger/debugger.h \
+	../../statics/hairphys.h \
+	../../statics/statics.h \
+	../../statics/anime.h
+LDFILES = \
+	$(OBJECTNAME).out.ld \
+	../../loader/debugger/debugger.out.ld \
+	../../statics/statics.out.ld
 
 default: copyactor copyobject
 
-BotWLink.o: ../../statics/statics.h ../../statics/hairphys.h ../../loader/debugger/debugger.h BotWLinkMesh.h BotWLinkMeshIdleAnim.h BotWLinkMeshBobokuwaAnim.h
+$(ACTORNAME).o: $(OBJECTHDRS) $(SHDRS)
 
-$(ACTORNAME).elf: $(OBJECTNAME).out.ld
+$(ACTORNAME).elf: $(LDFILES)
 
-ACTORLDFLAGS += -T $(OBJECTNAME).out.ld -T ../../statics/statics.out.ld -T ../../loader/debugger/debugger.out.ld
+ACTORLDFLAGS += $(addprefix -T , $(LDFILES))
 
 include ../../toolchain/make/object.mk
 include ../../toolchain/make/actor.mk

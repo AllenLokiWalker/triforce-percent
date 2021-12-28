@@ -1,6 +1,7 @@
 #include "ootmain.h"
 #include "anime.h"
 #include "statics.h"
+#include "../loader/debugger/debugger.h"
 
 static void *MaybeSeg2RAM(void *ptr){
     if((u32)ptr & 0x80000000) return ptr;
@@ -46,29 +47,79 @@ static s16 Patched_GetLengthOrLastFrame(AnimationHeaderCommon *animation, s16 mi
     return anim->frameCount - minus;
 }
 
-static inline void Euler2Quat(const Vec3s *r, float *q){
+typedef struct {
+    float w;
+    float x;
+    float y;
+    float z;
+} Quaternion;
+
+static inline s16 Fixed_atan2s(float y, float x){
+    //atan2 is defined as atan2(y, x). OoT has the arguments backwards, just 
+    //like it has them backwards in bcopy and other functions.
+    /*
+    Debugger_Printf("atan2 %04X %04X %04X %04X",
+        Math_Atan2S(0.0f, 1.0f), //should be 0 -> displays 4000
+        Math_Atan2S(1.0f, 0.0f), //should be 4000 -> displays 0
+        Math_Atan2S(0.0f, -1.0f), //should be 8000 -> displays C000
+        Math_Atan2S(-1.0f, 0.0f) //should be C000 -> displays 8000
+    );
+    */
+    return Math_Atan2S(x, y);
+}
+
+static inline void Euler2Quat(const Vec3s *r, Quaternion *q){
     float cx = Math_CosS(r->x / 2);
     float sx = Math_SinS(r->x / 2);
     float cy = Math_CosS(r->y / 2);
     float sy = Math_SinS(r->y / 2);
     float cz = Math_CosS(r->z / 2);
     float sz = Math_SinS(r->z / 2);
-    q[0] = cx * cy * cz + sx * sy * sz;
-    q[1] = sx * cy * cz - cx * sy * sz;
-    q[2] = cx * sy * cz + sx * cy * sz;
-    q[3] = cx * cy * sz - sx * sy * cz;
+    q->w = cx * cy * cz + sx * sy * sz;
+    q->x = sx * cy * cz - cx * sy * sz;
+    q->y = cx * sy * cz + sx * cy * sz;
+    q->z = cx * cy * sz - sx * sy * cz;
+    float norm = q->w * q->w + q->x * q->x + q->y * q->y + q->z * q->z;
+    if(norm < 0.9f || norm > 1.1f){
+        Debugger_Printf("in norm is %f", norm);
+    }
 }
 
-static inline void Quat2Euler(const float *q, const Vec3s *r){
-    r->x = Math_Atan2S(2.0f * (q[0] * q[1] + q[2] * q[3]), 1.0f - 2.0f * (q[1] * q[1] + q[2] * q[2]));
-    float temp =       2.0f * (q[0] * q[2] - q[1] * q[3]);
-    r->y = Math_Atan2S(temp, sqrtf(1.0f - temp * temp));
-    r->z = Math_Atan2S(2.0f * (q[0] * q[3] + q[1] * q[2]), 1.0f - 2.0f * (q[2] * q[2] + q[3] * q[3]));
+static inline void Quat2Euler(const Quaternion *q, Vec3s *r){
+    float mult = q->w * q->w + q->x * q->x + q->y * q->y + q->z * q->z;
+    if(mult < 0.001f){
+        Debugger_Printf("out is 0");
+        mult = 0.001f;
+    }
+    mult = 2.0f / mult;
+    float temp = mult * (q->w * q->y - q->x * q->z);
+    if(temp >= 1.0f){
+        r->y = 0x4000;
+    }else if(temp <= -1.0f){
+        r->y = 0xC000;
+    }else{
+        r->x = Fixed_atan2s(mult * (q->w * q->x + q->y * q->z), 1.0f - mult * (q->x * q->x + q->y * q->y));
+        r->y = Fixed_atan2s(temp, sqrtf(1.0f - temp * temp));
+        r->z = Fixed_atan2s(mult * (q->w * q->z + q->x * q->y), 1.0f - mult * (q->y * q->y + q->z * q->z));
+        return;
+    }
+    //for both of the singularity cases above:
+    r->x = Math_Atan2S(q->x, q->w);
+    r->z = 0;
+}
+
+static u8 useSlerp = 0;
+void Patched_MorphUseSlerp(u8 enabled){
+    useSlerp = enabled;
 }
 
 static void Patched_InterpFrameTable(s32 limbCount, Vec3s* dst, Vec3s* start, Vec3s* target, f32 weight) {
     if(weight >= 1.0f){
         bcopy(target, dst, limbCount * sizeof(Vec3s));
+        return;
+    }
+    if(weight <= 0.0f){
+        bcopy(start, dst, limbCount * sizeof(Vec3s));
         return;
     }
     for(s32 i=0; i<limbCount; i++, dst++, start++, target++){
@@ -79,39 +130,53 @@ static void Patched_InterpFrameTable(s32 limbCount, Vec3s* dst, Vec3s* start, Ve
         if(dx <= 0xC000 || dx >= 0x4000) ++numLargeRot;
         if(dy <= 0xC000 || dy >= 0x4000) ++numLargeRot;
         if(dz <= 0xC000 || dz >= 0x4000) ++numLargeRot;
-        if(numLargeRot >= 2){
+        if(numLargeRot >= 2 && useSlerp && i >= 1){ //i==0 is translation
             //There are at least two large angles; the per-axis interpolation
             //will be pretty far off. Do correct SLERP of quaternions. This is
             //much more expensive, so only done in these cases.
             //Algorithms from https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
             //and http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
-            float qs[4];
-            float qt[4];
-            Euler2Quat(start, qs);
-            Euler2Quat(target, qt);
-            float cosHalfTheta = qs[0] * qt[0] + qs[1] * qt[1] + qs[2] * qt[2] + qs[3] * qt[3];
+            //http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/Quaternions.pdf
+            Quaternion qs, qt, qo;
+            Euler2Quat(start, &qs);
+            Euler2Quat(target, &qt);
+            float cosHalfTheta = qs.w * qt.w + qs.x * qt.x + qs.y * qt.y + qs.z * qt.z;
+            float wtmult = 1.0f;
+            if(cosHalfTheta < 0.0f){
+                //Negate one of the quaternions to get the closer rotation solution
+                wtmult = -1.0f;
+                cosHalfTheta = -cosHalfTheta;
+            }
             float ws, wt;
-            if(fabsf(cosHalfTheta) > 0.95f){
-                //Rotations are very close
-                if(cosHalfTheta < 0.0f){
-                    //Opposite representation; still very close
-                    qt[0] = -qt[0]; qt[1] = -qt[1]; qt[2] = -qt[2]; qt[3] = -qt[3];
-                }
-                //Linear interpolation
+            //Debugger_Printf("slerping %f", cosHalfTheta);
+            if(cosHalfTheta > 0.97f){
+                //Rotations are very close; linear interpolation
                 ws = 1.0f - weight;
                 wt = weight;
             }else{
                 float sinHalfTheta = sqrtf(1.0f - cosHalfTheta * cosHalfTheta);
+                s16 halfTheta = Fixed_atan2s(sinHalfTheta, cosHalfTheta);
                 float rcpSinHalfTheta = 1.0f / sinHalfTheta;
-                s16 halfTheta = Math_Atan2S(sinHalfTheta, cosHalfTheta);
                 ws = Math_SinS((1.0f - weight) * halfTheta) * rcpSinHalfTheta;
                 wt = Math_SinS(weight * halfTheta) * rcpSinHalfTheta;
             }
-            qs[0] = ws * qs[0] + wt * qt[0];
-            qs[1] = ws * qs[1] + wt * qt[1];
-            qs[2] = ws * qs[2] + wt * qt[2];
-            qs[3] = ws * qs[3] + wt * qt[3];
-            Quat2Euler(qs, dst);
+            wt *= wtmult;
+            qo.w = ws * qs.w + wt * qt.w;
+            qo.x = ws * qs.x + wt * qt.x;
+            qo.y = ws * qs.y + wt * qt.y;
+            qo.z = ws * qs.z + wt * qt.z;
+            /*
+            if(i == 26 && weight > 0.45f && weight < 0.55f){
+                Debugger_Printf("st %04X %04X %04X", (u16)start->x, (u16)start->y, (u16)start->z);
+                Debugger_Printf("tg %04X %04X %04X", (u16)target->x, (u16)target->y, (u16)target->z);
+                Debugger_Printf("qs %f %f %f %f", qs.w, qs.x, qs.y, qs.z);
+                Debugger_Printf("qt %f %f %f %f", qt.w, qt.x, qt.y, qt.z);
+                Debugger_Printf("ws %f wt %f cos(th/2) %f", ws, wt, cosHalfTheta);
+                Debugger_Printf("qo %f %f %f %f", qo.w, qo.x, qo.y, qo.z);
+            }
+            */
+            Quat2Euler(&qo, dst);
+            //Debugger_Printf("nd %04X %04X %04X", dst->x, dst->y, dst->z);
         }else{
             dst->x = (s16)(dx * weight) + start->x;
             dst->y = (s16)(dy * weight) + start->y;
@@ -119,8 +184,6 @@ static void Patched_InterpFrameTable(s32 limbCount, Vec3s* dst, Vec3s* start, Ve
         }
     }
 }
-
-
 
 static u32 prevAnimBaseAddr = 0;
 
@@ -250,6 +313,9 @@ void Statics_AnimeCodePatches(u8 isLiveRun){
 	// *(((u32*)Animation_GetLength2   )+1) = 0x34050000; //ori a1, zero, 0x0000
     // *( (u32*)Animation_GetLastFrame2   ) = JUMPINSTR(Patched_GetLengthOrLastFrame);
 	// *(((u32*)Animation_GetLastFrame2)+1) = 0x34050001; //ori a1, zero, 0x0001
+    //Patch SkelAnime_InterpFrameTable
+    *( (u32*)SkelAnime_InterpFrameTable   ) = JUMPINSTR(Patched_InterpFrameTable);
+    *(((u32*)SkelAnime_InterpFrameTable)+1) = 0;
 }
 
 typedef s32 (*Player_SetUpCutscene_t)(GlobalContext *, Actor *, s32);
