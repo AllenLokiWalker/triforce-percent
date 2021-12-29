@@ -51,6 +51,7 @@ typedef struct {
 
 typedef struct {
     HairPhysDSegState s1, s2;
+    u8 initted;
 } HairPhysDoubleState;
 
 typedef struct {
@@ -59,6 +60,6 @@ typedef struct {
 
 void HairPhys_Init(void *s, const HairPhysConstants *c);
 void HairPhys_Update(void *s, const HairPhysConstants *c, Vec3f *lPos, 
-    Vec3s *lRot, float windMag);
+    Vec3s *lRot, float windX, float windZ);
 
 #endif //_HAIRPHYS_H_

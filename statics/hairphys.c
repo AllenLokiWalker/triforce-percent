@@ -11,7 +11,9 @@ void HairPhys_InitSimple(HairPhysSimpleState *s, const HairPhysConstants *c){
 }
 
 void HairPhys_InitDouble(HairPhysDoubleState *s, const HairPhysConstants *c){
-    //TODO;
+    //Can't actually init here because we don't know where the fulcrum is.
+    //Defer init to the first time through update.
+    s->initted = 0;
 }
 
 void HairPhys_InitTunic(HairPhysTunicState *s, const HairPhysConstants *c){
@@ -19,7 +21,7 @@ void HairPhys_InitTunic(HairPhysTunicState *s, const HairPhysConstants *c){
 }
 
 void HairPhys_UpdateSimple(HairPhysSimpleState *s, const HairPhysConstants *c,
-        Vec3f *lPos, Vec3s *lRot, float windMag){
+        Vec3f *lPos, Vec3s *lRot, float windX, float windZ){
 	const HairPhysBasic *b = c->b;
 	const HairPhysLimits *lim = c->lim;
     Vec3f force; force.x = 0.0f; force.y = 0.0f; force.z = 0.0f;
@@ -29,6 +31,7 @@ void HairPhys_UpdateSimple(HairPhysSimpleState *s, const HairPhysConstants *c,
     force.y -= b->restoreforce * s->r.y;
     force.z -= b->restoreforce * s->r.z;
     //Wind force, just random centered.
+    float windMag = sqrtf(windX * windX + windZ * windZ);
     force.x += (windMag * b->windpush) * (Rand_ZeroOne() - 0.5f);
     force.y += (windMag * b->windpush) * (Rand_ZeroOne() - 0.5f);
     force.z += (windMag * b->windpush) * (Rand_ZeroOne() - 0.5f);
@@ -59,7 +62,7 @@ void HairPhys_UpdateSimple(HairPhysSimpleState *s, const HairPhysConstants *c,
 
 static void DoubleSegment(HairPhysDSegState *ss, const HairPhysBasic *b, 
         const HairPhysLimits *lim, const Vec3f *newFulcrum, Vec3f *prevFNext,
-        float costwist, float sintwist){
+        float costwist, float sintwist, float windX, float windZ){
     Vec3f force, vel1, vel2, pos1, pos2, dp;
     float d, mag;
     //Initialize force to fnext
@@ -68,8 +71,10 @@ static void DoubleSegment(HairPhysDSegState *ss, const HairPhysBasic *b,
     force.z = ss->fnext.z;
     //Gravity
     force.y -= b->restoreforce * b->mass;
-    //Wind (ignored for now)
-    //TODO
+    //Wind. Uses windpush for the constant wind force and yawmult for the
+    //randomness, since yawmult is not otherwise used.
+    force.x += windX * b->windpush + (Rand_ZeroOne() - 0.5f) * b->yawmult;
+    force.z += windZ * b->windpush + (Rand_ZeroOne() - 0.5f) * b->yawmult;
     //Dampen velocity (applied to true old velocity)
     ss->vel.x *= b->dampening;
     ss->vel.y *= b->dampening;
@@ -160,7 +165,7 @@ static void DoubleSegment(HairPhysDSegState *ss, const HairPhysBasic *b,
 }
 
 void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
-        Vec3f *lPos, Vec3s *lRot, float windMag){
+        Vec3f *lPos, Vec3s *lRot, float windX, float windZ){
     const HairPhysDouble *dbl = c->dbl;
     float as = 1.0f / dbl->actorscale;
     //Current hair attachment point--fulcrum of first segment
@@ -186,10 +191,34 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
     }
     float costwist = Math_CosS(twist);
     float sintwist = Math_SinS(twist);
-    //Segment 1
-    DoubleSegment(&s->s1, c->b, c->lim, &fulcrum, NULL, costwist, sintwist);
-    //Segment 2
-    DoubleSegment(&s->s2, &dbl->b, dbl->lim, &s->s1.pos, &s->s1.fnext, costwist, sintwist);
+    if(!s->initted){
+        s->initted = 1;
+        s->s1.pos.x = fulcrum.x;
+        s->s1.pos.y = fulcrum.y - c->b->len;
+        s->s1.pos.z = fulcrum.z;
+        s->s1.vel.x = 0.0f;
+        s->s1.vel.y = 0.0f;
+        s->s1.vel.z = 0.0f;
+        s->s1.fnext.x = 0.0f;
+        s->s1.fnext.y = 0.0f;
+        s->s1.fnext.z = 0.0f;
+        s->s2.pos.x = fulcrum.x;
+        s->s2.pos.y = s->s1.pos.y - dbl->b.len;
+        s->s2.pos.z = fulcrum.z;
+        s->s2.vel.x = 0.0f;
+        s->s2.vel.y = 0.0f;
+        s->s2.vel.z = 0.0f;
+        s->s2.fnext.x = 0.0f;
+        s->s2.fnext.y = 0.0f;
+        s->s2.fnext.z = 0.0f;
+    }else{
+        //Segment 1
+        DoubleSegment(&s->s1, c->b, c->lim, &fulcrum, NULL, 
+            costwist, sintwist, windX, windZ);
+        //Segment 2
+        DoubleSegment(&s->s2, &dbl->b, dbl->lim, &s->s1.pos, &s->s1.fnext, 
+            costwist, sintwist, windX, windZ);
+    }
     //Convert to limb position and rotation
     //We want the transformations to be applied to each vertex in this order:
     //global Y (twist)
@@ -226,13 +255,13 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
 }
 
 void HairPhys_UpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c,
-        Vec3f *lPos, Vec3s *lRot, float windMag){
+        Vec3f *lPos, Vec3s *lRot, float windX, float windZ){
     //TODO;
 }
 
 typedef void (*HairPhysInitFunc)(void *s, const HairPhysConstants *c);
 typedef void (*HairPhysUpdateFunc)(void *s, const HairPhysConstants *c, 
-        Vec3f *lPos, Vec3s *lRot, float windMag);
+        Vec3f *lPos, Vec3s *lRot, float windX, float windZ);
 static const HairPhysInitFunc initFuncs[3] = {
     (HairPhysInitFunc)HairPhys_InitSimple,
     (HairPhysInitFunc)HairPhys_InitDouble,
@@ -250,7 +279,7 @@ void HairPhys_Init(void *s, const HairPhysConstants *c){
 }
 
 void HairPhys_Update(void *s, const HairPhysConstants *c, Vec3f *lPos, 
-    Vec3s *lRot, float windMag){
+    Vec3s *lRot, float windX, float windZ){
     if(c->mode >= 3) return;
-    updateFuncs[c->mode](s, c, lPos, lRot, windMag);
+    updateFuncs[c->mode](s, c, lPos, lRot, windX, windZ);
 }

@@ -58,14 +58,14 @@ static const HairPhysLimits tunicFrontLimits = {{-32.0f, -32.0f, -32.0f}, { 32.0
 static const HairPhysLimits tunicBackLimits  = {{-32.0f, -32.0f, -32.0f}, { 32.0f,  32.0f,  32.0f}};
 static const HairPhysLimits bangsLimits      = {{-16.0f, -16.0f, -16.0f}, { 16.0f,  16.0f,  16.0f}};
 static const HairPhysLimits ponytailLimits   = {{-64.0f, -64.0f, -64.0f}, { 64.0f,  64.0f,  64.0f}};
-static       HairPhysLimits tasselLLimits    = {{-0.15f,   0.0f, -0.05f}, { 0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tasselRLimits    = {{ 0.15f,   0.0f, -0.05f}, { 0.0f, 0.0f, 0.0f}};
-static const HairPhysBasic  tunicBasic    =  {1.0f,1.0f,      8.0f, 0.1f,  0.3f, 0.97f, 10.0f};
-static const HairPhysBasic  bangsBasic    =  {0.004f,250.0f,  3.0f, 1.2f,  1.0f, 0.70f,  1.5f};
-static const HairPhysBasic  ponytailBasic =  {0.002f,500.0f,  2.0f, 1.0f,  1.0f, 0.85f,  3.0f};
-static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f, 30.0f, 1.0f, 0.97f,  0.0f};
-static const HairPhysDouble tasselsLDouble= {{0.001f,999.9f,  2.0f, 30.0f, 1.0f, 0.97f,  0.0f}, ACTOR_SCALE, &tasselLLimits};
-static const HairPhysDouble tasselsRDouble= {{0.001f,999.9f,  2.0f, 30.0f, 1.0f, 0.97f,  0.0f}, ACTOR_SCALE, &tasselRLimits};
+static const HairPhysLimits tasselLLimits    = {{-0.15f,   0.0f, -0.05f}, { 0.0f, 0.0f, 0.0f}};
+static const HairPhysLimits tasselRLimits    = {{ 0.15f,   0.0f, -0.05f}, { 0.0f, 0.0f, 0.0f}};
+static const HairPhysBasic  tunicBasic    =  {1.0f,1.0f,      8.0f,  0.1f, 0.30f, 0.97f, 1.000f};
+static const HairPhysBasic  bangsBasic    =  {0.004f,250.0f,  3.0f,  1.2f, 1.00f, 0.70f, 1.500f};
+static const HairPhysBasic  ponytailBasic =  {0.002f,500.0f,  2.0f,  1.0f, 1.00f, 0.85f, 3.000f};
+static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f, 70.0f, 0.04f, 0.97f, 0.007f};
+static const HairPhysDouble tasselsLDouble= {{0.001f,999.9f,  2.0f, 70.0f, 0.12f, 0.97f, 0.015f}, ACTOR_SCALE, &tasselLLimits};
+static const HairPhysDouble tasselsRDouble= {{0.001f,999.9f,  2.0f, 70.0f, 0.12f, 0.97f, 0.015f}, ACTOR_SCALE, &tasselRLimits};
 static const HairPhysConnection tunicConns[] = {
 	{1, 0.1f}, {0, 0.1f}, {2, 0.1f}, {1, 0.1f}, 
 	{4, 0.1f}, {3, 0.1f}, {5, 0.1f}, {4, 0.1f}
@@ -94,36 +94,15 @@ typedef struct {
 	HairPhysDoubleState physDouble[2];
 	HairPhysTunicState physTunic[6];
 	void *physStates[12];
-	float windMag;
+	float windX, windZ;
 	u32 flags;
 	u8 timer;
-	u8 editState;
-	float *editPtr;
 } Entity;
-
-static const char * const editNames[4] = {
-	"LX", "LZ", "RX", "RZ"
-};
-static void setEditPtr(Entity *en){
-	if(en->editState == 0){
-		en->editPtr = &tasselLLimits.neg.x;
-	}else if(en->editState == 1){
-		en->editPtr = &tasselLLimits.neg.z;
-	}else if(en->editState == 2){
-		en->editPtr = &tasselRLimits.neg.x;
-	}else{
-		en->editState = 3;
-		en->editPtr = &tasselRLimits.neg.z;
-	}
-	Debugger_Printf("%s %f", editNames[en->editState], *en->editPtr);
-}
 
 static void init(Entity *en, GlobalContext *globalCtx) {
 	//General setup
 	Rupees_ChangeBy(4);
 	en->flags = 0;
-	en->editState = 0;
-	setEditPtr(en);
 	Actor_SetScale(&en->actor, ACTOR_SCALE);
 	//Components setup
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
@@ -135,7 +114,8 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	for(s32 i=0; i<2; ++i) en->physStates[c++] = &en->physDouble[i];
 	for(s32 i=0; i<6; ++i) en->physStates[c++] = &en->physTunic[i];
 	for(c=0; c<12; ++c) HairPhys_Init(en->physStates[c], &physc[c]);
-	en->windMag = 1.0f;
+	en->windX = 0.707f;
+	en->windZ = -0.707f;
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
@@ -169,10 +149,10 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			en->timer = 1;
 			BotWLink_SetAnim(en, &BotWLinkMeshBobokuwaAnim, ANIMMODE_ONCE, -4.0f);
 		}else if((CTRLR_PRESS & BTN_DDOWN)){
-			BotWLink_VO(en, VO_LINK_TAKUSAN);
+			//BotWLink_VO(en, VO_LINK_TAKUSAN);
 			BotWLink_SetAnim(en, &BotWLinkMeshIdleAnim, ANIMMODE_LOOP, -8.0f);
 		}else if((CTRLR_PRESS & BTN_DRIGHT)){
-			BotWLink_VO(en, VO_LINK_DAIJINA);
+			//BotWLink_VO(en, VO_LINK_DAIJINA);
 			BotWLink_SetAnim(en, &BotWLinkMeshHeadmoveAnim, ANIMMODE_LOOP, -8.0f);
 		}else if((CTRLR_PRESS & BTN_DUP)){
 			en->flags ^= FLAG_USE_SLERP;
@@ -180,20 +160,6 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			en->actor.shape.rot.y += 0x200;
 		}else if((CTRLR_RAW & BTN_CRIGHT)){
 			en->actor.shape.rot.y -= 0x200;
-		}
-	}else if((CTRLR_RAW & BTN_R)){
-		if((CTRLR_RAW & BTN_CLEFT)){
-			*en->editPtr -= 0.05f;
-			setEditPtr(en);
-		}else if((CTRLR_RAW & BTN_CRIGHT)){
-			*en->editPtr += 0.05f;
-			setEditPtr(en);
-		}else if((CTRLR_PRESS & BTN_CUP)){
-			--en->editState;
-			setEditPtr(en);
-		}else if((CTRLR_PRESS & BTN_CDOWN)){
-			++en->editState;
-			setEditPtr(en);
 		}
 	}
 	
@@ -209,7 +175,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	s32 animFinished = SkelAnime_Update(&en->skelAnime);
 	Patched_MorphUseSlerp(0);
 	if(animFinished){
-		BotWLink_SetAnim(en, &BotWLinkMeshHeadmoveAnim, ANIMMODE_LOOP, -8.0f);
+		BotWLink_SetAnim(en, &BotWLinkMeshIdleAnim, ANIMMODE_LOOP, -8.0f);
 	}
 	en->flags &= ~(FLAG_NO_LOWLEGS | FLAG_NO_LOWERBODY);
 	Vec3f pos = en->actor.world.pos;
@@ -231,7 +197,7 @@ s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
 		return false;
 	}
 	s8 p = limbToPhysMap[limbIndex];
-	if(p >= 0) HairPhys_Update(en->physStates[p], &physc[p], pos, rot, en->windMag);
+	if(p >= 0) HairPhys_Update(en->physStates[p], &physc[p], pos, rot, en->windX, en->windZ);
 	return false;
 }
 
