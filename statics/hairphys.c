@@ -137,31 +137,57 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
     temp.y = lPos->y + c->b->len * as;
     temp.z = lPos->z;
     Matrix_MultVec3f(&temp, &fulcrum);
+    //Get global Y rotation to use as center for hair twist. Assuming there is
+    //only one scale factor of dbl->actorscale applied globally.
+    //TODO The order of the matrix components is desynced between decomp and
+    //z64hdr; when z64hdr is updated, this will have to be fixed.
+    s16 twist;
+    MtxF *cmf = Matrix_GetCurrent();
+    if(cmf->yx * as < 1.0f && cmf->yx * as > -1.0f){
+        //These values should all be scaled up by as, but they are only used in
+        //asin2, which is scale invariant
+        twist = Math_Atan2S(cmf->xx, -cmf->zx);
+    }else{
+        twist = Math_Atan2S(cmf->zz, cmf->zy);
+        if(cmf->yx < 0.0f) twist = -twist;
+    }
     //Segment 1
     DoubleSegment(&s->s1, c->b, c->lim, &fulcrum, NULL);
     //Segment 2
     DoubleSegment(&s->s2, &dbl->b, dbl->lim, &s->s1.pos, &s->s1.fnext);
     //Convert to limb position and rotation
-    //Reset model matrix; the hair is in global coordinates. The SkelAnime
-    //system will apply the limb position and rotation to this matrix.
-    MtxF *stackMatrix = Matrix_GetCurrent();
-    bzero(stackMatrix, sizeof(MtxF));
-    stackMatrix->xx = dbl->actorscale;
-    stackMatrix->yy = dbl->actorscale;
-    stackMatrix->zz = dbl->actorscale;
-    stackMatrix->ww = 1.0f;
-    lPos->x = s->s1.pos.x * as;
-    lPos->y = s->s1.pos.y * as;
-    lPos->z = s->s1.pos.z * as;
+    //We want the transformations to be applied to each vertex in this order:
+    //global Y (twist)
+    //global X (s2)
+    //global Z (s2)
+    //actor scale
+    //translation (s1)
+    //Transformations are constructed on the stack in reverse order.
+    //The Matrix_JointPosition call taking lPos and lRot will apply X, Y, Z, T
+    //(of course constructing them in the reverse order). However, we need Y
+    //first, and we can't insert a transformation after that call, so we have
+    //to use that call only for the Y rotation, and do the other transforms
+    //ourselves.
+    Matrix_Translate(s->s1.pos.x, s->s1.pos.y, s->s1.pos.z, MTXMODE_NEW);
+    Matrix_Scale(dbl->actorscale, dbl->actorscale, dbl->actorscale, MTXMODE_APPLY);
     //Convert relative position to rotation
-    Vec3f dp;
+    Vec3f dp; float k, l;
     dp.x = s->s2.pos.x - s->s1.pos.x;
     dp.y = s->s2.pos.y - s->s1.pos.z;
     dp.z = s->s2.pos.z - s->s1.pos.z;
-    float k = sqrtf(dbl->b.len * dbl->b.len - dp.x * dp.x);
-    lRot->x = Math_Atan2S(-dp.y, -dp.z); //not sure about signs
-    lRot->y = 0;
-    lRot->z = Math_Atan2S(-k, dp.x); //not sure about signs
+    l = dbl->b.len;
+    k = sqrtf(l * l - dp.x * dp.x);
+    Matrix_RotateRPY(
+        Math_Atan2S(-dp.y, -dp.z), //not sure about signs
+        0,
+        Math_Atan2S(-k, -dp.x), //not sure about signs
+        MTXMODE_APPLY);
+    lPos->x = 0.0f;
+    lPos->y = 0.0f;
+    lPos->z = 0.0f;
+    lRot->x = 0;
+    lRot->y = twist + 0x8000;
+    lRot->z = 0;
 }
 
 void HairPhys_UpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c,

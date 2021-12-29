@@ -64,7 +64,7 @@ static const HairPhysBasic  tunicBasic    =  {1.0f,1.0f,      8.0f, 0.1f,  0.3f,
 static const HairPhysBasic  bangsBasic    =  {0.0025f,400.0f, 3.0f, 1.2f,  1.0f, 0.70f,  1.5f};
 static const HairPhysBasic  ponytailBasic =  {0.002f,500.0f,  2.0f, 1.0f,  1.0f, 0.85f,  3.0f};
 static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f, 20.0f, 1.0f, 0.97f,  0.0f};
-static const HairPhysDouble tasselsDouble = {{0.002f,500.0f,  3.0f, 20.0f, 1.0f, 0.97f,  0.0f}, ACTOR_SCALE, &tassels2Limits};
+static const HairPhysDouble tasselsDouble = {{0.0015f,666.7f, 2.0f, 20.0f, 1.0f, 0.97f,  0.0f}, ACTOR_SCALE, &tassels2Limits};
 static const HairPhysConnection tunicConns[] = {
 	{1, 0.1f}, {0, 0.1f}, {2, 0.1f}, {1, 0.1f}, 
 	{4, 0.1f}, {3, 0.1f}, {5, 0.1f}, {4, 0.1f}
@@ -155,6 +155,11 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		}else if((CTRLR_PRESS & BTN_DUP)){
 			en->flags ^= FLAG_USE_SLERP;
 		}
+	}
+	if((CTRLR_RAW & BTN_CLEFT)){
+		en->actor.shape.rot.y += 0x200;
+	}else if((CTRLR_RAW & BTN_CRIGHT)){
+		en->actor.shape.rot.y -= 0x200;
 	}
 	if(en->timer > 0){
 		if(en->timer == 5){
