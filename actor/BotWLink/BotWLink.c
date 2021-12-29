@@ -58,13 +58,14 @@ static const HairPhysLimits tunicFrontLimits = {{-32.0f, -32.0f, -32.0f}, { 32.0
 static const HairPhysLimits tunicBackLimits  = {{-32.0f, -32.0f, -32.0f}, { 32.0f,  32.0f,  32.0f}};
 static const HairPhysLimits bangsLimits      = {{-16.0f, -16.0f, -16.0f}, { 16.0f,  16.0f,  16.0f}};
 static const HairPhysLimits ponytailLimits   = {{-64.0f, -64.0f, -64.0f}, { 64.0f,  64.0f,  64.0f}};
-static const HairPhysLimits tassels1Limits   = {{-32.0f, -32.0f, -32.0f}, { 32.0f,  32.0f,  32.0f}};
-static const HairPhysLimits tassels2Limits   = {{-32.0f, -32.0f, -32.0f}, { 32.0f,  32.0f,  32.0f}};
+static       HairPhysLimits tasselLLimits    = {{-0.15f,   0.0f, -0.05f}, { 0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tasselRLimits    = {{ 0.15f,   0.0f, -0.05f}, { 0.0f, 0.0f, 0.0f}};
 static const HairPhysBasic  tunicBasic    =  {1.0f,1.0f,      8.0f, 0.1f,  0.3f, 0.97f, 10.0f};
-static const HairPhysBasic  bangsBasic    =  {0.0025f,400.0f, 3.0f, 1.2f,  1.0f, 0.70f,  1.5f};
+static const HairPhysBasic  bangsBasic    =  {0.004f,250.0f,  3.0f, 1.2f,  1.0f, 0.70f,  1.5f};
 static const HairPhysBasic  ponytailBasic =  {0.002f,500.0f,  2.0f, 1.0f,  1.0f, 0.85f,  3.0f};
-static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f, 20.0f, 1.0f, 0.97f,  0.0f};
-static const HairPhysDouble tasselsDouble = {{0.0015f,666.7f, 2.0f, 20.0f, 1.0f, 0.97f,  0.0f}, ACTOR_SCALE, &tassels2Limits};
+static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f, 30.0f, 1.0f, 0.97f,  0.0f};
+static const HairPhysDouble tasselsLDouble= {{0.001f,999.9f,  2.0f, 30.0f, 1.0f, 0.97f,  0.0f}, ACTOR_SCALE, &tasselLLimits};
+static const HairPhysDouble tasselsRDouble= {{0.001f,999.9f,  2.0f, 30.0f, 1.0f, 0.97f,  0.0f}, ACTOR_SCALE, &tasselRLimits};
 static const HairPhysConnection tunicConns[] = {
 	{1, 0.1f}, {0, 0.1f}, {2, 0.1f}, {1, 0.1f}, 
 	{4, 0.1f}, {3, 0.1f}, {5, 0.1f}, {4, 0.1f}
@@ -74,8 +75,8 @@ static const HairPhysConstants physc[NUM_PHYS] = {
 	/*bangs1*/  {0, &bangsBasic, &bangsLimits, NULL, NULL, NULL},
 	/*bangs2*/  {0, &bangsBasic, &bangsLimits, NULL, NULL, NULL},
 	/*bangs3*/  {0, &bangsBasic, &bangsLimits, NULL, NULL, NULL},
-	/*ltassels*/{1, &tasselsBasic, &tassels1Limits, &tasselsDouble, NULL, NULL},
-	/*rtassels*/{1, &tasselsBasic, &tassels1Limits, &tasselsDouble, NULL, NULL},
+	/*ltassels*/{1, &tasselsBasic, &tasselLLimits, &tasselsLDouble, NULL, NULL},
+	/*rtassels*/{1, &tasselsBasic, &tasselRLimits, &tasselsRDouble, NULL, NULL},
 	/*lotncfl*/ {2, &tunicBasic, &tunicFrontLimits, NULL, &tunicConns[0], NULL},
 	/*lotncfc*/ {2, &tunicBasic, &tunicFrontLimits, NULL, &tunicConns[1], &tunicConns[2]},
 	/*lotncfr*/ {2, &tunicBasic, &tunicFrontLimits, NULL, &tunicConns[3], NULL},
@@ -96,12 +97,33 @@ typedef struct {
 	float windMag;
 	u32 flags;
 	u8 timer;
+	u8 editState;
+	float *editPtr;
 } Entity;
+
+static const char * const editNames[4] = {
+	"LX", "LZ", "RX", "RZ"
+};
+static void setEditPtr(Entity *en){
+	if(en->editState == 0){
+		en->editPtr = &tasselLLimits.neg.x;
+	}else if(en->editState == 1){
+		en->editPtr = &tasselLLimits.neg.z;
+	}else if(en->editState == 2){
+		en->editPtr = &tasselRLimits.neg.x;
+	}else{
+		en->editState = 3;
+		en->editPtr = &tasselRLimits.neg.z;
+	}
+	Debugger_Printf("%s %f", editNames[en->editState], *en->editPtr);
+}
 
 static void init(Entity *en, GlobalContext *globalCtx) {
 	//General setup
 	Rupees_ChangeBy(4);
 	en->flags = 0;
+	en->editState = 0;
+	setEditPtr(en);
 	Actor_SetScale(&en->actor, ACTOR_SCALE);
 	//Components setup
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
@@ -154,13 +176,27 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			BotWLink_SetAnim(en, &BotWLinkMeshHeadmoveAnim, ANIMMODE_LOOP, -8.0f);
 		}else if((CTRLR_PRESS & BTN_DUP)){
 			en->flags ^= FLAG_USE_SLERP;
+		}else if((CTRLR_RAW & BTN_CLEFT)){
+			en->actor.shape.rot.y += 0x200;
+		}else if((CTRLR_RAW & BTN_CRIGHT)){
+			en->actor.shape.rot.y -= 0x200;
+		}
+	}else if((CTRLR_RAW & BTN_R)){
+		if((CTRLR_RAW & BTN_CLEFT)){
+			*en->editPtr -= 0.05f;
+			setEditPtr(en);
+		}else if((CTRLR_RAW & BTN_CRIGHT)){
+			*en->editPtr += 0.05f;
+			setEditPtr(en);
+		}else if((CTRLR_PRESS & BTN_CUP)){
+			--en->editState;
+			setEditPtr(en);
+		}else if((CTRLR_PRESS & BTN_CDOWN)){
+			++en->editState;
+			setEditPtr(en);
 		}
 	}
-	if((CTRLR_RAW & BTN_CLEFT)){
-		en->actor.shape.rot.y += 0x200;
-	}else if((CTRLR_RAW & BTN_CRIGHT)){
-		en->actor.shape.rot.y -= 0x200;
-	}
+	
 	if(en->timer > 0){
 		if(en->timer == 5){
 			BotWLink_VO(en, VO_LINK_BOBOKUWA);

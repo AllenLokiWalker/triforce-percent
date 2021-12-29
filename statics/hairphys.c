@@ -58,7 +58,8 @@ void HairPhys_UpdateSimple(HairPhysSimpleState *s, const HairPhysConstants *c,
 }
 
 static void DoubleSegment(HairPhysDSegState *ss, const HairPhysBasic *b, 
-        const HairPhysLimits *lim, const Vec3f *newFulcrum, Vec3f *prevFNext){
+        const HairPhysLimits *lim, const Vec3f *newFulcrum, Vec3f *prevFNext,
+        float costwist, float sintwist){
     Vec3f force, vel1, vel2, pos1, pos2, dp;
     float d, mag;
     //Initialize force to fnext
@@ -85,10 +86,42 @@ static void DoubleSegment(HairPhysDSegState *ss, const HairPhysBasic *b,
     dp.x = pos1.x - newFulcrum->x;
     dp.y = pos1.y - newFulcrum->y;
     dp.z = pos1.z - newFulcrum->z;
-    d = 1.0f / sqrtf(dp.x * dp.x + dp.y * dp.y + dp.z * dp.z);
-    dp.x *= d;
-    dp.y *= d;
-    dp.z *= d;
+    //Normalized (length 1) dp
+    d = dp.x * dp.x + dp.y * dp.y + dp.z * dp.z;
+    if(d < 0.001f){
+        dp.x = 0.0f; dp.y = -1.0f; dp.z = 0.0f;
+    }else{
+        d = 1.0f / sqrtf(d);
+        dp.x *= d;
+        dp.y *= d;
+        dp.z *= d;
+    }
+    //Rotate limits into coordinate system relative to Link
+    float ml = lim->neg.x * lim->neg.x + lim->neg.z * lim->neg.z;
+    if(ml > 0.01f){
+        float mag = sqrtf(ml);
+        float im = 1.0f / mag;
+        float lx = lim->neg.x * costwist - lim->neg.z * sintwist;
+        float lz = lim->neg.z * costwist + lim->neg.x * sintwist;
+        //Get dot product with limit line normal vector
+        float k = dp.x * lx * im + dp.z * lz * im;
+        if(k > mag){
+            //d = perp(d, l_norm) + l_notnorm
+            //  = d - proj(d, l_norm) + l_notnorm
+            //  = d - k * l_norm + l_notnorm
+            //  = d - k * im * l_notnorm + l_notnorm
+            //  = d - (k * im - 1) * l_notnorm
+            dp.x -= (k * im - 1.0f) * lx;
+            dp.z -= (k * im - 1.0f) * lz;
+            d = 1.0f - dp.x * dp.x - dp.z * dp.z;
+            if(d < 0.0f){
+                dp.x = 0.0f; dp.y = -1.0f; dp.z = 0.0f;
+            }else{
+                dp.y = -sqrtf(d);
+            }
+        }
+    }
+    //New position
     pos2.x = newFulcrum->x + b->len * dp.x;
     pos2.y = newFulcrum->y + b->len * dp.y;
     pos2.z = newFulcrum->z + b->len * dp.z;
@@ -151,10 +184,12 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
         twist = Math_Atan2S(cmf->zz, cmf->zy);
         if(cmf->yx < 0.0f) twist = -twist;
     }
+    float costwist = Math_CosS(twist);
+    float sintwist = Math_SinS(twist);
     //Segment 1
-    DoubleSegment(&s->s1, c->b, c->lim, &fulcrum, NULL);
+    DoubleSegment(&s->s1, c->b, c->lim, &fulcrum, NULL, costwist, sintwist);
     //Segment 2
-    DoubleSegment(&s->s2, &dbl->b, dbl->lim, &s->s1.pos, &s->s1.fnext);
+    DoubleSegment(&s->s2, &dbl->b, dbl->lim, &s->s1.pos, &s->s1.fnext, costwist, sintwist);
     //Convert to limb position and rotation
     //We want the transformations to be applied to each vertex in this order:
     //global Y (twist)
