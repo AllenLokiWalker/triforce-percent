@@ -55,31 +55,32 @@ static const HairPhysLimits bangsLimits      = {{-16.0f, -16.0f, -16.0f}, { 16.0
 static const HairPhysLimits ponytailLimits   = {{-64.0f, -64.0f, -64.0f}, { 64.0f,  64.0f,  64.0f}};
 static const HairPhysLimits tasselLLimits    = {{-0.15f,   0.0f, -0.05f}, { 0.0f, 0.0f, 0.0f}};
 static const HairPhysLimits tasselRLimits    = {{ 0.15f,   0.0f, -0.05f}, { 0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicFLLimits    = {{ 0.00f,   0.0f, -0.15f}, { 0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicFCLimits    = {{ 0.00f,   0.0f, -0.15f}, { 0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicFRLimits    = {{ 0.00f,   0.0f, -0.15f}, { 0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicBLLimits    = {{ 0.00f,   0.0f,  0.15f}, { 0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicBCLimits    = {{ 0.00f,   0.0f,  0.15f}, { 0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicBRLimits    = {{ 0.00f,   0.0f,  0.15f}, { 0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicFLLimits    = {{ 0.00f,   0.0f, -0.02f}, { 0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicFCLimits    = {{ 0.00f,   0.0f, -0.02f}, { 0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicFRLimits    = {{ 0.00f,   0.0f, -0.02f}, { 0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicBLLimits    = {{ 0.00f,   0.0f,  0.02f}, { 0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicBCLimits    = {{ 0.00f,   0.0f,  0.02f}, { 0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicBRLimits    = {{ 0.00f,   0.0f,  0.02f}, { 0.0f, 0.0f, 0.0f}};
 static const HairPhysBasic  bangsBasic    =  {0.004f,250.0f,  3.0f,  1.2f, 1.00f, 0.70f, 1.500f};
 static const HairPhysBasic  ponytailBasic =  {0.002f,500.0f,  2.0f,  1.0f, 1.00f, 0.85f, 3.000f};
 static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f, 70.0f, 0.04f, 0.97f, 0.007f};
 static const HairPhysDouble tasselsLDouble= {{0.001f,999.9f,  2.0f, 70.0f, 0.12f, 0.97f, 0.015f}, &tasselLLimits};
 static const HairPhysDouble tasselsRDouble= {{0.001f,999.9f,  2.0f, 70.0f, 0.12f, 0.97f, 0.015f}, &tasselRLimits};
-static const HairPhysBasic  tunicBasic    =  {0.004f,250.0f,  3.0f, 70.0f, 0.04f, 0.92f, 0.007f};
+static const HairPhysBasic  tunicBasic    =  {0.004f,250.0f,  3.0f, 70.0f, 0.12f, 0.92f, 0.015f};
+static const HairPhysTunic  tunicTunic    =  {4.0f, 0.01f};
 static const HairPhysConstants physc[NUM_PHYS] = {
-	/*ponytail*/{0, &ponytailBasic, &ponytailLimits, NULL},
-	/*bangs1*/  {0, &bangsBasic, &bangsLimits, NULL},
-	/*bangs2*/  {0, &bangsBasic, &bangsLimits, NULL},
-	/*bangs3*/  {0, &bangsBasic, &bangsLimits, NULL},
-	/*ltassels*/{1, &tasselsBasic, &tasselLLimits, &tasselsLDouble},
-	/*rtassels*/{1, &tasselsBasic, &tasselRLimits, &tasselsRDouble},
-	/*lotncfl*/ {2, &tunicBasic, &tunicFLLimits, NULL},
-	/*lotncfc*/ {2, &tunicBasic, &tunicFCLimits, NULL},
-	/*lotncfr*/ {2, &tunicBasic, &tunicFRLimits, NULL},
-	/*lotncbl*/ {2, &tunicBasic, &tunicBLLimits , NULL},
-	/*lotncbc*/ {2, &tunicBasic, &tunicBCLimits , NULL},
-	/*lotncbr*/ {2, &tunicBasic, &tunicBRLimits , NULL},
+	/*ponytail*/{0, &ponytailBasic, &ponytailLimits, NULL, NULL},
+	/*bangs1*/  {0, &bangsBasic, &bangsLimits, NULL, NULL},
+	/*bangs2*/  {0, &bangsBasic, &bangsLimits, NULL, NULL},
+	/*bangs3*/  {0, &bangsBasic, &bangsLimits, NULL, NULL},
+	/*ltassels*/{1, &tasselsBasic, &tasselLLimits, &tasselsLDouble, NULL},
+	/*rtassels*/{1, &tasselsBasic, &tasselRLimits, &tasselsRDouble, NULL},
+	/*lotncfl*/ {2, &tunicBasic, &tunicFLLimits, NULL, &tunicTunic},
+	/*lotncfc*/ {2, &tunicBasic, &tunicFCLimits, NULL, &tunicTunic},
+	/*lotncfr*/ {2, &tunicBasic, &tunicFRLimits, NULL, &tunicTunic},
+	/*lotncbl*/ {2, &tunicBasic, &tunicBLLimits , NULL, &tunicTunic},
+	/*lotncbc*/ {2, &tunicBasic, &tunicBCLimits , NULL, &tunicTunic},
+	/*lotncbr*/ {2, &tunicBasic, &tunicBRLimits , NULL, &tunicTunic},
 };
 
 typedef struct {
@@ -149,7 +150,6 @@ static void BotWLink_SetAnim(Entity *en, AnimationHeader *anim, u8 mode, f32 mor
 }
 
 static void update(Entity *en, GlobalContext *globalCtx) {
-	Debugger_Printf("           rot %04X", (u16)en->actor.shape.rot.y);
 	if(!(CTRLR_RAW & (BTN_R | BTN_L))){
 		if((CTRLR_PRESS & BTN_DLEFT)){
 			en->timer = 1;
@@ -192,18 +192,19 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 
 s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
 	Entity *en = (Entity*)thisx;
+	s8 p = limbToPhysMap[limbIndex];
 	u32 limbMask = 1 << limbIndex;
 	if(((en->flags & FLAG_NO_LOWLEGS) && (limbMask & LIMB_IS_LOWLEGS)) ||
 		((en->flags & FLAG_NO_LOWERBODY) && (limbMask & LIMB_IS_LOWERBODY))){
 		*dList = NULL;
+		if(p >= 0) HairPhys_UpdateCulled(en->physStates[p], &physc[p]);
 		return false;
 	}
-	if(limbIndex == BOTWLINKMESH_LOTNCFL_LIMB 
-		|| limbIndex == BOTWLINKMESH_LTASSELS_LIMB) HairPhys_SetDebug(1);
-	s8 p = limbToPhysMap[limbIndex];
+	//if(limbIndex == BOTWLINKMESH_LOTNCFL_LIMB 
+	//	|| limbIndex == BOTWLINKMESH_LTASSELS_LIMB) HairPhys_SetDebug(1);
 	if(p >= 0) HairPhys_Update(en->physStates[p], &physc[p], pos, rot,
 		en->windX, en->windZ, ACTOR_SCALE);
-	HairPhys_SetDebug(0);
+	//HairPhys_SetDebug(0);
 	return false;
 }
 

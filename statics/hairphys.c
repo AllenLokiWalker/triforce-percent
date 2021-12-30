@@ -15,6 +15,10 @@ void HairPhys_InitSimple(HairPhysSimpleState *s, const HairPhysConstants *c){
     s->v.x = s->v.y = s->v.z = 0.0f;
 }
 
+void HairPhys_CulledUpdateSimple(HairPhysSimpleState *s, const HairPhysConstants *c){
+    (void)0;
+}
+
 void HairPhys_InitDouble(HairPhysDoubleState *s, const HairPhysConstants *c){
     //Can't actually init here because we don't know where the fulcrum is.
     //Defer init to the first time through update.
@@ -34,6 +38,10 @@ void HairPhys_InitDouble(HairPhysDoubleState *s, const HairPhysConstants *c){
     s->s2.fnext.z = 0.0f;
 }
 
+void HairPhys_CulledUpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c){
+    HairPhys_InitDouble(s, c);
+}
+
 void HairPhys_InitTunic(HairPhysTunicState *s, const HairPhysConstants *c){
     //Can't actually init here because we don't know where the fulcrum is.
     //Defer init to the first time through update.
@@ -41,6 +49,17 @@ void HairPhys_InitTunic(HairPhysTunicState *s, const HairPhysConstants *c){
     //However these parts we can init.
     s->conn1 = NULL;
     s->conn2 = NULL;
+    s->s.vel.x = 0.0f;
+    s->s.vel.y = 0.0f;
+    s->s.vel.z = 0.0f;
+    s->s.fnext.x = 0.0f;
+    s->s.fnext.y = 0.0f;
+    s->s.fnext.z = 0.0f;
+}
+
+void HairPhys_CulledUpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c){
+    //Can't call HairPhys_InitTunic because don't want to clobber conn1, conn2.
+    s->initted = 0;
     s->s.vel.x = 0.0f;
     s->s.vel.y = 0.0f;
     s->s.vel.z = 0.0f;
@@ -98,6 +117,9 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
     force.x = ss->fnext.x;
     force.y = ss->fnext.y;
     force.z = ss->fnext.z;
+    ss->fnext.x = 0.0f;
+    ss->fnext.y = 0.0f;
+    ss->fnext.z = 0.0f;
     //Gravity
     force.y -= b->restoreforce * b->mass;
     //Wind. Uses windpush for the constant wind force and yawmult for the
@@ -135,8 +157,8 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
     if(ml > 0.01f){
         float mag = sqrtf(ml);
         float im = 1.0f / mag;
-        float lx = lim->neg.x * costwist - lim->neg.z * sintwist;
-        float lz = lim->neg.z * costwist + lim->neg.x * sintwist;
+        float lx = lim->neg.x * costwist + lim->neg.z * sintwist;
+        float lz = lim->neg.z * costwist - lim->neg.x * sintwist;
         //Get dot product with limit line normal vector
         float k = dp.x * lx * im + dp.z * lz * im;
         if(k > mag){
@@ -226,10 +248,9 @@ static s16 ExtractFulcrumTwist(float actorscale, float yoffset, Vec3f *lPos,
         if(cmf->mf[2][0] >= 1.0f || cmf->mf[2][0] <= -1.0f){
             twist = 0;
         }else{
-            twist = Math_Atan2S(cmf->mf[0][0], -cmf->mf[1][0]);
+            twist = Math_Atan2S(-cmf->mf[0][0], cmf->mf[1][0]); //was + -
         }
     }
-    if(debug) Debugger_Printf("twist %04X", (u16)twist);
     *costwist = Math_CosS(twist);
     *sintwist = Math_SinS(twist);
     return twist;
@@ -272,7 +293,7 @@ static void ApplyLimbPosRot(Vec3f *pos1, Vec3f *pos2, float len, float actorscal
     lPos->y = 0.0f;
     lPos->z = 0.0f;
     lRot->x = 0;
-    lRot->y = twist + 0x8000;
+    lRot->y = twist;
     lRot->z = 0;
 }
 
@@ -298,8 +319,25 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
         PhysSegment(&s->s2, &dbl->b, dbl->lim, &s->s1.pos, &s->s1.fnext, 
             costwist, sintwist, windX, windZ);
     }
+    twist = 0x8000 - twist;
     ApplyLimbPosRot(&s->s1.pos, &s->s2.pos, dbl->b.len, actorscale,
         lPos, lRot, twist);
+}
+
+void TunicPullOther(HairPhysTunicState *s, const HairPhysConstants *c, void *conn){
+    if(conn == NULL) return;
+    HairPhysTunicState *other = (HairPhysTunicState*)conn;
+    float dx = s->s.pos.x - other->s.pos.x;
+    float dz = s->s.pos.z - other->s.pos.z;
+    float d = sqrtf(dx * dx + dz * dz);
+    float n = 1.0f / (d + 0.0001f);
+    dx *= n;
+    dz *= n;
+    d -= c->tn->dist;
+    if(d > 0.0f){
+        other->s.fnext.x += d * c->tn->pullfmult * dx;
+        other->s.fnext.z += d * c->tn->pullfmult * dz;
+    }
 }
 
 void HairPhys_UpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c,
@@ -315,13 +353,17 @@ void HairPhys_UpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c,
     }else{
         PhysSegment(&s->s, c->b, c->lim, &fulcrum, NULL,
             costwist, sintwist, windX, windZ);
+        TunicPullOther(s, c, s->conn1);
+        TunicPullOther(s, c, s->conn2);
     }
+    twist = 0x8000 - twist;
     ApplyLimbPosRot(&fulcrum, &s->s.pos, c->b->len, actorscale, lPos, lRot, twist);
 }
 
 typedef void (*HairPhysInitFunc)(void *s, const HairPhysConstants *c);
 typedef void (*HairPhysUpdateFunc)(void *s, const HairPhysConstants *c, 
         Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale);
+typedef void (*HairPhysCulledUpdateFunc)(void *s, const HairPhysConstants *c);
 static const HairPhysInitFunc initFuncs[3] = {
     (HairPhysInitFunc)HairPhys_InitSimple,
     (HairPhysInitFunc)HairPhys_InitDouble,
@@ -331,6 +373,11 @@ static const HairPhysUpdateFunc updateFuncs[3] = {
     (HairPhysUpdateFunc)HairPhys_UpdateSimple,
     (HairPhysUpdateFunc)HairPhys_UpdateDouble,
     (HairPhysUpdateFunc)HairPhys_UpdateTunic
+};
+static const HairPhysCulledUpdateFunc culledUpdateFuncs[3] = {
+    (HairPhysCulledUpdateFunc)HairPhys_CulledUpdateSimple,
+    (HairPhysCulledUpdateFunc)HairPhys_CulledUpdateDouble,
+    (HairPhysCulledUpdateFunc)HairPhys_CulledUpdateTunic
 };
 
 void HairPhys_Init(void *s, const HairPhysConstants *c){
@@ -342,4 +389,9 @@ void HairPhys_Update(void *s, const HairPhysConstants *c, Vec3f *lPos,
     Vec3s *lRot, float windX, float windZ, float actorscale){
     if(c->mode >= 3) return;
     updateFuncs[c->mode](s, c, lPos, lRot, windX, windZ, actorscale);
+}
+
+void HairPhys_UpdateCulled(void *s, const HairPhysConstants *c){
+    if(c->mode >= 3) return;
+    culledUpdateFuncs[c->mode](s, c);
 }
