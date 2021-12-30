@@ -59,6 +59,7 @@ typedef struct {
     u8 initted;
 } HairPhysTunicState;
 
+s16 Statics_ExtractRotationAxis(float actorscale, u8 axis);
 void HairPhys_SetDebug(u8 d);
 void HairPhys_Init(void *s, const HairPhysConstants *c);
 void HairPhys_Update(void *s, const HairPhysConstants *c, Vec3f *lPos, 

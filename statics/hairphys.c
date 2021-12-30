@@ -152,23 +152,23 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
         dp.y *= d;
         dp.z *= d;
     }
-    //Rotate limits into coordinate system relative to Link
     float ml = lim->neg.x * lim->neg.x + lim->neg.z * lim->neg.z;
-    if(ml > 0.01f){
-        float mag = sqrtf(ml);
-        float im = 1.0f / mag;
-        float lx = lim->neg.x * costwist + lim->neg.z * sintwist;
-        float lz = lim->neg.z * costwist - lim->neg.x * sintwist;
-        //Get dot product with limit line normal vector
-        float k = dp.x * lx * im + dp.z * lz * im;
-        if(k > mag){
-            //d = perp(d, l_norm) + l_notnorm
-            //  = d - proj(d, l_norm) + l_notnorm
-            //  = d - k * l_norm + l_notnorm
-            //  = d - k * im * l_notnorm + l_notnorm
-            //  = d - (k * im - 1) * l_notnorm
-            dp.x -= (k * im - 1.0f) * lx;
-            dp.z -= (k * im - 1.0f) * lz;
+    if(ml > 1e-6f){
+        float im = 1.0f / sqrtf(ml);
+        //Rotate limits into coordinate system relative to Link; normalize
+        float lx = (lim->neg.x * costwist + lim->neg.z * sintwist) * im;
+        float lz = (lim->neg.z * costwist - lim->neg.x * sintwist) * im;
+        //k * b->len is magnitude along limit line normal vector
+        float k = dp.x * lx + dp.z * lz;
+        float normlim = lim->neg.y / b->len;
+        if(k > normlim){
+            //d = perp(d, l) + l * normlim
+            //  = d - proj(d, l) + l * normlim
+            //  = d - k * l + l * normlim
+            //  = d - (k - normlim) * l
+            dp.x -= (k - normlim) * lx;
+            dp.z -= (k - normlim) * lz;
+            //Remaining component goes into Y
             d = 1.0f - dp.x * dp.x - dp.z * dp.z;
             if(d < 0.0f){
                 dp.x = 0.0f; dp.y = -1.0f; dp.z = 0.0f;
@@ -201,7 +201,7 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
     vel2.x -= d * dp.x;
     vel2.y -= d * dp.y;
     vel2.z -= d * dp.z; //projection, but have lost speed
-    d = sqrtf(vel2.x * vel2.x + vel2.y * vel2.y + vel2.z * vel2.z);
+    d = sqrtf(vel2.x * vel2.x + vel2.y * vel2.y + vel2.z * vel2.z) + 1e-6f;
     mag /= d;
     vel2.x *= mag;
     vel2.y *= mag;
@@ -215,6 +215,40 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
     ss->vel.z = vel2.z;
 }
 
+s16 Statics_ExtractRotationAxis(float actorscale, u8 axis){
+    MtxF *cmf = Matrix_GetCurrent();
+    float as = 1.0f / actorscale;
+    if(axis == 0){
+        if(cmf->mf[0][1] * as >= 1.0f || cmf->mf[0][1] * as <= -1.0f){
+            return 0;
+        }else{
+            return Math_Atan2S(cmf->mf[1][1], -cmf->mf[2][1]);
+        }
+    }else if(axis == 1){
+        /*
+        if(cmf->xy * as < 1.0f && cmf->xy * as > -1.0f){
+            //These values should all be scaled up by as, but they are only used in
+            //asin2, which is scale invariant
+            twist = Math_Atan2S(cmf->xx, -cmf->xz);
+        }else{
+            twist = Math_Atan2S(cmf->zz, cmf->yz);
+            if(cmf->xy < 0.0f) twist = -twist;
+        }
+        */
+        if(cmf->mf[1][2] * as >= 1.0f || cmf->mf[1][2] * as <= -1.0f){
+            return 0;
+        }else{
+            return Math_Atan2S(cmf->mf[2][2], -cmf->mf[0][2]);
+        }
+    }else{ //axis == 2
+        if(cmf->mf[2][0] * as >= 1.0f || cmf->mf[2][0] * as <= -1.0f){
+            return 0;
+        }else{
+            return Math_Atan2S(-cmf->mf[0][0], cmf->mf[1][0]); //was + -
+        }
+    }
+}
+
 static s16 ExtractFulcrumTwist(float actorscale, float yoffset, Vec3f *lPos, 
         Vec3f *fulcrum, float *costwist, float *sintwist, u8 parentaxis){
     float as = 1.0f / actorscale;
@@ -226,31 +260,7 @@ static s16 ExtractFulcrumTwist(float actorscale, float yoffset, Vec3f *lPos,
     Matrix_MultVec3f(&temp, fulcrum);
     //Get global Y rotation to use as center for hair twist. Assuming there is
     //only one scale factor of dbl->actorscale applied globally.
-    s16 twist;
-    MtxF *cmf = Matrix_GetCurrent();
-    if(parentaxis == 1){
-        /*
-        if(cmf->xy * as < 1.0f && cmf->xy * as > -1.0f){
-            //These values should all be scaled up by as, but they are only used in
-            //asin2, which is scale invariant
-            twist = Math_Atan2S(cmf->xx, -cmf->xz);
-        }else{
-            twist = Math_Atan2S(cmf->zz, cmf->yz);
-            if(cmf->xy < 0.0f) twist = -twist;
-        }
-        */
-        if(cmf->mf[1][2] >= 1.0f || cmf->mf[1][2] <= -1.0f){
-            twist = 0;
-        }else{
-            twist = Math_Atan2S(cmf->mf[2][2], -cmf->mf[0][2]);
-        }
-    }else{ //parentaxis == 2
-        if(cmf->mf[2][0] >= 1.0f || cmf->mf[2][0] <= -1.0f){
-            twist = 0;
-        }else{
-            twist = Math_Atan2S(-cmf->mf[0][0], cmf->mf[1][0]); //was + -
-        }
-    }
+    s16 twist = Statics_ExtractRotationAxis(actorscale, parentaxis);
     *costwist = Math_CosS(twist);
     *sintwist = Math_SinS(twist);
     return twist;
