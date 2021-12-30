@@ -18,22 +18,14 @@ typedef struct {
 
 typedef struct {
     HairPhysBasic b;
-    float actorscale;
     const HairPhysLimits *lim;
 } HairPhysDouble;
-
-typedef struct {
-    u8 index;
-    float force;
-} HairPhysConnection;
 
 typedef struct {
     u8 mode; // 0 simple, 1 double, 2 tunic
     const HairPhysBasic *b;
     const HairPhysLimits *lim;
     const HairPhysDouble *dbl;
-    const HairPhysConnection *conn1;
-    const HairPhysConnection *conn2;
 } HairPhysConstants;
 
 #define HAIRPHYS_UNITROT 256.0f
@@ -47,19 +39,23 @@ typedef struct {
     Vec3f pos;
     Vec3f vel;
     Vec3f fnext; //Force from next segment on last frame
-} HairPhysDSegState;
+} HairPhysSegState;
 
 typedef struct {
-    HairPhysDSegState s1, s2;
+    HairPhysSegState s1, s2;
     u8 initted;
 } HairPhysDoubleState;
 
 typedef struct {
-    float todo;
+    void *conn1; //Pointer to another HairPhysTunicState to apply force to.
+    void *conn2;
+    HairPhysSegState s;
+    u8 initted;
 } HairPhysTunicState;
 
+void HairPhys_SetDebug(u8 d);
 void HairPhys_Init(void *s, const HairPhysConstants *c);
 void HairPhys_Update(void *s, const HairPhysConstants *c, Vec3f *lPos, 
-    Vec3s *lRot, float windX, float windZ);
+    Vec3s *lRot, float windX, float windZ, float actorscale);
 
 #endif //_HAIRPHYS_H_

@@ -4,6 +4,11 @@
 
 static float dt = 0.05f;
 static float fps = 20.0f;
+static u8 debug = 0;
+
+void HairPhys_SetDebug(u8 d){
+    debug = d;
+}
 
 void HairPhys_InitSimple(HairPhysSimpleState *s, const HairPhysConstants *c){
     s->r.x = s->r.y = s->r.z = 0.0f;
@@ -14,14 +19,38 @@ void HairPhys_InitDouble(HairPhysDoubleState *s, const HairPhysConstants *c){
     //Can't actually init here because we don't know where the fulcrum is.
     //Defer init to the first time through update.
     s->initted = 0;
+    //However these parts we can init.
+    s->s1.vel.x = 0.0f;
+    s->s1.vel.y = 0.0f;
+    s->s1.vel.z = 0.0f;
+    s->s1.fnext.x = 0.0f;
+    s->s1.fnext.y = 0.0f;
+    s->s1.fnext.z = 0.0f;
+    s->s2.vel.x = 0.0f;
+    s->s2.vel.y = 0.0f;
+    s->s2.vel.z = 0.0f;
+    s->s2.fnext.x = 0.0f;
+    s->s2.fnext.y = 0.0f;
+    s->s2.fnext.z = 0.0f;
 }
 
 void HairPhys_InitTunic(HairPhysTunicState *s, const HairPhysConstants *c){
-    //TODO;
+    //Can't actually init here because we don't know where the fulcrum is.
+    //Defer init to the first time through update.
+    s->initted = 0;
+    //However these parts we can init.
+    s->conn1 = NULL;
+    s->conn2 = NULL;
+    s->s.vel.x = 0.0f;
+    s->s.vel.y = 0.0f;
+    s->s.vel.z = 0.0f;
+    s->s.fnext.x = 0.0f;
+    s->s.fnext.y = 0.0f;
+    s->s.fnext.z = 0.0f;
 }
 
 void HairPhys_UpdateSimple(HairPhysSimpleState *s, const HairPhysConstants *c,
-        Vec3f *lPos, Vec3s *lRot, float windX, float windZ){
+        Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale){
 	const HairPhysBasic *b = c->b;
 	const HairPhysLimits *lim = c->lim;
     Vec3f force; force.x = 0.0f; force.y = 0.0f; force.z = 0.0f;
@@ -60,7 +89,7 @@ void HairPhys_UpdateSimple(HairPhysSimpleState *s, const HairPhysConstants *c,
     lRot->z += s->r.z * HAIRPHYS_UNITROT * b->yawmult;
 }
 
-static void DoubleSegment(HairPhysDSegState *ss, const HairPhysBasic *b, 
+static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b, 
         const HairPhysLimits *lim, const Vec3f *newFulcrum, Vec3f *prevFNext,
         float costwist, float sintwist, float windX, float windZ){
     Vec3f force, vel1, vel2, pos1, pos2, dp;
@@ -164,61 +193,50 @@ static void DoubleSegment(HairPhysDSegState *ss, const HairPhysBasic *b,
     ss->vel.z = vel2.z;
 }
 
-void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
-        Vec3f *lPos, Vec3s *lRot, float windX, float windZ){
-    const HairPhysDouble *dbl = c->dbl;
-    float as = 1.0f / dbl->actorscale;
+static s16 ExtractFulcrumTwist(float actorscale, float yoffset, Vec3f *lPos, 
+        Vec3f *fulcrum, float *costwist, float *sintwist, u8 parentaxis){
+    float as = 1.0f / actorscale;
     //Current hair attachment point--fulcrum of first segment
-    Vec3f fulcrum;
     Vec3f temp;
     temp.x = lPos->x;
-    temp.y = lPos->y + c->b->len * as;
+    temp.y = lPos->y + yoffset * as;
     temp.z = lPos->z;
-    Matrix_MultVec3f(&temp, &fulcrum);
+    Matrix_MultVec3f(&temp, fulcrum);
     //Get global Y rotation to use as center for hair twist. Assuming there is
     //only one scale factor of dbl->actorscale applied globally.
-    //TODO The order of the matrix components is desynced between decomp and
-    //z64hdr; when z64hdr is updated, this will have to be fixed.
     s16 twist;
     MtxF *cmf = Matrix_GetCurrent();
-    if(cmf->yx * as < 1.0f && cmf->yx * as > -1.0f){
-        //These values should all be scaled up by as, but they are only used in
-        //asin2, which is scale invariant
-        twist = Math_Atan2S(cmf->xx, -cmf->zx);
-    }else{
-        twist = Math_Atan2S(cmf->zz, cmf->zy);
-        if(cmf->yx < 0.0f) twist = -twist;
+    if(parentaxis == 1){
+        /*
+        if(cmf->xy * as < 1.0f && cmf->xy * as > -1.0f){
+            //These values should all be scaled up by as, but they are only used in
+            //asin2, which is scale invariant
+            twist = Math_Atan2S(cmf->xx, -cmf->xz);
+        }else{
+            twist = Math_Atan2S(cmf->zz, cmf->yz);
+            if(cmf->xy < 0.0f) twist = -twist;
+        }
+        */
+        if(cmf->mf[1][2] >= 1.0f || cmf->mf[1][2] <= -1.0f){
+            twist = 0;
+        }else{
+            twist = Math_Atan2S(cmf->mf[2][2], -cmf->mf[0][2]);
+        }
+    }else{ //parentaxis == 2
+        if(cmf->mf[2][0] >= 1.0f || cmf->mf[2][0] <= -1.0f){
+            twist = 0;
+        }else{
+            twist = Math_Atan2S(cmf->mf[0][0], -cmf->mf[1][0]);
+        }
     }
-    float costwist = Math_CosS(twist);
-    float sintwist = Math_SinS(twist);
-    if(!s->initted){
-        s->initted = 1;
-        s->s1.pos.x = fulcrum.x;
-        s->s1.pos.y = fulcrum.y - c->b->len;
-        s->s1.pos.z = fulcrum.z;
-        s->s1.vel.x = 0.0f;
-        s->s1.vel.y = 0.0f;
-        s->s1.vel.z = 0.0f;
-        s->s1.fnext.x = 0.0f;
-        s->s1.fnext.y = 0.0f;
-        s->s1.fnext.z = 0.0f;
-        s->s2.pos.x = fulcrum.x;
-        s->s2.pos.y = s->s1.pos.y - dbl->b.len;
-        s->s2.pos.z = fulcrum.z;
-        s->s2.vel.x = 0.0f;
-        s->s2.vel.y = 0.0f;
-        s->s2.vel.z = 0.0f;
-        s->s2.fnext.x = 0.0f;
-        s->s2.fnext.y = 0.0f;
-        s->s2.fnext.z = 0.0f;
-    }else{
-        //Segment 1
-        DoubleSegment(&s->s1, c->b, c->lim, &fulcrum, NULL, 
-            costwist, sintwist, windX, windZ);
-        //Segment 2
-        DoubleSegment(&s->s2, &dbl->b, dbl->lim, &s->s1.pos, &s->s1.fnext, 
-            costwist, sintwist, windX, windZ);
-    }
+    if(debug) Debugger_Printf("twist %04X", (u16)twist);
+    *costwist = Math_CosS(twist);
+    *sintwist = Math_SinS(twist);
+    return twist;
+}
+
+static void ApplyLimbPosRot(Vec3f *pos1, Vec3f *pos2, float len, float actorscale,
+        Vec3f *lPos, Vec3s *lRot, s16 twist){
     //Convert to limb position and rotation
     //We want the transformations to be applied to each vertex in this order:
     //global Y (twist)
@@ -232,15 +250,19 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
     //first, and we can't insert a transformation after that call, so we have
     //to use that call only for the Y rotation, and do the other transforms
     //ourselves.
-    Matrix_Translate(s->s1.pos.x, s->s1.pos.y, s->s1.pos.z, MTXMODE_NEW);
-    Matrix_Scale(dbl->actorscale, dbl->actorscale, dbl->actorscale, MTXMODE_APPLY);
+    Matrix_Translate(pos1->x, pos1->y, pos1->z, MTXMODE_NEW);
+    Matrix_Scale(actorscale, actorscale, actorscale, MTXMODE_APPLY);
+    Vec3f dp;
+    dp.x = pos2->x - pos1->x;
+    dp.y = pos2->y - pos1->z;
+    dp.z = pos2->z - pos1->z;
     //Convert relative position to rotation
-    Vec3f dp; float k, l;
-    dp.x = s->s2.pos.x - s->s1.pos.x;
-    dp.y = s->s2.pos.y - s->s1.pos.z;
-    dp.z = s->s2.pos.z - s->s1.pos.z;
-    l = dbl->b.len;
-    k = sqrtf(l * l - dp.x * dp.x);
+    float k = len * len - dp.x * dp.x;
+    if(k < 0.0f){
+        k = 0.0f;
+    }else{
+        k = sqrtf(k);
+    }
     Matrix_RotateRPY(
         Math_Atan2S(-dp.y, -dp.z), //not sure about signs
         0,
@@ -254,14 +276,52 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
     lRot->z = 0;
 }
 
+void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
+        Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale){
+    const HairPhysDouble *dbl = c->dbl;
+    Vec3f fulcrum; float costwist, sintwist;
+    s16 twist = ExtractFulcrumTwist(actorscale, c->b->len, lPos,
+        &fulcrum, &costwist, &sintwist, 1);
+    if(!s->initted){
+        s->initted = 1;
+        s->s1.pos.x = fulcrum.x;
+        s->s1.pos.y = fulcrum.y - c->b->len;
+        s->s1.pos.z = fulcrum.z;
+        s->s2.pos.x = fulcrum.x;
+        s->s2.pos.y = s->s1.pos.y - dbl->b.len;
+        s->s2.pos.z = fulcrum.z;
+    }else{
+        //Segment 1
+        PhysSegment(&s->s1, c->b, c->lim, &fulcrum, NULL, 
+            costwist, sintwist, windX, windZ);
+        //Segment 2
+        PhysSegment(&s->s2, &dbl->b, dbl->lim, &s->s1.pos, &s->s1.fnext, 
+            costwist, sintwist, windX, windZ);
+    }
+    ApplyLimbPosRot(&s->s1.pos, &s->s2.pos, dbl->b.len, actorscale,
+        lPos, lRot, twist);
+}
+
 void HairPhys_UpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c,
-        Vec3f *lPos, Vec3s *lRot, float windX, float windZ){
-    //TODO;
+        Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale){
+    Vec3f fulcrum; float costwist, sintwist;
+    s16 twist = ExtractFulcrumTwist(actorscale, 0.0f, lPos,
+        &fulcrum, &costwist, &sintwist, 2);
+    if(!s->initted){
+        s->initted = 1;
+        s->s.pos.x = fulcrum.x;
+        s->s.pos.y = fulcrum.y - c->b->len;
+        s->s.pos.z = fulcrum.z;
+    }else{
+        PhysSegment(&s->s, c->b, c->lim, &fulcrum, NULL,
+            costwist, sintwist, windX, windZ);
+    }
+    ApplyLimbPosRot(&fulcrum, &s->s.pos, c->b->len, actorscale, lPos, lRot, twist);
 }
 
 typedef void (*HairPhysInitFunc)(void *s, const HairPhysConstants *c);
 typedef void (*HairPhysUpdateFunc)(void *s, const HairPhysConstants *c, 
-        Vec3f *lPos, Vec3s *lRot, float windX, float windZ);
+        Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale);
 static const HairPhysInitFunc initFuncs[3] = {
     (HairPhysInitFunc)HairPhys_InitSimple,
     (HairPhysInitFunc)HairPhys_InitDouble,
@@ -279,7 +339,7 @@ void HairPhys_Init(void *s, const HairPhysConstants *c){
 }
 
 void HairPhys_Update(void *s, const HairPhysConstants *c, Vec3f *lPos, 
-    Vec3s *lRot, float windX, float windZ){
+    Vec3s *lRot, float windX, float windZ, float actorscale){
     if(c->mode >= 3) return;
-    updateFuncs[c->mode](s, c, lPos, lRot, windX, windZ);
+    updateFuncs[c->mode](s, c, lPos, lRot, windX, windZ, actorscale);
 }

@@ -108,7 +108,7 @@ static inline void Quat2Euler(const Quaternion *q, Vec3s *r){
     r->z = 0;
 }
 
-static u8 useSlerp = 0;
+static u8 useSlerp = 1;
 void Patched_MorphUseSlerp(u8 enabled){
     useSlerp = enabled;
 }
