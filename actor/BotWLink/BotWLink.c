@@ -55,19 +55,19 @@ static const HairPhysLimits bangsLimits      = {{-16.0f, -16.0f, -16.0f}, { 16.0
 static const HairPhysLimits ponytailLimits   = {{-64.0f, -64.0f, -64.0f}, { 64.0f,  64.0f,  64.0f}};
 static const HairPhysLimits tasselLLimits    = {{-3.0f, 0.05f, -1.0f}, {0.0f, 0.0f, 0.0f}};
 static const HairPhysLimits tasselRLimits    = {{ 3.0f, 0.05f, -1.0f}, {0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicFLLimits    = {{-3.0f, 0.02f, -2.0f}, {0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicFCLimits    = {{ 0.0f, 0.02f, -1.0f}, {0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicFRLimits    = {{ 3.0f, 0.02f, -2.0f}, {0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicBLLimits    = {{-3.0f, 0.02f,  2.0f}, {0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicBCLimits    = {{ 0.0f, 0.02f,  2.0f}, {0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicBRLimits    = {{ 3.0f, 0.02f,  2.0f}, {0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicFLLimits    = {{-1.0f,  0.1f, -4.0f}, {0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicFCLimits    = {{ 0.0f,  0.1f, -4.0f}, {0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicFRLimits    = {{ 1.0f,  0.1f, -4.0f}, {0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicBLLimits    = {{-1.0f,  0.1f,  4.0f}, {0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicBCLimits    = {{ 0.0f,  0.1f,  4.0f}, {0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicBRLimits    = {{ 1.0f,  0.1f,  4.0f}, {0.0f, 0.0f, 0.0f}};
 static const HairPhysBasic  bangsBasic    =  {0.004f,250.0f,  3.0f,  1.2f, 1.00f, 0.70f, 1.500f};
 static const HairPhysBasic  ponytailBasic =  {0.002f,500.0f,  2.0f,  1.0f, 1.00f, 0.85f, 3.000f};
-static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f, 70.0f, 0.04f, 0.97f, 0.007f};
-static const HairPhysDouble tasselsLDouble= {{0.001f,999.9f,  2.0f, 70.0f, 0.12f, 0.97f, 0.015f}, &tasselLLimits};
-static const HairPhysDouble tasselsRDouble= {{0.001f,999.9f,  2.0f, 70.0f, 0.12f, 0.97f, 0.015f}, &tasselRLimits};
-static const HairPhysBasic  tunicBasic    =  {0.004f,250.0f,  5.0f, 70.0f, 0.50f, 0.92f, 0.015f};
-static const HairPhysTunic  tunicTunic    =  {4.0f, 0.03f};
+static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f, 80.0f, 0.02f, 0.97f, 0.010f};
+static const HairPhysDouble tasselsLDouble= {{0.001f,999.9f,  2.0f, 80.0f, 0.07f, 0.97f, 0.015f}, &tasselLLimits};
+static const HairPhysDouble tasselsRDouble= {{0.001f,999.9f,  2.0f, 80.0f, 0.07f, 0.97f, 0.015f}, &tasselRLimits};
+static const HairPhysBasic  tunicBasic    =  {0.002f,500.0f,  5.0f,100.0f, 0.10f, 0.92f, 0.015f};
+static const HairPhysTunic  tunicTunic    =  {4.0f, 0.05f};
 static const HairPhysConstants physc[NUM_PHYS] = {
 	/*ponytail*/{0, &ponytailBasic, &ponytailLimits, NULL, NULL},
 	/*bangs1*/  {0, &bangsBasic, &bangsLimits, NULL, NULL},
@@ -95,12 +95,14 @@ typedef struct {
 	float windX, windZ;
 	u32 flags;
 	u8 timer;
+	u8 debug;
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
 	//General setup
 	Rupees_ChangeBy(4);
 	en->flags = 0;
+	en->debug = 0;
 	Actor_SetScale(&en->actor, ACTOR_SCALE);
 	//Components setup
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f); //TODO not working?
@@ -150,6 +152,7 @@ static void BotWLink_SetAnim(Entity *en, AnimationHeader *anim, u8 mode, f32 mor
 }
 
 static void update(Entity *en, GlobalContext *globalCtx) {
+	//Debugger_Printf("        %04X", (u16)en->actor.shape.rot.y);
 	if(!(CTRLR_RAW & (BTN_R | BTN_L))){
 		if((CTRLR_PRESS & BTN_DLEFT)){
 			en->timer = 1;
@@ -161,17 +164,21 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			//BotWLink_VO(en, VO_LINK_DAIJINA);
 			BotWLink_SetAnim(en, &BotWLinkMeshHeadmoveAnim, ANIMMODE_LOOP, -8.0f);
 		}else if((CTRLR_RAW & BTN_CLEFT)){
-			en->actor.shape.rot.y += 0x200;
-		}else if((CTRLR_RAW & BTN_CRIGHT)){
 			en->actor.shape.rot.y -= 0x200;
+		}else if((CTRLR_RAW & BTN_CRIGHT)){
+			en->actor.shape.rot.y += 0x200;
 		}
-	}/*else if((CTRLR_RAW & BTN_R)){
+	}else if((CTRLR_RAW & BTN_R)){
 		if((CTRLR_PRESS & BTN_CUP)){
-		
+			++en->debug;
+			HairPhys_SetDebug(en->debug);
+			Debugger_Printf("%02X", en->debug);
 		}else if((CTRLR_PRESS & BTN_CDOWN)){
-		
+			--en->debug;
+			HairPhys_SetDebug(en->debug);
+			Debugger_Printf("%02X", en->debug);
 		}
-	}*/
+	}
 	
 	if(en->timer > 0){
 		if(en->timer == 5){
@@ -206,18 +213,15 @@ s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
 		if(p >= 0) HairPhys_UpdateCulled(en->physStates[p], &physc[p]);
 		return false;
 	}
-	//if(limbIndex == BOTWLINKMESH_LOTNCFL_LIMB 
-	//	|| limbIndex == BOTWLINKMESH_LTASSELS_LIMB) HairPhys_SetDebug(1);
 	if(p >= 0) HairPhys_Update(en->physStates[p], &physc[p], pos, rot,
 		en->windX, en->windZ, ACTOR_SCALE);
-	//HairPhys_SetDebug(0);
 	if(limbIndex == BOTWLINKMESH_LTHIGH_LIMB || limbIndex == BOTWLINKMESH_RTHIGH_LIMB){
 		bool isl = (limbIndex == BOTWLINKMESH_LTHIGH_LIMB);
 		s16 r = rot->y;
 		const float convert = 4.0f / 0x2000;
 		float d = (float)r * convert;
-		(isl ? &tunicFLLimits : &tunicFRLimits)->neg.y = 0.02f + d;
-		(isl ? &tunicBLLimits : &tunicBRLimits)->neg.y = 0.02f - d;
+		(isl ? &tunicFLLimits : &tunicFRLimits)->neg.y = 0.2f + d;
+		(isl ? &tunicBLLimits : &tunicBRLimits)->neg.y = 0.1f - d;
 		tunicFCLimits.neg.y = 0.5f * (tunicFLLimits.neg.y + tunicFRLimits.neg.y);
 		tunicBCLimits.neg.y = 0.5f * (tunicBLLimits.neg.y + tunicBRLimits.neg.y);
 	}

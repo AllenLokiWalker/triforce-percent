@@ -285,7 +285,7 @@ static void ApplyLimbPosRot(Vec3f *pos1, Vec3f *pos2, float len, float actorscal
     Matrix_Scale(actorscale, actorscale, actorscale, MTXMODE_APPLY);
     Vec3f dp;
     dp.x = pos2->x - pos1->x;
-    dp.y = pos2->y - pos1->z;
+    dp.y = pos2->y - pos1->y;
     dp.z = pos2->z - pos1->z;
     //Convert relative position to rotation
     float k = len * len - dp.x * dp.x;
@@ -294,16 +294,12 @@ static void ApplyLimbPosRot(Vec3f *pos1, Vec3f *pos2, float len, float actorscal
     }else{
         k = sqrtf(k);
     }
-    Matrix_RotateRPY(
-        Math_Atan2S(-dp.y, -dp.z), //not sure about signs
-        0,
-        Math_Atan2S(-k, -dp.x), //not sure about signs
-        MTXMODE_APPLY);
+    Matrix_RotateRPY(Math_Atan2S(dp.y, dp.z), 0, Math_Atan2S(k, dp.x), MTXMODE_APPLY);
     lPos->x = 0.0f;
     lPos->y = 0.0f;
     lPos->z = 0.0f;
     lRot->x = 0;
-    lRot->y = twist;
+    lRot->y = -twist;
     lRot->z = 0;
 }
 
@@ -329,7 +325,6 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
         PhysSegment(&s->s2, &dbl->b, dbl->lim, &s->s1.pos, &s->s1.fnext, 
             costwist, sintwist, windX, windZ);
     }
-    twist = 0x8000 - twist;
     ApplyLimbPosRot(&s->s1.pos, &s->s2.pos, dbl->b.len, actorscale,
         lPos, lRot, twist);
 }
@@ -366,7 +361,6 @@ void HairPhys_UpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c,
         TunicPullOther(s, c, s->conn1);
         TunicPullOther(s, c, s->conn2);
     }
-    twist = 0x8000 - twist;
     ApplyLimbPosRot(&fulcrum, &s->s.pos, c->b->len, actorscale, lPos, lRot, twist);
 }
 
