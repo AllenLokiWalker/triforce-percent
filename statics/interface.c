@@ -210,6 +210,79 @@ extern GetItemEntry linkGetItemTable[];
 
 extern Gfx gGiSagesCharmDL[];
 
+extern void func_8007E610(/*gfxCtx*/);
+extern void MagicBarDrawReturn();
+
+void Patched_MagicBarY1(){
+    asm(".set noat\n .set noreorder\n"
+	//Starting at 800730EC + 0x34
+    "lui     $t2, 0x8012\n"
+    "addiu   $t2, $t2, 0xBA00\n"
+    "lw      $t9, 0x0000($t2)\n"
+    "bne     $at, $zero, lbl_magicbar1\n"
+    "lh      $t3, 0x0AF4($t9)\n"
+    "lh      $t3, 0x0AF8($t9)\n"
+    "lbl_magicbar1:\n"
+    "sw      $t0, 0x00E4($sp)\n"
+    "jal     func_8007E610\n"
+    "sh      $t3, 0x00EA($sp)\n"
+    "j       Patched_MagicBarSetup\n"
+    "nop\n"
+    "nop\n"
+    "nop\n"
+    "nop\n"
+    ".set at\n .set reorder");
+}
+
+s32 HasSagesCharm(){
+    return (SAGES_CHARM_VAR & SAGES_CHARM_BIT);
+}
+
+void Patched_MagicBarSetup(){
+    asm(".set noat\n .set noreorder\n"
+    "jal HasSagesCharm\n"
+    "nop\n"
+    "lui   $a0, 0x8012\n"
+    "addiu $a0, $a0, 0xA5D0\n"
+    "lb    $t0, 0x0033($a0)\n" //magic
+    "lh    $t1, 0x13F4($a0)\n"
+    "beq   $v0, $zero, lbl_magicbarsetup\n"
+    "lh    $t2, 0x13F8($a0)\n"
+    "sll   $t0, $t0, 1\n"
+    "sll   $t1, $t1, 1\n"
+    "sll   $t2, $t2, 1\n"
+    "lh    $t3, 0x00EA($sp)\n"
+    "addiu $t3, $t3, 0x0003\n"
+    "sh    $t3, 0x00EA($sp)\n"
+    "lbl_magicbarsetup:\n"
+    "sw    $t0, 0x0040($sp)\n" //magic -> 0x40
+    "sw    $t1, 0x0044($sp)\n" //0x13F4 -> 0x44
+    "j MagicBarDrawReturn\n" //80073154
+    "sw    $t2, 0x0048($sp)\n" //0x13F8 -> 0x48
+    ".set at\n .set reorder");
+}
+
+void Patched_MagicBarLoads(){
+    asm(".set noat\n .set noreorder\n" //              line 28 = 80073148
+    "lw    $t7, 0x0044($sp)\n" //lh      t7, 0x13F4($ra) line 97
+    "lw    $t6, 0x0044($sp)\n" //lh      t6, 0x13F4($ra) line 176
+    "lw    $t7, 0x0044($sp)\n" //lh      t7, 0x13F4($ra) line 190
+    "lw    $t7, 0x0048($sp)\n" //lh      t7, 0x13F8($ra) line 372
+    "lw    $t7, 0x0040($sp)\n" //lb      t7, 0x0033($ra) line 305
+    "lw    $t6, 0x0040($sp)\n" //lb      t6, 0x0033($ra) line 477 but one label
+    ".set at\n .set reorder");
+}
+
+#define MB_BASE 0x80073148
+static const s32 Patched_MagicBarLoadAddrs[6] = {
+    MB_BASE + 0x114,
+    MB_BASE + 0x250,
+    MB_BASE + 0x288,
+    MB_BASE + 0x560,
+    MB_BASE + 0x454,
+    MB_BASE + 0x700
+};
+
 void Statics_InterfaceCodePatches(){
     //
     *( (u32*)Interface_LoadItemIcon1   ) = JUMPINSTR(Patched_LoadItemIcon1);
@@ -231,6 +304,12 @@ void Statics_InterfaceCodePatches(){
     //
     //Get item draw patch
     gDrawItemTable[GID_SAGES_CHARM].dlists[0] = (u32)gGiSagesCharmDL;
+    //
+    //Magic bar patches
+    bcopy(&Patched_MagicBarY1, (void*)(0x800730EC + 0x34), 13 * 4);
+    for(s32 i=0; i<6; ++i){
+        *((u32*)Patched_MagicBarLoadAddrs[i]) = ((u32*)Patched_MagicBarLoads)[i];
+    }
 }
 
 void Statics_InterfacePlayerUpdate(){
