@@ -6,6 +6,7 @@
 
 #define OPEN_DELAY 60
 #define ANIM_LEN 50
+#define TIMEWARP_SCALE 0.1f
 
 typedef struct {
 	Actor actor;
@@ -17,8 +18,14 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	Actor_SetScale(&en->actor, 1.8f);
 	SkelAnime_Init(globalCtx, &en->skelanime, (SkeletonHeader*)SKEL_TRIFORCECHEST,
 		(AnimationHeader*)ANIM_CHESTOPENING, NULL, NULL, 0);
+	Animation_Change(&en->skelanime, (AnimationHeader*)ANIM_CHESTOPENING,
+		0.0f, 0.0f, 0.0f, ANIMMODE_ONCE, 0.0f);
 	en->state = 0;
 	en->frame = 0;
+	if(en->actor.params){
+		en->state = 1;
+		en->skelanime.curFrame = en->skelanime.endFrame = ANIM_LEN;
+	}
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
@@ -26,21 +33,21 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void update(Entity *en, GlobalContext *globalCtx) {
-    if(en->frame < OPEN_DELAY){
-        Animation_Change(&en->skelanime, (AnimationHeader*)ANIM_CHESTOPENING,
-			1.0f, 0.0f, 0.0f, 0, 0.0f);
-	}else if(en->frame == OPEN_DELAY){
-		en->state = 1;
-	}else if(en->frame == OPEN_DELAY + ANIM_LEN - 1){
-		en->state = 2;
+	Actor *timewarp = Actor_Find(&globalCtx->actorCtx, ACTOR_DEMO_EFFECT, ACTORCAT_BG);
+	if(timewarp != NULL){
+		timewarp->scale.x = TIMEWARP_SCALE;
+		timewarp->scale.z = TIMEWARP_SCALE;
 	}
-	if(en->state < 2) ++en->frame;
+	if(en->state == 0 && en->frame >= OPEN_DELAY){
+		Animation_Change(&en->skelanime, (AnimationHeader*)ANIM_CHESTOPENING,
+			1.0f, 0.0f, ANIM_LEN, ANIMMODE_ONCE, 0.0f);
+		en->state = 1;
+	}
+	++en->frame;
+	SkelAnime_Update(&en->skelanime);
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
-	if(en->state < 2){
-		SkelAnime_Update(&en->skelanime);
-	}
 	SkelAnime_DrawOpa(globalCtx, en->skelanime.skeleton, en->skelanime.jointTable,
 		NULL, NULL, &en->actor);
 }

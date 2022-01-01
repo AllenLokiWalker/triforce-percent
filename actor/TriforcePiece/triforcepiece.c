@@ -4,6 +4,9 @@
 // Actor Information
 #define OBJ_ID 4
 
+#define NPC_ACTION_NUM 40
+#define NPC_ACTION_SLOT 1
+
 #define TRIFORCE_POWER 0
 #define TRIFORCE_WISDOM 1
 #define TRIFORCE_COURAGE 2
@@ -118,6 +121,10 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void update(Entity *en, GlobalContext *globalCtx) {
+	if(CHECK_NPC_ACTION(NPC_ACTION_SLOT, 1)){
+		Actor_Kill(&en->actor);
+		return;
+	}
 	float x, y, z, s, brightness, lastx, lasty, lastz, lasts, lastbrightness;
 	s16 variable = en->actor.params;
 	if(variable >= 3) variable = 0;
@@ -200,6 +207,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
+	if(en->state == STATE_START || en->state == STATE_DISAP) return;
 	Gfx_DrawDListOpa(globalCtx, (Gfx*)DL_TFPIECE);
 }
 
