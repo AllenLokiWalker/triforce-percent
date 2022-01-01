@@ -269,19 +269,30 @@ static void Statics_SetUpRouting(){
     gFakeEntranceTable[0x0475] = gFakeEntranceTable[0x0473];
     //
     //Debugging
+    /*
     //Kokiri Forest to House of the Know-It-All Brothers -> Kokiri Forest to Ending Scene
     static const EntranceTableEntry forest_to_knowitall_entry = {
         .scene = SCENE_ENDING, 
         .spawn = 0, .keepMusic = 0, .titleCard = 0, .transitionIn = 7, .transitionOut = 7
     };
     PatchEntranceTable(0x00C9, 4, &forest_to_knowitall_entry);
-    /*
     static const EntranceCutsceneTableEntry dmc2_entry = {
         .entrance = 0x00C9, .age = 2, .eventChkFlag = ENDING_ENTRANCE_CS_EVENTCHKFLAG, 
         .segAddr = EndingCS
     };
     gEntranceCutsceneTable[32] = dmc2_entry;
     */
+    //Kokiri Forest to House of the Know-It-All Brothers -> Kokiri Forest to Triforce Room
+    static const EntranceTableEntry forest_to_knowitall_entry = {
+        .scene = SCENE_TRIFORCEROOM,
+        .spawn = 0, .keepMusic = 0, .titleCard = 0, .transitionIn = 2, .transitionOut = 1
+    };
+    PatchEntranceTable(0x00C9, 4, &forest_to_knowitall_entry);
+    static const EntranceCutsceneTableEntry dmc2_entry = {
+        .entrance = 0x00C9, .age = 2, .eventChkFlag = TRIFORCE_ROOM_ENTRANCE_CS_EVENTCHKFLAG, 
+        .segAddr = TriforceRoom_scene_header00_cutscene
+    };
+    gEntranceCutsceneTable[32] = dmc2_entry;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

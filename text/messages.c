@@ -641,37 +641,37 @@ DECLARE_MESSAGE(0x0ACE, BOX_BLACK, POS_MIDDLE,
 
 DECLARE_MESSAGE(0x0E00, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(YELLOW) TEXT_SPEED("\x02")
-    SHIFT("\x45") "Link..." FADE("\x46")
+    SHIFT("\x4F") "Link..." FADE("\x18")
 )
 
 DECLARE_MESSAGE(0x0E01, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(YELLOW) TEXT_SPEED("\x01")
-    SHIFT("\x45") "Link." FADE("\x46")
+    SHIFT("\x52") "Link." FADE("\x28")
 )
 
 DECLARE_MESSAGE(0x0E02, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(YELLOW) TEXT_SPEED("\x01")
     "It is we, the Golden Goddesses"  NEWLINE
-    "of the Triforce, Din, Nayru," NEWLINE
-    "and Farore..." FADE("\x46")
+    "of the Triforce:" NEWLINE
+    "Din, Nayru, and Farore..." FADE("\x38")
 )
 
 DECLARE_MESSAGE(0x0E03, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(YELLOW) TEXT_SPEED("\x01")
     "You have done well to arrive" NEWLINE
     "here, and your heart is in" NEWLINE
-    "balance..." FADE("\x46")
+    "balance..." FADE("\x38")
 )
 
 DECLARE_MESSAGE(0x0E04, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(YELLOW) TEXT_SPEED("\x01")
     "You are now the master of the" NEWLINE
-    "complete Triforce..." FADE("\x46")
+    "complete Triforce..." FADE("\x38")
 )
 
 DECLARE_MESSAGE(0x0E05, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(YELLOW) TEXT_SPEED("\x01")
-    "The True Force stirs within you..." FADE("\x46")
+    "The True Force stirs within you..." FADE("\x38")
 )
 
 DECLARE_MESSAGE(0x0E06, BOX_BLACK, POS_MIDDLE,
@@ -684,7 +684,7 @@ DECLARE_MESSAGE(0x0E06, BOX_BLACK, POS_MIDDLE,
 
 DECLARE_MESSAGE(0x0E07, BOX_BLACK, POS_MIDDLE,
     UNSKIPPABLE COLOR(YELLOW) TEXT_SPEED("\x01")
-    SHIFT("\x15") "Your wish has been granted." FADE("\x46")
+    SHIFT("\x13") "Your wish has been granted." FADE("\x46")
 )
 
 DECLARE_MESSAGE(0x0E10, BOX_NONE_BOTTOM, POS_VARIABLE,
@@ -786,7 +786,6 @@ DECLARE_MESSAGE(0x109D, BOX_NONE_BOTTOM, POS_VARIABLE,
     SHIFT("\x08") "and one wish to the Goddesses..." BOX_BREAK_DELAYED("\x28")
     SHIFT("\x02") "would you create something great?" FADE("\x50")
 )
-*/
 
 DECLARE_MESSAGE(0x109D, BOX_CREDITS, POS_VARIABLE,
     QUICKTEXT_ENABLE NEWLINE NEWLINE NEWLINE NEWLINE NEWLINE
@@ -794,19 +793,20 @@ DECLARE_MESSAGE(0x109D, BOX_CREDITS, POS_VARIABLE,
     SHIFT("\x28") "OoT ACE Showcase" 
     QUICKTEXT_DISABLE BOX_BREAK_DELAYED("\x28")
     QUICKTEXT_ENABLE NEWLINE NEWLINE NEWLINE
-    SHIFT("\x18")   "Sauraen"    /*SHIFT("\x36") "Savestate"     NEWLINE
+    SHIFT("\x18")   "Sauraen"    SHIFT("\x36") "Savestate"     NEWLINE
     SHIFT("\x20")    "/zel/"     SHIFT("\x40") "CDi-Fails"     NEWLINE
     SHIFT("\x14")  "rankaisija"  SHIFT("\x3A") "z64me"         NEWLINE
     SHIFT("\x0D") "TerusTheBird" SHIFT("\x25") "Kim-SukLey"    NEWLINE
     SHIFT("\x15")   "MrCheeze"   SHIFT("\x26") "RebeccaETripp" NEWLINE
     SHIFT("\x1E")    "Yukloj"    SHIFT("\x48") "Zero"          NEWLINE
-    SHIFT("\x0B")  "AeroArtwork" SHIFT("\x26") "musket012"*/
+    SHIFT("\x0B")  "AeroArtwork" SHIFT("\x26") "musket012"
     QUICKTEXT_DISABLE BOX_BREAK_DELAYED("\x28")
     QUICKTEXT_ENABLE NEWLINE NEWLINE NEWLINE NEWLINE NEWLINE NEWLINE
     SHIFT("\x3E") "SGDQ 2022"
     QUICKTEXT_DISABLE BOX_BREAK_DELAYED("\x28")
     "dummy"
 )
+*/
 
 //This one needs to come at the end
 DECLARE_MESSAGE(0xFFFF, BOX_BLUE, POS_MIDDLE,
