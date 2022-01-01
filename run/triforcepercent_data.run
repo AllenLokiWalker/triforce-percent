@@ -20,6 +20,21 @@ PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat
 PATCH 0x2103000 ../scene/spot07_scene/zoras_room1.pat
 PATCH 0x253C000 ../scene/tokinoma/tokinoma_room_0.pat
 
+//Ending scene
+ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
+//OBJECT 121 ../actor/TestCelShading/zobj.zobj
+//ACTOR 117 ../actor/TestCelShading/TestCelShading.zovl
+ACTOR 118 ../actor/BotWLink/BotWLink.zovl
+OBJECT 122 ../actor/BotWLink/zobj.zobj
+ACTOR 120 ../actor/SilentPrincess/SilentPrincess.zovl
+OBJECT 123 ../actor/SilentPrincess/zobj.zobj
+SCENE 58 ../scene/Ending/Ending_scene.zscene
+//Entrance table 0x800F9C90 entries 0x437-43A
+//WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
+//Entrance cutscene table 0x800EFD04 entry 24. (originally Ganon's Forest Trial)
+//Entrance 0x437, age 0, flag 0, segment offset 0x0200012C (from 0x17 cutscene command in scene)
+//WRITE 8 0x800EFDC4 0x04 0x37 0x00 0x00 0x02 0x00 0x01 0x2C
+
 //Custom Link animations
 STATICDATA ../anim/anim.bin 0 0x0 0x0
 
@@ -105,19 +120,6 @@ ACTOR 31 ../actor/CoSSages/cossages.zovl
 SCENE 68 ../scene/ChamberOfSages/ChamberOfSages_scene.zscene
 //Entrance table 0x800F9C90 entries 0x437-43A
 //WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
-
-//Ending scene
-ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
-//OBJECT 121 ../actor/TestCelShading/zobj.zobj
-//ACTOR 117 ../actor/TestCelShading/TestCelShading.zovl
-ACTOR 118 ../actor/BotWLink/BotWLink.zovl
-OBJECT 122 ../actor/BotWLink/zobj.zobj
-SCENE 58 ../scene/Ending/Ending_scene.zscene
-//Entrance table 0x800F9C90 entries 0x437-43A
-//WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
-//Entrance cutscene table 0x800EFD04 entry 24. (originally Ganon's Forest Trial)
-//Entrance 0x437, age 0, flag 0, segment offset 0x0200012C (from 0x17 cutscene command in scene)
-//WRITE 8 0x800EFDC4 0x04 0x37 0x00 0x00 0x02 0x00 0x01 0x2C
 
 //Voice acting
 STATICDATA ../voice/link_demo_1_32Raw.bin 3 0 0

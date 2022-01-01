@@ -90,6 +90,8 @@ typedef struct {
 #define POLY_XLU_DISP gGlobalContext.state.gfxCtx->polyXlu.p
 #define OVERLAY_DISP gGlobalContext.state.gfxCtx->overlay.p
 
+#define GET_ACTIVE_CAM(globalCtx) ((globalCtx)->cameraPtrs[(globalCtx)->activeCamera])
+
 #define G_CELSHADING 0x00400000
 
 #define CHECK_NPC_ACTION(slot, num) \

@@ -6,6 +6,7 @@ BotWLink/ \
 CoSSages/ \
 CoSStaircases/ \
 Nabooru/ \
+SilentPrincess/ \
 TestCelShading/ \
 TriforcePiece/ \
 TriforceChest/ \
