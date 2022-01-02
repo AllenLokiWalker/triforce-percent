@@ -1,13 +1,12 @@
 #include "ultra64.h"
 #include "z64.h"
 #include "macros.h"
-#include "ChamberOfSages_room_0.h"
+#include "ChamberOfSages_scene.h"
 
 #include "segment_symbols.h"
 #include "command_macros_base.h"
 #include "z64cutscene_commands.h"
 #include "variables.h"
-#include "ChamberOfSages_scene.h"
 
 SCmdBase ChamberOfSages_room_0_header00[] = {
 	SCENE_CMD_ALTERNATE_HEADER_LIST(&ChamberOfSages_room_0_alternateHeaders),
@@ -41,29 +40,23 @@ s16 ChamberOfSages_room_0_header00_objectList[8] = {
 
 ActorEntry ChamberOfSages_room_0_header00_actorList[18] = {
 	{ ACTOR_EN_RIVER_SOUND, -94, 574, -105, 0, 0, 0, 0x0010 },
-	{ 26, 0, 118, 0, 0, 0, 0, 0x0000 },
-	{ 26, 838, 567, 0, 0, 43691, 0, 0x0003 },
-	{ 26, 419, 394, -725, 0, 54613, 0, 0x0002 },
-	{ 31, 465, 753, 806, 0, 38229, 0, 4 },
 	{ 26, 419, 744, 725, 0, 32768, 0, 0x0004 },
 	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0008 },
-	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0009 },
-	{ 31, 926, 579, 0, 0, 49152, 0, 3 },
-	{ 31, -468, 230, -806, 0, 5461, 0, 1 },
-	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0007 },
 	{ 31, -466, 928, 804, 0, 27307, 0, 5 },
-	{ 31, 465, 404, -805, 0, 60075, 0, 2 },
-	{ 26, -419, 215, -725, 0, 0, 0, 0x0001 },
-	{ 26, -840, 1092, 0, 0, 0, 0, 0x0006 },
-	{ 31, -795, 1104, -80, 0, 60075, 0, 6 },
-	{ 26, -419, 918, 725, 0, 21845, 0, 0x0005 },
 	{ 31, -196, 126, 1, 0, 16384, 0, 0 },
-};
-
-MeshHeader0 ChamberOfSages_room_0_meshHeader = { {0}, 1, (u32)&ChamberOfSages_room_0_meshDListEntry, (u32)&(ChamberOfSages_room_0_meshDListEntry) + sizeof(ChamberOfSages_room_0_meshDListEntry) };
-
-MeshEntry0 ChamberOfSages_room_0_meshDListEntry[1] = {
-	{ (u32)ChamberOfSages_room_0_entry_0_opaque, (u32)ChamberOfSages_room_0_entry_0_transparent },
+	{ 26, 0, 118, 0, 0, 0, 0, 0x0000 },
+	{ 26, -419, 916, 725, 0, 21845, 0, 0x0005 },
+	{ 31, 465, 404, -805, 0, 60075, 0, 2 },
+	{ 26, 838, 567, 0, 0, 43691, 0, 0x0003 },
+	{ 26, -840, 1092, 0, 0, 0, 0, 0x0006 },
+	{ 26, 419, 392, -725, 0, 54613, 0, 0x0002 },
+	{ 31, -468, 230, -806, 0, 5461, 0, 1 },
+	{ 26, -419, 215, -725, 0, 0, 0, 0x0001 },
+	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0009 },
+	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0007 },
+	{ 31, -795, 1104, -80, 0, 60075, 0, 6 },
+	{ 31, 926, 579, 0, 0, 49152, 0, 3 },
+	{ 31, 465, 753, 806, 0, 38229, 0, 4 },
 };
 
 SCmdBase ChamberOfSages_room_0_header04[] = {
@@ -90,23 +83,29 @@ s16 ChamberOfSages_room_0_header04_objectList[8] = {
 
 ActorEntry ChamberOfSages_room_0_header04_actorList[18] = {
 	{ ACTOR_EN_RIVER_SOUND, -94, 574, -105, 0, 0, 0, 0x0010 },
-	{ 26, 0, 118, 0, 0, 0, 0, 0x0000 },
-	{ 26, 838, 567, 0, 0, 43691, 0, 0x0003 },
-	{ 26, 419, 394, -725, 0, 54613, 0, 0x0002 },
-	{ 31, 465, 753, 806, 0, 38229, 0, 4 },
 	{ 26, 419, 744, 725, 0, 32768, 0, 0x0004 },
 	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0008 },
-	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0009 },
-	{ 31, 926, 579, 0, 0, 49152, 0, 3 },
-	{ 31, -468, 230, -806, 0, 5461, 0, 1 },
-	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0007 },
 	{ 31, -466, 928, 804, 0, 27307, 0, 5 },
-	{ 31, 465, 404, -805, 0, 60075, 0, 2 },
-	{ 26, -419, 215, -725, 0, 0, 0, 0x0001 },
-	{ 26, -840, 1092, 0, 0, 0, 0, 0x0006 },
-	{ 31, -795, 1104, -80, 0, 60075, 0, 6 },
-	{ 26, -419, 918, 725, 0, 21845, 0, 0x0005 },
 	{ 31, -196, 126, 1, 0, 16384, 0, 0 },
+	{ 26, 0, 118, 0, 0, 0, 0, 0x0000 },
+	{ 26, -419, 916, 725, 0, 21845, 0, 0x0005 },
+	{ 31, 465, 404, -805, 0, 60075, 0, 2 },
+	{ 26, 838, 567, 0, 0, 43691, 0, 0x0003 },
+	{ 26, -840, 1092, 0, 0, 0, 0, 0x0006 },
+	{ 26, 419, 392, -725, 0, 54613, 0, 0x0002 },
+	{ 31, -468, 230, -806, 0, 5461, 0, 1 },
+	{ 26, -419, 215, -725, 0, 0, 0, 0x0001 },
+	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0009 },
+	{ 26, -1773, 1461, 7, 0, 0, 0, 0x0007 },
+	{ 31, -795, 1104, -80, 0, 60075, 0, 6 },
+	{ 31, 926, 579, 0, 0, 49152, 0, 3 },
+	{ 31, 465, 753, 806, 0, 38229, 0, 4 },
+};
+
+MeshHeader0 ChamberOfSages_room_0_meshHeader = { {0}, 1, (u32)&ChamberOfSages_room_0_meshDListEntry, (u32)&(ChamberOfSages_room_0_meshDListEntry) + sizeof(ChamberOfSages_room_0_meshDListEntry) };
+
+MeshEntry0 ChamberOfSages_room_0_meshDListEntry[1] = {
+	{ (u32)ChamberOfSages_room_0_entry_0_opaque, (u32)ChamberOfSages_room_0_entry_0_transparent },
 };
 
 Gfx ChamberOfSages_room_0_entry_0_opaque[] = {
@@ -2674,7 +2673,7 @@ Gfx mat_ChamberOfSages_dl_f3d_material_031_layerTransparent[] = {
 	gsDPSetCombineLERP(TEXEL1, TEXEL0, ENV_ALPHA, TEXEL0, TEXEL1, TEXEL0, ENVIRONMENT, TEXEL0, COMBINED, 0, SHADE, 0, COMBINED, 0, PRIMITIVE, 0),
 	gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_FOG | G_SHADING_SMOOTH),
 	gsSPClearGeometryMode(G_CULL_FRONT | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_NOISE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_2CYCLE | G_PM_NPRIMITIVE),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_2CYCLE | G_PM_NPRIMITIVE),
 	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_ZS_PIXEL | G_RM_FOG_SHADE_A | G_RM_AA_ZB_XLU_SURF2),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_NONE),

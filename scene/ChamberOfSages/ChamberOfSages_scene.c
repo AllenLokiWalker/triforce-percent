@@ -53,12 +53,43 @@ LightSettings ChamberOfSages_scene_header00_lightSettings[1] = {
 	{ 0x51, 0x42, 0x5E, 0xF5, 0x7A, 0x1D, 0xA2, 0x8F, 0xFF, 0x03, 0x08, 0x82, 0xFF, 0xBD, 0xE1, 0x00, 0x00, 0x00, 0xFFE0, 0x3200 },
 };
 
-u32 ChamberOfSages_polygonTypes[] = {
-	 0x00000000, 0x0000000c,
-	 0x00000000, 0x00000002,
-	 0x00000000, 0x00000002,
-	 0x00000100, 0x00000002,
-	 0x30000000, 0x00000000,
+SCmdBase ChamberOfSages_scene_header04[] = {
+	SCENE_CMD_SOUND_SETTINGS(0x04, 0x13, 0x56),
+	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
+	SCENE_CMD_MISC_SETTINGS(0x00, 0x0E),
+	SCENE_CMD_COL_HEADER(&ChamberOfSages_collisionHeader),
+	SCENE_CMD_ENTRANCE_LIST(&ChamberOfSages_scene_header04_entranceList),
+	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
+	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header04_startPositionList),
+	SCENE_CMD_SKYBOX_SETTINGS(0x1D, 0x00, 0x01),
+	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header04_exitList),
+	SCENE_CMD_ENV_LIGHT_SETTINGS(1, &ChamberOfSages_scene_header04_lightSettings),
+	SCENE_CMD_CUTSCENE_DATA(&CS0Rauru),
+	SCENE_CMD_END(),
+};
+
+ActorEntry ChamberOfSages_scene_header04_startPositionList[] = {
+	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
+};
+
+EntranceEntry ChamberOfSages_scene_header04_entranceList[] = {
+	{ 0, 0 },
+};
+
+u16 ChamberOfSages_scene_header04_exitList[1] = {
+	0x034D,
+};
+
+LightSettings ChamberOfSages_scene_header04_lightSettings[1] = {
+	{ 0x51, 0x42, 0x5E, 0xF5, 0x7A, 0x1D, 0xA2, 0x8F, 0xFF, 0x03, 0x08, 0x82, 0xFF, 0xBD, 0xE1, 0x00, 0x00, 0x00, 0xFFE0, 0x3200 },
+};
+
+SurfaceType ChamberOfSages_polygonTypes[] = {
+	{ 0x00000000, 0x0000000c },
+	{ 0x00000000, 0x00000002 },
+	{ 0x00000000, 0x00000002 },
+	{ 0x00000100, 0x00000002 },
+	{ 0x30000000, 0x00000000 },
 };
 
 CollisionPoly ChamberOfSages_polygons[] = {
@@ -640,37 +671,21 @@ Vec3s ChamberOfSages_vertices[261] = {
 	{ -2862, -269, -2893 },
 };
 
-CollisionHeader ChamberOfSages_collisionHeader = { -2862, -269, -2893, 2902, 1673, 2871, 261, ChamberOfSages_vertices, 312, ChamberOfSages_polygons, ChamberOfSages_polygonTypes, 0, 0, 0 };
-
-SCmdBase ChamberOfSages_scene_header04[] = {
-	SCENE_CMD_SOUND_SETTINGS(0x04, 0x13, 0x56),
-	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
-	SCENE_CMD_MISC_SETTINGS(0x00, 0x0E),
-	SCENE_CMD_COL_HEADER(&ChamberOfSages_collisionHeader),
-	SCENE_CMD_ENTRANCE_LIST(&ChamberOfSages_scene_header04_entranceList),
-	SCENE_CMD_SPECIAL_FILES(0x00, 0x0002),
-	SCENE_CMD_SPAWN_LIST(1, &ChamberOfSages_scene_header04_startPositionList),
-	SCENE_CMD_SKYBOX_SETTINGS(0x1D, 0x00, 0x01),
-	SCENE_CMD_EXIT_LIST(&ChamberOfSages_scene_header04_exitList),
-	SCENE_CMD_ENV_LIGHT_SETTINGS(1, &ChamberOfSages_scene_header04_lightSettings),
-	SCENE_CMD_CUTSCENE_DATA(&CS0Rauru),
-	SCENE_CMD_END(),
-};
-
-ActorEntry ChamberOfSages_scene_header04_startPositionList[] = {
-	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
-};
-
-EntranceEntry ChamberOfSages_scene_header04_entranceList[] = {
-	{ 0, 0 },
-};
-
-u16 ChamberOfSages_scene_header04_exitList[1] = {
-	0x034D,
-};
-
-LightSettings ChamberOfSages_scene_header04_lightSettings[1] = {
-	{ 0x51, 0x42, 0x5E, 0xF5, 0x7A, 0x1D, 0xA2, 0x8F, 0xFF, 0x03, 0x08, 0x82, 0xFF, 0xBD, 0xE1, 0x00, 0x00, 0x00, 0xFFE0, 0x3200 },
+CollisionHeader ChamberOfSages_collisionHeader = {
+	-2862,
+	-269,
+	-2893,
+	2902,
+	1673,
+	2871,
+	261,
+	ChamberOfSages_vertices,
+	312,
+	ChamberOfSages_polygons,
+	ChamberOfSages_polygonTypes,
+	0,
+	0,
+	0
 };
 
 s32 CS0Rauru[] = {
@@ -798,7 +813,7 @@ s32 CS1Saria[] = {
 };
 
 s32 CS2Darunia[] = {
-	CS_BEGIN_CUTSCENE(8, 200),
+	CS_BEGIN_CUTSCENE(8, 185),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A30, 64, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 166),
@@ -809,13 +824,13 @@ s32 CS2Darunia[] = {
 		CS_CAM_POS(0, 0, 0, 0x42340000, 415, 460, -767, 0),
 		CS_CAM_POS(0, 0, 0, 0x42340000, 416, 460, -768, 0),
 		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
-	CS_CAM_POS_LIST(90, 291),
+	CS_CAM_POS_LIST(90, 311),
 		CS_CAM_POS(0, 0, 0, 0x423e6666, 397, 459, -757, 0),
 		CS_CAM_POS(0, 0, 0, 0x423e6666, 397, 459, -757, 0),
 		CS_CAM_POS(0, 0, 0, 0x423e6666, 397, 459, -757, 0),
 		CS_CAM_POS(0, 0, 0, 0x425c0000, 362, 458, -820, 0),
 		CS_CAM_POS(0, 0, 0, 0x42700000, 276, 457, -888, 0),
-		CS_CAM_POS(0, 0, 0, 0x42700000, 277, 458, -884, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 283, 456, -886, 0),
 		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
 	CS_CAM_FOCUS_POINT_LIST(0, 185),
 		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 146, 457, -723, 0),
@@ -825,13 +840,13 @@ s32 CS2Darunia[] = {
 		CS_CAM_FOCUS_POINT(0, 0, 50, 0x42340000, 466, 455, -806, 0),
 		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42340000, 467, 455, -806, 0),
 		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
-	CS_CAM_FOCUS_POINT_LIST(90, 310),
+	CS_CAM_FOCUS_POINT_LIST(90, 330),
 		CS_CAM_FOCUS_POINT(0, 0, 20, 0x423e6666, 450, 455, -793, 0),
 		CS_CAM_FOCUS_POINT(0, 0, 70, 0x423e6666, 450, 455, -793, 0),
 		CS_CAM_FOCUS_POINT(0, 0, 20, 0x423e6666, 450, 455, -793, 0),
 		CS_CAM_FOCUS_POINT(0, 0, 20, 0x425c0000, 468, 462, -760, 0),
-		CS_CAM_FOCUS_POINT(0, 0, 50, 0x42700000, 511, 471, -698, 0),
-		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 512, 472, -694, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 70, 0x42700000, 511, 471, -698, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, 518, 470, -696, 0),
 		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
 	CS_PLAYER_ACTION_LIST(2),
 		CS_PLAYER_ACTION(0x0001, 0, 15, 0x0, 0x2abc, 0x0, 311, 395, -787, 393, 395, -682, 0, 0, 0),
@@ -846,7 +861,7 @@ s32 CS2Darunia[] = {
 };
 
 s32 CS3Ruto[] = {
-	CS_BEGIN_CUTSCENE(8, 200),
+	CS_BEGIN_CUTSCENE(8, 195),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A40, 64, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 176),
@@ -894,7 +909,7 @@ s32 CS3Ruto[] = {
 };
 
 s32 CS4Nabooru[] = {
-	CS_BEGIN_CUTSCENE(8, 200),
+	CS_BEGIN_CUTSCENE(8, 180),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A50, 75, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 171),
@@ -942,7 +957,7 @@ s32 CS4Nabooru[] = {
 };
 
 s32 CS5Impa[] = {
-	CS_BEGIN_CUTSCENE(8, 200),
+	CS_BEGIN_CUTSCENE(8, 180),
 	CS_TEXT_LIST(1),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0A60, 64, 89, 0x0000, 0x0000, 0x0000),
 	CS_CAM_POS_LIST(0, 176),
@@ -997,9 +1012,9 @@ s32 CS6Sheik[] = {
 	CS_CAM_POS_LIST(0, 166),
 		CS_CAM_POS(0, 0, 0, 0x42700000, -810, 1169, -25, 0),
 		CS_CAM_POS(0, 0, 0, 0x42700000, -811, 1172, -25, 0),
-		CS_CAM_POS(0, 0, 0, 0x42700000, -837, 1170, 64, 0),
-		CS_CAM_POS(0, 0, 0, 0x42700000, -830, 1121, 134, 0),
-		CS_CAM_POS(0, 0, 0, 0x42700000, -823, 1120, 117, 0),
+		CS_CAM_POS(0, 0, 0, 0x42480000, -846, 1170, 93, 0),
+		CS_CAM_POS(0, 0, 0, 0x42200000, -817, 1115, 192, 0),
+		CS_CAM_POS(0, 0, 0, 0x42200000, -810, 1115, 175, 0),
 		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
 	CS_CAM_POS_LIST(100, 446),
 		CS_CAM_POS(0, 0, 0, 0x42700000, -794, 1105, -23, 0),
@@ -1008,9 +1023,9 @@ s32 CS6Sheik[] = {
 		CS_CAM_POS(0, 0, 0, 0x42700000, -795, 1137, -138, 0),
 		CS_CAM_POS(0, 0, 0, 0x42700000, -737, 1152, -81, 0),
 		CS_CAM_POS(0, 0, 0, 0x42700000, -794, 1157, -23, 0),
-		CS_CAM_POS(0, 0, 0, 0x42700000, -894, 1157, 18, 0),
-		CS_CAM_POS(0, 0, 0, 0x42700000, -940, 1114, 99, 0),
-		CS_CAM_POS(0, 0, 0, 0x42700000, -938, 1115, 94, 0),
+		CS_CAM_POS(0, 0, 0, 0x42480000, -904, 1157, 19, 0),
+		CS_CAM_POS(0, 0, 0, 0x42200000, -957, 1114, 101, 0),
+		CS_CAM_POS(0, 0, 0, 0x42200000, -955, 1115, 97, 0),
 		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
 	CS_CAM_POS_LIST(350, 431),
 		CS_CAM_POS(0, 0, 0, 0x42700000, -730, 1132, 61, 0),
@@ -1041,9 +1056,9 @@ s32 CS6Sheik[] = {
 	CS_CAM_FOCUS_POINT_LIST(0, 185),
 		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -796, 1108, -79, 0),
 		CS_CAM_FOCUS_POINT(0, 0, 30, 0x42700000, -796, 1105, -79, 0),
-		CS_CAM_FOCUS_POINT(0, 0, 30, 0x42700000, -798, 1124, -65, 0),
-		CS_CAM_FOCUS_POINT(0, 0, 65, 0x42700000, -873, 1146, -27, 0),
-		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -866, 1145, -44, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 30, 0x42480000, -798, 1124, -65, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 65, 0x42200000, -860, 1140, 31, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42200000, -853, 1140, 14, 0),
 		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
 	CS_CAM_FOCUS_POINT_LIST(100, 465),
 		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -794, 1105, -79, 0),
@@ -1052,9 +1067,9 @@ s32 CS6Sheik[] = {
 		CS_CAM_FOCUS_POINT(0, 0, 40, 0x42700000, -795, 1137, -82, 0),
 		CS_CAM_FOCUS_POINT(0, 0, 40, 0x42700000, -793, 1152, -81, 0),
 		CS_CAM_FOCUS_POINT(0, 0, 40, 0x42700000, -794, 1152, -79, 0),
-		CS_CAM_FOCUS_POINT(0, 0, 35, 0x42700000, -794, 1152, -79, 0),
-		CS_CAM_FOCUS_POINT(0, 0, 70, 0x42700000, -795, 1152, -78, 0),
-		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -794, 1152, -79, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 35, 0x42480000, -794, 1152, -79, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 70, 0x42200000, -729, 1152, -78, 0),
+		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42200000, -729, 1152, -79, 0),
 		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
 	CS_CAM_FOCUS_POINT_LIST(350, 450),
 		CS_CAM_FOCUS_POINT(0, 0, 20, 0x42700000, -775, 1134, 28, 0),
@@ -1097,3 +1112,4 @@ s32 CS6Sheik[] = {
 		CS_NPC_ACTION(3, 369, 1000, 0x0, 0x0, 0x0, 34, 0, -200, 34, 0, -300, 0, 0, 0),
 	CS_END(),
 };
+

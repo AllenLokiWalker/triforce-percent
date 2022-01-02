@@ -20,25 +20,6 @@ PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat
 PATCH 0x2103000 ../scene/spot07_scene/zoras_room1.pat
 PATCH 0x253C000 ../scene/tokinoma/tokinoma_room_0.pat
 
-OBJECT 5 ../actor/TriforceChest/zobj.zobj
-ACTOR 3 ../actor/TriforceChest/triforcechest.zovl
-
-//Ending scene
-ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
-//OBJECT 121 ../actor/TestCelShading/zobj.zobj
-//ACTOR 117 ../actor/TestCelShading/TestCelShading.zovl
-ACTOR 120 ../actor/SilentPrincess/SilentPrincess.zovl
-OBJECT 123 ../actor/SilentPrincess/zobj.zobj
-SCENE 58 ../scene/Ending/Ending_scene.zscene
-//Entrance table 0x800F9C90 entries 0x437-43A
-//WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
-//Entrance cutscene table 0x800EFD04 entry 24. (originally Ganon's Forest Trial)
-//Entrance 0x437, age 0, flag 0, segment offset 0x0200012C (from 0x17 cutscene command in scene)
-//WRITE 8 0x800EFDC4 0x04 0x37 0x00 0x00 0x02 0x00 0x01 0x2C
-
-//Custom Link animations
-STATICDATA ../anim/anim.bin 0 0x0 0x0
-
 //Object patches
 PATCH 0x18C1000 ../model/object_gi_butterfly/object_gi_butterfly.pat
 OBJECT 120 ../model/SagesCharm/object_gi_sagescharm.bin
@@ -68,24 +49,6 @@ STATICDATA ../textures/item_butterfly.ia4.bin 5 0x1E 0
 STATICDATA ../textures/item_magic_powder.ia4.bin 5 0x31 0
 STATICDATA ../textures/item_sages_charm.ia4.bin 5 0x6F 0
 
-//Custom music
-STATICDATA ../music/OvertureOfSages.aseq 1 0x6E020201 0x09000000
-STATICDATA ../music/OvertureOfSagesWarp.aseq 1 0x33020201 0x09000000
-STATICDATA ../music/triforce.aseq 1 0x71020201 0x03000000
-//STATICDATA ../music/Trailer.aseq 1 0x1F020201 0x03000000
-
-//TriforceRoom scene
-OBJECT 4 ../actor/TriforcePiece/zobj.zobj
-ACTOR 1 ../actor/TriforcePiece/triforcepiece.zovl
-OBJECT 16 ../actor/TriforceLight/zobj.zobj
-ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
-SCENE 46 ../scene/TriforceRoom/TriforceRoom_scene.zscene
-//Entrance table 0x800F9C90 entries 0x9C-9F
-//WRITE 16 0x800F9F00 0x27 0x00 0x02 0x01 0x27 0x00 0x02 0x01 0x27 0x00 0x02 0x01 0x27 0x00 0x02 0x01
-//Entrance cutscene table 0x800EFD04 entry 17 (originally Inside Jabu)
-//Entrance 0x9C, age 2, flag 0, segment offset 0x020002E4 (from 0x17 cutscene command in scene)
-//WRITE 8 0x800EFD8C 0x00 0x9C 0x02 0x00 0x02 0x00 0x02 0xE4
-
 //Misc custom actors
 ACTOR 49 ../actor/BetaKokiri/betakokiri.zovl
 ACTOR 277 ../actor/z_en_skj/z_en_skj.zovl
@@ -105,6 +68,12 @@ ACTOR 115 ../actor/BossRunningMan/BossRunningMan.zovl
 //Entrance table 0x800F9C90 entries 0x437-43A
 //WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
 
+//Custom music
+STATICDATA ../music/OvertureOfSages.aseq 1 0x6E020201 0x09000000
+STATICDATA ../music/OvertureOfSagesWarp.aseq 1 0x33020201 0x09000000
+STATICDATA ../music/triforce.aseq 1 0x71020201 0x03000000
+//STATICDATA ../music/Trailer.aseq 1 0x1F020201 0x03000000
+
 //UnicornFountain scene
 ACTOR 23 ../actor/z_bg_mjin/actor.zovl
 ACTOR 6 ../actor/BetaGreatFairy/betagreatfairy.zovl
@@ -120,11 +89,41 @@ SCENE 68 ../scene/ChamberOfSages/ChamberOfSages_scene.zscene
 //Entrance table 0x800F9C90 entries 0x437-43A
 //WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
 
+//Custom Link animations
+STATICDATA ../anim/anim.bin 0 0x0 0x0
+
+//TriforceRoom scene
+OBJECT 4 ../actor/TriforcePiece/zobj.zobj
+ACTOR 1 ../actor/TriforcePiece/triforcepiece.zovl
+OBJECT 5 ../actor/TriforceChest/zobj.zobj
+ACTOR 3 ../actor/TriforceChest/triforcechest.zovl
+OBJECT 16 ../actor/TriforceLight/zobj.zobj
+ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
+SCENE 46 ../scene/TriforceRoom/TriforceRoom_scene.zscene
+//Entrance table 0x800F9C90 entries 0x9C-9F
+//WRITE 16 0x800F9F00 0x27 0x00 0x02 0x01 0x27 0x00 0x02 0x01 0x27 0x00 0x02 0x01 0x27 0x00 0x02 0x01
+//Entrance cutscene table 0x800EFD04 entry 17 (originally Inside Jabu)
+//Entrance 0x9C, age 2, flag 0, segment offset 0x020002E4 (from 0x17 cutscene command in scene)
+//WRITE 8 0x800EFD8C 0x00 0x9C 0x02 0x00 0x02 0x00 0x02 0xE4
+
+//Ending scene
+//Don't forget TriforceChest if move up
+ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
+//OBJECT 121 ../actor/TestCelShading/zobj.zobj
+//ACTOR 117 ../actor/TestCelShading/TestCelShading.zovl
+ACTOR 120 ../actor/SilentPrincess/SilentPrincess.zovl
+OBJECT 123 ../actor/SilentPrincess/zobj.zobj
+SCENE 58 ../scene/Ending/Ending_scene.zscene
+//Entrance table 0x800F9C90 entries 0x437-43A
+//WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
+//Entrance cutscene table 0x800EFD04 entry 24. (originally Ganon's Forest Trial)
+//Entrance 0x437, age 0, flag 0, segment offset 0x0200012C (from 0x17 cutscene command in scene)
+//WRITE 8 0x800EFDC4 0x04 0x37 0x00 0x00 0x02 0x00 0x01 0x2C
+
+ACTOR 118 ../actor/BotWLink/BotWLink.zovl
+OBJECT 122 ../actor/BotWLink/zobj.zobj
+
 //Voice acting
 STATICDATA ../voice/link_demo_1_32Raw.bin 3 0 0
 //STATICDATA ../voice/link_demo_2_32Raw.bin 3 1 0
 //STATICDATA ../voice/link_demo_3_32Raw.bin 3 2 0
-
-
-ACTOR 118 ../actor/BotWLink/BotWLink.zovl
-OBJECT 122 ../actor/BotWLink/zobj.zobj
