@@ -20,12 +20,13 @@ PATCH 0x20F2000 ../scene/spot07_scene/zoras_scene.pat
 PATCH 0x2103000 ../scene/spot07_scene/zoras_room1.pat
 PATCH 0x253C000 ../scene/tokinoma/tokinoma_room_0.pat
 
+OBJECT 5 ../actor/TriforceChest/zobj.zobj
+ACTOR 3 ../actor/TriforceChest/triforcechest.zovl
+
 //Ending scene
 ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
 //OBJECT 121 ../actor/TestCelShading/zobj.zobj
 //ACTOR 117 ../actor/TestCelShading/TestCelShading.zovl
-ACTOR 118 ../actor/BotWLink/BotWLink.zovl
-OBJECT 122 ../actor/BotWLink/zobj.zobj
 ACTOR 120 ../actor/SilentPrincess/SilentPrincess.zovl
 OBJECT 123 ../actor/SilentPrincess/zobj.zobj
 SCENE 58 ../scene/Ending/Ending_scene.zscene
@@ -76,8 +77,6 @@ STATICDATA ../music/triforce.aseq 1 0x71020201 0x03000000
 //TriforceRoom scene
 OBJECT 4 ../actor/TriforcePiece/zobj.zobj
 ACTOR 1 ../actor/TriforcePiece/triforcepiece.zovl
-OBJECT 5 ../actor/TriforceChest/zobj.zobj
-ACTOR 3 ../actor/TriforceChest/triforcechest.zovl
 OBJECT 16 ../actor/TriforceLight/zobj.zobj
 ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
 SCENE 46 ../scene/TriforceRoom/TriforceRoom_scene.zscene
@@ -125,3 +124,7 @@ SCENE 68 ../scene/ChamberOfSages/ChamberOfSages_scene.zscene
 STATICDATA ../voice/link_demo_1_32Raw.bin 3 0 0
 //STATICDATA ../voice/link_demo_2_32Raw.bin 3 1 0
 //STATICDATA ../voice/link_demo_3_32Raw.bin 3 2 0
+
+
+ACTOR 118 ../actor/BotWLink/BotWLink.zovl
+OBJECT 122 ../actor/BotWLink/zobj.zobj

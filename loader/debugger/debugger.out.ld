@@ -1,4 +1,4 @@
-debugger_START = 0x80401850;
-Debugger_GetNextMessageBuffer = 0x80401a20;
-Debugger_ShowMessage = 0x80401a60;
-debugger_END = 0x80402680;
+debugger_START = 0x80401ed0;
+Debugger_GetNextMessageBuffer = 0x804020a0;
+Debugger_ShowMessage = 0x804020e0;
+debugger_END = 0x80402d00;

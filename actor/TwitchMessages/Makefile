@@ -16,10 +16,10 @@ INCFILES = \
 
 default: copyactor
 
-$(ACTORNAME).o: ../../loader/fast_loader/fast_loader.h $(INCFILES)
+$(ACTORNAME).o: ../../loader/fast_loader/fast_loader.h ../../statics/statics.h $(INCFILES)
 
-$(ACTORNAME).elf: ../../loader/fast_loader/fast_loader.out.ld
+$(ACTORNAME).elf: ../../loader/fast_loader/fast_loader.out.ld ../../statics/statics.out.ld
 
-ACTORLDFLAGS += -T ../../loader/fast_loader/fast_loader.out.ld
+ACTORLDFLAGS += -T ../../loader/fast_loader/fast_loader.out.ld -T ../../statics/statics.out.ld
 
 include ../../toolchain/make/actor.mk

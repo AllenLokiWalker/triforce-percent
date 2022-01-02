@@ -15,6 +15,7 @@ typedef struct {
     u8 culled;
     Color_RGB8 rgb;
     u8 a;
+    Vec3f center;
 } TwitchMessage;
 
 #define MAX_TWITCH_MESSAGES 128

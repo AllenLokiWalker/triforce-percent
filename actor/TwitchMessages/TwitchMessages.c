@@ -1,5 +1,13 @@
 #include "ootmain.h" 
-#include "../../loader/fast_loader/fast_loader.h"
+#include "../loader/fast_loader/fast_loader.h"
+#include "../statics/statics.h"
+
+typedef struct {
+    Actor actor;
+    MtxF modelf;
+    Mtx modelrsp;
+    u16 frames_fade;
+} Entity;
 
 #define NUM_BADGES 34
 #define NUM_PALETTES 4
@@ -11,11 +19,28 @@
 #define UNAME_TEX_COLS 128
 #define ST_SCALE_PWR 7
 
-#define FRAMES_FADE 100
+#define FRAMES_FADE_MAX 100
+#define FRAMES_FADE_MIN 10
+#define MSGS_ON_SCREEN_TARGET 40
 #define MSG_POS_EXTENT_X 1000.0f
 #define MSG_POS_EXTENT_Y 300.0f
 #define MSG_POS_EXTENT_Z 300.0f
 #define MSG_SCALE 2.0f
+
+#define RAM_END 0x80800000
+#define UNAME_TEX_SZ (UNAME_TEX_COLS * sizeof(u64))
+#define UNAME_TEX_BEGIN (RAM_END - MAX_TWITCH_MESSAGES * UNAME_TEX_SZ) //0x20000 / 0x807E0000
+#define VTX_EACH_SZ (4 * sizeof(Vtx))
+#define VTX_PERMSG_SZ (5 * VTX_EACH_SZ)
+#define VTX_BEGIN (UNAME_TEX_BEGIN - MAX_TWITCH_MESSAGES * VTX_PERMSG_SZ) //0xA000 / 0x807D6000
+
+static inline u64 *GetMessageTexture(u16 m) {
+    return (u64*)(UNAME_TEX_BEGIN + m * UNAME_TEX_SZ);
+}
+
+static inline Vtx *GetMessageVerts(u16 m) {
+    return (Vtx*)(VTX_BEGIN + m * VTX_PERMSG_SZ);
+}
 
 __attribute__((aligned(16))) static const u64 username_font[] = {
     #include "../../textures/username_font.i4.inc"
@@ -126,21 +151,6 @@ static const Gfx badge_setup_dl[] = {
     gsSPEndDisplayList(),
 };
 
-#define RAM_END 0x80800000
-#define UNAME_TEX_SZ (UNAME_TEX_COLS * sizeof(u64))
-#define UNAME_TEX_BEGIN (RAM_END - MAX_TWITCH_MESSAGES * UNAME_TEX_SZ)
-#define VTX_EACH_SZ (4 * sizeof(Vtx))
-#define VTX_PERMSG_SZ (5 * VTX_EACH_SZ)
-#define VTX_BEGIN (UNAME_TEX_BEGIN - MAX_TWITCH_MESSAGES * VTX_PERMSG_SZ)
-
-static inline u64 *GetMessageTexture(u16 m) {
-    return (u64*)(UNAME_TEX_BEGIN + m * UNAME_TEX_SZ);
-}
-
-static inline Vtx *GetMessageVerts(u16 m) {
-    return (Vtx*)(VTX_BEGIN + m * VTX_PERMSG_SZ);
-}
-
 static inline void SetupRectangleInternal(Vtx *verts, s16 basex, s16 basey, s16 basez){
     for(s32 i=0; i<4; ++i){
         verts[i].v.ob[0] = basex;
@@ -175,7 +185,7 @@ static inline void SetupRectangleBadges(Vtx *verts, s16 basex, s16 basey, s16 ba
     verts[3].v.tc[1] += BADGE_SIZE * (1 << ST_SCALE_PWR);
 }
 
-static void SetUpMessage(u16 m, TwitchMessage *msg) {
+static void SetUpMessage(Entity *en, u16 m, TwitchMessage *msg) {
     msg->rgb = uname_colors[msg->flags & 0xF];
     msg->a = 0xFF;
     
@@ -217,6 +227,7 @@ static void SetUpMessage(u16 m, TwitchMessage *msg) {
     }
     
     Vtx *verts = GetMessageVerts(m);
+    //Base in lower left corner
     s16 basex = (Rand_ZeroOne() - 0.5f) * MSG_POS_EXTENT_X;
     s16 basey = (Rand_ZeroOne() - 0.5f) * MSG_POS_EXTENT_Y;
     s16 basez = (Rand_ZeroOne() - 0.5f) * MSG_POS_EXTENT_Z;
@@ -237,31 +248,52 @@ static void SetUpMessage(u16 m, TwitchMessage *msg) {
     x += w;
     u8 e = (msg->flags & 0xC0) >> 6;
     if(e){
-        SetupRectangle(verts + 16, basex + x, basey, basez, e * EXCLAM_WIDTH, 16);
+        w = e * EXCLAM_WIDTH;
+        SetupRectangle(verts + 16, basex + x, basey, basez, w, 16);
+        x += w;
     }
+    
+    //Get world coordinates center
+    Vec3f ctrin;
+    ctrin.x = basex + (x >> 1);
+    ctrin.y = basey + 8;
+    ctrin.z = basez;
+    SkinMatrix_Vec3fMtxFMultXYZ(&en->modelf, &ctrin, &msg->center);
 }
 
-typedef struct {
-    Actor actor;
-} Entity;
-
 static void init(Entity *en, GlobalContext *globalCtx) {
+    en->frames_fade = FRAMES_FADE_MAX;
     bzero((void*)VTX_BEGIN, UNAME_TEX_BEGIN - VTX_BEGIN);
+    //Create model matrix
+    Matrix_Translate(en->actor.world.pos.x, en->actor.world.pos.y,
+        en->actor.world.pos.z, MTXMODE_NEW);
+    Matrix_RotateRPY(0, en->actor.shape.rot.y + 0x8000, 0, MTXMODE_APPLY);
+    Matrix_RotateRPY(0, 0, 0x8000, MTXMODE_APPLY);
+    Matrix_Scale(MSG_SCALE, MSG_SCALE, MSG_SCALE, MTXMODE_APPLY);
+    Matrix_Get(&en->modelf);
+    Matrix_ToMtx(&en->modelrsp, "", 0);
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {}
 
 static void update(Entity *en, GlobalContext *globalCtx){
+    s32 numAlive = 0;
     for(s32 m=0; m<MAX_TWITCH_MESSAGES; ++m){
         TwitchMessage *msg = &twitch_msg_buf[m];
         if(msg->timer == 0xFF){
             msg->timer = 1;
-            SetUpMessage(m, msg);
+            SetUpMessage(en, m, msg);
         }else if(msg->timer != 0){
             ++msg->timer;
-            if(msg->timer >= FRAMES_FADE) msg->timer = 0;
-            msg->a = ((float)(FRAMES_FADE - msg->timer) / (float)FRAMES_FADE) * 255.0f;
+            if(msg->timer >= en->frames_fade) msg->timer = 0;
+            msg->a = ((float)(en->frames_fade - msg->timer) / (float)en->frames_fade) * 255.0f;
         }
+        if(msg->timer != 0) ++numAlive;
+    }
+    if(numAlive > MSGS_ON_SCREEN_TARGET && en->frames_fade > FRAMES_FADE_MIN){
+        en->frames_fade -= 3;
+    }else if(numAlive < MSGS_ON_SCREEN_TARGET && en->frames_fade < FRAMES_FADE_MAX){
+        en->frames_fade += 2;
     }
 }
 
@@ -296,13 +328,7 @@ static inline void DrawTileNoRedundant(s32 m, u32 voffset, u8 *last_tile, u8 til
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
-    Matrix_Translate(en->actor.world.pos.x, en->actor.world.pos.y,
-        en->actor.world.pos.z, MTXMODE_NEW);
-    Matrix_RotateRPY(0, en->actor.shape.rot.y + 0x8000, 0, MTXMODE_APPLY);
-    Matrix_RotateRPY(0, 0, 0x8000, MTXMODE_APPLY);
-    Matrix_Scale(MSG_SCALE, MSG_SCALE, MSG_SCALE, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "", 0),
-        G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, &en->modelrsp, G_MTX_MODELVIEW | G_MTX_LOAD);
     //Cull messages not on screen
     for(s32 m=0; m<MAX_TWITCH_MESSAGES; ++m){
         TwitchMessage *msg = &twitch_msg_buf[m];
@@ -310,16 +336,8 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
             msg->culled = 1;
             continue;
         }
-        msg->culled = 0;
-        /*
-        Vtx *verts = GetMessageVerts(m);
-        Vec3f pos, screenpos; float screenscale;
-        pos.x = verts[0].v.ob[0]; pos.y = verts[0].v.ob[1]; pos.z = verts[0].v.ob[2];
-        Math_GetProjectionPos(globalCtx, &pos, &screenpos, &screenscale);
-        msg->culled = (screenpos.z <= 0.0f 
-            || fabsf(screenpos.x * screenscale) >= 1.2f
-            || fabsf(screenpos.y * screenscale) >= 1.2f);
-        */
+        msg->culled = !Statics_UncullObject(globalCtx, &msg->center,
+            180.0f * MSG_SCALE, 8.0f * MSG_SCALE, 8.0f * MSG_SCALE, 100.0f, 1500.0f);
     }
     //Usernames
     gSPDisplayList(POLY_OPA_DISP++, uname_setup_dl);
