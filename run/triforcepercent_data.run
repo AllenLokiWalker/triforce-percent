@@ -71,6 +71,8 @@ ACTOR 115 ../actor/BossRunningMan/BossRunningMan.zovl
 //Custom music
 STATICDATA ../music/OvertureOfSages.aseq 1 0x6E020201 0x09000000
 STATICDATA ../music/OvertureOfSagesWarp.aseq 1 0x33020201 0x09000000
+STATICDATA ../music/ChamberOfSages.aseq 1 0x70020201 0x26000000
+STATICDATA ../music/ChamberOfSagesBank.abnk 2 0x26020201 0x0B000000
 STATICDATA ../music/triforce.aseq 1 0x71020201 0x03000000
 //STATICDATA ../music/Trailer.aseq 1 0x1F020201 0x03000000
 

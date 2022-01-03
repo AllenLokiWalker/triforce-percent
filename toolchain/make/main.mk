@@ -43,12 +43,13 @@ OC = $(MIPS64PREFIX)objcopy
 
 # Main flags
 
-CCFLAGS := -mips3 -mabi=32 -mtune=vr4300 -mfix4300 -mno-gpopt -fomit-frame-pointer \
+CCOPTFLAGS := -mips3 -mabi=32 -mtune=vr4300 -mfix4300 -mno-gpopt -fomit-frame-pointer \
 	-mno-check-zero-division -mno-explicit-relocs -mno-memcpy \
 	-fno-toplevel-reorder -fno-reorder-blocks -fno-builtin \
 	--std=gnu99 -Wall -Werror -Wno-main \
 	-Wbuiltin-declaration-mismatch -Wbuiltin-macro-redefined \
-	-G 0 -Os -I $(MAININCLUDEDIR) -I $(Z64HDRMAINDIR) -I $(Z64HDRINCLUDEDIR)
+	-G 0 -Os
+CCFLAGS := $(CCOPTFLAGS) -I $(MAININCLUDEDIR) -I $(Z64HDRMAINDIR) -I $(Z64HDRINCLUDEDIR)
 # loader and statics had -O2 instead of -Os
 
 LDFLAGS := --emit-relocs -L $(MAININCLUDEDIR) -T $(OOTMAINLD)

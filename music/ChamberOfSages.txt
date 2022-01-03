@@ -1,0 +1,8 @@
+2 - Harp (2 splits, normal)
+3 - Glockenspiel (normal)
+4 - Soprano (00b Choir Pad Mid through Ab4, 00a Choir Pad High after, from 13 - Legend of Hyrule)
+5 - Sop 2 (same as Soprano)
+6 - Alto (05b Choir Mid through E4, 00b Choir Pad Mid after)
+7 - Tenor (05b Choir Low through F#3, 05b Choir Mid after, from 09 - Harp, Strings)
+8 - Bass (same as Tenor)
+A - Pad (NA_BGM_SOUL_DUNGEON 0x10 prog 0, synth strings; actually think this is prog 1)

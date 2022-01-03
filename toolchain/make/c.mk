@@ -12,6 +12,9 @@
 
 %.zscene: %.elf
 	$(OC) $(OCFLAGS) $< $@
+	
+%.abnk: %.elf
+	$(OC) $(OCFLAGS) $< $@
 
 .PHONY: cleandir cleansubdirs
 

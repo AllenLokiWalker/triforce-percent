@@ -36,11 +36,17 @@ rom-setup/: statics/ $(CONTENTS)
 	rm $*scene/51/title.png
 	rm $*scene/54/title.png
 	rm $*scene/58/title.png
+	rm $*scene/65/title.png
+	rm $*scene/66/title.png
+	rm $*scene/68/title.png
 	rm $*scene/69/title.png
 	rm $*scene/70/title.png
 	rm $*scene/72/title.png
+	rm $*scene/73/title.png
+	rm $*scene/74/title.png
 	rm $*scene/75/title.png
 	rm $*scene/78/title.png
+	rm $*scene/80/title.png
 
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)

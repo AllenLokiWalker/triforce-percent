@@ -66,10 +66,12 @@ s32 bank_ram_addr[2] = {
 #define NUM_ORIG_BANKS 0x26
 
 #define SEQ_OVERTUREOFSAGES_LEARN (NUM_ORIG_SEQS+0)
-#define SEQ_OVERTUREOFSAGES_WARP  (NUM_ORIG_SEQS+1)
-#define SEQ_AWAKENINGTHESAGES     (NUM_ORIG_SEQS+2)
+#define SEQ_OVERTUREOFSAGES_WARP  0x33
+#define SEQ_CHAMBEROFSAGES        (NUM_ORIG_SEQS+2)
 #define SEQ_OBTAINTHETRIFORCE     (NUM_ORIG_SEQS+3)
 #define SEQ_POWEROFTHEGODS        (NUM_ORIG_SEQS+4)
+
+#define BANK_CHAMBEROFSAGES       (NUM_ORIG_BANKS+0)
 
 // For normal seqs: 2 bytes for u16 offset, 1 byte for length (1), 1 byte for bank
 // Some seqs have 2 banks, so add a bit after that
