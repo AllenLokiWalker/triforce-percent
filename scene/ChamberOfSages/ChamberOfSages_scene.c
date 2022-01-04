@@ -10,7 +10,7 @@
 
 SCmdBase ChamberOfSages_scene_header00[] = {
 	SCENE_CMD_ALTERNATE_HEADER_LIST(&ChamberOfSages_scene_alternateHeaders),
-	SCENE_CMD_SOUND_SETTINGS(0x04, 0x13, 0x56),
+	SCENE_CMD_SOUND_SETTINGS(0x04, 0x13, 0x70),
 	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
 	SCENE_CMD_MISC_SETTINGS(0x00, 0x0E),
 	SCENE_CMD_COL_HEADER(&ChamberOfSages_collisionHeader),
@@ -54,7 +54,7 @@ LightSettings ChamberOfSages_scene_header00_lightSettings[1] = {
 };
 
 SCmdBase ChamberOfSages_scene_header04[] = {
-	SCENE_CMD_SOUND_SETTINGS(0x04, 0x13, 0x56),
+	SCENE_CMD_SOUND_SETTINGS(0x04, 0x13, 0x70),
 	SCENE_CMD_ROOM_LIST(1, &ChamberOfSages_scene_roomList),
 	SCENE_CMD_MISC_SETTINGS(0x00, 0x0E),
 	SCENE_CMD_COL_HEADER(&ChamberOfSages_collisionHeader),
