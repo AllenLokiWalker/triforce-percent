@@ -264,6 +264,7 @@ static void RunningMan_ChangeToNPC(BossRunningMan* this, GlobalContext* globalCt
 	this->actor.textId = 0x0C30;
 	this->actor.flags |= 0x10000; //auto talk
 	this->npc.getItemId = -1;
+	this->npc.timer = 0;
 	Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &this->actor, ACTORCAT_NPC);
 	Vec3f pos = this->actor.world.pos;
 	pos.y += 50.0f;
@@ -350,7 +351,6 @@ void RunningMan_UpdateDialogue(BossRunningMan* en, GlobalContext* globalCtx) {
 			MESSAGE_CONTINUE;
 		}
 	}else if(en->actor.textId == 0x0C34 && MESSAGE_ADVANCE_END){
-		SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
 		en->npc.getItemId = GI_SAGES_CHARM;
 		en->actor.textId = 0;
 	}
@@ -358,14 +358,26 @@ void RunningMan_UpdateDialogue(BossRunningMan* en, GlobalContext* globalCtx) {
 		if(en->actor.parent != NULL){
 			en->actor.parent = NULL;
 			en->npc.getItemId = -1;
-			en->npc.timer = 0;
+			en->npc.timer = 1;
 		}else{
 			Actor_PickUp(&en->actor, globalCtx, en->npc.getItemId, 2000.0f, 2000.0f);
 		}
 	}
-	++en->npc.timer;
+	if(en->npc.timer >= 1 && en->npc.timer < 100){
+		++en->npc.timer;
+		if(en->npc.timer == 25){
+			SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
+			gSaveContext.magic >>= 1; //half magic because we're scaling up the bar 2x
+			gSaveContext.unk_13F6 = 0x60; //max magic
+			gSaveContext.unk_13F2 = gSaveContext.unk_13F0; //magic mode to return to
+			gSaveContext.unk_13F0 = 9; //magic mode = filling
+		}
+	}
 	if(en->actor.textId == 0 && en->npc.getItemId < 0 && en->npc.timer > 40 
 			&& func_8010BDBC(&globalCtx->msgCtx) == 0){
+		//The timer is because when Link gets the item, while he's in the
+		//animation of moving it up to above his head, dialogue is not active
+		//and the Running Man would just run away at that time.
 		Animation_Change(&en->skelAnime, (void*)ANIM_RUNFAST, 1.0f, 0.0f,
 			Animation_GetLastFrame((void*)ANIM_RUNFAST), ANIMMODE_LOOP_INTERP, 8);
 		en->actor.world.rot.y = 0xC000;

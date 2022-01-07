@@ -202,10 +202,19 @@ void Statics_TestShortcuts(){
             //animation test
             //Statics_AnimeTest(0);
             //race test
-            gSaveContext.eventInf[1] |= 1;
-            gSaveContext.timer2State = -30;
+            // gSaveContext.eventInf[1] |= 1;
+            // gSaveContext.timer2State = -30;
+            //Warp to the Running Man
+            RUNNINGMAN_WANTS_TO_BATTLE_VAR |= RUNNINGMAN_WANTS_TO_BATTLE_BIT;
+            SAGES_CHARM_VAR &= ~SAGES_CHARM_BIT;
+            globalCtx->linkAgeOnLoad = 0;
+            gSaveContext.respawnFlag = -2;
+            globalCtx->sceneLoadFlag = 0x14;
+            globalCtx->nextEntranceIndex = 0x01F9;
+            globalCtx->fadeTransition = 0x2C;
+            gSaveContext.nextTransition = 5;
         }else if((CTRLR_PRESS & BTN_DUP)){
-            //Kill Link (sorry) and try to exit cutscene
+            //Kill Link (sorry) and try to exit cutscene (this usually does not work)
             gSaveContext.health = 0;
             gGlobalContext.csCtx.state = CS_STATE_IDLE;
         }
