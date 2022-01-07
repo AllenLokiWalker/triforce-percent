@@ -172,11 +172,11 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		if((CTRLR_PRESS & BTN_CUP)){
 			++en->debug;
 			HairPhys_SetDebug(en->debug);
-			Debugger_Printf("%02X", en->debug);
+			//Debugger_Printf("%02X", en->debug);
 		}else if((CTRLR_PRESS & BTN_CDOWN)){
 			--en->debug;
 			HairPhys_SetDebug(en->debug);
-			Debugger_Printf("%02X", en->debug);
+			//Debugger_Printf("%02X", en->debug);
 		}
 	}
 	

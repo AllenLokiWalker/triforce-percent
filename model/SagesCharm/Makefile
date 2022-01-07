@@ -11,7 +11,7 @@ UPDATETXT = $(ZZRTLDIR)/update.txt
 .PHONY: default clean
 
 default: object_gi_sagescharm.bin object_gi_sagescharm.out.ld
-	cp object_gi_sagescharm.bin $(OBJECTDIR)/
+	cp object_gi_sagescharm.bin $(OBJECTDIR)/zobj.zobj
 	touch $(UPDATETXT)
 
 %.elf %.map: %.o

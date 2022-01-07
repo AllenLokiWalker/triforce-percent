@@ -79,16 +79,16 @@ static inline void Euler2Quat(const Vec3s *r, Quaternion *q){
     q->x = sx * cy * cz - cx * sy * sz;
     q->y = cx * sy * cz + sx * cy * sz;
     q->z = cx * cy * sz - sx * sy * cz;
-    float norm = q->w * q->w + q->x * q->x + q->y * q->y + q->z * q->z;
-    if(norm < 0.9f || norm > 1.1f){
-        Debugger_Printf("in norm is %f", norm);
-    }
+    // float norm = q->w * q->w + q->x * q->x + q->y * q->y + q->z * q->z;
+    // if(norm < 0.9f || norm > 1.1f){
+    //     Debugger_Printf("in norm is %f", norm);
+    // }
 }
 
 static inline void Quat2Euler(const Quaternion *q, Vec3s *r){
     float mult = q->w * q->w + q->x * q->x + q->y * q->y + q->z * q->z;
     if(mult < 0.001f){
-        Debugger_Printf("out is 0");
+        //Debugger_Printf("out is 0");
         mult = 0.001f;
     }
     mult = 2.0f / mult;
