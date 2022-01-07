@@ -10,7 +10,19 @@ ifeq ("$(and $(wildcard $(PROJECT_DIR)/build-shortcut/oot_1.0U_comp.z64), $(wild
 endif
 
 ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/ZAP2/Makefile)","")
-    $(error You did not properly set up the Git submodules (ZAP2 makefile not found))
+    $(error ZAP2 not found; try git submodule update --init --recursive)
+endif
+ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/novl/src/main.c)","")
+    $(error novl not found; try git submodule update --init --recursive)
+endif
+ifeq ("$(wildcard $(PROJECT_DIR)/include/z64hdr/z64hdr.h)","")
+    $(error z64hdr not found; try git submodule update --init --recursive)
+endif
+ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/AudiobankToC/audiobank.ld)","")
+    $(error AudiobankToC not found; try git submodule update --init --recursive)
+endif
+ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/z64audio/Makefile)","")
+    $(error z64audio not found; try git submodule update --init --recursive)
 endif
 
 include $(PROJECT_DIR)/local.mk

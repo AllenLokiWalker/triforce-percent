@@ -11,7 +11,7 @@
 #include "scene.h"
 #include "ossan_related.h"
 
-static u8 sIsLiveRun = 0;
+u8 sIsLiveRun = 0;
 
 void Statics_SetGameState(){
     //Set some event flags
@@ -37,9 +37,9 @@ void Statics_SetGameState(){
     //TODO
     WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
     WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
-    Statics_GiveLongOfTime();
-    SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
-    Statics_GiveOvertureOfSages();
+    //Statics_GiveLongOfTime();
+    //SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
+    //Statics_GiveOvertureOfSages();
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
@@ -302,6 +302,16 @@ void Statics_Player_Update(){
     Statics_KeepTimerNegative();
     Statics_AnimePlayerUpdate();
     Statics_InterfacePlayerUpdate();
+    
+    static u8 oldMsgMode = 0;
+    static u16 oldOcarinaAction = 0;
+    if(sIsLiveRun && (gGlobalContext.msgCtx.msgMode != oldMsgMode 
+            || gGlobalContext.msgCtx.unk_E3F0 != oldOcarinaAction)){
+        Debugger_Printf("msgMode %X oc %04X", 
+            gGlobalContext.msgCtx.msgMode, gGlobalContext.msgCtx.unk_E3F0);
+        oldMsgMode = gGlobalContext.msgCtx.msgMode;
+        oldOcarinaAction = gGlobalContext.msgCtx.unk_E3F0;
+    }
 }
 
 static u8 sOneTime = 0;
@@ -421,6 +431,7 @@ void Statics_GiveOvertureOfSages(){
 
 s32 Statics_ShouldAbortWarp(){
     GlobalContext *globalCtx = &gGlobalContext;
+    if(sIsLiveRun) Debugger_Printf("Statics_ShouldAbortWarp");
     Player *player = PLAYER;
     player->csMode = 0;
     player->stateFlags1 &= ~0x20000000;

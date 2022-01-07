@@ -326,6 +326,15 @@ static void BgSpot07Taki_Update(Actor* thisx, GlobalContext* globalCtx) {
 		}
 		++ok;
 	}
+	
+	//fade out snow
+	if(g.thawingState >= THAWING_STATE_THAWING){
+		globalCtx->envCtx.unk_EE[3] = 0; //target number of snowflakes
+		//current number of snowflakes
+		if(globalCtx->envCtx.unk_EE[2] > 0 && (globalCtx->state.frames % 2) == 0){
+			--globalCtx->envCtx.unk_EE[2];
+		}
+	}
 }
 
 static void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {

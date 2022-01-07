@@ -1,32 +1,42 @@
 OPAT(func_800ECB7C, 0x800C2104, 1,
+    //Removing sNoteValueIndexMap
     "sb $a0, 0x006D($t3)\n"
 )
 
 OPAT(func_800ED200, 0x800C28E4, 1,
+    //Removing sOcarinaNoteValues
     "or $t6, $t8, $zero\n"
 )
 
 OPAT(func_800EDD68, 0x800C3284, 1,
+    //Removing set semitone to 0xC0 of note flags
     "or $t8, $zero, $zero\n"
 )
 
+//func_800EE318 = Audio_OcaUpdateDisplayedStaff
 OPAT(func_800EE318_1, 0x800C3770, 1,
+    //Removing Audio_OcaMapNoteValue
     "or $v0, $a0, $zero\n"
 )
 
 OPAT(func_800EE318_2, 0x800C37A4, 1,
+    //Make condition checking for not Pierre's song never happen, so that playback
+    //always happens like Pierre's song (multi-screen)
     "or $t9, $t8, $zero\n"
 )
 
 OPAT(func_800EE5EC_1, 0x800C3A58, 1,
+    //Change range of note generation from 5 to 0x12 (memory game now MUCH harder)
     "addiu $t0, $zero, 0x0012\n"
 )
 
 OPAT(func_800EE5EC_2, 0x800C3A8C, 1,
+    //Removing sOcarinaNoteValues
     "or $a1, $t8, $zero\n"
 )
 
 OPAT(func_800EE5EC_3, 0x800C3ABC, 1,
+    //Removing sOcarinaNoteValues
     "or $a1, $t5, $zero\n"
 )
 

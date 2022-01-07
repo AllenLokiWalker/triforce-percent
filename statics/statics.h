@@ -1,3 +1,5 @@
+extern u8 sIsLiveRun;
+
 void Statics_Player_Init();
 void Statics_Update();
 void Statics_TimeTravel();

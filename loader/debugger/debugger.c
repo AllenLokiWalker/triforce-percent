@@ -328,6 +328,8 @@ static void Debugger_Draw()
 	_printf(8, 8, "%d msgs", tcount);
 	*/
 	
+	_printf(8, 8, "pos %04X len %04X", *(u16*)0x8010A928, *(u16*)0x8010A92C);
+	
 	u8 msg;
 	for(msg=0; msg<N_DBG_MSGS; ++msg){
 		if(debugger.messages[msg].timeout){

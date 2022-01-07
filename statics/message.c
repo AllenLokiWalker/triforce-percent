@@ -1,5 +1,7 @@
 #include "ootmain.h"
 #include "message.h"
+#include "statics.h"
+#include "../loader/debugger/debugger.h"
 
 extern void Message_LoadJpnMsgInfo();
 extern void Message_LoadEngMsgInfo();
@@ -39,6 +41,7 @@ void Statics_LoadMsgInfoPatched(GlobalContext *globalCtx, u16 textId, s32 type){
     MessageTableEntry *tbl;
     const char *baseSeg, *thisSeg, *nextSeg;
     u8 found = 0;
+    if(sIsLiveRun) Debugger_Printf("text %04X", textId);
     
     //Try hack table first, for new messages or overrides of existing ones
     tbl = hackMessageTable;
@@ -73,9 +76,11 @@ void Statics_LoadMsgInfoPatched(GlobalContext *globalCtx, u16 textId, s32 type){
         
         if(!found){
             //Text not found, default to Frog
+            if(sIsLiveRun) Debugger_Printf("No text %04X glbl %04X -> frog", 
+                textId, (u16)globalCtx->msgCtx.unk_E2F8);
             tbl = messageTableAddresses[type];
             baseSeg = tbl->segment;
-            tbl += 0xE;
+            tbl += 0xC;
         }
     }
     
@@ -90,6 +95,8 @@ void Statics_LoadMsgInfoPatched(GlobalContext *globalCtx, u16 textId, s32 type){
 s32 Statics_N64DDTextCallback(Font *message){
     if(!(message->msgOffset & 0x80000000)) return 0; //Actual normal text
     if(message->msgLength > 1000){
+        if(sIsLiveRun) Debugger_Printf("Bad msg %08X %X -> frog",
+            message->msgOffset, message->msgLength);
         //Something went wrong, default to Frog. Hope we're on US.
         message->msgOffset = messageTableAddresses[1][0xC].segment 
                            - messageTableAddresses[1][0x0].segment;

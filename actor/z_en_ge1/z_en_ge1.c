@@ -313,7 +313,7 @@ static void EnGe1_SetNormalText(EnGe1* this, GlobalContext* globalCtx) {
 	 * Gerudo Mask after opening it
 	 */
 	if (!WearingWorkingGerudoMask() && this->fence && TRIFORCE_FENCE_GET)
-		text = 0x6069;
+		text = 0x6069; //"...A kid like you has no business there."
 	EnGe1_SetTalkAction(this, globalCtx, text, 100.0f, EnGe1_ChooseActionFromTextId);
 }
 
@@ -334,7 +334,7 @@ static void EnGe1_GetReaction_ValleyFloor(EnGe1* this, GlobalContext* globalCtx)
 	u16 reactionText = Text_GetFaceReaction(globalCtx, 0x22);
 
 	if (reactionText == 0) {
-		reactionText = 0x6019;
+		reactionText = 0x6019; //"Why did you come all the way down here?..."
 	}
 	
 	if ((this->actor.params & 0xFF) == GE1_TYPE_GATE_GUARD)
@@ -343,7 +343,7 @@ static void EnGe1_GetReaction_ValleyFloor(EnGe1* this, GlobalContext* globalCtx)
 		 * Gerudo Mask after opening it
 		 */
 		if (!WearingWorkingGerudoMask())
-			reactionText = 0x6069;
+			reactionText = 0x6069; //"...A kid like you has no business there."
 		
 		/* Triforce% special reaction text: reroute "You've got guts coming
 		around here wearing that!" to "Hey, newcomer! I'll open the gate!"
@@ -351,9 +351,9 @@ static void EnGe1_GetReaction_ValleyFloor(EnGe1* this, GlobalContext* globalCtx)
 		if (reactionText == 0x719f)
 		{
 			if (TRIFORCE_FENCE_GET)
-				reactionText = 0x6001;
+				reactionText = 0x6001; //"Hey, newcomer!"
 			else
-				reactionText = 0x6002;
+				reactionText = 0x6002; //"Hey, newcomer! Wait a second and I'll open the gate for you."
 		}
 	}
 
@@ -526,10 +526,12 @@ static void EnGe1_GetReaction_GateGuard(EnGe1* this, GlobalContext* globalCtx) {
 	/* Triforce% special reaction text: reroute "You've got guts coming
 	around here wearing that!" to gatekeeper custom text
 	 */
-	if (reactionText == 0x719f)
-		reactionText = 0x0B40;
+	if (reactionText == 0x719f && (WORKING_GERUDOMASK_VAR & WORKING_GERUDOMASK_BIT)) //"Got guts etc."
+		reactionText = 0x0B40; //"A Gerudo child? Come in! etc."
 
 	if (EnGe1_SetTalkAction(this, globalCtx, reactionText, 100.0f, EnGe1_Talk_GateGuard)) {
+		if(reactionText == 0x0B40) return;
+		
 		this->animFunc = EnGe1_CueUpAnimation;
 		this->animation = &gGerudoWhiteDismissiveAnim;
 		Animation_Change(&this->skelAnime, &gGerudoWhiteDismissiveAnim, 1.0f, 0.0f,

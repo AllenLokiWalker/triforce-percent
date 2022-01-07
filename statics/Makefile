@@ -10,6 +10,7 @@ statics.o: \
 	statics.h \
 	ossan_related.h \
 	../loader/fast_loader/fast_loader.h \
+	../loader/debugger/debugger.h \
 	../scene/TriforceRoom/TriforceRoom_scene.h
 
 interface.o: \
@@ -18,6 +19,8 @@ interface.o: \
 
 message.o: \
 	message.h \
+	statics.h \
+	../loader/debugger/debugger.h \
 	../text/messages.c
 
 ../text/build_messages_file.o: \
