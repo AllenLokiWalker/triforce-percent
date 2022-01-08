@@ -41,7 +41,6 @@ void Statics_LoadMsgInfoPatched(GlobalContext *globalCtx, u16 textId, s32 type){
     MessageTableEntry *tbl;
     const char *baseSeg, *thisSeg, *nextSeg;
     u8 found = 0;
-    if(sIsLiveRun) Debugger_Printf("text %04X", textId);
     
     //Try hack table first, for new messages or overrides of existing ones
     tbl = hackMessageTable;
@@ -76,8 +75,8 @@ void Statics_LoadMsgInfoPatched(GlobalContext *globalCtx, u16 textId, s32 type){
         
         if(!found){
             //Text not found, default to Frog
-            if(sIsLiveRun) Debugger_Printf("No text %04X glbl %04X -> frog", 
-                textId, (u16)globalCtx->msgCtx.unk_E2F8);
+            // if(sIsLiveRun) Debugger_Printf("No text %04X glbl %04X -> frog", 
+            //     textId, (u16)globalCtx->msgCtx.unk_E2F8);
             tbl = messageTableAddresses[type];
             baseSeg = tbl->segment;
             tbl += 0xC;
@@ -95,8 +94,8 @@ void Statics_LoadMsgInfoPatched(GlobalContext *globalCtx, u16 textId, s32 type){
 s32 Statics_N64DDTextCallback(Font *message){
     if(!(message->msgOffset & 0x80000000)) return 0; //Actual normal text
     if(message->msgLength > 1000){
-        if(sIsLiveRun) Debugger_Printf("Bad msg %08X %X -> frog",
-            message->msgOffset, message->msgLength);
+        // if(sIsLiveRun) Debugger_Printf("Bad msg %08X %X -> frog",
+        //     message->msgOffset, message->msgLength);
         //Something went wrong, default to Frog. Hope we're on US.
         message->msgOffset = messageTableAddresses[1][0xC].segment 
                            - messageTableAddresses[1][0x0].segment;
@@ -108,6 +107,27 @@ s32 Statics_N64DDTextCallback(Font *message){
     bcopy((const void*)message->msgOffset, message->msgBuf, message->msgLength);
     return 1;
 }
+
+/*
+extern void Message_OpenText(GlobalContext* globalCtx, u16 textId);
+
+void Message_OpenText_Print(s32 ra, u16 textId, s32 prevra){
+    if(sIsLiveRun) Debugger_Printf("OpenText %04X < %08X < %08X", textId, ra, prevra);
+}
+
+void Message_OpenText_Wrapper(){
+    asm(".set noat\n .set noreorder\n"
+    "sw $a0, 0x0040($sp)\n"
+    "or $a0, $ra, $zero\n"
+    "jal Message_OpenText_Print\n"
+    "lw $a2, 0x0054($sp)\n"
+    "lw $ra, 0x0014($sp)\n"
+    "lw $a0, 0x0040($sp)\n"
+    "j Message_OpenText_4\n"
+    "lw $a1, 0x0044($sp)\n"
+    ".set at\n .set reorder");
+}
+*/
 
 extern void Message_PostLoadStaffAddr();
 extern void Message_PostLoadJpnAddr();
@@ -139,4 +159,6 @@ void Statics_MessageCodePatches(){
     *(((u32*)Message_PostLoadEngAddr  )+2) = 0;
     *(((u32*)Message_PostLoadEngAddr  )+4) = 0;
     *(((u32*)Message_PostLoadEngAddr  )+7) = JALINSTR(Statics_N64DDTextCallback);
+    //Debugging
+    //*(((u32*)Message_OpenText)+2) = JUMPINSTR(Message_OpenText_Wrapper);
 }

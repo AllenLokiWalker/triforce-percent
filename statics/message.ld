@@ -9,3 +9,6 @@ messageTableAddresses = 0x80112E34;
 Message_PostLoadStaffAddr = 0x800DCAF8;
 Message_PostLoadJpnAddr = 0x800DCBA0;
 Message_PostLoadEngAddr = 0x800DCC2C;
+
+Message_OpenText = 0x800DC838;
+Message_OpenText_4 = 0x800DC848;

@@ -205,12 +205,20 @@ void Statics_TestShortcuts(){
             // gSaveContext.eventInf[1] |= 1;
             // gSaveContext.timer2State = -30;
             //Warp to the Running Man
-            RUNNINGMAN_WANTS_TO_BATTLE_VAR |= RUNNINGMAN_WANTS_TO_BATTLE_BIT;
-            SAGES_CHARM_VAR &= ~SAGES_CHARM_BIT;
-            globalCtx->linkAgeOnLoad = 0;
+            // RUNNINGMAN_WANTS_TO_BATTLE_VAR |= RUNNINGMAN_WANTS_TO_BATTLE_BIT;
+            // SAGES_CHARM_VAR &= ~SAGES_CHARM_BIT;
+            // globalCtx->linkAgeOnLoad = 0;
+            // globalCtx->nextEntranceIndex = 0x01F9;
+            //Warp to Nabooru
+            NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
+            globalCtx->linkAgeOnLoad = 1;
+            globalCtx->nextEntranceIndex = 0x04A6;
+            //Warp to Unicorn Fountain
+            // globalCtx->linkAgeOnLoad = 0;
+            // globalCtx->nextEntranceIndex = 0x0560;
+            //Common warp
             gSaveContext.respawnFlag = -2;
             globalCtx->sceneLoadFlag = 0x14;
-            globalCtx->nextEntranceIndex = 0x01F9;
             globalCtx->fadeTransition = 0x2C;
             gSaveContext.nextTransition = 5;
         }else if((CTRLR_PRESS & BTN_DUP)){
@@ -312,6 +320,7 @@ void Statics_Player_Update(){
     Statics_AnimePlayerUpdate();
     Statics_InterfacePlayerUpdate();
     
+    /*
     static u8 oldMsgMode = 0;
     static u16 oldOcarinaAction = 0;
     if(sIsLiveRun && (gGlobalContext.msgCtx.msgMode != oldMsgMode 
@@ -321,6 +330,7 @@ void Statics_Player_Update(){
         oldMsgMode = gGlobalContext.msgCtx.msgMode;
         oldOcarinaAction = gGlobalContext.msgCtx.unk_E3F0;
     }
+    */
 }
 
 static u8 sOneTime = 0;
