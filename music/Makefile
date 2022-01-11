@@ -25,6 +25,9 @@ default: $(TARGETS)
 	mkdir -p                                             $(STATICDATADIR)/10
 	cp triforce.aseq                                     $(STATICDATADIR)/10/staticdata.bin
 	echo "dtype 1\ndata1 0x71020201\ndata2 0x03000000" > $(STATICDATADIR)/10/conf.txt
+	mkdir -p                                             $(STATICDATADIR)/11
+	cp PowerOfTheGoddesses.aseq                          $(STATICDATADIR)/11/staticdata.bin
+	echo "dtype 1\ndata1 0x72020201\ndata2 0x03000000" > $(STATICDATADIR)/11/conf.txt
 	#mkdir -p                                             $(STATICDATADIR)/8
 	#cp Trailer.aseq                                      $(STATICDATADIR)/8/staticdata.bin
 	#echo "dtype 1\ndata1 0x1F020201\ndata2 0x03000000" > $(STATICDATADIR)/8/conf.txt

@@ -43,7 +43,7 @@ LightSettings TriforceRoom_scene_header00_lightSettings[2] = {
 };
 
 SurfaceType TriforceRoom_polygonTypes[] = {
-	{ 0x00000000, 0x00000000 },
+	{ 0x00000000, 0x00000002 },
 };
 
 CollisionPoly TriforceRoom_polygons[] = {
@@ -99,7 +99,7 @@ Vec3s TriforceRoom_vertices[26] = {
 	{ 277, -50, 179 },
 	{ -292, -50, 822 },
 	{ -276, -50, 179 },
-	{ 103, 0, -56 },
+	{ 88, 0, -56 },
 };
 
 CollisionHeader TriforceRoom_collisionHeader = {
@@ -120,7 +120,7 @@ CollisionHeader TriforceRoom_collisionHeader = {
 };
 
 s32 TriforceRoom_scene_header00_cutscene[] = {
-	CS_BEGIN_CUTSCENE(26, 2000),
+	CS_BEGIN_CUTSCENE(28, 2000),
 	CS_TERMINATOR(81, 1850, 1851),
 	CS_TEXT_LIST(10),
 		CS_TEXT_DISPLAY_TEXTBOX(0x0ACE, 445, 490, 0x0000, 0x0000, 0x0000),
@@ -140,6 +140,10 @@ s32 TriforceRoom_scene_header00_cutscene[] = {
 		CS_LIGHTING(1, 392, 393, 0, 0, 0, 0, 0, 0, 0, 0),
 	CS_MISC_LIST(1),
 		CS_MISC(10, 1710, 1711, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+	CS_PLAY_BGM_LIST(1),
+		CS_PLAY_BGM(0x0072 + 1, 525, 1, 0, 0, 0, 0, 0, 0, 0, 0),
+	CS_FADE_BGM_LIST(1),
+		CS_FADE_BGM(0x0000, 1605, 1635, 0, 0, 0, 0, 0, 0, 0, 0),
 	CS_CAM_POS_LIST(0, 266),
 		CS_CAM_POS(0, 0, 0, 0x42960000, 481, -41, 349, 0),
 		CS_CAM_POS(0, 0, 0, 0x42960000, 281, -43, 349, 0),

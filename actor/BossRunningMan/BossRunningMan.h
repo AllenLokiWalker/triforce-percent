@@ -2,7 +2,7 @@
 #define __BOSS_RUNNING_MAN_H__
 
 #include "ootmain.h"
-#include "bossrunningmanobj.h"
+#include "BossRunningManObj.h"
 
 #define DEP_OBJECT_NUM 59
 #define NUM_GHOSTS 4

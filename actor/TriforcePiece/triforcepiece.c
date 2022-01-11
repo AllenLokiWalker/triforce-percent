@@ -70,7 +70,7 @@ static const s16 pieces_rot[] = {
 
 typedef struct {
 	Actor actor;
-	u8 state, frame, totalframes;
+	u8 state, frame, theendmode;
 	LightNode *lightnode;
 	LightInfo light;
 } Entity;
@@ -104,13 +104,14 @@ static void rotcombine(s16 *r, s16 tbl, s32 framesleft){
 }
 
 static void init(Entity *en, GlobalContext *globalCtx) {
+	en->theendmode = en->actor.params >> 2;
+	en->actor.params &= 3;
 	if(en->actor.params == 0){
 		Lights_PointNoGlowSetInfo(&en->light, 0, 0, 0, TFCOLOR_R, TFCOLOR_G, TFCOLOR_B, 2000);
 		en->lightnode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &en->light);
 	}
-	en->state = 0;
+	en->state = en->theendmode ? STATE_WAIT1 : STATE_START;
 	en->frame = 0;
-	en->totalframes = 0;
 	setpos(en, 0.0f, 0.0f, 0.0f);
 }
 
@@ -144,6 +145,9 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	z = (float)states_z[state+1];
 	s = (float)states_scale[state+1];
 	brightness = (float)states_brightness[state+1];
+	if(en->theendmode){
+		z = lastz = 0.0f;
+	}
 	if(variable == TRIFORCE_COURAGE){
 		lastx = -lastx;
 		x = -x;
@@ -195,7 +199,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		en->actor.shape.rot.z = 0;
 	}
 	//Increment
-	if(mode != STATE_MODE_LAST){
+	if(!en->theendmode && mode != STATE_MODE_LAST){
 		++frame;
 		if(frame >= frames){
 			frame = 0;
@@ -203,7 +207,6 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		}
 		en->frame = frame;
 	}
-	++en->totalframes;
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {

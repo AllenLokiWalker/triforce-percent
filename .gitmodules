@@ -13,3 +13,6 @@
 [submodule "toolchain/z64audio"]
 	path = toolchain/z64audio
 	url = https://github.com/sauraen/z64audio.git
+[submodule "toolchain/z64convert"]
+	path = toolchain/z64convert
+	url = https://github.com/turpaan64/z64convert.git

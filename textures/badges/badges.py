@@ -10,7 +10,7 @@ palette_files = set()
 for badge in badges_data:
     palette_files.add(badge['plt'])
 
-palette_files = list(palette_files)
+palette_files = sorted(list(palette_files))
 
 for badge in badges_data:
     badge['plt'] = palette_files.index(badge['plt'])

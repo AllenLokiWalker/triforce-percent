@@ -18,8 +18,8 @@
 #define DecrHealth(a)      for (s32 i = 0; i < a; i++) { \
 		DECR(this->actor.colChkInfo.health); }
 #define AnimChange(skel, anim, start, speed, inter, xrate) \
-	Animation_Change(skel, (void*)anim, speed, start, \
-		Animation_GetLastFrame((void*)anim), inter, xrate); \
+	Animation_Change(skel, anim, speed, start, \
+		Animation_GetLastFrame(anim), inter, xrate); \
 	this->boss.masterFrame = start
 
 /* -_-_-_-_-_-_-_-_-_- */
@@ -237,8 +237,8 @@ static void RunningMan_ChangeToBoss(BossRunningMan* this, GlobalContext* globalC
 	SkelAnime_InitFlex(
 		globalCtx,
 		&this->skelAnime,
-		(FlexSkeletonHeader*)SKEL_RUNNINGMAN,
-		(AnimationHeader*)ANIM_RUNFAST,
+		&gBossRunningManObj_SkelRunningMan,
+		&gBossRunningManObj_AnimRunFast,
 		this->jointTable,
 		this->morphTable,
 		SKEL_RUNNINGMAN_NUMBONES_DT
@@ -255,7 +255,8 @@ static void RunningMan_ChangeToBoss(BossRunningMan* this, GlobalContext* globalC
 static void RunningMan_ChangeToNPC(BossRunningMan* this, GlobalContext* globalCtx) {
 	this->actor.shape.rot = this->actor.world.rot = (Vec3s){0, 0, 0};
 	//TODO different animation
-	AnimChange(&this->skelAnime, ANIM_HURT, 0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
+	AnimChange(&this->skelAnime, &gBossRunningManObj_AnimHurt, 
+		0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
 	RunningMan_ClearReusedVars(this);
 	this->state = (RunManState) {
 		.enableDraw = true,
@@ -378,8 +379,8 @@ void RunningMan_UpdateDialogue(BossRunningMan* en, GlobalContext* globalCtx) {
 		//The timer is because when Link gets the item, while he's in the
 		//animation of moving it up to above his head, dialogue is not active
 		//and the Running Man would just run away at that time.
-		Animation_Change(&en->skelAnime, (void*)ANIM_RUNFAST, 1.0f, 0.0f,
-			Animation_GetLastFrame((void*)ANIM_RUNFAST), ANIMMODE_LOOP_INTERP, 8);
+		Animation_Change(&en->skelAnime, &gBossRunningManObj_AnimRunFast, 1.0f, 0.0f,
+			Animation_GetLastFrame(&gBossRunningManObj_AnimRunFast), ANIMMODE_LOOP_INTERP, 8);
 		en->actor.world.rot.y = 0xC000;
 		en->actor.world.rot.x = en->actor.world.rot.z = 0;
 		en->actor.shape.rot = en->actor.world.rot;
@@ -626,7 +627,7 @@ s32 RunningMan_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
 		    if (this->state.handHitL) {
 			    *rot = (Vec3s) { 0 };
 			    if (limbIndex == RUNMAN_HAND_L) {
-				    *dList =  (void*)DL_FISTL_LIMB_10;
+				    *dList = &gBossRunningManObj_DLFistLLimb10;
 			    }
 		    }
 		    break;
@@ -635,7 +636,7 @@ s32 RunningMan_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
 		    if (this->state.handHitR) {
 			    *rot = (Vec3s) { 0 };
 			    if (limbIndex == RUNMAN_HAND_L) {
-				    *dList =  (void*)DL_FISTR_LIMB_13;
+				    *dList = &gBossRunningManObj_DLFistRLimb13;
 			    }
 		    }
 		    break;
@@ -746,7 +747,8 @@ void RunningMan_SetupIntroWait(BossRunningMan* this, GlobalContext* globalCtx) {
 	
 	//TODO change to some pose for falling in and then some pose for looking
 	//ready to attack
-	AnimChange(&this->skelAnime, ANIM_RUNFAST, 0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
+	AnimChange(&this->skelAnime, &gBossRunningManObj_AnimRunFast, 
+		0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
 	
 	*state = (RunManState) {
 		.headTrack = true,
@@ -779,7 +781,8 @@ void RunningMan_IntroWait(BossRunningMan* this, GlobalContext* globalCtx) {
 void RunningMan_SetupOutro(BossRunningMan* this, GlobalContext* globalCtx) {
 	RunManState* state = &this->state;
 	
-	AnimChange(&this->skelAnime, ANIM_RUNFAST, 0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
+	AnimChange(&this->skelAnime, &gBossRunningManObj_AnimRunFast,
+		0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
 	
 	*state = (RunManState) {
 		.enableDraw = true,
@@ -865,7 +868,8 @@ void RunningMan_Outro(BossRunningMan* this, GlobalContext* globalCtx) {
 void RunningMan_SetupRun(BossRunningMan* this, GlobalContext* globalCtx) {
 	RunManState* state = &this->state;
 	
-	AnimChange(&this->skelAnime, ANIM_RUNFAST, 0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
+	AnimChange(&this->skelAnime, &gBossRunningManObj_AnimRunFast,
+		0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
 	
 	*state = (RunManState) {
 		.drawGhosts = true,
@@ -932,7 +936,7 @@ void RunningMan_Run(BossRunningMan* this, GlobalContext* globalCtx) {
 	
 	offsetX = Math_SinS(DEGF_TO_BINANG(globalCtx->gameplayFrames * 1.35f)) * 7.0f;
 	Math_StepToF(&this->actor.speedXZ, 15.0f + Rand_CenteredFloat(10.0f) + Rand_ZeroFloat(10.0f), 2.5f);
-	if (skelAnime->animation == (AnimationHeader*)ANIM_RUNFAST) {
+	if (skelAnime->animation == &gBossRunningManObj_AnimRunFast) {
 		skelAnime->playSpeed = this->actor.speedXZ / 17.5;
 	}
 	
@@ -973,7 +977,7 @@ void RunningMan_Run(BossRunningMan* this, GlobalContext* globalCtx) {
 	
 	this->boss.rotShapeTarget = this->actor.yawTowardsPlayer;
 	
-	if (skelAnime->animation != (AnimationHeader*)ANIM_DODGEKICK) {
+	if (skelAnime->animation != &gBossRunningManObj_AnimDodgeKick) {
 		if (globalCtx->gameplayFrames % 2 == 0) {
 			Audio_PlayActorSound2(&this->actor, NA_SE_EN_MORIBLIN_WALK);
 		}
@@ -986,7 +990,8 @@ void RunningMan_Run(BossRunningMan* this, GlobalContext* globalCtx) {
 		
 		if (this->actor.xzDistToPlayer < 100.0f && ABS((s16)(this->actor.yawTowardsPlayer - p->actor.shape.rot.y)) < DEGF_TO_BINANG(30)) {
 			if (Rand_ZeroOne() < 0.3f) {
-				AnimChange(&this->skelAnime, ANIM_DODGEKICK, 20.0f, 1.0f, ANIMMODE_ONCE, 3.0f);
+				AnimChange(&this->skelAnime, &gBossRunningManObj_AnimDodgeKick,
+					20.0f, 1.0f, ANIMMODE_ONCE, 3.0f);
 				state->colKick = true;
 				state->targetPos = true;
 				state->syncRotY = 0;
@@ -997,7 +1002,8 @@ void RunningMan_Run(BossRunningMan* this, GlobalContext* globalCtx) {
 			}
 		}
 	} else if (AnimFromFrame(26)) {
-		AnimChange(&this->skelAnime, ANIM_RUNFAST, 0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
+		AnimChange(&this->skelAnime, &gBossRunningManObj_AnimRunFast,
+			0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
 	} else {
 	}
 	
@@ -1036,7 +1042,8 @@ void RunningMan_Run(BossRunningMan* this, GlobalContext* globalCtx) {
 void RunningMan_SetupDodge(BossRunningMan* this, GlobalContext* globalCtx) {
 	RunManState* state = &this->state;
 	
-	AnimChange(&this->skelAnime, ANIM_DODGEKICK, 1.0f, 1.75f, ANIMMODE_LOOP, 3.0f);
+	AnimChange(&this->skelAnime, &gBossRunningManObj_AnimDodgeKick,
+		1.0f, 1.75f, ANIMMODE_LOOP, 3.0f);
 	
 	*state = (RunManState) {
 		.syncRotY = true,
@@ -1168,7 +1175,8 @@ void RunningMan_Dodge(BossRunningMan* this, GlobalContext* globalCtx) {
 void RunningMan_SetupKick(BossRunningMan* this, GlobalContext* globalCtx) {
 	RunManState* state = &this->state;
 	
-	AnimChange(&this->skelAnime, ANIM_DODGEKICK, 11.0f, 1.0f, ANIMMODE_LOOP, 3.0f);
+	AnimChange(&this->skelAnime, &gBossRunningManObj_AnimDodgeKick,
+		11.0f, 1.0f, ANIMMODE_LOOP, 3.0f);
 	
 	*state = (RunManState) {
 		.syncRotY = true,
@@ -1273,7 +1281,8 @@ void RunningMan_Kick(BossRunningMan* this, GlobalContext* globalCtx) {
 		Math_StepToF(&this->actor.speedXZ, 0, 1.0f);
 	
 	if (AnimFromFrame(30.0f) && DECR(mKickCounter) != 0) {
-		AnimChange(&this->skelAnime, ANIM_DODGEKICK, 19.0f, 1.0f, ANIMMODE_LOOP, 3.0f);
+		AnimChange(&this->skelAnime, &gBossRunningManObj_AnimDodgeKick,
+			19.0f, 1.0f, ANIMMODE_LOOP, 3.0f);
 	}
 	
 	if (AnimAB(39, 99)) {
@@ -1341,7 +1350,8 @@ void RunningMan_Kick(BossRunningMan* this, GlobalContext* globalCtx) {
 void RunningMan_SetupHurt(BossRunningMan* this, GlobalContext* globalCtx) {
 	RunManState* state = &this->state;
 	
-	AnimChange(&this->skelAnime, ANIM_HURT, 0.0f, 1.0f, ANIMMODE_LOOP, 2.0f);
+	AnimChange(&this->skelAnime, &gBossRunningManObj_AnimHurt,
+		0.0f, 1.0f, ANIMMODE_LOOP, 2.0f);
 	
 	*state = (RunManState) {
 		.colHurt = true,
@@ -1376,19 +1386,22 @@ void RunningMan_Hurt(BossRunningMan* this, GlobalContext* globalCtx) {
 		this->actor.speedXZ = 0;
 	
 	if (state->isHurt && mHurtCountLoop != 0) {
-		AnimChange(&this->skelAnime, ANIM_HURT, 7.0f, 1.0f, ANIMMODE_LOOP, 1.0f);
+		AnimChange(&this->skelAnime, &gBossRunningManObj_AnimHurt,
+			7.0f, 1.0f, ANIMMODE_LOOP, 1.0f);
 		mHurtCountLoop -= state->isHurt;
 		
 		return;
 	}
 	
 	if (AnimFromFrame(32) && DECR(mHurtCountLoop) != 0) {
-		AnimChange(&this->skelAnime, ANIM_HURT, 15.0f, 2.0f, ANIMMODE_LOOP, 4.0f);
+		AnimChange(&this->skelAnime, &gBossRunningManObj_AnimHurt,
+			15.0f, 2.0f, ANIMMODE_LOOP, 4.0f);
 	}
 	
 	if (mHurtCountLoop == 0 && state->colHurt == true) {
 		state->colHurt = false;
-		AnimChange(&this->skelAnime, ANIM_HURT, 42.0f, 1.0f, ANIMMODE_LOOP, 2.0f);
+		AnimChange(&this->skelAnime, &gBossRunningManObj_AnimHurt,
+			42.0f, 1.0f, ANIMMODE_LOOP, 2.0f);
 	}
 	
 	if (AnimFromFrame(45.0f) && mHurtCountLoop == 0) {
@@ -1428,7 +1441,8 @@ void RunningMan_HurtLand(BossRunningMan* this, GlobalContext* globalCtx) {
 	this->actor.world.pos.y += mVelocityY;
 	
 	if (AnimFromFrame(63)) {
-		AnimChange(&this->skelAnime, ANIM_HURT, 52.0f, 1.0f, ANIMMODE_LOOP, 4.0f);
+		AnimChange(&this->skelAnime, &gBossRunningManObj_AnimHurt,
+			52.0f, 1.0f, ANIMMODE_LOOP, 4.0f);
 	}
 	
 	if (this->actor.bgCheckFlags & 0x3) {
@@ -1446,7 +1460,8 @@ void RunningMan_HurtLand(BossRunningMan* this, GlobalContext* globalCtx) {
 void RunningMan_SetupArrow(BossRunningMan* this, GlobalContext* globalCtx) {
 	RunManState* state = &this->state;
 	
-	AnimChange(&this->skelAnime, ANIM_JUMPROCKET, 0.0f, 1.0f, ANIMMODE_LOOP, 3.0f);
+	AnimChange(&this->skelAnime, &gBossRunningManObj_AnimJumpRocket,
+		0.0f, 1.0f, ANIMMODE_LOOP, 3.0f);
 	
 	*state = (RunManState) {
 		.syncRotY = true,

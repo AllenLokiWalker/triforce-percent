@@ -74,6 +74,7 @@ STATICDATA ../music/OvertureOfSagesWarp.aseq 1 0x33020201 0x09000000
 STATICDATA ../music/ChamberOfSages.aseq 1 0x70020201 0x26000000
 STATICDATA ../music/ChamberOfSagesBank.abnk 2 0x26020201 0x0B000000
 STATICDATA ../music/triforce.aseq 1 0x71020201 0x03000000
+STATICDATA ../music/PowerOfTheGoddesses.aseq 1 0x72020201 0x03000000
 //STATICDATA ../music/Trailer.aseq 1 0x1F020201 0x03000000
 
 //UnicornFountain scene
@@ -109,7 +110,7 @@ SCENE 46 ../scene/TriforceRoom/TriforceRoom_scene.zscene
 //WRITE 8 0x800EFD8C 0x00 0x9C 0x02 0x00 0x02 0x00 0x02 0xE4
 
 //Ending scene
-//Don't forget TriforceChest if move up
+//Don't forget TriforceChest and TriforcePiece if move up
 ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
 //OBJECT 121 ../actor/TestCelShading/zobj.zobj
 //ACTOR 117 ../actor/TestCelShading/TestCelShading.zovl

@@ -5,6 +5,6 @@ $(OBJECTNAME).elf $(OBJECTNAME).map: $(OBJECTOBJS)
 
 zobj.zobj: $(OBJECTNAME).elf
 	$(OC) $(OCFLAGS) $< $@
-	
+
 %.out.ld: %.map
 	$(PYTHON3) $(PROJECT_DIR)/toolchain/ldout.py $< $@
