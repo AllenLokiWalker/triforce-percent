@@ -27,12 +27,12 @@ s16 TriforceRoom_room_0_header00_objectList[4] = {
 };
 
 ActorEntry TriforceRoom_room_0_header00_actorList[6] = {
-	{ 1, 0, 0, 0, 0, 0, 0, 0x0002 },
-	{ 1, 0, 0, 0, 0, 0, 0, 0x0000 },
-	{ ACTOR_DEMO_EFFECT, 0, -54, 248, 0, 0, 0, 0x000F },
 	{ 1, 0, 0, 0, 0, 0, 0, 0x0001 },
-	{ 3, 0, 0, 0, 0, 0, 0, 0x0000 },
+	{ 1, 0, 0, 0, 0, 0, 0, 0x0000 },
 	{ 5, 0, 0, 0, 0, 0, 0, 0x0000 },
+	{ ACTOR_DEMO_EFFECT, 0, -54, 248, 0, 0, 0, 0x000F },
+	{ 1, 0, 0, 0, 0, 0, 0, 0x0002 },
+	{ 3, 0, 0, 0, 0, 0, 0, 0x0000 },
 };
 
 MeshHeader0 TriforceRoom_room_0_meshHeader = { {0}, 1, (u32)&TriforceRoom_room_0_meshDListEntry, (u32)&(TriforceRoom_room_0_meshDListEntry) + sizeof(TriforceRoom_room_0_meshDListEntry) };

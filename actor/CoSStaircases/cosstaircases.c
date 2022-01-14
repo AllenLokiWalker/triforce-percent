@@ -46,6 +46,7 @@ Total plus a bit extra: 1220 KiB -> 1250000
 typedef struct {
 	DynaPolyActor dyna;
 	u8 state;
+	u8 timer;
 	u8 alpha;
 	u8 collision;
 	u8 cutscene_activated;
@@ -155,7 +156,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		target_action = 8;
 	}
 	if(en->dyna.actor.params <= 5){
-		fade_speed = 4;
+		fade_speed = 6;
 	}else{
 		fade_speed = 8;
 	}
@@ -164,18 +165,25 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			(en->dyna.actor.params == 0 && en->init_timer == 10 && globalCtx->csCtx.state == 0))){
 		CreateCollision(en, globalCtx);
 		en->state = 1;
+		en->timer = 0;
 	}else if(en->collision && CHECK_NPC_ACTION(STAIRS_SLOT, 0)){
 		DestroyCollision(en, globalCtx);
-		en->state = 2;
+		en->state = 3;
+	}
+	if(en->state == 1){
+		++en->timer;
+		if(en->timer >= 20){
+			en->state = 2;
+		}
 	}
 	s32 temp = en->alpha;
-	if(en->state == 1){
+	if(en->state == 2){
 		temp += fade_speed;
 		if(temp >= 255){
 			temp = 255;
 			en->state = 0;
 		}
-	}else if(en->state == 2){
+	}else if(en->state == 3){
 		temp -= fade_speed;
 		if(temp <= 0){
 			temp = 0;
@@ -194,12 +202,12 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	//Open Triforce door
 	if(en->dyna.actor.params == 9){
 		if(en->state == 0 && CHECK_NPC_ACTION(STAIRS_SLOT, 9)){
-			en->state = 3;
+			en->state = 4;
 		}
-		if(en->state == 3){
+		if(en->state == 4){
 			en->dyna.actor.world.pos.y += DOOR_OPEN_SPEED;
 			if(en->dyna.actor.world.pos.y - en->dyna.actor.home.pos.y >= DOOR_OPEN_DIST){
-				en->state = 4;
+				en->state = 5;
 				Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_STONEDOOR_STOP);
 				Actor_Kill(&en->dyna.actor);
 			}else{
@@ -209,7 +217,50 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	}
 }
 
+static const s8 KiraType[] = { 0, 1, 1, 1, 1, 1, 2, -1, -1, -1 };
+static const float KiraCtrX[] = { -305.0f,  420.0f, 0.0f };
+static const float KiraCtrZ[] = { -334.0f,  454.0f, 0.0f };
+static const float KiraRad[]  = {  288.0f,  600.0f, 0.0f };
+static const float KiraW[]    = {  113.0f,  115.0f, 113.0f };
+static const float KiraDY[]   = {   93.0f,  172.0f, 326.0f };
+static const s16 KiraAngleLo[] = { 0x0000, 0x6AAA, -122 };
+static const s16 KiraAngleHi[] = { 0x6800, 0x9555, -810 };
+static Vec3f KiraVelocity = { 0.0f, -11.0f, 0.0f };
+static Vec3f KiraAccel = { 0.0f, 1.0f, 0.0f };
+static Color_RGBA8 KiraPrimColor = { 170, 255, 255, 255 };
+static Color_RGBA8 KiraEnvColor = { 0, 120, 255, 0 };
+#define KIRA_ABOVE 60.0f
+
 static void draw(Entity *en, GlobalContext *globalCtx) {
+	s8 kType = KiraType[en->dyna.actor.params];
+    if(kType >= 0 && (en->state == 1 || en->state == 2)){
+		float syr = Math_SinS(en->dyna.actor.shape.rot.y);
+		float cyr = Math_CosS(en->dyna.actor.shape.rot.y);
+        Vec3f pos0 = en->dyna.actor.world.pos;
+		pos0.x += cyr * KiraCtrX[kType] + syr * KiraCtrZ[kType];
+		pos0.z += cyr * KiraCtrZ[kType] - syr * KiraCtrX[kType];
+		pos0.y += KIRA_ABOVE;
+		s32 nspawn = en->alpha < 160 ? 3 : en->alpha < 220 ? 2 : 1;
+		for(s32 i=0; i<nspawn; ++i){
+			Vec3f pos = pos0;
+			float along = Rand_ZeroOne();
+			float across = Rand_ZeroOne();
+			pos.y += along * KiraDY[kType];
+			s16 angle = -en->dyna.actor.shape.rot.y + KiraAngleLo[kType] 
+				+ (s16)((float)((s16)(KiraAngleHi[kType] - KiraAngleLo[kType])) * along);
+			float dw = (across - 0.5f) * KiraW[kType];
+			if(kType == 2){
+				pos.z += dw;
+				pos.x += angle;
+			}else{
+				float r = KiraRad[kType] + dw;
+				pos.x -= r * Math_SinS(angle);
+				pos.z += r * Math_CosS(angle);
+			}
+			EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &KiraVelocity, &KiraAccel,
+				&KiraPrimColor, &KiraEnvColor, 6000, 10);
+		}
+    }
 	if(en->alpha == 0) return;
 	if(DListsTransparent[en->dyna.actor.params]){
 		gDPSetEnvColor(POLY_XLU_DISP++, 0xFF, 0xFF, 0xFF, en->alpha);

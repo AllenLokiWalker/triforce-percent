@@ -143,7 +143,7 @@ s32 TriforceRoom_scene_header00_cutscene[] = {
 	CS_PLAY_BGM_LIST(1),
 		CS_PLAY_BGM(0x0072 + 1, 525, 1, 0, 0, 0, 0, 0, 0, 0, 0),
 	CS_FADE_BGM_LIST(1),
-		CS_FADE_BGM(0x0000, 1605, 1635, 0, 0, 0, 0, 0, 0, 0, 0),
+		CS_FADE_BGM(0x0000, 1605, 1645, 0, 0, 0, 0, 0, 0, 0, 0),
 	CS_CAM_POS_LIST(0, 266),
 		CS_CAM_POS(0, 0, 0, 0x42960000, 481, -41, 349, 0),
 		CS_CAM_POS(0, 0, 0, 0x42960000, 281, -43, 349, 0),

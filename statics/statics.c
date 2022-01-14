@@ -37,9 +37,9 @@ void Statics_SetGameState(){
     //TODO
     WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
     WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
-    //Statics_GiveLongOfTime();
-    //SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
-    //Statics_GiveOvertureOfSages();
+    Statics_GiveLongOfTime();
+    SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
+    Statics_GiveOvertureOfSages();
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
@@ -210,12 +210,18 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x01F9;
             //Warp to Nabooru
-            NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
-            globalCtx->linkAgeOnLoad = 1;
-            globalCtx->nextEntranceIndex = 0x04A6;
+            // NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
+            // globalCtx->linkAgeOnLoad = 1;
+            // globalCtx->nextEntranceIndex = 0x04A6;
             //Warp to Unicorn Fountain
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x0560;
+            //Warp to Triforce room
+            // globalCtx->linkAgeOnLoad = 0;
+            // globalCtx->nextEntranceIndex = 0x034D;
+            //Warp to Chamber of Sages
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x006B;
             //Common warp
             gSaveContext.respawnFlag = -2;
             globalCtx->sceneLoadFlag = 0x14;

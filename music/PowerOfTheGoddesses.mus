@@ -1,0 +1,1394 @@
+; Nintendo 64 Music Macro Language (Audioseq) (.mus) sequence: PowerOfTheGoddesses
+; Converted by SEQ64 V2.0 [https://github.com/sauraen/seq64]
+
+; Sequence Header
+
+_start:
+    mutebhv 32
+    mutescale 50
+    initchan 0x0D13
+tsec0:
+    startchan 0, tsec0_chn0
+    startchan 1, tsec0_chn1
+    startchan 4, tsec0_chn4
+    startchan 8, tsec0_chn8
+    startchan 10, tsec0_chn10
+    startchan 11, tsec0_chn11
+    svol 91
+    tempo 60
+    delay 864
+    tempo 85
+    delay 48
+    tempo 80
+    delay 48
+    tempo 69
+    delay 288
+    tempo 50
+    delay 48
+    tempo 69
+    delay 144
+    tempo 85
+    delay 48
+    tempo 80
+    delay 48
+    tempo 69
+    delay 48
+    tempo 80
+    delay 240
+    tempo 50
+    delay 48
+tsec1:
+    startchan 0, tsec1_chn0
+    startchan 1, tsec1_chn1
+    startchan 4, tsec1_chn4
+    startchan 8, tsec1_chn8
+    startchan 10, tsec1_chn10
+    startchan 11, tsec1_chn11
+    tempo 75
+    delay 144
+    tempo 85
+    delay 240
+    tempo 75
+    delay 192
+    tempo 85
+    delay 96
+    tempo 64
+    delay 48
+    tempo 85
+    delay 144
+    loop 3
+    tempo 89
+    delay 192
+    tempo 85
+    delay 96
+    loopend
+    tempo 89
+    delay 48
+    tempo 104
+    delay 48
+    tempo 120
+    delay 96
+    tempo 109
+    delay 48
+    tempo 85
+    delay 24
+    tempo 69
+    delay 24
+    loop 2
+    tempo 85
+    delay 480
+    tempo 75
+    delay 96
+    loopend
+    jump tsec1
+    disablechan 0x0D13
+    end
+; Section total ticks: 3888
+
+; Channel Headers
+
+; tsec0
+
+tsec0_chn0:
+    shortoff
+    cpan 90
+    cvol 80
+    instr 14
+    delay 1872
+    end
+; Section total ticks: 1872
+
+tsec0_chn1:
+    shortoff
+    cvol 80
+    cpan 52
+    instr 1
+    delay 1872
+    end
+; Section total ticks: 1872
+
+tsec0_chn4:
+    shortoff
+    cvol 78
+    cpan 40
+    instr 4
+    delay 1872
+    end
+; Section total ticks: 1872
+
+tsec0_chn8:
+    shortoff
+    cpan 78
+    cvol 80
+    instr 8
+    delay 1872
+    end
+; Section total ticks: 1872
+
+tsec0_chn10:
+    shortoff
+    startlayer 0, tsec0_chn10_ly0
+    cvol 52
+    cpan 44
+    instr 10
+    delay 726
+    call tsec0_chn10_call6
+    cdelay 6
+    call tsec0_chn10_call8
+    cvol 91
+    call tsec0_chn10_call10
+    cvol 84
+    call tsec0_chn10_call12
+    cvol 96
+    call tsec0_chn10_call14
+    call tsec0_chn10_call15
+    call tsec0_chn10_call10
+    cvol 82
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    call tsec0_chn10_call20
+    cdelay 6
+    call tsec0_chn10_call8
+    cvol 91
+    call tsec0_chn10_call10
+    cvol 84
+    call tsec0_chn10_call12
+    cvol 96
+    call tsec0_chn10_call14
+    call tsec0_chn10_call29
+    cvol 89
+    cdelay 12
+    cvol 81
+    call tsec0_chn10_call18
+    cvol 71
+    cdelay 12
+    cvol 64
+    delay 36
+    cvol 52
+    cdelay 6
+    call tsec0_chn10_call6
+    cdelay 6
+    call tsec0_chn10_call8
+    cvol 91
+    call tsec0_chn10_call10
+    cvol 84
+    call tsec0_chn10_call12
+    cvol 96
+    call tsec0_chn10_call14
+    call tsec0_chn10_call15
+    call tsec0_chn10_call10
+    cvol 82
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    call tsec0_chn10_call20
+    cdelay 6
+    call tsec0_chn10_call8
+    cvol 91
+    call tsec0_chn10_call10
+    cvol 84
+    call tsec0_chn10_call12
+    cvol 96
+    call tsec0_chn10_call14
+    call tsec0_chn10_call29
+    cvol 89
+    cdelay 12
+    cvol 81
+    cdelay 12
+    cvol 75
+    cdelay 11
+    cvol 71
+    cdelay 13
+    cvol 64
+    delay 36
+    end
+; Section total ticks: 0
+
+tsec0_chn11:
+    shortoff
+    startlayer 0, tsec0_chn11_ly0
+    startlayer 1, tsec0_chn11_ly1
+    startlayer 2, tsec0_chn11_ly2
+    cvol 45
+    cpan 84
+    instr 11
+    cdelay 12
+    cvol 64
+    cdelay 12
+    cvol 82
+    cdelay 12
+    cvol 95
+    cdelay 12
+    cvol 99
+    call tsec0_chn10_call10
+    cvol 75
+    cdelay 12
+    cvol 64
+    call tsec0_chn11_call19
+    cvol 41
+    cdelay 12
+    cvol 31
+    cdelay 12
+    cvol 21
+    cdelay 12
+    cvol 10
+    cdelay 12
+    cvol 3
+    delay 72
+    cvol 28
+    cdelay 12
+    cvol 45
+    cdelay 12
+    cvol 64
+    cdelay 12
+    cvol 82
+    cdelay 12
+    cvol 95
+    cdelay 12
+    cvol 99
+    call tsec0_chn10_call10
+    cvol 75
+    cdelay 12
+    cvol 64
+    call tsec0_chn11_call19
+    cvol 41
+    cdelay 12
+    cvol 31
+    cdelay 12
+    cvol 21
+    cdelay 12
+    cvol 10
+    cdelay 12
+    cvol 3
+    delay 48
+    cvol 0
+    delay 24
+    cvol 10
+    cdelay 12
+    cvol 28
+    cdelay 12
+    cvol 40
+    cdelay 12
+    cvol 55
+    cdelay 12
+    cvol 69
+    cdelay 12
+    cvol 81
+    call tsec0_chn10_call12
+    cvol 94
+    delay 36
+    call tsec0_chn11_call72
+    cdelay 12
+    cvol 78
+    delay 48
+    cvol 84
+    cdelay 12
+    cvol 89
+    delay 24
+    cvol 93
+    delay 24
+    cvol 76
+    delay 84
+    cvol 82
+    call tsec0_chn10_call10
+    cvol 92
+    cdelay 12
+    cvol 97
+    call tsec0_chn10_call14
+    call tsec0_chn11_call90
+    call tsec0_chn11_call72
+    cdelay 12
+    call tsec0_chn11_call93
+    call tsec0_chn10_call12
+    call tsec0_chn10_call8
+    call tsec0_chn11_call96
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    call tsec0_chn11_call100
+    cvol 58
+    call tsec0_chn11_call19
+    cvol 47
+    call tsec0_chn11_call19
+    cvol 57
+    call tsec0_chn11_call100
+    cvol 67
+    cdelay 12
+    cvol 72
+    call tsec0_chn10_call18
+    cvol 82
+    call tsec0_chn10_call10
+    cvol 92
+    cdelay 12
+    cvol 97
+    call tsec0_chn10_call14
+    call tsec0_chn11_call90
+    call tsec0_chn11_call72
+    cdelay 12
+    call tsec0_chn11_call93
+    call tsec0_chn10_call12
+    call tsec0_chn10_call8
+    call tsec0_chn11_call96
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    cvol 71
+    cdelay 11
+    cvol 67
+    cdelay 13
+    cvol 62
+    cdelay 12
+    cvol 58
+    call tsec0_chn11_call19
+    end
+; Section total ticks: 0
+
+; tsec1
+
+tsec1_chn0:
+    startlayer 0, tsec1_chn0_ly0
+    startlayer 1, tsec1_chn0_ly1
+    delay 3168
+    end
+; Section total ticks: 3168
+
+tsec1_chn1:
+    startlayer 0, tsec1_chn1_ly0
+    startlayer 1, tsec1_chn1_ly1
+    delay 48
+    cvol 76
+    delay 24
+    cvol 82
+    cdelay 12
+    cvol 85
+    call tsec0_chn10_call10
+    cvol 92
+    cdelay 12
+    cvol 95
+    call tsec0_chn10_call14
+    cvol 105
+    call tsec0_chn10_call14
+    cvol 98
+    cdelay 12
+    cvol 95
+    cdelay 12
+    cvol 91
+    call tsec0_chn10_call10
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    cdelay 12
+    cvol 66
+    cdelay 12
+    cvol 77
+    delay 72
+    cvol 82
+    cdelay 12
+    cvol 85
+    call tsec0_chn10_call10
+    cvol 92
+    cdelay 12
+    cvol 95
+    call tsec0_chn10_call14
+    cvol 105
+    call tsec0_chn10_call14
+    cvol 98
+    cdelay 12
+    cvol 95
+    cdelay 12
+    cvol 91
+    call tsec0_chn10_call10
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    cdelay 12
+    cvol 66
+    delay 60
+    cvol 91
+    call tsec0_chn10_call10
+    call tsec0_chn11_call72
+    cdelay 11
+    cvol 77
+    cdelay 13
+    call tsec0_chn10_call19
+    cdelay 12
+    cvol 66
+    delay 60
+    cvol 91
+    call tsec0_chn10_call10
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    cdelay 12
+    cvol 66
+    cdelay 12
+    cvol 77
+    delay 1080
+    cvol 74
+    cdelay 12
+    cvol 68
+    cdelay 11
+    cvol 64
+    cdelay 13
+    cvol 59
+    cdelay 11
+    cvol 53
+    cdelay 13
+    cvol 50
+    cdelay 12
+    loop 2
+    cvol 47
+    cdelay 11
+    cvol 53
+    cdelay 12
+    cvol 57
+    call tsec0_chn11_call100
+    cvol 67
+    cdelay 12
+    cvol 72
+    call tsec0_chn10_call18
+    cvol 82
+    call tsec0_chn10_call10
+    cvol 92
+    cdelay 12
+    cvol 97
+    cdelay 12
+    cvol 102
+    cdelay 13
+    cvol 105
+    delay 23
+    cvol 100
+    cdelay 12
+    call tsec0_chn1_call106
+    call tsec0_chn11_call72
+    cdelay 12
+    call tsec0_chn11_call93
+    call tsec0_chn10_call12
+    call tsec0_chn10_call8
+    call tsec0_chn11_call96
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    call tsec0_chn11_call100
+    cvol 58
+    cdelay 12
+    cvol 53
+    cdelay 13
+    loopend
+    end
+; Section total ticks: 0
+
+tsec1_chn4:
+    startlayer 0, tsec1_chn4_ly0
+    startlayer 1, tsec1_chn4_ly1
+    delay 3168
+    end
+; Section total ticks: 3168
+
+tsec1_chn8:
+    startlayer 0, tsec1_chn8_ly0
+    delay 3168
+    end
+; Section total ticks: 3168
+
+tsec1_chn10:
+    startlayer 0, tsec1_chn10_ly0
+    startlayer 1, tsec1_chn10_ly1
+    cvol 52
+    cdelay 6
+    call tsec0_chn10_call6
+    cdelay 6
+    call tsec0_chn10_call8
+    cvol 91
+    call tsec0_chn10_call10
+    cvol 84
+    call tsec0_chn10_call12
+    cvol 96
+    call tsec0_chn10_call14
+    call tsec0_chn10_call15
+    call tsec0_chn10_call10
+    cvol 82
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    call tsec0_chn10_call20
+    cdelay 6
+    call tsec0_chn10_call8
+    cvol 91
+    call tsec0_chn10_call10
+    cvol 84
+    call tsec0_chn10_call12
+    cvol 96
+    call tsec0_chn10_call14
+    call tsec0_chn10_call29
+    cvol 83
+    cdelay 12
+    cvol 64
+    delay 24
+    cvol 68
+    call tsec0_chn10_call20
+    cdelay 6
+    cvol 95
+    cdelay 12
+    cvol 100
+    delay 36
+    cvol 97
+    cdelay 12
+    cvol 94
+    cdelay 12
+    cvol 91
+    call tsec0_chn10_call10
+    cvol 84
+    cdelay 11
+    cvol 80
+    cdelay 13
+    cvol 77
+    cdelay 12
+    cvol 73
+    cdelay 12
+    cvol 70
+    cdelay 12
+    cvol 66
+    call tsec0_chn11_call100
+    cvol 59
+    cdelay 12
+    cvol 56
+    cdelay 12
+    cvol 52
+    delay 54
+    call tsec0_chn10_call6
+    loop 2
+    cdelay 6
+    cvol 95
+    cdelay 12
+    call tsec1_chn10_call68
+    cvol 94
+    call tsec0_chn10_call12
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    cvol 68
+    call tsec0_chn10_call20
+    loopend
+    cdelay 6
+    cvol 95
+    delay 60
+    cvol 99
+    call tsec0_chn10_call14
+    cvol 107
+    delay 72
+    call tsec1_chn10_call68
+    cvol 94
+    call tsec0_chn10_call12
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    cvol 52
+    cdelay 6
+    call tsec0_chn10_call6
+    loop 2
+    cdelay 6
+    cvol 95
+    cdelay 12
+    call tsec1_chn10_call68
+    cvol 94
+    call tsec0_chn10_call12
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    cvol 68
+    call tsec0_chn10_call20
+    loopend
+    cdelay 6
+    cvol 95
+    delay 60
+    cvol 99
+    call tsec0_chn10_call14
+    cvol 106
+    delay 96
+    cvol 101
+    cdelay 12
+    cvol 98
+    cdelay 12
+    cvol 95
+    call tsec0_chn10_call12
+    cvol 89
+    cdelay 12
+    cvol 86
+    cdelay 11
+    cvol 83
+    delay 25
+    cvol 78
+    cdelay 12
+    cvol 75
+    delay 18
+    cvol 80
+    cdelay 12
+    cvol 85
+    cdelay 6
+    cvol 89
+    cdelay 6
+    cvol 93
+    delay 42
+    cvol 87
+    cdelay 12
+    cvol 84
+    call tsec0_chn10_call12
+    cvol 96
+    call tsec0_chn10_call14
+    call tsec0_chn10_call15
+    call tsec0_chn10_call10
+    cvol 82
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    call tsec0_chn10_call20
+    cdelay 6
+    call tsec0_chn10_call8
+    cvol 91
+    call tsec0_chn10_call10
+    cvol 84
+    call tsec0_chn10_call12
+    cvol 96
+    call tsec0_chn10_call14
+    call tsec0_chn10_call29
+    cvol 89
+    cdelay 12
+    cvol 81
+    call tsec0_chn10_call18
+    cvol 71
+    cdelay 12
+    cvol 64
+    delay 36
+    cvol 52
+    cdelay 6
+    call tsec0_chn10_call6
+    cdelay 6
+    call tsec0_chn10_call8
+    cvol 91
+    call tsec0_chn10_call10
+    cvol 84
+    call tsec0_chn10_call12
+    cvol 96
+    call tsec0_chn10_call14
+    call tsec0_chn10_call15
+    call tsec0_chn10_call10
+    cvol 82
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    call tsec0_chn10_call20
+    cdelay 6
+    call tsec0_chn10_call8
+    cvol 91
+    call tsec0_chn10_call10
+    cvol 84
+    call tsec0_chn10_call12
+    cvol 96
+    call tsec0_chn10_call14
+    call tsec0_chn10_call29
+    cvol 89
+    cdelay 12
+    cvol 81
+    cdelay 12
+    cvol 75
+    cdelay 11
+    cvol 71
+    cdelay 13
+    cvol 64
+    delay 36
+    end
+; Section total ticks: 0
+
+tsec1_chn11:
+    startlayer 0, tsec1_chn11_ly0
+    startlayer 1, tsec1_chn11_ly1
+    startlayer 2, tsec1_chn11_ly2
+    startlayer 3, tsec1_chn11_ly3
+    cvol 47
+    call tsec0_chn11_call19
+    cvol 57
+    call tsec0_chn11_call100
+    cvol 67
+    cdelay 12
+    cvol 72
+    call tsec0_chn10_call18
+    cvol 82
+    call tsec0_chn10_call10
+    cvol 92
+    cdelay 12
+    cvol 97
+    call tsec0_chn10_call14
+    call tsec0_chn11_call90
+    call tsec0_chn11_call72
+    cdelay 12
+    call tsec0_chn11_call93
+    call tsec0_chn10_call12
+    call tsec0_chn10_call8
+    call tsec0_chn11_call96
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    call tsec0_chn11_call100
+    cvol 58
+    call tsec0_chn11_call19
+    cvol 84
+    call tsec0_chn10_call10
+    cvol 94
+    cdelay 12
+    call tsec1_chn10_call68
+    cvol 89
+    cdelay 12
+    cvol 84
+    cdelay 12
+    cvol 79
+    cdelay 12
+    cvol 75
+    delay 24
+    cvol 66
+    loop 7
+    cdelay 12
+    cvol 84
+    call tsec0_chn10_call10
+    cvol 94
+    cdelay 12
+    call tsec1_chn10_call68
+    cvol 89
+    cdelay 12
+    cvol 84
+    cdelay 12
+    cvol 79
+    cdelay 12
+    cvol 75
+    delay 24
+    cvol 70
+    loopend
+    delay 36
+    cvol 74
+    call tsec0_chn10_call18
+    cvol 80
+    cdelay 12
+    cvol 83
+    delay 24
+    cvol 88
+    call tsec0_chn10_call12
+    call tsec0_chn10_call8
+    call tsec0_chn11_call96
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    cvol 71
+    cdelay 11
+    cvol 67
+    cdelay 13
+    cvol 62
+    cdelay 12
+    cvol 58
+    call tsec0_chn11_call19
+    loop 2
+    cvol 47
+    cdelay 11
+    cvol 53
+    cdelay 12
+    cvol 57
+    call tsec0_chn11_call100
+    cvol 67
+    cdelay 12
+    cvol 72
+    call tsec0_chn10_call18
+    cvol 82
+    call tsec0_chn10_call10
+    cvol 92
+    cdelay 12
+    cvol 97
+    cdelay 12
+    cvol 102
+    cdelay 13
+    cvol 105
+    delay 23
+    cvol 100
+    cdelay 12
+    call tsec0_chn1_call106
+    call tsec0_chn11_call72
+    cdelay 12
+    call tsec0_chn11_call93
+    call tsec0_chn10_call12
+    call tsec0_chn10_call8
+    call tsec0_chn11_call96
+    call tsec0_chn11_call72
+    call tsec0_chn10_call18
+    call tsec0_chn10_call19
+    call tsec0_chn11_call100
+    cvol 58
+    cdelay 12
+    cvol 53
+    cdelay 13
+    loopend
+    end
+; Section total ticks: 0
+
+; Note Layers
+
+; tsec0
+
+tsec0_chn10_ly0:
+    ltp 0
+    ldelay 720
+    notedv 62, 48, 101
+    notedv 57, 80, 101
+    notedv 55, 8, 101
+    notevg 57, 101, 0
+    call tsec0_chn10_ly0_call6
+    notedv 50, 48, 101
+    notevg 62, 101, 0
+    notedv 57, 80, 101
+    notedv 55, 8, 101
+    notevg 57, 101, 0
+    notedvg 50, 144, 101, 42
+    notedv 62, 48, 101
+    notedv 57, 64, 101
+    notedv 55, 16, 101
+    notevg 57, 101, 0
+    call tsec0_chn10_ly0_call6
+    notedv 50, 48, 101
+    notevg 62, 101, 0
+    call tsec0_chn10_ly0_call20
+    notedv 57, 12, 101
+    notedvg 50, 144, 101, 42
+    end
+; Section total ticks: 1872
+
+tsec0_chn11_ly0:
+    ltp 0
+    notedv 53, 864, 71
+    notedv 51, 144, 71
+    notevg 53, 71, 0
+    notevg 51, 71, 0
+    notevg 45, 70, 0
+    notevg 43, 63, 0
+    notedv 41, 96, 66
+    notedv 38, 48, 66
+    notedv 39, 144, 66
+    end
+; Section total ticks: 1872
+
+tsec0_chn11_ly1:
+    ltp 0
+    ldelay 720
+    notedv 46, 144, 80
+    notedv 46, 432, 80
+    notedv 46, 576, 80
+    end
+; Section total ticks: 1872
+
+tsec0_chn11_ly2:
+    ltp 0
+    ldelay 1296
+    notedv 53, 144, 71
+    notevg 51, 71, 0
+    notedv 57, 48, 71
+    notedv 53, 96, 71
+    notedv 51, 144, 71
+    end
+; Section total ticks: 1872
+
+; tsec1
+
+tsec1_chn0_ly0:
+    ltp 0
+    ldelay 888
+    notedvg 39, 48, 85, 64
+    notevg 46, 85, 64
+    notevg 51, 85, 64
+    notevg 38, 85, 64
+    notevg 43, 85, 64
+    notedvg 50, 72, 85, 128
+    notedvg 42, 48, 85, 64
+    notedvg 46, 72, 85, 128
+    notedvg 36, 48, 85, 64
+    notevg 43, 85, 64
+    notedvg 48, 72, 85, 128
+    notedvg 44, 48, 85, 64
+    notedvg 48, 72, 85, 128
+    notedvg 38, 48, 85, 64
+    notevg 43, 85, 64
+    notevg 50, 85, 128
+    notevg 40, 96, 64
+    notevg 46, 89, 64
+    notevg 52, 82, 64
+    notevg 39, 94, 64
+    notevg 48, 86, 64
+    notedv 53, 24, 78
+    ldelay 1152
+    end
+; Section total ticks: 3168
+
+tsec1_chn0_ly1:
+    ltp 0
+    ldelay 912
+    notedvg 44, 48, 85, 64
+    notedvg 48, 96, 85, 160
+    notedvg 41, 48, 85, 64
+    notedvg 46, 72, 85, 128
+    notedvg 37, 48, 85, 64
+    notevg 44, 85, 64
+    notedvg 49, 72, 85, 128
+    notedvg 41, 48, 85, 64
+    notedvg 45, 72, 85, 128
+    notedvg 39, 48, 85, 64
+    notevg 46, 85, 64
+    notedvg 51, 72, 85, 128
+    notedvg 41, 48, 85, 64
+    notevg 46, 85, 64
+    notevg 37, 99, 64
+    notevg 42, 92, 64
+    notevg 49, 85, 64
+    notevg 36, 98, 64
+    notevg 45, 90, 64
+    notedv 51, 36, 82
+    ldelay 1164
+    end
+; Section total ticks: 3168
+
+tsec1_chn1_ly0:
+    ltp 0
+    ldelay 96
+    notedv 37, 48, 82
+    notedv 39, 144, 82
+    notedv 41, 48, 86
+    notevg 42, 88, 0
+    notevg 41, 86, 0
+    notedvg 39, 192, 85, 64
+    loop 2
+    notedvg 34, 144, 95, 85
+    loopend
+    notevg 32, 95, 85
+    loop 2
+    notedvg 34, 144, 95, 85
+    loopend
+    notedv 34, 48, 95
+    notedvg 33, 96, 95, 128
+    notedvg 32, 144, 95, 85
+    notevg 34, 95, 85
+    notedv 37, 96, 95
+    notedv 34, 48, 95
+    notedvg 33, 192, 95, 128
+    loop 2
+    notedv 41, 48, 96
+    loopend
+    notedvg 39, 192, 96, 128
+    notedv 41, 48, 96
+    notedvg 39, 240, 96, 128
+    notedv 41, 48, 96
+    notedvg 41, 240, 96, 204
+    notedvg 41, 192, 96, 192
+    end
+; Section total ticks: 2832
+
+tsec1_chn1_ly1:
+    ltp 0
+    ldelay 2016
+    loop 2
+    notedvg 38, 288, 96, 170
+    loopend
+    notedvg 38, 192, 96, 128
+    notedv 39, 96, 96
+    notedvg 38, 144, 96, 85
+    notevg 39, 96, 42
+    end
+; Section total ticks: 2880
+
+tsec1_chn4_ly0:
+    ltp 0
+    ldelay 912
+    loop 2
+    notedv 43, 48, 79
+    notedvg 41, 96, 79, 128
+    loopend
+    notedv 42, 48, 79
+    notedvg 41, 96, 79, 128
+    loop 2
+    notedvg 36, 144, 79, 85
+    loopend
+    notedv 38, 96, 79
+    notedv 37, 144, 79
+    notedvg 36, 1296, 79, 227
+    end
+; Section total ticks: 2880
+
+tsec1_chn4_ly1:
+    ltp 0
+    ldelay 912
+    notedvg 36, 144, 79, 85
+    notevg 38, 79, 85
+    notevg 37, 79, 85
+    notedv 39, 48, 79
+    loop 2
+    notedvg 41, 96, 79, 128
+    notedv 43, 48, 79
+    loopend
+    notedvg 41, 96, 79, 128
+    notedv 42, 48, 79
+    notevg 40, 79, 0
+    notevg 39, 79, 0
+    notevg 41, 79, 0
+    notedv 43, 24, 79
+    notevg 45, 79, 0
+    ldelay 1152
+    end
+; Section total ticks: 3024
+
+tsec1_chn8_ly0:
+    ltp 0
+    ldelay 816
+    notedv 62, 48, 90
+    notedv 60, 96, 90
+    ltp 12
+    notedv 55, 48, 90
+    notedv 53, 96, 90
+    notedvg 46, 48, 90, 21
+    notedv 46, 96, 90
+    notedv 53, 48, 90
+    notedvg 48, 96, 90, 32
+    notedv 50, 48, 90
+    notedv 48, 96, 90
+    notedv 55, 48, 90
+    notedvg 53, 96, 90, 32
+    notedvg 46, 1488, 74, 247
+    end
+; Section total ticks: 3168
+
+tsec1_chn10_ly0:
+    ltp 0
+    notedv 58, 48, 101
+    notedv 53, 72, 101
+    notedv 51, 12, 101
+    notevg 53, 101, 0
+    notedv 46, 48, 101
+    notevg 44, 101, 0
+    notevg 46, 101, 0
+    notevg 58, 101, 0
+    notedv 53, 72, 101
+    notedv 51, 12, 101
+    notevg 53, 101, 0
+    notedvg 46, 96, 101, 32
+    notedv 51, 48, 101
+    notedvg 50, 240, 101, 38
+    notedv 50, 48, 106
+    notedv 48, 96, 106
+    notedv 55, 48, 106
+    notedvg 53, 240, 106, 153
+    notedvg 53, 288, 99, 213
+    notedv 55, 48, 106
+    notedvg 53, 192, 106, 144
+    notedv 51, 24, 106
+    notevg 52, 106, 0
+    notevg 54, 106, 0
+    notedvg 56, 48, 106, 128
+    notedv 53, 24, 106
+    notevg 55, 106, 0
+    notedv 57, 23, 106
+    notedv 58, 25, 106
+    notedv 60, 24, 106
+    loop 2
+    notedv 62, 48, 101
+    call tsec0_chn10_ly0_call20
+    notedvg 57, 156, 101, 236
+    loopend
+    notedv 62, 48, 101
+    notedv 57, 64, 101
+    notedv 55, 16, 101
+    notedvg 57, 160, 101, 230
+    notedv 62, 48, 94
+    call tsec0_chn10_ly0_call20
+    notedvg 57, 156, 101, 236
+    end
+; Section total ticks: 2880
+
+tsec1_chn10_ly1:
+    ltp 0
+    ldelay 528
+    notedv 46, 48, 85
+    notedvg 45, 528, 75, 157
+    notedvg 46, 48, 106, 21
+    notedvg 46, 144, 106, 85
+    notedvg 48, 96, 106, 32
+    notedv 50, 48, 106
+    notedvg 48, 240, 106, 153
+    notedv 46, 48, 106
+    notedv 47, 24, 106
+    notedvg 49, 120, 106, 204
+    notedvg 51, 288, 106, 234
+    call tsec0_chn10_ly0_call6
+    notedvg 50, 192, 101, 192
+    notedvg 50, 288, 101, 149
+    call tsec0_chn10_ly0_call6
+    notedvg 50, 192, 101, 192
+    notedvg 50, 144, 101, 42
+    end
+; Section total ticks: 3168
+
+tsec1_chn11_ly0:
+    ltp 0
+    notedv 42, 48, 85
+    notevg 37, 85, 0
+    notevg 34, 85, 0
+    notedv 35, 144, 85
+    notedv 37, 48, 85
+    notevg 34, 85, 0
+    notevg 22, 96, 0
+    notedv 23, 144, 91
+    loop 2
+    notedv 22, 144, 90
+    loopend
+    notevg 20, 90, 0
+    notevg 19, 90, 0
+    notevg 18, 90, 0
+    notevg 17, 90, 0
+    notevg 20, 90, 0
+    notevg 19, 90, 0
+    notevg 18, 90, 0
+    notedvg 17, 1296, 90, 227
+    end
+; Section total ticks: 3024
+
+tsec1_chn11_ly1:
+    ltp 0
+    notedv 46, 96, 67
+    notedv 42, 48, 67
+    notedv 39, 144, 67
+    notedv 41, 96, 67
+    notedv 41, 48, 67
+    notedvg 30, 168, 64, 36
+    notedvg 29, 144, 86, 42
+    notedv 29, 120, 86
+    notedvg 32, 576, 89, 213
+    notedvg 32, 384, 89, 192
+    notedv 32, 24, 89
+    notedvg 30, 119, 89, 204
+    notedv 31, 25, 89
+    notedv 29, 24, 89
+    ldelay 1152
+    end
+; Section total ticks: 3168
+
+tsec1_chn11_ly2:
+    ltp 0
+    ldelay 144
+    notedv 42, 144, 61
+    notedv 42, 96, 73
+    notedv 37, 48, 67
+    notedvg 35, 192, 67, 64
+    notedvg 41, 144, 80, 85
+    notedvg 36, 192, 80, 128
+    notedv 36, 48, 89
+    notedvg 34, 240, 89, 153
+    notedvg 34, 96, 89, 128
+    notedv 34, 48, 89
+    notedvg 33, 192, 89, 192
+    notevg 34, 89, 128
+    notedv 35, 24, 89
+    notedvg 34, 120, 89, 204
+    notedv 34, 24, 89
+    notedvg 33, 72, 89, 174
+    notedv 34, 576, 81
+    notevg 34, 90, 0
+    end
+; Section total ticks: 3168
+
+tsec1_chn11_ly3:
+    ltp 0
+    ldelay 384
+    notedv 44, 48, 67
+    notedvg 42, 192, 71, 64
+    notedvg 38, 144, 80, 85
+    notedvg 38, 336, 80, 182
+    notedv 38, 48, 89
+    notedvg 37, 144, 89, 85
+    notedvg 36, 240, 89, 204
+    notedvg 36, 144, 89, 170
+    notedvg 38, 72, 89, 85
+    notedvg 37, 120, 89, 204
+    notedvg 36, 144, 89, 170
+    loop 3
+    notedv 41, 144, 74
+    notevg 43, 65, 0
+    loopend
+    notevg 41, 74, 0
+    notevg 43, 65, 10
+    end
+; Section total ticks: 2592
+
+; Channel Headers
+
+tsec0_chn10_call6:
+    cvol 64
+    cdelay 6
+    cvol 70
+    cdelay 6
+    cvol 75
+    cdelay 6
+    cvol 83
+    cdelay 6
+    cvol 87
+    end
+; Section total ticks: 24
+
+tsec0_chn10_call8:
+    cvol 95
+    delay 24
+    end
+; Section total ticks: 24
+
+tsec0_chn10_call10:
+    cdelay 12
+    cvol 87
+    cdelay 12
+    end
+; Section total ticks: 24
+
+tsec0_chn10_call12:
+    cdelay 12
+    cvol 91
+    cdelay 12
+    end
+; Section total ticks: 24
+
+tsec0_chn10_call14:
+    cdelay 12
+    cvol 102
+    cdelay 12
+    end
+; Section total ticks: 24
+
+tsec0_chn10_call15:
+    cvol 108
+    delay 60
+    cvol 104
+    delay 24
+    cvol 97
+    cdelay 12
+    cvol 92
+    end
+; Section total ticks: 96
+
+tsec0_chn10_call18:
+    cdelay 12
+    cvol 76
+    cdelay 12
+    end
+; Section total ticks: 24
+
+tsec0_chn10_call19:
+    cvol 72
+    cdelay 12
+    cvol 68
+    end
+; Section total ticks: 12
+
+tsec0_chn10_call20:
+    cdelay 6
+    cvol 71
+    cdelay 6
+    cvol 75
+    cdelay 6
+    cvol 80
+    cdelay 6
+    cvol 86
+    cdelay 6
+    cvol 91
+    end
+; Section total ticks: 30
+
+tsec0_chn10_call29:
+    cvol 108
+    delay 48
+    cvol 102
+    cdelay 12
+    cvol 95
+    cdelay 12
+    end
+; Section total ticks: 72
+
+tsec0_chn11_call19:
+    cdelay 12
+    cvol 53
+    cdelay 12
+    end
+; Section total ticks: 24
+
+tsec0_chn11_call72:
+    cvol 84
+    cdelay 12
+    cvol 81
+    end
+; Section total ticks: 12
+
+tsec0_chn11_call90:
+    cvol 105
+    delay 24
+    cvol 100
+    cdelay 12
+    call tsec0_chn1_call106
+    end
+; Section total ticks: 0
+
+tsec0_chn11_call93:
+    cvol 78
+    delay 24
+    cvol 69
+    cdelay 12
+    cvol 72
+    delay 24
+    cvol 77
+    cdelay 12
+    cvol 80
+    cdelay 12
+    cvol 83
+    delay 24
+    cvol 88
+    end
+; Section total ticks: 108
+
+tsec0_chn11_call96:
+    cvol 99
+    delay 36
+    cvol 94
+    cdelay 12
+    cvol 89
+    cdelay 12
+    end
+; Section total ticks: 60
+
+tsec0_chn11_call100:
+    cdelay 12
+    cvol 62
+    cdelay 12
+    end
+; Section total ticks: 24
+
+tsec0_chn1_call106:
+    cvol 97
+    delay 24
+    cvol 92
+    cdelay 12
+    cvol 89
+    delay 24
+    end
+; Section total ticks: 60
+
+tsec1_chn10_call68:
+    cvol 102
+    delay 24
+    cvol 98
+    cdelay 12
+    end
+; Section total ticks: 36
+
+; Note Layers
+
+tsec0_chn10_ly0_call6:
+    notedv 50, 48, 101
+    notevg 48, 101, 0
+    end
+; Section total ticks: 96
+
+; Calls
+
+tsec0_chn10_ly0_call20:
+    notedv 57, 72, 101
+    notedv 55, 12, 101
+    end
+; Section total ticks: 84
+
