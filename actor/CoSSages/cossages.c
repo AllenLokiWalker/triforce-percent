@@ -5,21 +5,39 @@ static const u16 DepObjectNums[] = {
 	0xA7, 0xBC, 0x9D, 0xCA, 0xB3, 0x87, 0x8A
 };
 
-//NPC action numbers: 39, 43, 41, 42, 40, 44, 31
+//NPC action numbers: 39, 43, 41, 42, 40, 44, 60
 static const u8 NPCActionSlot[] = {
-	0, 4, 2, 3, 1, 5, 6
+	0, 4, 2, 3, 1, 5, 7
+};
+
+//Demo6K action number: 52
+#define DEMO6KACTIONSLOT 6
+#define DEMO6KACTIONVAL 2
+
+static const u8 Demo6KType[] = {
+	5, 4, 3, 8, 7, 6
+};
+
+static const u8 SageHeightReg[] = {
+	18, 23, 16, 19, 21, 17
+};
+
+static const float SageBallExtraHeight[] = {
+	22.0f, 25.0f, 22.0f, 24.0f, 22.0f, 24.0f
 };
 
 static const float ShadowSize[] = {
 	50.0f, 20.0f, 30.0f, 30.0f, 25.0f, 30.0f, 25.0f
 };
 
+/*
 static ColliderCylinderInitType1 sCylinderInit = {
     { COLTYPE_HIT0, AT_NONE, AC_NONE, OC1_ON | OC1_TYPE_PLAYER, COLSHAPE_CYLINDER, },
     { ELEMTYPE_UNK0, { 0x00000000, 0x00, 0x00 }, { 0x00000000, 0x00, 0x00 },
         TOUCH_NONE, BUMP_NONE, OCELEM_ON, },
     { 25, 80, 0, { 0, 0, 0 } },
 };
+*/
 
 static const u8 NumLimbs[] = {
 	11, 17, 18, 23, 19, 17, 17
@@ -55,11 +73,12 @@ static void *const EyeTextures[7][3] = {
 };
 
 #define SAGE_STATE_GONE 0
-#define SAGE_STATE_APPEARING 1
-#define SAGE_STATE_IDLE 2
-#define SAGE_STATE_BLESSING 3
-#define SAGE_STATE_BLESSING_IDLE 4
-#define SHEIK_STATE_ANGRY 5
+#define SAGE_STATE_BALL 1
+#define SAGE_STATE_APPEARING 2 
+#define SAGE_STATE_IDLE 3
+#define SAGE_STATE_BLESSING 4
+#define SAGE_STATE_BLESSING_IDLE 5
+#define SHEIK_STATE_ANGRY 6
 
 #define FADEIN_SPEED 16
 
@@ -103,8 +122,10 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	}
 	en->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, DepObjectNums[PARAM]);
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, ShadowSize[PARAM]);
+	/*
 	Collider_InitCylinder(globalCtx, &en->collider);
     Collider_SetCylinderType1(globalCtx, &en->collider, &en->actor, &sCylinderInit);
+	*/
 	en->initted = 1;
 }
 
@@ -122,7 +143,7 @@ static s32 finishInit(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
-	if(en->initted >= 1) Collider_DestroyCylinder(globalCtx, &en->collider);
+	//if(en->initted >= 1) Collider_DestroyCylinder(globalCtx, &en->collider);
 	if(en->initted == 2) SkelAnime_Free(&en->skelAnime, globalCtx);
 }
 
@@ -190,11 +211,22 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	s32 animDone = SkelAnime_Update(&en->skelAnime);
 	if(en->state == SAGE_STATE_GONE){
 		if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 1)){
+			en->state = SAGE_STATE_BALL;
+			Actor_SpawnAsChild(&globalCtx->actorCtx, &en->actor, globalCtx,
+				ACTOR_DEMO_6K, en->actor.world.pos.x, en->actor.world.pos.y +
+               (kREG(SageHeightReg[PARAM]) + SageBallExtraHeight[PARAM]),
+			   en->actor.world.pos.z, 0, 0, 0, Demo6KType[PARAM]);
+		}
+	}else if(en->state == SAGE_STATE_BALL){
+		func_8002F974(&en->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
+		if(CHECK_NPC_ACTION(DEMO6KACTIONSLOT, DEMO6KACTIONVAL)){
 			en->state = SAGE_STATE_APPEARING;
 			en->drawConfig = 2;
 			en->alpha = 0;
+			Audio_PlayActorSound2(&en->actor, NA_SE_EV_NABALL_VANISH);
 		}
 	}else if(en->state == SAGE_STATE_APPEARING){
+		func_8002F948(&en->actor, NA_SE_EV_RAINBOW_SHOWER - SFX_FLAG);
 		s32 temp = en->alpha;
 		temp += FADEIN_SPEED;
 		if(temp >= 255){
@@ -239,7 +271,7 @@ static void updateSheik(Entity *en, GlobalContext *globalCtx){
 			--en->sfxTimer;
 			if(en->sfxTimer == 0){
 				u32 sfxId = NA_SE_PL_SKIP;/*SFX_FLAG;
-				sfxId += SurfaceType_GetSfx(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId);*/
+				sfxId += SurfaceType_GetSfx(&globalCtx->colCtx, en->actor.floorPoly, en->actor.floorBgId);*/
 				Audio_PlayActorSound2(&(en->actor), sfxId);
 			}
 		}
