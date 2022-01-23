@@ -1,10 +1,12 @@
+include make/main.mk
+
 SUBDIRS = \
 ZAP2/ \
 yaz0/
 
-.PHONY: default clean $(SUBDIRS) z64audio/ $(ZZCONVERT) $(NOVL)
+.PHONY: default clean $(SUBDIRS) z64audio/
 
-default: $(SUBDIRS) z64audio/
+default: $(SUBDIRS) z64audio/ $(ZZCONVERT) $(NOVL)
 	
 clean: yaz0/
 	rm -f novl/novl

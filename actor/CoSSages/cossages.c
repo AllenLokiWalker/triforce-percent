@@ -18,16 +18,34 @@ static const u8 Demo6KType[] = {
 	5, 4, 3, 8, 7, 6
 };
 
-static const u8 SageHeightReg[] = {
-	18, 23, 16, 19, 21, 17
+static Color_RGBA8 SagePrimColors[] = {
+    { 255, 255, 170, 255 },
+	{ 170, 255, 170, 255 },
+	{ 255, 170, 170, 255 },
+	{ 170, 220, 255, 255 },
+	{ 255, 220, 140, 255 },
+	{ 255, 170, 255, 255 }
+};
+static Color_RGBA8 SageEnvColors[] = {
+    { 200, 255, 0, 0 },
+	{ 0, 200, 0, 0 },
+	{ 255, 50, 0, 0 },
+	{ 0, 150, 255, 0 },
+	{ 255, 150, 0, 0 },
+	{ 200, 50, 255, 0 }
 };
 
-static const float SageBallExtraHeight[] = {
-	22.0f, 25.0f, 22.0f, 24.0f, 22.0f, 24.0f
+static const float SageSoulHeight[] = {
+	44.0f, 25.0f, 44.0f, 38.0f, 35.0f, 44.0f
 };
-
-static const float ShadowSize[] = {
-	50.0f, 20.0f, 30.0f, 30.0f, 25.0f, 30.0f, 25.0f
+static const float SageFullHeight[] = {
+	70.0f, 40.0f, 80.0f, 58.0f, 55.0f, 70.0f
+};
+static const float SageWidth[] = {
+	50.0f, 16.0f, 38.0f, 27.0f, 22.0f, 27.0f, 25.0f
+};
+static const u8 ParticlesPerFrame[] = {
+	0, 3, 7, 5, 4, 5, 5
 };
 
 /*
@@ -92,6 +110,7 @@ typedef struct {
     Vec3s morphTable[MAX_LIMBS];
 	s16 sheikHeadY, sheikHeadX;
 	s32 objBankIndex;
+	f32 particlesY;
 	u8 initted;
 	u8 state;
 	u8 drawConfig;
@@ -107,12 +126,6 @@ static void updateSheik(Entity *en, GlobalContext *globalCtx);
 
 static void init(Entity *en, GlobalContext *globalCtx) {
 	en->initted = 0;
-	en->state = SAGE_STATE_GONE;
-	en->drawConfig = 0;
-	en->eyeTextureIndex = 0;
-	en->mouthTextureIndex = 0;
-	en->alpha = 0;
-	en->blinkTimer = 0;
 	if(PARAM >= 7){
 		Actor_Kill(&en->actor);
 		return;
@@ -120,8 +133,21 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	if(PARAM == 6){
 		en->actor.update = (ActorFunc)updateSheik;
 	}
+	if(PARAM == 0){
+		en->state = SAGE_STATE_IDLE;
+		en->drawConfig = 1;
+		en->alpha = 255;
+	}else{
+		en->state = SAGE_STATE_GONE;
+		en->drawConfig = 0;
+		en->alpha = 0;
+	}
+	en->eyeTextureIndex = 0;
+	en->mouthTextureIndex = 0;
+	en->blinkTimer = 0;
+	en->particlesY = -1.0f;
 	en->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, DepObjectNums[PARAM]);
-	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, ShadowSize[PARAM]);
+	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, SageWidth[PARAM]);
 	/*
 	Collider_InitCylinder(globalCtx, &en->collider);
     Collider_SetCylinderType1(globalCtx, &en->collider, &en->actor, &sCylinderInit);
@@ -214,25 +240,27 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			en->state = SAGE_STATE_BALL;
 			Actor_SpawnAsChild(&globalCtx->actorCtx, &en->actor, globalCtx,
 				ACTOR_DEMO_6K, en->actor.world.pos.x, en->actor.world.pos.y +
-               (kREG(SageHeightReg[PARAM]) + SageBallExtraHeight[PARAM]),
-			   en->actor.world.pos.z, 0, 0, 0, Demo6KType[PARAM]);
+               SageSoulHeight[PARAM], en->actor.world.pos.z, 0, 0, 0,
+			   Demo6KType[PARAM]);
 		}
 	}else if(en->state == SAGE_STATE_BALL){
-		func_8002F974(&en->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
+		Audio_PlayActorSound2(&en->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
 		if(CHECK_NPC_ACTION(DEMO6KACTIONSLOT, DEMO6KACTIONVAL)){
 			en->state = SAGE_STATE_APPEARING;
 			en->drawConfig = 2;
 			en->alpha = 0;
+			en->particlesY = SageFullHeight[PARAM];
 			Audio_PlayActorSound2(&en->actor, NA_SE_EV_NABALL_VANISH);
 		}
 	}else if(en->state == SAGE_STATE_APPEARING){
-		func_8002F948(&en->actor, NA_SE_EV_RAINBOW_SHOWER - SFX_FLAG);
+		en->particlesY -= SageFullHeight[PARAM] * (1.0f / FADEIN_SPEED);
 		s32 temp = en->alpha;
 		temp += FADEIN_SPEED;
 		if(temp >= 255){
 			temp = 255;
 			en->state = SAGE_STATE_IDLE;
 			en->drawConfig = 1;
+			en->particlesY = -1.0f;
 		}
 		en->alpha = temp;
 	}else if(en->state == SAGE_STATE_IDLE){
@@ -357,7 +385,24 @@ void CoSSages_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
-	if(en->drawConfig == 0) return;
+	if(en->drawConfig == 0 || en->initted != 2) return;
+	if(en->particlesY > 0.0f){
+		for(s32 i=0; i<ParticlesPerFrame[PARAM]; ++i){
+			Vec3f pos = en->actor.world.pos;
+			static Vec3f vel = { 0.0f, 0.0f, 0.0f };
+			Vec3f accel;
+			accel.x = Rand_CenteredFloat(0.15f);
+			accel.y = 0.15f;
+			accel.z = Rand_CenteredFloat(0.15f);
+			f32 w = SageWidth[PARAM] * 1.3f;
+			pos.x += Rand_CenteredFloat(w);
+			pos.y += en->particlesY + Rand_CenteredFloat(15.0f);
+			pos.z += Rand_CenteredFloat(w);
+			EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &vel, &accel,
+				&SagePrimColors[PARAM], &SageEnvColors[PARAM], 2000, 
+				(s16)(Rand_ZeroOne() * 5.0f + 2.0f));
+		}
+	}
 	Gfx **gfx;
 	s32 setupCmdIdx;
 	if(en->drawConfig == 2){

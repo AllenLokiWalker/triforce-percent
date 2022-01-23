@@ -43,6 +43,8 @@ Total plus a bit extra: 1220 KiB -> 1250000
 #define DOOR_OPEN_DIST 255.0f
 #define DOOR_OPEN_SPEED 4.0f
 
+#define PARAM ((u16)en->dyna.actor.params)
+
 typedef struct {
 	DynaPolyActor dyna;
 	u8 state;
@@ -111,9 +113,9 @@ static s32 * const Cutscenes[] = {
 //#define COLLISION_ON()  func_8003EC50(globalCtx, &globalCtx->colCtx.dyna, en->dyna.bgId)
 
 static void CreateCollision(Entity *en, GlobalContext *globalCtx){
-	if(ColHeaders[en->dyna.actor.params] == NULL) return;
+	if(ColHeaders[PARAM] == NULL) return;
 	CollisionHeader* colHeaderVRAM;
-	CollisionHeader_GetVirtual(ColHeaders[en->dyna.actor.params], &colHeaderVRAM);
+	CollisionHeader_GetVirtual(ColHeaders[PARAM], &colHeaderVRAM);
     en->dyna.bgId = DynaPoly_SetBgActor(globalCtx, 
 		&globalCtx->colCtx.dyna, &en->dyna.actor, colHeaderVRAM);
 	en->collision = 1;
@@ -130,11 +132,11 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	en->collision = 0;
 	en->cutscene_activated = 0;
 	en->init_timer = 0;
-	if((u16)en->dyna.actor.params > 9){
+	if(PARAM > 9){
 		Actor_Kill(&en->dyna.actor);
 		return;
 	}
-	if(en->dyna.actor.params >= 7){
+	if(PARAM >= 7){
 		Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &en->dyna.actor, ACTORCAT_BG);
 	}
 	DynaPolyActor_Init(&en->dyna, DPM_UNK);
@@ -150,19 +152,19 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	//Actor specific parameters
 	u16 target_action;
 	s32 fade_speed;
-	if(en->dyna.actor.params <= 6){
-		target_action = en->dyna.actor.params + 1;
+	if(PARAM <= 6){
+		target_action = PARAM + 1;
 	}else{
 		target_action = 8;
 	}
-	if(en->dyna.actor.params <= 5){
+	if(PARAM <= 5){
 		fade_speed = 6;
 	}else{
 		fade_speed = 8;
 	}
 	//Fade in or out, handle collision
 	if(!en->collision && (CHECK_NPC_ACTION(STAIRS_SLOT, target_action) ||
-			(en->dyna.actor.params == 0 && en->init_timer == 10 && globalCtx->csCtx.state == 0))){
+			(PARAM == 0 && en->init_timer == 10 && globalCtx->csCtx.state == 0))){
 		CreateCollision(en, globalCtx);
 		en->state = 1;
 		en->timer = 0;
@@ -191,16 +193,19 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		}
 	}
 	en->alpha = temp;
+	if((en->state == 1 || en->state == 2) && PARAM <= 6){
+		Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_RAINBOW_SHOWER - SFX_FLAG);
+	}
 	//Trigger cutscenes
-	if(Cutscenes[en->dyna.actor.params] != NULL
+	if(Cutscenes[PARAM] != NULL
 			&& !en->cutscene_activated 
 			&& en->dyna.actor.xzDistToPlayer < CS_ACTIVATE_RADIUS){
-		globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(Cutscenes[en->dyna.actor.params]);
+		globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(Cutscenes[PARAM]);
 		gSaveContext.cutsceneTrigger = 1;
 		en->cutscene_activated = 1;
 	}
 	//Open Triforce door
-	if(en->dyna.actor.params == 9){
+	if(PARAM == 9){
 		if(en->state == 0 && CHECK_NPC_ACTION(STAIRS_SLOT, 9)){
 			en->state = 4;
 		}
@@ -232,7 +237,7 @@ static Color_RGBA8 KiraEnvColor = { 0, 120, 255, 0 };
 #define KIRA_ABOVE 60.0f
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
-	s8 kType = KiraType[en->dyna.actor.params];
+	s8 kType = KiraType[PARAM];
     if(kType >= 0 && (en->state == 1 || en->state == 2)){
 		float syr = Math_SinS(en->dyna.actor.shape.rot.y);
 		float cyr = Math_CosS(en->dyna.actor.shape.rot.y);
@@ -262,12 +267,12 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 		}
     }
 	if(en->alpha == 0) return;
-	if(DListsTransparent[en->dyna.actor.params]){
+	if(DListsTransparent[PARAM]){
 		gDPSetEnvColor(POLY_XLU_DISP++, 0xFF, 0xFF, 0xFF, en->alpha);
-		Gfx_DrawDListXlu(globalCtx, DLists[en->dyna.actor.params]);
+		Gfx_DrawDListXlu(globalCtx, DLists[PARAM]);
 	}else{
 		gDPSetEnvColor(POLY_OPA_DISP++, 0xFF, 0xFF, 0xFF, en->alpha);
-		Gfx_DrawDListOpa(globalCtx, DLists[en->dyna.actor.params]);
+		Gfx_DrawDListOpa(globalCtx, DLists[PARAM]);
 	}
 }
 

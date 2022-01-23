@@ -222,6 +222,7 @@ void Statics_TestShortcuts(){
             //Warp to Chamber of Sages
             globalCtx->linkAgeOnLoad = 0;
             globalCtx->nextEntranceIndex = 0x006B;
+            gSaveContext.cutsceneIndex = 0xFFF0;
             //Common warp
             gSaveContext.respawnFlag = -2;
             globalCtx->sceneLoadFlag = 0x14;
