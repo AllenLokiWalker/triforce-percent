@@ -48,14 +48,12 @@ static const u8 ParticlesPerFrame[] = {
 	0, 3, 7, 5, 4, 5, 5
 };
 
-/*
 static ColliderCylinderInitType1 sCylinderInit = {
     { COLTYPE_HIT0, AT_NONE, AC_NONE, OC1_ON | OC1_TYPE_PLAYER, COLSHAPE_CYLINDER, },
     { ELEMTYPE_UNK0, { 0x00000000, 0x00, 0x00 }, { 0x00000000, 0x00, 0x00 },
         TOUCH_NONE, BUMP_NONE, OCELEM_ON, },
     { 25, 80, 0, { 0, 0, 0 } },
 };
-*/
 
 static const u8 NumLimbs[] = {
 	11, 17, 18, 23, 19, 17, 17
@@ -148,10 +146,10 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	en->particlesY = -1.0f;
 	en->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, DepObjectNums[PARAM]);
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, SageWidth[PARAM]);
-	/*
+	en->actor.shape.shadowAlpha = en->alpha;
+	sCylinderInit.dim.radius = SageWidth[PARAM] * 0.6f;
 	Collider_InitCylinder(globalCtx, &en->collider);
     Collider_SetCylinderType1(globalCtx, &en->collider, &en->actor, &sCylinderInit);
-	*/
 	en->initted = 1;
 }
 
@@ -169,7 +167,7 @@ static s32 finishInit(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
-	//if(en->initted >= 1) Collider_DestroyCylinder(globalCtx, &en->collider);
+	if(en->initted >= 1) Collider_DestroyCylinder(globalCtx, &en->collider);
 	if(en->initted == 2) SkelAnime_Free(&en->skelAnime, globalCtx);
 }
 
@@ -280,6 +278,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	}else if(en->state == SAGE_STATE_BLESSING_IDLE){
 		(void)0;
 	}
+	en->actor.shape.shadowAlpha = en->alpha;
 }
 
 static void updateSheik(Entity *en, GlobalContext *globalCtx){
@@ -289,7 +288,7 @@ static void updateSheik(Entity *en, GlobalContext *globalCtx){
 		if(CHECK_NPC_ACTION(NPCActionSlot[PARAM], 1)){
 			en->state = SAGE_STATE_APPEARING;
 			en->drawConfig = 1;
-			en->alpha = 255;
+			en->actor.shape.shadowAlpha = en->alpha = 255;
 			en->sfxTimer = 5;
 			Animation_Change(&en->skelAnime, &gSheikFallingFromSkyAnim, 1.0f, 0.0f,
 				Animation_GetLastFrame(&gSheikFallingFromSkyAnim), ANIMMODE_ONCE, 0.0f);

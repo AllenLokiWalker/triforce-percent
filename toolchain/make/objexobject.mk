@@ -1,5 +1,5 @@
 zobj.zobj $(OBJECTNAME).h $(OBJECTNAME).ld: $(OBJECTNAME).objex $(OBJEXSUBFILES)
-	$(ZZCONVERT) --in $(OBJECTNAME).objex --out zobj.zobj $(OBJEXSETTINGS) --header $(OBJECTNAME).h --linker $(OBJECTNAME).ld
+	$(Z64CONVERT) --in $(OBJECTNAME).objex --out zobj.zobj $(OBJEXSETTINGS) --header $(OBJECTNAME).h --linker $(OBJECTNAME).ld
 
 .PHONY: objexclean
 

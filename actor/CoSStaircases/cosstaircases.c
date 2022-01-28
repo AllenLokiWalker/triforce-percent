@@ -174,7 +174,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	}
 	if(en->state == 1){
 		++en->timer;
-		if(en->timer >= 20){
+		if(en->timer >= 20 || PARAM >= 7){
 			en->state = 2;
 		}
 	}

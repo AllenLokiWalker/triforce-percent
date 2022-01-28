@@ -76,4 +76,4 @@ NOVL := $(PROJECT_DIR)/toolchain/novl/novl
 ZAPD := $(PROJECT_DIR)/toolchain/ZAP2/ZAPD.out
 YAZ0 := $(PROJECT_DIR)/toolchain/yaz0/yaz0_encode
 CREATE_PATCH := $(PYTHON3) $(PROJECT_DIR)/toolchain/create_patch.py
-ZZCONVERT := $(PROJECT_DIR)/toolchain/z64convert/bin/release/z64convert-linux
+Z64CONVERT := $(PROJECT_DIR)/toolchain/z64convert/z64convert-cli
