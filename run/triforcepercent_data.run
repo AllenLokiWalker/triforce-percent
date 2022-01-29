@@ -128,6 +128,8 @@ SCENE 58 ../scene/Ending/Ending_scene.zscene
 
 ACTOR 118 ../actor/BotWLink/BotWLink.zovl
 OBJECT 122 ../actor/BotWLink/zobj.zobj
+ACTOR 121 ../actor/BotWZelda/BotWZelda.zovl
+OBJECT 125 ../actor/BotWZelda/zobj.zobj
 
 //Voice acting
 STATICDATA ../voice/link_demo_1_32Raw.bin 3 0 0

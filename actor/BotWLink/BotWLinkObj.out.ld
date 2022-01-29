@@ -1,4 +1,4 @@
-BotWLinkMesh = 0x6013ff8;
-BotWLinkMeshIdleAnim = 0x6015090;
-BotWLinkMeshBobokuwaAnim = 0x6016728;
-BotWLinkMeshHeadmoveAnim = 0x6017bfc;
+BotWLinkMesh = 0x6013f78;
+BotWLinkMeshIdleAnim = 0x6015010;
+BotWLinkMeshBobokuwaAnim = 0x60166a8;
+BotWLinkMeshHeadmoveAnim = 0x6017b7c;

@@ -216,13 +216,16 @@ void Statics_TestShortcuts(){
             //Warp to Unicorn Fountain
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x0560;
+            //Warp to Chamber of Sages
+            // globalCtx->linkAgeOnLoad = 0;
+            // globalCtx->nextEntranceIndex = 0x006B;
+            // gSaveContext.cutsceneIndex = 0xFFF0;
             //Warp to Triforce room
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x034D;
-            //Warp to Chamber of Sages
+            //Warp to ending
             globalCtx->linkAgeOnLoad = 0;
-            globalCtx->nextEntranceIndex = 0x006B;
-            gSaveContext.cutsceneIndex = 0xFFF0;
+            globalCtx->nextEntranceIndex = 0x03FC;
             //Common warp
             gSaveContext.respawnFlag = -2;
             globalCtx->sceneLoadFlag = 0x14;
