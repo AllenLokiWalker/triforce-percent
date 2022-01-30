@@ -1,6 +1,3 @@
-[submodule "toolchain/ZAP2"]
-	path = toolchain/ZAP2
-	url = https://github.com/NEstelami/ZAP2.git
 [submodule "toolchain/novl"]
 	path = toolchain/novl
 	url = https://github.com/z64me/novl
@@ -16,3 +13,9 @@
 [submodule "toolchain/z64convert"]
 	path = toolchain/z64convert
 	url = https://github.com/turpaan64/z64convert.git
+[submodule "toolchain/ZAPD"]
+	path = toolchain/ZAPD
+	url = https://github.com/zeldaret/ZAPD.git
+[submodule "toolchain/ci4tool"]
+	path = toolchain/ci4tool
+	url = https://github.com/sauraen/ci4tool.git

@@ -9,8 +9,8 @@ ifeq ("$(and $(wildcard $(PROJECT_DIR)/build-shortcut/oot_1.0U_comp.z64), $(wild
     $(error Original ROMs not found, please read README.md)
 endif
 
-ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/ZAP2/Makefile)","")
-    $(error ZAP2 not found; try git submodule update --init --recursive)
+ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/ZAPD/Makefile)","")
+    $(error ZAPD not found; try git submodule update --init --recursive)
 endif
 ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/novl/src/main.c)","")
     $(error novl not found; try git submodule update --init --recursive)
@@ -73,7 +73,7 @@ OCFLAGS := -R .MIPS.abiflags -O binary
 # Other tools
 
 NOVL := $(PROJECT_DIR)/toolchain/novl/novl
-ZAPD := $(PROJECT_DIR)/toolchain/ZAP2/ZAPD.out
+ZAPD := $(PROJECT_DIR)/toolchain/ZAPD/ZAPD.out
 YAZ0 := $(PROJECT_DIR)/toolchain/yaz0/yaz0_encode
 CREATE_PATCH := $(PYTHON3) $(PROJECT_DIR)/toolchain/create_patch.py
 Z64CONVERT := $(PROJECT_DIR)/toolchain/z64convert/z64convert-cli

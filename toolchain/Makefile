@@ -1,7 +1,7 @@
 include make/main.mk
 
 SUBDIRS = \
-ZAP2/ \
+ZAPD/ \
 yaz0/
 
 .PHONY: default clean $(SUBDIRS) z64audio/ z64convert/
