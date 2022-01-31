@@ -26,6 +26,16 @@ rom-setup/: statics/ $(CONTENTS)
 	cp toolchain/zzrtl/oot_dump.rtl $*oot_dump.rtl
 	$(ZZRTL) $*oot_dump.rtl
 	touch $*update.txt
+	rm $*scene/0/title.png
+	rm $*scene/1/title.png
+	rm $*scene/2/title.png
+	rm $*scene/3/title.png
+	rm $*scene/4/title.png
+	rm $*scene/5/title.png
+	rm $*scene/6/title.png
+	rm $*scene/7/title.png
+	rm $*scene/8/title.png
+	rm $*scene/9/title.png
 	rm $*scene/16/title.png
 	rm $*scene/45/title.png
 	rm $*scene/46/title.png

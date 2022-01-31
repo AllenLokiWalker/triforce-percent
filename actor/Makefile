@@ -3,6 +3,7 @@ BetaGreatFairy/ \
 BetaKokiri/ \
 BossRunningMan/ \
 BotWLink/ \
+BotWZelda/ \
 CoSSages/ \
 CoSStaircases/ \
 Nabooru/ \

@@ -26,7 +26,13 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void update(Entity *en, GlobalContext *globalCtx) {
-	//
+	if(!(CTRLR_RAW & (BTN_R | BTN_L))){
+		if((CTRLR_RAW & BTN_DLEFT)){
+			en->actor.shape.rot.y -= 0x200;
+		}else if((CTRLR_RAW & BTN_DRIGHT)){
+			en->actor.shape.rot.y += 0x200;
+		}
+	}
 }
 
 s32 BotWZelda_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
