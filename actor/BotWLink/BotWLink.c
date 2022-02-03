@@ -91,7 +91,7 @@ typedef struct {
 	HairPhysSimpleState physSimple[4];
 	HairPhysDoubleState physDouble[2];
 	HairPhysTunicState physTunic[6];
-	void *physStates[12];
+	void *physStates[NUM_PHYS];
 	float windX, windZ;
 	u32 flags;
 	u8 timer;
@@ -113,7 +113,7 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	for(s32 i=0; i<4; ++i) en->physStates[c++] = &en->physSimple[i];
 	for(s32 i=0; i<2; ++i) en->physStates[c++] = &en->physDouble[i];
 	for(s32 i=0; i<6; ++i) en->physStates[c++] = &en->physTunic[i];
-	for(c=0; c<12; ++c) HairPhys_Init(en->physStates[c], &physc[c]);
+	for(c=0; c<NUM_PHYS; ++c) HairPhys_Init(en->physStates[c], &physc[c]);
 	en->physTunic[0].conn1 = &en->physTunic[1];
 	en->physTunic[1].conn1 = &en->physTunic[0];
 	en->physTunic[1].conn2 = &en->physTunic[2];

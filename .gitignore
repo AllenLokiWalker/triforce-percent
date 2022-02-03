@@ -12,3 +12,5 @@ local.mk
 *.blend1
 
 toolchain/yaz0/yaz0_encode
+music/02-*.wav
+music/02-*.wav.reapeaks

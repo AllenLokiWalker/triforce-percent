@@ -6,9 +6,13 @@ ACTORNUM = 121
 OBJECTNAME = BotWZeldaObj
 OBJECTNUM = 125
 OBJECTOBJS = \
-	BotWZeldaMesh.o
+	BotWZeldaMesh.o \
+	BotWZeldaMeshDescendidleAnim.o \
+	BotWZeldaMeshNormalidleAnim.o
 OBJECTHDRS = \
-	BotWZeldaMesh.h
+	BotWZeldaMesh.h \
+	BotWZeldaMeshDescendidleAnim.h \
+	BotWZeldaMeshNormalidleAnim.h
 SHDRS = \
 	../../loader/debugger/debugger.h \
 	../../statics/hairphys.h \
