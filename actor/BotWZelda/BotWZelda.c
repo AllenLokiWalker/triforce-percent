@@ -40,14 +40,14 @@ static const HairPhysLimits dressLLimits = {{-1.0f,  0.1f,  0.0f}, {0.0f, 0.0f, 
 static const HairPhysLimits dressFLimits = {{ 0.0f,  0.0f, -1.0f}, {0.0f, 0.0f, 0.0f}};
 static const HairPhysLimits dressRLimits = {{ 1.0f,  0.1f,  0.0f}, {0.0f, 0.0f, 0.0f}};
 static const HairPhysLimits dressBLimits = {{ 0.0f,  0.0f,  1.0f}, {0.0f, 0.0f, 0.0f}};
-static const HairPhysBasic  hairBasic    =  {0.010f, 100.0f,  5.0f, 80.0f, 0.02f, 0.97f, 0.010f};
-static const HairPhysDouble hairDouble   = {{0.010f, 100.0f,  8.0f, 80.0f, 0.02f, 0.97f, 0.015f}, &hairLimits};
-static const HairPhysBasic  dressBasic   =  {0.002f, 500.0f, 10.0f,100.0f, 0.10f, 0.92f, 0.015f};
+static const HairPhysBasic  hairBasic    =  {0.010f, 100.0f,  5.0f, 80.0f, 0.07f, 0.97f, 0.020f, 1};
+static const HairPhysDouble hairDouble   = {{0.010f, 100.0f,  8.0f, 80.0f, 0.12f, 0.97f, 0.015f, 0}, &hairLimits};
+static const HairPhysBasic  dressBasic   =  {0.002f, 500.0f, 10.0f,100.0f, 0.10f, 0.92f, 0.000f, 2};
 static const HairPhysTunic  dressTunic   =  {13.0f, 0.05f};
 static const HairPhysConstants physc[NUM_PHYS] = {
-	/*hairl*/  {2, &hairBasic, &hairLimits, &hairDouble, NULL},
-	/*hairc*/  {2, &hairBasic, &hairLimits, &hairDouble, NULL},
-	/*hairr*/  {2, &hairBasic, &hairLimits, &hairDouble, NULL},
+	/*hairl*/  {1, &hairBasic, &hairLimits, &hairDouble, NULL},
+	/*hairc*/  {1, &hairBasic, &hairLimits, &hairDouble, NULL},
+	/*hairr*/  {1, &hairBasic, &hairLimits, &hairDouble, NULL},
 	/*dressl*/ {2, &dressBasic, &dressLLimits, NULL, &dressTunic},
 	/*dressf*/ {2, &dressBasic, &dressFLimits, NULL, &dressTunic},
 	/*dressr*/ {2, &dressBasic, &dressRLimits, NULL, &dressTunic},

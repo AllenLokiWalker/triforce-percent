@@ -308,7 +308,7 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
     const HairPhysDouble *dbl = c->dbl;
     Vec3f fulcrum; float costwist, sintwist;
     s16 twist = ExtractFulcrumTwist(actorscale, c->b->len, lPos,
-        &fulcrum, &costwist, &sintwist, 1);
+        &fulcrum, &costwist, &sintwist, c->b->parentaxis);
     if(!s->initted){
         s->initted = 1;
         s->s1.pos.x = fulcrum.x;
@@ -349,7 +349,7 @@ void HairPhys_UpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c,
         Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale){
     Vec3f fulcrum; float costwist, sintwist;
     s16 twist = ExtractFulcrumTwist(actorscale, 0.0f, lPos,
-        &fulcrum, &costwist, &sintwist, 2);
+        &fulcrum, &costwist, &sintwist, c->b->parentaxis);
     if(!s->initted){
         s->initted = 1;
         s->s.pos.x = fulcrum.x;

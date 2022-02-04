@@ -9,6 +9,7 @@ typedef struct {
     float yawmult; //also used for wind randomness
     float dampening;
     float windpush;
+    u8 parentaxis;
 } HairPhysBasic;
 
 typedef struct {

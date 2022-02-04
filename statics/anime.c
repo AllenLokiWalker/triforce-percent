@@ -123,14 +123,17 @@ static void Patched_InterpFrameTable(s32 limbCount, Vec3s* dst, Vec3s* start, Ve
         return;
     }
     for(s32 i=0; i<limbCount; i++, dst++, start++, target++){
-        s32 numLargeRot = 0;
         s16 dx = target->x - start->x;
         s16 dy = target->y - start->y;
         s16 dz = target->z - start->z;
+        /*
+        s32 numLargeRot = 0;
         if(dx <= 0xC000 || dx >= 0x4000) ++numLargeRot;
         if(dy <= 0xC000 || dy >= 0x4000) ++numLargeRot;
         if(dz <= 0xC000 || dz >= 0x4000) ++numLargeRot;
-        if(numLargeRot >= 2 && useSlerp && i >= 1){ //i==0 is translation
+        */
+        s32 totalRot = (dx < 0 ? -dx : dx) + (dy < 0 ? -dy : dy) + (dz < 0 ? -dz : dz);
+        if(totalRot > 0x2000 && useSlerp && i >= 1){ //i==0 is translation
             //There are at least two large angles; the per-axis interpolation
             //will be pretty far off. Do correct SLERP of quaternions. This is
             //much more expensive, so only done in these cases.
