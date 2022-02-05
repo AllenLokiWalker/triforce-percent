@@ -3,6 +3,7 @@
 #include "BotWLinkMeshIdleAnim.h"
 #include "BotWLinkMeshBobokuwaAnim.h"
 #include "BotWLinkMeshHeadmoveAnim.h"
+#include "BotWLinkMeshTex.h"
 #include "../loader/debugger/debugger.h"
 #include "../statics/hairphys.h"
 #include "../statics/statics.h"
@@ -83,6 +84,10 @@ static const HairPhysConstants physc[NUM_PHYS] = {
 	/*lotncbr*/ {2, &tunicBasic, &tunicBRLimits, NULL, &tunicTunic},
 };
 
+static void *const EyeTextures[3] = {
+	&BotWLinkEye0Tex, &BotWLinkEye1Tex, &BotWLinkEye2Tex
+};
+
 typedef struct {
 	Actor actor;
 	SkelAnime skelAnime;
@@ -94,6 +99,8 @@ typedef struct {
 	void *physStates[NUM_PHYS];
 	float windX, windZ;
 	u32 flags;
+	u8 eyeTextureIndex;
+	u8 blinkTimer;
 	u8 timer;
 	u8 debug;
 } Entity;
@@ -102,6 +109,8 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	//General setup
 	Rupees_ChangeBy(4);
 	en->flags = 0;
+	en->eyeTextureIndex = 0;
+	en->blinkTimer = 0;
 	en->debug = 0;
 	Actor_SetScale(&en->actor, ACTOR_SCALE);
 	//Components setup
@@ -128,6 +137,15 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
 	SkelAnime_Free(&en->skelAnime, globalCtx);
+}
+
+static void updateEyes(Entity *en){
+	if(en->blinkTimer == 0){
+		en->blinkTimer = Rand_S16Offset(60, 60);
+	}else{
+		--en->blinkTimer;
+	}
+	en->eyeTextureIndex = (en->blinkTimer < 3) ? en->blinkTimer : 0;
 }
 
 #define VO_LINK_BOBOKUWA 0
@@ -188,6 +206,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			++en->timer;
 		}
 	}
+	updateEyes(en);
 	s32 animFinished = SkelAnime_Update(&en->skelAnime);
 	if(animFinished){
 		BotWLink_SetAnim(en, &BotWLinkMeshIdleAnim, ANIMMODE_LOOP, -8.0f);
@@ -235,6 +254,8 @@ void BotWLink_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
 	func_80093D18(globalCtx->state.gfxCtx);
+	void *seg08Tex = EyeTextures[en->eyeTextureIndex];
+	gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(seg08Tex));
 	SkelAnime_DrawFlexOpa(globalCtx, en->skelAnime.skeleton, en->skelAnime.jointTable,
 		en->skelAnime.dListCount, BotWLink_OverrideLimbDraw, BotWLink_PostLimbDraw, en);
 	func_80093D18(globalCtx->state.gfxCtx);

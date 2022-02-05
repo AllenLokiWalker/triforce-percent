@@ -12,7 +12,6 @@ extern u64 BotWLinkMesh_head_diff_ci4[];
 extern u64 BotWLinkMesh_head_diff_ci4_pal_rgba16[];
 extern u64 BotWLinkMesh_undershirt_diff_ci4[];
 extern u64 BotWLinkMesh_undershirt_diff_ci4_pal_rgba16[];
-extern u64 BotWLinkMesh_eye0_rgba16[];
 extern u64 BotWLinkMesh_tunic_sleeves_diff_ci4[];
 extern u64 BotWLinkMesh_tunic_sleeves_diff_ci4_pal_rgba16[];
 extern u64 BotWLinkMesh_skin_diff_ci4[];

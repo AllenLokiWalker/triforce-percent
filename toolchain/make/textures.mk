@@ -4,8 +4,8 @@
 %.rgba32.inc: %.rgba32.png
 	$(ZAPD) btex -tt rgba32 -i $< -o $@
 
-%.rgb5a1.inc: %.rgb5a1.png
-	$(ZAPD) btex -tt rgba5a1 -i $< -o $@
+%.rgba16.inc: %.rgba16.png
+	$(ZAPD) btex -tt rgba16 -i $< -o $@
 
 %.ia8.inc: %.ia8.png
 	$(ZAPD) btex -tt ia8 -i $< -o $@
