@@ -40,7 +40,7 @@ Total plus a bit extra: 1220 KiB -> 1250000
 
 #define CS_ACTIVATE_RADIUS 120.0f
 #define DOOR_OPEN_DIST 255.0f
-#define DOOR_OPEN_SPEED 4.0f
+#define DOOR_OPEN_SPEED 3.5f
 
 #define STATE_INIT 0
 #define STATE_WAIT 1
@@ -213,7 +213,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			//mid dual synth fall, then "phong" if left for long enough
 			Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_SHUT_BY_CRYSTAL - SFX_FLAG);
 		}
-		if(en->sound_timer >= 10 && en->sound_timer < 60){
+		if(en->sound_timer >= 25 && en->sound_timer < 45){
 			//low sine fall
 			Audio_PlayActorSound2(&(en->dyna.actor), NA_SE_EV_FANTOM_WARP_L2 - SFX_FLAG);
 		}
@@ -261,6 +261,11 @@ static Color_RGBA8 KiraPrimColor = { 170, 255, 255, 255 };
 static Color_RGBA8 KiraEnvColor = { 0, 120, 255, 0 };
 #define KIRA_ABOVE 60.0f
 
+static Vec3f DustVelocity = { 0.0f, 0.0f, 0.0f };
+static Vec3f DustAccel = { 3.0f, 0.0f, 0.0f };
+static Color_RGBA8 DustPrimColor = { 150, 150, 170, 255 };
+static Color_RGBA8 DustEnvColor = { 40, 40, 120, 255 };
+
 static void draw(Entity *en, GlobalContext *globalCtx) {
 	s8 kType = KiraType[PARAM];
     if(kType >= 0 && (en->state == 1 || en->state == 2)){
@@ -290,7 +295,33 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 			EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &KiraVelocity, &KiraAccel,
 				&KiraPrimColor, &KiraEnvColor, 6000, 10);
 		}
-    }
+    }else if(en->sound_timer > 0){
+		float ratio = (float)((s32)en->sound_timer - (s32)WaitTimes[9]) 
+			/ ((s32)WaitTimes[7] + 255 / (s32)FadeSpeeds[7]);
+		if(ratio >= 0.0f && ratio <= 1.0f){
+			s32 nspawn = 2.5f + 3.0f * ratio;
+			for(s32 i=0; i<nspawn; ++i){
+				Vec3f pos = en->dyna.actor.world.pos;
+				pos.y += 40.0f;
+				float dyz = 300.0f * ratio;
+				float d = dyz * (2.0f * Rand_ZeroOne() - 1.0f);
+				s16 mode = Rand_S16Offset(0, 4);
+				if((mode & 1)) dyz = -dyz;
+				if((mode & 2)){
+					pos.y += d;
+					pos.z += dyz;
+				}else{
+					pos.y += dyz;
+					pos.z += d;
+				}
+				pos.y += 20.0f * Rand_ZeroOne() - 10.0f;
+				pos.z += 20.0f * Rand_ZeroOne() - 10.0f;
+				EffectSsDust_Spawn(globalCtx, 5, 
+					&pos, &DustVelocity, &DustAccel, &DustPrimColor, &DustEnvColor,
+					400, 100, 5, 0);
+			}
+		}
+	}
 	if(en->alpha == 0) return;
 	if(DListsTransparent[PARAM]){
 		if(PARAM == 7){

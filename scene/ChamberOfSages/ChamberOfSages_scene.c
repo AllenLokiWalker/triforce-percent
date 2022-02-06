@@ -31,7 +31,7 @@ SCmdBase* ChamberOfSages_scene_alternateHeaders[] = {
 };
 
 ActorEntry ChamberOfSages_scene_header00_startPositionList[] = {
-	{ ACTOR_PLAYER, -791, 1131, 109, 0, 49152, 0, 0x0FFF },
+	{ ACTOR_PLAYER, 0, 127, 0, 0, 49152, 0, 0x0FFF },
 };
 
 extern u8 _ChamberOfSages_room_0SegmentRomStart[];
@@ -69,7 +69,7 @@ SCmdBase ChamberOfSages_scene_header04[] = {
 };
 
 ActorEntry ChamberOfSages_scene_header04_startPositionList[] = {
-	{ ACTOR_PLAYER, -791, 1131, 109, 0, 49152, 0, 0x0FFF },
+	{ ACTOR_PLAYER, 0, 127, 0, 0, 49152, 0, 0x0FFF },
 };
 
 EntranceEntry ChamberOfSages_scene_header04_entranceList[] = {
@@ -1120,8 +1120,8 @@ s32 CS6Sheik[] = {
 	CS_NPC_ACTION_LIST(143, 4),
 		CS_NPC_ACTION(0, 0, 433, 0x0, 0x0, 0x0, 67, 0, 100, 67, 0, 0, 0, 0, 0),
 		CS_NPC_ACTION(8, 433, 493, 0x0, 0x0, 0x0, 67, 0, 0, 67, 0, -100, 0, 0, 0),
-		CS_NPC_ACTION(7, 493, 585, 0x0, 0x0, 0x0, 67, 0, -100, 67, 0, -100, 0, 0, 0),
-		CS_NPC_ACTION(9, 585, 1000, 0x0, 0x0, 0x0, 67, 0, -100, 67, 0, -100, 0, 0, 0),
+		CS_NPC_ACTION(7, 493, 570, 0x0, 0x0, 0x0, 67, 0, -100, 67, 0, -100, 0, 0, 0),
+		CS_NPC_ACTION(9, 570, 1000, 0x0, 0x0, 0x0, 67, 0, -100, 67, 0, -100, 0, 0, 0),
 	CS_NPC_ACTION_LIST(60, 4),
 		CS_NPC_ACTION(0, 0, 60, 0x0, 0x0, 0x0, 34, 0, 100, 34, 0, 0, 0, 0, 0),
 		CS_NPC_ACTION(1, 60, 355, 0x0, 0x0, 0x0, 34, 0, 0, 34, 0, -100, 0, 0, 0),

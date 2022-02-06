@@ -297,9 +297,7 @@ static void updateSheik(Entity *en, GlobalContext *globalCtx){
 		if(en->sfxTimer > 0){
 			--en->sfxTimer;
 			if(en->sfxTimer == 0){
-				u32 sfxId = NA_SE_PL_SKIP;/*SFX_FLAG;
-				sfxId += SurfaceType_GetSfx(&globalCtx->colCtx, en->actor.floorPoly, en->actor.floorBgId);*/
-				Audio_PlayActorSound2(&(en->actor), sfxId);
+				Audio_PlayActorSound2(&(en->actor), NA_SE_PL_SKIP);
 			}
 		}
 		if(animDone){
@@ -343,7 +341,7 @@ static void updateSheik(Entity *en, GlobalContext *globalCtx){
 				en->sheikLookAwayFlag = false;
 			}else{
 				en->state = SAGE_STATE_BLESSING;
-				en->sfxTimer = 13;
+				en->sfxTimer = 40;
 				Animation_Change(&en->skelAnime, &gSheikShowingTriforceOnHandAnim, 1.0f, 0.0f,
 					Animation_GetLastFrame(&gSheikShowingTriforceOnHandAnim), ANIMMODE_ONCE, -4.0f);
 			}
@@ -351,7 +349,9 @@ static void updateSheik(Entity *en, GlobalContext *globalCtx){
 	}else if(en->state == SAGE_STATE_BLESSING){
 		if(en->sfxTimer > 0){
 			--en->sfxTimer;
-			if(en->sfxTimer == 0){
+			if(en->sfxTimer == 25){
+				Audio_PlayActorSound2(&(en->actor), NA_SE_PL_SKIP);
+			}else if(en->sfxTimer == 0){
 				Audio_PlayActorSound2(&(en->actor), NA_SE_VO_SK_SHOUT);
 			}
 		}
