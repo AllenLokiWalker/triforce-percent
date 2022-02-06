@@ -15,7 +15,8 @@ OBJECTHDRS = \
 	BotWLinkMesh.h \
 	BotWLinkMeshIdleAnim.h \
 	BotWLinkMeshBobokuwaAnim.h \
-	BotWLinkMeshHeadmoveAnim.h
+	BotWLinkMeshHeadmoveAnim.h \
+	BotWLinkMeshTex.h
 SHDRS = \
 	../../loader/debugger/debugger.h \
 	../../statics/hairphys.h \

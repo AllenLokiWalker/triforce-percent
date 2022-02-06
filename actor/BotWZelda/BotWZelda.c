@@ -2,6 +2,7 @@
 #include "BotWZeldaMesh.h"
 #include "BotWZeldaMeshDescendidleAnim.h"
 #include "BotWZeldaMeshNormalidleAnim.h"
+#include "BotWZeldaMeshTex.h"
 #include "../loader/debugger/debugger.h"
 #include "../statics/hairphys.h"
 #include "../statics/statics.h"
@@ -54,6 +55,10 @@ static const HairPhysConstants physc[NUM_PHYS] = {
 	/*dressb*/ {2, &dressBasic, &dressBLimits, NULL, &dressTunic},
 };
 
+static void *const EyeTextures[3] = {
+	&BotWZeldaEye0Tex, &BotWZeldaEye1Tex, &BotWZeldaEye2Tex
+};
+
 typedef struct {
 	Actor actor;
 	SkelAnime skelAnime;
@@ -64,12 +69,18 @@ typedef struct {
 	void *physStates[NUM_PHYS];
 	float windX, windZ;
 	u32 flags;
+	u8 eyeTextureIndex;
+	u8 blinkTimer;
+	u8 eyeState;
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
 	//General setup
 	Rupees_ChangeBy(7);
 	en->flags = 0;
+	en->eyeTextureIndex = 0;
+	en->blinkTimer = 0;
+	en->eyeState = 2;
 	Actor_SetScale(&en->actor, ACTOR_SCALE);
 	//Components setup
 	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f); //TODO not working?
@@ -96,9 +107,40 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 	SkelAnime_Free(&en->skelAnime, globalCtx);
 }
 
+static void updateEyes(Entity *en){
+	if(en->eyeState == 1){
+		++en->blinkTimer;
+		en->eyeTextureIndex = 1;
+		if(en->blinkTimer > 5){
+			en->eyeState = 2;
+		}
+	}else if(en->eyeState == 2){
+		en->eyeTextureIndex = 2;
+	}else if(en->eyeState == 3){
+		++en->blinkTimer;
+		en->eyeTextureIndex = 1;
+		if(en->blinkTimer > 5){
+			en->eyeState = 0;
+			en->blinkTimer = 20;
+		}
+	}else{
+		if(en->blinkTimer == 0){
+			en->blinkTimer = Rand_S16Offset(60, 60);
+		}else{
+			--en->blinkTimer;
+		}
+		en->eyeTextureIndex = (en->blinkTimer < 3) ? en->blinkTimer : 0;
+	}
+}
+
 static void BotWZelda_SetAnim(Entity *en, AnimationHeader *anim, u8 mode, f32 morphFrames){
 	Animation_Change(&en->skelAnime, anim, 1.0f, 0.0f, 
 		Animation_GetLastFrame(anim), mode, morphFrames);
+	if(anim == &BotWZeldaMeshDescendidleAnim && (en->eyeState == 0 || en->eyeState == 3)){
+		en->eyeState = 1; // Start closing eyes
+	}else if(en->eyeState == 1 || en->eyeState == 2){
+		en->eyeState = 3; // Start opening eyes
+	}
 }
 
 static void update(Entity *en, GlobalContext *globalCtx) {
@@ -111,6 +153,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			BotWZelda_SetAnim(en, &BotWZeldaMeshNormalidleAnim, ANIMMODE_LOOP, -8.0f);
 		}
 	}
+	updateEyes(en);
 	SkelAnime_Update(&en->skelAnime);
 	en->flags &= ~FLAG_NO_LOWERBODY;
 	Vec3f pos = en->actor.world.pos;
@@ -143,6 +186,8 @@ void BotWZelda_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
 	func_80093D18(globalCtx->state.gfxCtx);
+	void *seg08Tex = EyeTextures[en->eyeTextureIndex];
+	gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(seg08Tex));
 	SkelAnime_DrawFlexOpa(globalCtx, en->skelAnime.skeleton, en->skelAnime.jointTable,
 		en->skelAnime.dListCount, BotWZelda_OverrideLimbDraw, BotWZelda_PostLimbDraw, en);
 	func_80093D18(globalCtx->state.gfxCtx);

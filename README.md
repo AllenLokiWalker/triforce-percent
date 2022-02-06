@@ -78,46 +78,52 @@ SAURAEN
 RTA Speedrunner \
 SAVESTATE
 
+-
+
 Scenario \
 SAURAEN \
 REBECCAETRIPP \
 TERUSTHEBIRD \
 DWANGOAC
 
-### ASSET UNIT
 
-Actor Design & Program \
-SAURAEN \
-RANKAISIJA \
-Z64ME \
-\/ZEL\/
+### ASSET UNIT
 
 Scene Design \
 CDI-FAILS \
 \/ZEL\/ \
 SAURAEN
 
+-
+
 Music \
 SAURAEN \
 REBECCAETRIPP
-
-Cinema Scenes \
-SAURAEN \
-\/ZEL\/
-
-BotW Model Conversion \
-ALI1234
-
-Animation \
-PURPULPANCAKES \
-SAURAEN
 
 Screen Text \
 KIM-SUKLEY \
 SAURAEN
 
-Translator \
-YUKLOJ
+-
+
+Cinema Scenes \
+SAURAEN \
+DEFENESAM
+
+BotW Model Conversion \
+ALI1234 \
+SAURAEN
+
+-
+
+Animation \
+AEROARTWORK \
+SAURAEN
+
+Motion Capture Actors \
+TBD
+
+-
 
 Zelda (English Voice) \
 SAOIRSE
@@ -125,15 +131,10 @@ SAOIRSE
 Link (Japanese Voice) \
 ZERO
 
-Motion Capture Actor \
-TBD
+Translator \
+YUKLOJ
 
-Motion Capture Technician \
-TBD
-
-Cel Shading \
-SAURAEN \
-GLANK
+-
 
 Textures \
 KIM-SUKLEY \
@@ -141,7 +142,40 @@ KIM-SUKLEY \
 CDI-FAILS \
 SAURAEN
 
+
 ### PROGRAM UNIT
+
+Actor Program \
+SAURAEN \
+RANKAISIJA \
+Z64ME \
+\/ZEL\/
+
+Cel Shading \
+SAURAEN \
+GLANK
+
+-
+
+Game / Actor Patches \
+SAURAEN \
+MNGOLDENEAGLE \
+\/ZEL\/
+
+System Patches \
+SAURAEN \
+\/ZEL\/
+
+-
+
+Bootstrapper Chain \
+SAURAEN
+
+Hyperspeed Loader \
+TERUSTHEBIRD \
+SAURAEN
+
+-
 
 Host Frontend \
 SAURAEN \
@@ -151,31 +185,42 @@ TAStm32 Firmware \
 OWNASAURUS \
 SAURAEN
 
+-
+
 SRM / ACE Setup \
 MRCHEEZE \
 SAVESTATE
-
-Bootstrapper Chain \
-SAURAEN
-
-Hyperspeed Loader \
-TERUSTHEBIRD \
-SAURAEN
-
-System Patches \
-SAURAEN \
-\/ZEL\/
-
-Game / Actor Patches \
-SAURAEN \
-MNGOLDENEAGLE \
-\/ZEL\/
 
 Build Toolchain \
 SAURAEN \
 Z64ME
 
-### SUPPORT UNIT
+
+### COMMUNITY UNIT
+
+Partner Creators \
+SWANKYBOX \
+RETRO GAME MECHANICS EXPLAINED
+
+-
+
+Partner Reactors \
+TBD
+
+-
+
+OST Published By \
+SIIVAGUNNER
+
+-
+
+Video Editing \
+MUSKET012 \
+GRAVATOS \
+SAVESTATE \
+SAURAEN
+
+-
 
 Technical Support \
 \/ZEL\/ \
@@ -184,29 +229,18 @@ MZXRULES \
 THARO \
 JACK WALKER
 
-Video Editing \
-MUSKET012 \
-GRAVATOS \
-SAVESTATE \
-SAURAEN
-
-Promotional Artwork \
-KIM-SUKLEY
-
-YouTube Partner Channels \
-SWANKYBOX \
-TBD
-
-YouTube Reactors \
-TBD
+-
 
 Special Thanks \
 KAZE EMANUAR \
 XDANIEL \
 ARIANA ALMANDOZ
 
+-
+
 Executive Producer \
 DWANGOAC
+
 
 ### PRESENTED AT
 
