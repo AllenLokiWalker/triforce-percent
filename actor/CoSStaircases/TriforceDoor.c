@@ -1,6 +1,8 @@
 #include "ultra64.h"
 #include "global.h"
 
+#define G_CELSHADING 0x00400000
+
 u64 TriforceDoor_Beta_Triforce_Door_00_ci4[] = {
 	0x0102202222222220, 0x0000003333033334, 0x4333303333000000, 0x0222222222022010, 0x0000022322233220, 0x0333333000000333, 0x3330000003333330, 0x0223322232200000, 
 	0x3332566666565655, 0x5554565555552543, 0x3452555555654555, 0x5565656666652333, 0x6342666666655666, 0x6666665456555555, 0x5555556545666666, 0x6665566666662436, 
@@ -52,26 +54,33 @@ Vtx TriforceDoor_Z_TriforceDoor_mesh_layer_Opaque_vtx_cull[8] = {
 	{{{-1337, 2130, -1260},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
 };
 
-Vtx TriforceDoor_Z_TriforceDoor_mesh_layer_Opaque_vtx_0[4] = {
-	{{{-1337, 2130, 1111},0, {-16, -16},{0x96, 0xC1, 0xFF, 0xFF}}},
-	{{{-1337, -432, 1111},0, {-16, 2032},{0x96, 0xC1, 0xFF, 0xFF}}},
-	{{{-1337, -432, -1260},0, {2032, 2032},{0x5A, 0x7E, 0xA9, 0xFF}}},
-	{{{-1337, 2130, -1260},0, {2032, -16},{0x96, 0xC1, 0xFF, 0xFF}}},
+Vtx TriforceDoor_Z_TriforceDoor_mesh_layer_Opaque_vtx_0[9] = {
+	{{{-1337, 2130, 1111},0, {-16, -16},{0x96, 0xC1, 0xFF, 0x40}}},
+	{{{-1337, 849, 1111},0, {-16, 1008},{0x96, 0xC1, 0xFF, 0x40}}},
+	{{{-1337, 849, -74},0, {1008, 1008},{0x87, 0xB1, 0xEA, 0xFF}}},
+	{{{-1337, -432, 1111},0, {-16, 2032},{0x96, 0xC1, 0xFF, 0x40}}},
+	{{{-1337, -432, -74},0, {1008, 2032},{0x78, 0xA0, 0xD4, 0x40}}},
+	{{{-1337, -432, -1260},0, {2032, 2032},{0x5A, 0x7E, 0xA9, 0x40}}},
+	{{{-1337, 849, -1260},0, {2032, 1008},{0x78, 0xA0, 0xD4, 0x40}}},
+	{{{-1337, 2130, -1260},0, {2032, -16},{0x96, 0xC1, 0xFF, 0x40}}},
+	{{{-1337, 2130, -74},0, {1008, -16},{0x96, 0xC1, 0xFF, 0x40}}},
 };
 
 Gfx TriforceDoor_Z_TriforceDoor_mesh_layer_Opaque_tri_0[] = {
-	gsSPVertex(TriforceDoor_Z_TriforceDoor_mesh_layer_Opaque_vtx_0 + 0, 4, 0),
-	gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
+	gsSPVertex(TriforceDoor_Z_TriforceDoor_mesh_layer_Opaque_vtx_0 + 0, 9, 0),
+	gsSP2Triangles(0, 1, 2, 0, 3, 2, 1, 0),
+	gsSP2Triangles(3, 4, 2, 0, 2, 4, 5, 0),
+	gsSP2Triangles(6, 2, 5, 0, 2, 6, 7, 0),
+	gsSP2Triangles(2, 7, 8, 0, 8, 0, 2, 0),
 	gsSPEndDisplayList(),
 };
 
 Gfx mat_TriforceDoor_TriforceDoor_layerOpaque[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 0, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, ENVIRONMENT),
-	gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH),
-	gsSPClearGeometryMode(G_CULL_FRONT | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_NOISE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_2CYCLE | G_PM_NPRIMITIVE),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_ZS_PIXEL | AA_EN | Z_CMP | Z_UPD | IM_RD | CLR_ON_CVG | CVG_DST_CLAMP | ZMODE_XLU | FORCE_BL | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_IN, G_BL_1MA) | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)),
+	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 0, 0, 0, 0, COMBINED, 0, 0, 0, SHADE),
+	gsSPLoadGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_2CYCLE | G_PM_NPRIMITIVE),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_THRESHOLD | G_ZS_PIXEL | AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_XLU | FORCE_BL | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_IN, G_BL_1MA) | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_IN, G_BL_1MA)),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, TriforceDoor_Beta_Triforce_Door_00_ci4_pal_rgba16),
@@ -88,7 +97,6 @@ Gfx mat_TriforceDoor_TriforceDoor_layerOpaque[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_4b, 4, 0, 0, 0, G_TX_CLAMP | G_TX_NOMIRROR, 6, 0, G_TX_CLAMP | G_TX_NOMIRROR, 6, 0),
 	gsDPSetTileSize(0, 0, 0, 252, 252),
-	gsDPSetPrimColor(0, 0, 254, 254, 254, 255),
 	gsSPEndDisplayList(),
 };
 

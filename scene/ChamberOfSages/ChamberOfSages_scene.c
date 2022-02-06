@@ -31,7 +31,7 @@ SCmdBase* ChamberOfSages_scene_alternateHeaders[] = {
 };
 
 ActorEntry ChamberOfSages_scene_header00_startPositionList[] = {
-	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
+	{ ACTOR_PLAYER, -791, 1131, 109, 0, 49152, 0, 0x0FFF },
 };
 
 extern u8 _ChamberOfSages_room_0SegmentRomStart[];
@@ -69,7 +69,7 @@ SCmdBase ChamberOfSages_scene_header04[] = {
 };
 
 ActorEntry ChamberOfSages_scene_header04_startPositionList[] = {
-	{ ACTOR_PLAYER, 29, 127, 0, 0, 49152, 0, 0x0FFF },
+	{ ACTOR_PLAYER, -791, 1131, 109, 0, 49152, 0, 0x0FFF },
 };
 
 EntranceEntry ChamberOfSages_scene_header04_entranceList[] = {

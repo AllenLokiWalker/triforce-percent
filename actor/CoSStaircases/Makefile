@@ -14,8 +14,7 @@ OBJECTOBJS = \
 	SheikStairCollision.o \
 	TriforceFadeWall.o \
 	TriforceHallway.o \
-	TriforceDoor.o \
-	TriforceDoorCollision.o
+	TriforceDoor.o
 OBJECTHDRS = \
 	RauruStair.h \
 	RauruStairCollision.h \
@@ -25,8 +24,7 @@ OBJECTHDRS = \
 	SheikStairCollision.h \
 	TriforceFadeWall.h \
 	TriforceHallway.h \
-	TriforceDoor.h \
-	TriforceDoorCollision.h
+	TriforceDoor.h
 
 SCENEOUTLD = ../../scene/ChamberOfSages/ChamberOfSages_scene.out.ld
 

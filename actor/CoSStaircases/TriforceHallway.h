@@ -1,9 +1,7 @@
-extern u64 TriforceHallway_Beta_Triforce_Bricks_00_ci8[];
-extern u64 TriforceHallway_Beta_Triforce_Bricks_00_ci8_pal_rgba16[];
+extern u64 TriforceHallway_Beta_Triforce_Bricks_00_rgba16[];
 extern u64 TriforceHallway_Beta_Triforce_Bricks_01_ci8[];
 extern u64 TriforceHallway_Beta_Triforce_Bricks_01_ci8_pal_rgba16[];
-extern u64 TriforceHallway_Beta_Triforce_Tile_00_ci8[];
-extern u64 TriforceHallway_Beta_Triforce_Tile_00_ci8_pal_rgba16[];
+extern u64 TriforceHallway_Beta_Triforce_Tile_00_rgba16[];
 extern Vtx TriforceHallway_Z_TriforceHallway_mesh_layer_Opaque_vtx_cull[8];
 extern Vtx TriforceHallway_Z_TriforceHallway_mesh_layer_Opaque_vtx_0[59];
 extern Gfx TriforceHallway_Z_TriforceHallway_mesh_layer_Opaque_tri_0[];

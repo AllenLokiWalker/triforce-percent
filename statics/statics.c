@@ -217,15 +217,15 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x0560;
             //Warp to Chamber of Sages
-            // globalCtx->linkAgeOnLoad = 0;
-            // globalCtx->nextEntranceIndex = 0x006B;
-            // gSaveContext.cutsceneIndex = 0xFFF0;
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x006B;
+            gSaveContext.cutsceneIndex = 0xFFF0;
             //Warp to Triforce room
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x034D;
             //Warp to ending
-            globalCtx->linkAgeOnLoad = 0;
-            globalCtx->nextEntranceIndex = 0x03FC;
+            // globalCtx->linkAgeOnLoad = 0;
+            // globalCtx->nextEntranceIndex = 0x03FC;
             //Common warp
             gSaveContext.respawnFlag = -2;
             globalCtx->sceneLoadFlag = 0x14;
@@ -460,7 +460,6 @@ void Statics_GiveOvertureOfSages(){
 
 s32 Statics_ShouldAbortWarp(){
     GlobalContext *globalCtx = &gGlobalContext;
-    if(sIsLiveRun) Debugger_Printf("Statics_ShouldAbortWarp");
     Player *player = PLAYER;
     player->csMode = 0;
     player->stateFlags1 &= ~0x20000000;
