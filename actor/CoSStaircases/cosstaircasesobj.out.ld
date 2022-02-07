@@ -1,9 +1,9 @@
 RauruStair = 0x6000b60;
 RauruStairCollision_collisionHeader = 0x6000e38;
-SariaStair = 0x6002080;
-SariaStairCollision_collisionHeader = 0x60024a8;
-SheikStair = 0x6004660;
-SheikStairCollision_collisionHeader = 0x6004dd0;
-TriforceFadeWall = 0x6005aa8;
-TriforceHallway = 0x6007f40;
-TriforceDoor = 0x60089a0;
+SariaStair = 0x6001c68;
+SariaStairCollision_collisionHeader = 0x6002090;
+SheikStair = 0x6004248;
+SheikStairCollision_collisionHeader = 0x60049b8;
+TriforceFadeWall = 0x6005690;
+TriforceHallway = 0x6007b28;
+TriforceDoor = 0x6008588;

@@ -326,9 +326,15 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 	if(DListsTransparent[PARAM]){
 		if(PARAM == 7){
 			gDPSetBlendColor(POLY_XLU_DISP++, 0, 0, 0, 0xFF - en->alpha);
-		}else{
+		}else if(PARAM == 0 || PARAM == 6){
 			gDPSetEnvColor(POLY_XLU_DISP++, 0xFF, 0xFF, 0xFF, en->alpha);
-		}
+		}else{
+			u32 t = globalCtx->gameplayFrames;
+			gSPSegment(POLY_XLU_DISP++, 0x0D, Gfx_TwoTexScroll(globalCtx->state.gfxCtx,
+				0, t & 0x1FF, 0, 128, 16,
+				1, 0x3FF - ((t >> 1) & 0x3FF), 0, 128, 16));
+            gDPSetEnvColor(POLY_XLU_DISP++, 0xFF, 0xFF, 0xFF, en->alpha);
+        }
 		Gfx_DrawDListXlu(globalCtx, DLists[PARAM]);
 	}else{
 		gDPSetBlendColor(POLY_OPA_DISP++, 0, 0, 0, 0xFF - en->alpha);
