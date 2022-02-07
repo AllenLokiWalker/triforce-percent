@@ -341,7 +341,7 @@ static void updateSheik(Entity *en, GlobalContext *globalCtx){
 				en->sheikLookAwayFlag = false;
 			}else{
 				en->state = SAGE_STATE_BLESSING;
-				en->sfxTimer = 40;
+				en->sfxTimer = 39;
 				Animation_Change(&en->skelAnime, &gSheikShowingTriforceOnHandAnim, 1.0f, 0.0f,
 					Animation_GetLastFrame(&gSheikShowingTriforceOnHandAnim), ANIMMODE_ONCE, -4.0f);
 			}

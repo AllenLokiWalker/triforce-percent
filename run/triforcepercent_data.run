@@ -8,8 +8,6 @@ PATCH 0xCB66A0 ../actor/z_bg_toki_swd/actor.pat
 PATCH 0xE9F0D0 ../actor/z_en_ge2/actor.pat
 PATCH 0xC004E0 ../actor/z_en_girla/actor.pat
 
-ACTOR 26 ../actor/CoSStaircases/cosstaircases.zovl
-
 //Misc scene patches
 PATCH 0x217C000 ../scene/spot10/spot10_room_7.pat
 PATCH 0x2171000 ../scene/spot10/spot10_room_5.pat
@@ -61,15 +59,6 @@ ACTOR 54 ../actor/z_en_mm3/z_en_mm3.zovl
 ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl
 ACTOR 83 ../actor/WSRCutscene/wsrcutscene.zovl
 
-//ChamberOfSages scene
-STATICDATA ../music/ChamberOfSages.aseq 1 0x70020201 0x26000000
-STATICDATA ../music/ChamberOfSagesBank.abnk 2 0x26020201 0x0B000000
-OBJECT 17 ../actor/CoSStaircases/zobj.zobj
-ACTOR 31 ../actor/CoSSages/cossages.zovl
-SCENE 68 ../scene/ChamberOfSages/ChamberOfSages_scene.zscene
-//Entrance table 0x800F9C90 entries 0x437-43A
-//WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
-
 //Larger custom actors
 OBJECT 59 ../actor/BossRunningMan/zobj.zobj
 ACTOR 115 ../actor/BossRunningMan/BossRunningMan.zovl
@@ -82,6 +71,8 @@ ACTOR 115 ../actor/BossRunningMan/BossRunningMan.zovl
 //Custom music
 STATICDATA ../music/OvertureOfSages.aseq 1 0x6E020201 0x09000000
 STATICDATA ../music/OvertureOfSagesWarp.aseq 1 0x33020201 0x09000000
+STATICDATA ../music/ChamberOfSages.aseq 1 0x70020201 0x26000000
+STATICDATA ../music/ChamberOfSagesBank.abnk 2 0x26020201 0x0B000000
 STATICDATA ../music/triforce.aseq 1 0x71020201 0x03000000
 STATICDATA ../music/PowerOfTheGoddesses.aseq 1 0x72020201 0x03000000
 //STATICDATA ../music/Trailer.aseq 1 0x1F020201 0x03000000
@@ -92,6 +83,14 @@ ACTOR 6 ../actor/BetaGreatFairy/betagreatfairy.zovl
 SCENE 78 ../scene/UnicornFountain/UnicornFountain_scene.zscene
 //Entrance table 0x800F9C90 entries 0xC9-CC
 //WRITE 16 0x800F9FB4 0x26 0x00 0x42 0x01 0x26 0x00 0x42 0x01 0x26 0x00 0x42 0x01 0x26 0x00 0x42 0x01
+
+//ChamberOfSages scene
+OBJECT 17 ../actor/CoSStaircases/zobj.zobj
+ACTOR 26 ../actor/CoSStaircases/cosstaircases.zovl
+ACTOR 31 ../actor/CoSSages/cossages.zovl
+SCENE 68 ../scene/ChamberOfSages/ChamberOfSages_scene.zscene
+//Entrance table 0x800F9C90 entries 0x437-43A
+//WRITE 16 0x800FAD6C 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01 0x29 0x00 0x41 0x01
 
 //Custom Link animations
 STATICDATA ../anim/anim.bin 0 0x0 0x0

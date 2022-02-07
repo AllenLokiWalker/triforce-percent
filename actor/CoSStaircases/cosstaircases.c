@@ -324,10 +324,8 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 	}
 	if(en->alpha == 0) return;
 	if(DListsTransparent[PARAM]){
-		if(PARAM == 7){
+		if(PARAM == 7){ //Fade wall
 			gDPSetBlendColor(POLY_XLU_DISP++, 0, 0, 0, 0xFF - en->alpha);
-		}else if(PARAM == 0 || PARAM == 6){
-			gDPSetEnvColor(POLY_XLU_DISP++, 0xFF, 0xFF, 0xFF, en->alpha);
 		}else{
 			u32 t = globalCtx->gameplayFrames;
 			gSPSegment(POLY_XLU_DISP++, 0x0D, Gfx_TwoTexScroll(globalCtx->state.gfxCtx,
