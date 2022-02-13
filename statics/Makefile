@@ -72,6 +72,7 @@ LD_SCRIPTS = \
 	../loader/debugger/debugger.out.ld \
 	../loader/dma_patcher/dma_patcher.out.ld \
 	../scene/TriforceRoom/TriforceRoom_scene.out.ld \
+	../scene/Ending/Ending_scene.out.ld \
 	../model/SagesCharm/object_gi_sagescharm.out.ld
 
 statics.elf statics.map: $(LINK_OBJS) $(LD_SCRIPTS) $(OOTMAINLD)

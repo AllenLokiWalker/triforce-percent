@@ -3,6 +3,7 @@
 #include "BotWLinkMeshIdleAnim.h"
 #include "BotWLinkMeshBobokuwaAnim.h"
 #include "BotWLinkMeshHeadmoveAnim.h"
+#include "BotWLinkMeshLookatitselfAnim.h"
 #include "BotWLinkMeshTex.h"
 #include "../loader/debugger/debugger.h"
 #include "../statics/hairphys.h"
@@ -173,8 +174,8 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	//Debugger_Printf("        %04X", (u16)en->actor.shape.rot.y);
 	if(!(CTRLR_RAW & (BTN_R | BTN_L))){
 		if((CTRLR_PRESS & BTN_DLEFT)){
-			en->timer = 1;
-			BotWLink_SetAnim(en, &BotWLinkMeshBobokuwaAnim, ANIMMODE_ONCE, -4.0f);
+			//en->timer = 1;
+			BotWLink_SetAnim(en, &BotWLinkMeshLookatitselfAnim, ANIMMODE_ONCE, -4.0f);
 		}else if((CTRLR_PRESS & BTN_DDOWN)){
 			//BotWLink_VO(en, VO_LINK_TAKUSAN);
 			BotWLink_SetAnim(en, &BotWLinkMeshIdleAnim, ANIMMODE_LOOP, -8.0f);
@@ -211,15 +212,6 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	if(animFinished){
 		BotWLink_SetAnim(en, &BotWLinkMeshIdleAnim, ANIMMODE_LOOP, -8.0f);
 	}
-	en->flags &= ~(FLAG_NO_LOWLEGS | FLAG_NO_LOWERBODY);
-	Vec3f pos = en->actor.world.pos;
-	pos.y += 20.0f;
-	if(!Statics_UncullObject(globalCtx, &pos, 12.0f, 80.0f, 0.0f, 15.0f, 1000.0f))
-		en->flags |= FLAG_NO_LOWLEGS;
-	pos = en->actor.world.pos;
-	pos.y += 31.0f;
-	if(!Statics_UncullObject(globalCtx, &pos, 15.0f, 100.0f, 0.0f, 15.0f, 1000.0f))
-		en->flags |= FLAG_NO_LOWERBODY;
 }
 
 s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
@@ -253,6 +245,17 @@ void BotWLink_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
+	//
+	en->flags &= ~(FLAG_NO_LOWLEGS | FLAG_NO_LOWERBODY);
+	Vec3f pos = en->actor.world.pos;
+	pos.y += 20.0f;
+	if(!Statics_UncullObject(globalCtx, &pos, 12.0f, 80.0f, 0.0f, 15.0f, 1000.0f))
+		en->flags |= FLAG_NO_LOWLEGS;
+	pos = en->actor.world.pos;
+	pos.y += 31.0f;
+	if(!Statics_UncullObject(globalCtx, &pos, 15.0f, 100.0f, 0.0f, 15.0f, 1000.0f))
+	en->flags |= FLAG_NO_LOWERBODY;
+	//
 	func_80093D18(globalCtx->state.gfxCtx);
 	void *seg08Tex = EyeTextures[en->eyeTextureIndex];
 	gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(seg08Tex));

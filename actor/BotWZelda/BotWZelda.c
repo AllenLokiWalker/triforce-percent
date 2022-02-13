@@ -155,11 +155,6 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	}
 	updateEyes(en);
 	SkelAnime_Update(&en->skelAnime);
-	en->flags &= ~FLAG_NO_LOWERBODY;
-	Vec3f pos = en->actor.world.pos;
-	pos.y += 35.0f;
-	if(!Statics_UncullObject(globalCtx, &pos, 15.0f, 100.0f, 0.0f, 15.0f, 1000.0f))
-		en->flags |= FLAG_NO_LOWERBODY;
 }
 
 s32 BotWZelda_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
@@ -185,6 +180,13 @@ void BotWZelda_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
+	//
+	en->flags &= ~FLAG_NO_LOWERBODY;
+	Vec3f pos = en->actor.world.pos;
+	pos.y += 35.0f;
+	if(!Statics_UncullObject(globalCtx, &pos, 15.0f, 100.0f, 0.0f, 15.0f, 1000.0f))
+		en->flags |= FLAG_NO_LOWERBODY;
+	//
 	func_80093D18(globalCtx->state.gfxCtx);
 	void *seg08Tex = EyeTextures[en->eyeTextureIndex];
 	gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(seg08Tex));

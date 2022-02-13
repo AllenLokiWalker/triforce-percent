@@ -253,6 +253,11 @@ static void Statics_SetUpRouting(){
         .spawn = 0, .keepMusic = 0, .titleCard = 0, .transitionIn = 7, .transitionOut = 7
     };
     PatchEntranceTable(0x03FC, 4, &gshop_to_gcity_entry);
+    static const EntranceCutsceneTableEntry dmc2_entry = {
+        .entrance = 0x03FC, .age = 2, .eventChkFlag = ENDING_ENTRANCE_CS_EVENTCHKFLAG, 
+        .segAddr = FinaleCS
+    };
+    gEntranceCutsceneTable[32] = dmc2_entry;
     //
     //Other
     //Gerudo's Fortress to Thieves' Hideout -> scene not changed, but disabled title card
@@ -277,11 +282,6 @@ static void Statics_SetUpRouting(){
     };
     PatchEntranceTable(0x00C9, 4, &forest_to_knowitall_entry);
     /*
-    static const EntranceCutsceneTableEntry dmc2_entry = {
-        .entrance = 0x00C9, .age = 2, .eventChkFlag = ENDING_ENTRANCE_CS_EVENTCHKFLAG, 
-        .segAddr = EndingCS
-    };
-    gEntranceCutsceneTable[32] = dmc2_entry;
     //Kokiri Forest to House of the Know-It-All Brothers -> Kokiri Forest to Triforce Room
     static const EntranceTableEntry forest_to_knowitall_entry = {
         .scene = SCENE_TRIFORCEROOM,

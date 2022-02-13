@@ -10,12 +10,14 @@ OBJECTOBJS = \
 	BotWLinkMeshIdleAnim.o \
 	BotWLinkMeshBobokuwaAnim.o \
 	BotWLinkMeshHeadmoveAnim.o \
+	BotWLinkMeshLookatitselfAnim.o \
 	BotWLinkMeshTex.o
 OBJECTHDRS = \
 	BotWLinkMesh.h \
 	BotWLinkMeshIdleAnim.h \
 	BotWLinkMeshBobokuwaAnim.h \
 	BotWLinkMeshHeadmoveAnim.h \
+	BotWLinkMeshLookatitselfAnim.h \
 	BotWLinkMeshTex.h
 SHDRS = \
 	../../loader/debugger/debugger.h \
