@@ -1,4 +1,5 @@
 #include "ootmain.h"
+#include "../BotWActors.h"
 #include "BotWZeldaMesh.h"
 #include "BotWZeldaMeshDescendidleAnim.h"
 #include "BotWZeldaMeshNormalidleAnim.h"
@@ -10,6 +11,8 @@
 
 // Actor Information
 #define OBJ_ID 125 // primary object dependency
+#define ACTIONNUM 16
+#define ACTIONSLOT 1
 #define ACTOR_SCALE 0.035f
 
 #define LIMB_IS_LOWERBODY ( \
@@ -60,32 +63,18 @@ static void *const EyeTextures[3] = {
 };
 
 typedef struct {
-	Actor actor;
-	SkelAnime skelAnime;
+	BotWActor botw;
 	Vec3s jointTable[BOTWZELDAMESH_NUM_LIMBS];
 	Vec3s morphTable[BOTWZELDAMESH_NUM_LIMBS];
 	HairPhysDoubleState physDouble[3];
 	HairPhysTunicState physTunic[4];
 	void *physStates[NUM_PHYS];
 	float windX, windZ;
-	u32 flags;
-	u8 eyeTextureIndex;
-	u8 blinkTimer;
-	u8 eyeState;
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
-	//General setup
-	Rupees_ChangeBy(7);
-	en->flags = 0;
-	en->eyeTextureIndex = 0;
-	en->blinkTimer = 0;
-	en->eyeState = 2;
-	Actor_SetScale(&en->actor, ACTOR_SCALE);
-	//Components setup
-	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f); //TODO not working?
-	SkelAnime_InitFlex(globalCtx, &en->skelAnime, &BotWZeldaMesh, &BotWZeldaMeshDescendidleAnim, 
-		en->jointTable, en->morphTable, BOTWZELDAMESH_NUM_LIMBS);
+	BotWActor_Init(&en->botw, globalCtx, &BotWZeldaMesh, &BotWZeldaMeshDescendidleAnim, 
+		en->jointTable, en->morphTable, BOTWZELDAMESH_NUM_LIMBS, ACTOR_SCALE);
 	//Physics initialization
 	s32 c = 0;
 	for(s32 i=0; i<3; ++i) en->physStates[c++] = &en->physDouble[i];
@@ -99,78 +88,38 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	en->physTunic[2].conn2 = &en->physTunic[1];
 	en->physTunic[3].conn1 = &en->physTunic[2];
 	en->physTunic[3].conn2 = &en->physTunic[0];
-	en->windX = 0.707f;
-	en->windZ = -0.707f;
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
-	SkelAnime_Free(&en->skelAnime, globalCtx);
+	BotWActor_Destroy(&en->botw, globalCtx);
 }
 
-static void updateEyes(Entity *en){
-	if(en->eyeState == 1){
-		++en->blinkTimer;
-		en->eyeTextureIndex = 1;
-		if(en->blinkTimer > 5){
-			en->eyeState = 2;
-		}
-	}else if(en->eyeState == 2){
-		en->eyeTextureIndex = 2;
-	}else if(en->eyeState == 3){
-		++en->blinkTimer;
-		en->eyeTextureIndex = 1;
-		if(en->blinkTimer > 5){
-			en->eyeState = 0;
-			en->blinkTimer = 20;
-		}
-	}else{
-		if(en->blinkTimer == 0){
-			en->blinkTimer = Rand_S16Offset(60, 60);
-		}else{
-			--en->blinkTimer;
-		}
-		en->eyeTextureIndex = (en->blinkTimer < 3) ? en->blinkTimer : 0;
-	}
-}
-
-static void BotWZelda_SetAnim(Entity *en, AnimationHeader *anim, u8 mode, f32 morphFrames){
-	Animation_Change(&en->skelAnime, anim, 1.0f, 0.0f, 
-		Animation_GetLastFrame(anim), mode, morphFrames);
-	if(anim == &BotWZeldaMeshDescendidleAnim && (en->eyeState == 0 || en->eyeState == 3)){
-		en->eyeState = 1; // Start closing eyes
-	}else if(en->eyeState == 1 || en->eyeState == 2){
-		en->eyeState = 3; // Start opening eyes
-	}
-}
+#define NACTIONDEFS 3
+static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
+	/*0*/{NULL, 0.0f, NULL, 0.0f, FLAG_INVISIBLE, 0, /**/ 0, 0, NULL},
+	/*1*/{&BotWZeldaMeshDescendidleAnim, -8.0f, NULL, 0.0f, FLAG_EYESCLOSED, FLAG_INVISIBLE, /**/ 0, 0, NULL},
+	/*2*/{&BotWZeldaMeshNormalidleAnim, -8.0f, NULL, 0.0f, 0, FLAG_INVISIBLE | FLAG_EYESCLOSED, /**/ 0, 0, NULL},
+};
 
 static void update(Entity *en, GlobalContext *globalCtx) {
-	if(!(CTRLR_RAW & (BTN_R | BTN_L))){
-		if((CTRLR_RAW & BTN_DLEFT)){
-			en->actor.shape.rot.y -= 0x200;
-			BotWZelda_SetAnim(en, &BotWZeldaMeshDescendidleAnim, ANIMMODE_LOOP, -8.0f);
-		}else if((CTRLR_RAW & BTN_DRIGHT)){
-			en->actor.shape.rot.y += 0x200;
-			BotWZelda_SetAnim(en, &BotWZeldaMeshNormalidleAnim, ANIMMODE_LOOP, -8.0f);
-		}
-	}
-	updateEyes(en);
-	SkelAnime_Update(&en->skelAnime);
+	BotWActor_Update(&en->botw, globalCtx, ActionDefs, NACTIONDEFS, ACTIONSLOT);
 }
 
 s32 BotWZelda_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
 	Entity *en = (Entity*)thisx;
 	s8 p = limbToPhysMap[limbIndex];
 	u32 limbMask = 1 << limbIndex;
-	if((en->flags & FLAG_NO_LOWERBODY) && (limbMask & LIMB_IS_LOWERBODY)){
+	if(((en->botw.flags & FLAG_NO_LOWERBODY) && (limbMask & LIMB_IS_LOWERBODY)) ||
+			(en->botw.flags & FLAG_INVISIBLE)){
 		*dList = NULL;
-		if(limbIndex == BOTWZELDAMESH_DRESSR_LIMB){
+		if(limbIndex == BOTWZELDAMESH_DRESSR_LIMB && !(en->botw.flags & FLAG_INVISIBLE)){
 			gSPDisplayList(POLY_OPA_DISP++, mat_BotWZeldaMesh_N_Dress_layerOpaque);
 		}
 		if(p >= 0) HairPhys_UpdateCulled(en->physStates[p], &physc[p]);
 		return false;
 	}
 	if(p >= 0) HairPhys_Update(en->physStates[p], &physc[p], pos, rot,
-		en->windX, en->windZ, ACTOR_SCALE);
+		en->botw.windX, en->botw.windZ, ACTOR_SCALE);
 	return false;
 }
 
@@ -181,18 +130,13 @@ void BotWZelda_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
 	//
-	en->flags &= ~FLAG_NO_LOWERBODY;
-	Vec3f pos = en->actor.world.pos;
+	en->botw.flags &= ~FLAG_NO_LOWERBODY;
+	Vec3f pos = en->botw.actor.world.pos;
 	pos.y += 35.0f;
 	if(!Statics_UncullObject(globalCtx, &pos, 15.0f, 100.0f, 0.0f, 15.0f, 1000.0f))
-		en->flags |= FLAG_NO_LOWERBODY;
+		en->botw.flags |= FLAG_NO_LOWERBODY;
 	//
-	func_80093D18(globalCtx->state.gfxCtx);
-	void *seg08Tex = EyeTextures[en->eyeTextureIndex];
-	gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(seg08Tex));
-	SkelAnime_DrawFlexOpa(globalCtx, en->skelAnime.skeleton, en->skelAnime.jointTable,
-		en->skelAnime.dListCount, BotWZelda_OverrideLimbDraw, BotWZelda_PostLimbDraw, en);
-	func_80093D18(globalCtx->state.gfxCtx);
+	BotWActor_DrawMain(&en->botw, globalCtx, EyeTextures, BotWZelda_OverrideLimbDraw, BotWZelda_PostLimbDraw);
 }
 
 const ActorInitExplPad init_vars = {

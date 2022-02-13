@@ -1,4 +1,5 @@
 #include "ootmain.h"
+#include "../BotWActors.h"
 #include "BotWLinkMesh.h"
 #include "BotWLinkMeshIdleAnim.h"
 #include "BotWLinkMeshBobokuwaAnim.h"
@@ -12,6 +13,8 @@
 
 // Actor Information
 #define OBJ_ID 122 // primary object dependency
+#define ACTIONNUM 17
+#define ACTIONSLOT 0
 #define ACTOR_SCALE 0.035f
 
 #define LIMB_IS_LOWLEGS ( \
@@ -90,34 +93,18 @@ static void *const EyeTextures[3] = {
 };
 
 typedef struct {
-	Actor actor;
-	SkelAnime skelAnime;
+	BotWActor botw;
 	Vec3s jointTable[BOTWLINKMESH_NUM_LIMBS];
 	Vec3s morphTable[BOTWLINKMESH_NUM_LIMBS];
 	HairPhysSimpleState physSimple[4];
 	HairPhysDoubleState physDouble[2];
 	HairPhysTunicState physTunic[6];
 	void *physStates[NUM_PHYS];
-	float windX, windZ;
-	u32 flags;
-	u8 eyeTextureIndex;
-	u8 blinkTimer;
-	u8 timer;
-	u8 debug;
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
-	//General setup
-	Rupees_ChangeBy(4);
-	en->flags = 0;
-	en->eyeTextureIndex = 0;
-	en->blinkTimer = 0;
-	en->debug = 0;
-	Actor_SetScale(&en->actor, ACTOR_SCALE);
-	//Components setup
-	ActorShape_Init(&en->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f); //TODO not working?
-	SkelAnime_InitFlex(globalCtx, &en->skelAnime, &BotWLinkMesh, &BotWLinkMeshIdleAnim, 
-		en->jointTable, en->morphTable, BOTWLINKMESH_NUM_LIMBS);
+	BotWActor_Init(&en->botw, globalCtx, &BotWLinkMesh, &BotWLinkMeshIdleAnim,
+		en->jointTable, en->morphTable, BOTWLINKMESH_NUM_LIMBS, ACTOR_SCALE);
 	//Physics initialization
 	s32 c = 0;
 	for(s32 i=0; i<4; ++i) en->physStates[c++] = &en->physSimple[i];
@@ -132,100 +119,41 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	en->physTunic[4].conn1 = &en->physTunic[3];
 	en->physTunic[4].conn2 = &en->physTunic[5];
 	en->physTunic[5].conn1 = &en->physTunic[4];
-	en->windX = 0.707f;
-	en->windZ = -0.707f;
 }
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
-	SkelAnime_Free(&en->skelAnime, globalCtx);
+	BotWActor_Destroy(&en->botw, globalCtx);
 }
 
-static void updateEyes(Entity *en){
-	if(en->blinkTimer == 0){
-		en->blinkTimer = Rand_S16Offset(60, 60);
-	}else{
-		--en->blinkTimer;
-	}
-	en->eyeTextureIndex = (en->blinkTimer < 3) ? en->blinkTimer : 0;
-}
+#define VO_LINK_BOBOKUWA NA_SE_EN_GANON_LAUGH
+#define VO_LINK_TAKUSAN NA_SE_EN_GANON_VOICE_DEMO
+#define VO_LINK_DAIJINA NA_SE_EN_GANON_THROW
 
-#define VO_LINK_BOBOKUWA 0
-#define VO_LINK_TAKUSAN 1
-#define VO_LINK_DAIJINA 2
-static const u16 voiceSfxMap[] = {
-	NA_SE_EN_GANON_LAUGH,
-	NA_SE_EN_GANON_VOICE_DEMO,
-	NA_SE_EN_GANON_THROW
+#define NACTIONDEFS 4
+static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
+	/*0*/{NULL, 0.0f, NULL, 0.0f, FLAG_INVISIBLE, 0, /**/ 0, 0, NULL},
+	/*1*/{&BotWLinkMeshIdleAnim, 0.0f, NULL, 0.0f, 0, FLAG_INVISIBLE, /**/ 0, 0, NULL},
+	/*2*/{&BotWLinkMeshBobokuwaAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f, 0, FLAG_INVISIBLE, /**/ VO_LINK_BOBOKUWA, 5, NULL},
+	/*3*/{&BotWLinkMeshLookatitselfAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f, 0, FLAG_INVISIBLE, /**/ 0, 0, NULL},
 };
-static f32 VoiceFreqScale = 1.0f;
-static f32 VoiceVol = 1.5f;
-static u32 VoiceReverbAdd = 0;
-static void BotWLink_VO(Entity *en, u16 linkVO){
-	Audio_PlaySoundGeneral(voiceSfxMap[linkVO], &en->actor.projectedPos, 4, 
-		&VoiceFreqScale, &VoiceVol,	(f32*)&VoiceReverbAdd);
-}
-
-static void BotWLink_SetAnim(Entity *en, AnimationHeader *anim, u8 mode, f32 morphFrames){
-	Animation_Change(&en->skelAnime, anim, 1.0f, 0.0f, 
-		Animation_GetLastFrame(anim), mode, morphFrames);
-}
 
 static void update(Entity *en, GlobalContext *globalCtx) {
-	//Debugger_Printf("        %04X", (u16)en->actor.shape.rot.y);
-	if(!(CTRLR_RAW & (BTN_R | BTN_L))){
-		if((CTRLR_PRESS & BTN_DLEFT)){
-			//en->timer = 1;
-			BotWLink_SetAnim(en, &BotWLinkMeshLookatitselfAnim, ANIMMODE_ONCE, -4.0f);
-		}else if((CTRLR_PRESS & BTN_DDOWN)){
-			//BotWLink_VO(en, VO_LINK_TAKUSAN);
-			BotWLink_SetAnim(en, &BotWLinkMeshIdleAnim, ANIMMODE_LOOP, -8.0f);
-		}else if((CTRLR_PRESS & BTN_DRIGHT)){
-			//BotWLink_VO(en, VO_LINK_DAIJINA);
-			BotWLink_SetAnim(en, &BotWLinkMeshHeadmoveAnim, ANIMMODE_LOOP, -8.0f);
-		}else if((CTRLR_RAW & BTN_CLEFT)){
-			en->actor.shape.rot.y -= 0x200;
-		}else if((CTRLR_RAW & BTN_CRIGHT)){
-			en->actor.shape.rot.y += 0x200;
-		}
-	}else if((CTRLR_RAW & BTN_R)){
-		if((CTRLR_PRESS & BTN_CUP)){
-			++en->debug;
-			HairPhys_SetDebug(en->debug);
-			//Debugger_Printf("%02X", en->debug);
-		}else if((CTRLR_PRESS & BTN_CDOWN)){
-			--en->debug;
-			HairPhys_SetDebug(en->debug);
-			//Debugger_Printf("%02X", en->debug);
-		}
-	}
-	
-	if(en->timer > 0){
-		if(en->timer == 5){
-			BotWLink_VO(en, VO_LINK_BOBOKUWA);
-			en->timer = 0;
-		}else{
-			++en->timer;
-		}
-	}
-	updateEyes(en);
-	s32 animFinished = SkelAnime_Update(&en->skelAnime);
-	if(animFinished){
-		BotWLink_SetAnim(en, &BotWLinkMeshIdleAnim, ANIMMODE_LOOP, -8.0f);
-	}
+	BotWActor_Update(&en->botw, globalCtx, ActionDefs, NACTIONDEFS, ACTIONSLOT);
 }
 
 s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
 	Entity *en = (Entity*)thisx;
 	s8 p = limbToPhysMap[limbIndex];
 	u32 limbMask = 1 << limbIndex;
-	if(((en->flags & FLAG_NO_LOWLEGS) && (limbMask & LIMB_IS_LOWLEGS)) ||
-		((en->flags & FLAG_NO_LOWERBODY) && (limbMask & LIMB_IS_LOWERBODY))){
+	if(((en->botw.flags & FLAG_NO_LOWLEGS) && (limbMask & LIMB_IS_LOWLEGS)) ||
+		((en->botw.flags & FLAG_NO_LOWERBODY) && (limbMask & LIMB_IS_LOWERBODY)) ||
+		(en->botw.flags & FLAG_INVISIBLE)){
 		*dList = NULL;
 		if(p >= 0) HairPhys_UpdateCulled(en->physStates[p], &physc[p]);
 		return false;
 	}
 	if(p >= 0) HairPhys_Update(en->physStates[p], &physc[p], pos, rot,
-		en->windX, en->windZ, ACTOR_SCALE);
+		en->botw.windX, en->botw.windZ, ACTOR_SCALE);
 	if(limbIndex == BOTWLINKMESH_LTHIGH_LIMB || limbIndex == BOTWLINKMESH_RTHIGH_LIMB){
 		bool isl = (limbIndex == BOTWLINKMESH_LTHIGH_LIMB);
 		s16 r = rot->y;
@@ -246,22 +174,17 @@ void BotWLink_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
 	//
-	en->flags &= ~(FLAG_NO_LOWLEGS | FLAG_NO_LOWERBODY);
-	Vec3f pos = en->actor.world.pos;
+	en->botw.flags &= ~(FLAG_NO_LOWLEGS | FLAG_NO_LOWERBODY);
+	Vec3f pos = en->botw.actor.world.pos;
 	pos.y += 20.0f;
 	if(!Statics_UncullObject(globalCtx, &pos, 12.0f, 80.0f, 0.0f, 15.0f, 1000.0f))
-		en->flags |= FLAG_NO_LOWLEGS;
-	pos = en->actor.world.pos;
+		en->botw.flags |= FLAG_NO_LOWLEGS;
+	pos = en->botw.actor.world.pos;
 	pos.y += 31.0f;
 	if(!Statics_UncullObject(globalCtx, &pos, 15.0f, 100.0f, 0.0f, 15.0f, 1000.0f))
-	en->flags |= FLAG_NO_LOWERBODY;
+	en->botw.flags |= FLAG_NO_LOWERBODY;
 	//
-	func_80093D18(globalCtx->state.gfxCtx);
-	void *seg08Tex = EyeTextures[en->eyeTextureIndex];
-	gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(seg08Tex));
-	SkelAnime_DrawFlexOpa(globalCtx, en->skelAnime.skeleton, en->skelAnime.jointTable,
-		en->skelAnime.dListCount, BotWLink_OverrideLimbDraw, BotWLink_PostLimbDraw, en);
-	func_80093D18(globalCtx->state.gfxCtx);
+	BotWActor_DrawMain(&en->botw, globalCtx, EyeTextures, BotWLink_OverrideLimbDraw, BotWLink_PostLimbDraw);
 }
 
 const ActorInitExplPad init_vars = {

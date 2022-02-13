@@ -20,6 +20,7 @@ OBJECTHDRS = \
 	BotWLinkMeshLookatitselfAnim.h \
 	BotWLinkMeshTex.h
 SHDRS = \
+	../BotWActors.h \
 	../../loader/debugger/debugger.h \
 	../../statics/hairphys.h \
 	../../statics/statics.h \
