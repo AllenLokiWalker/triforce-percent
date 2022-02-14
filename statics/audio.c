@@ -195,6 +195,35 @@ static inline void CopyReplaceIndex(AudioIndex** origIdx, AudioIndex* newIdx, u3
 
 extern void func_800E3034(s32 bank);
 
+static const u8 PatchedEnv12Chirps[] = {
+    0xC0, 0x3F, 0xC0, 0x00,
+    0x00, 0x02, 0x00, //NATURE_IO_STREAM_0_TYPE(NATURE_STREAM_RUSHING_WATER),
+    0x00, 0x03, 0x00, //NATURE_IO_STREAM_0_PORT3(0),
+    0x01, 0x02, 0x00, //NATURE_IO_CRITTER_0_TYPE(NATURE_CRITTER_BIRD_CHIRP_1),
+    0x01, 0x03, 0x50, //NATURE_IO_CRITTER_0_BEND_PITCH(80),
+    0x01, 0x04, 0x00, //NATURE_IO_CRITTER_0_NUM_LAYERS(0),
+    0x01, 0x05, 0x08, //NATURE_IO_CRITTER_0_PORT5(8),
+    0x02, 0x02, 0x0A, //NATURE_IO_CRITTER_1_TYPE(NATURE_CRITTER_SMALL_BIRD_CHIRPS),
+    0x02, 0x03, 0x50, //NATURE_IO_CRITTER_1_BEND_PITCH(80),
+    0x02, 0x04, 0x00, //NATURE_IO_CRITTER_1_NUM_LAYERS(0),
+    0x02, 0x05, 0x30, //NATURE_IO_CRITTER_1_PORT5(48),
+    0x03, 0x02, 0x06, //NATURE_IO_CRITTER_1_TYPE(NATURE_CRITTER_LOUD_CHIRPING),
+    0x03, 0x03, 0x50, //NATURE_IO_CRITTER_1_BEND_PITCH(80),
+    0x03, 0x04, 0x00, //NATURE_IO_CRITTER_1_NUM_LAYERS(0),
+    0x03, 0x05, 0x30, //NATURE_IO_CRITTER_1_PORT5(48),
+    0x04, 0x02, 0x02, //NATURE_IO_CRITTER_1_TYPE(NATURE_CRITTER_BIRD_CHIRP_2),
+    0x04, 0x03, 0x50, //NATURE_IO_CRITTER_1_BEND_PITCH(80),
+    0x04, 0x04, 0x00, //NATURE_IO_CRITTER_1_NUM_LAYERS(0),
+    0x04, 0x05, 0x30, //NATURE_IO_CRITTER_1_PORT5(48),
+    /*
+    0x05, 0x02, 0x0C, //NATURE_IO_CRITTER_1_TYPE(NATURE_CRITTER_BIRD_SONG),
+    0x05, 0x03, 0x50, //NATURE_IO_CRITTER_1_BEND_PITCH(80),
+    0x05, 0x04, 0x00, //NATURE_IO_CRITTER_1_NUM_LAYERS(0),
+    0x05, 0x05, 0x30, //NATURE_IO_CRITTER_1_PORT5(48),
+    */
+    0xFF
+};
+
 void Statics_AudioCodePatches(u8 isLiveRun)
 {
     s32 i = __osDisableInt();
@@ -231,6 +260,8 @@ void Statics_AudioCodePatches(u8 isLiveRun)
     AudioBank *bank0 = (AudioBank*)(bank_ram_addr[0]);
     bank0->instruments[83] = &Shehnai_Inst; //replacing accordion
     bank0->instruments[85] = &Choir_Inst; //replacing Malon
+    // Patch environment sequence config 0x12 (NATURE_ID_12)
+    bcopy(PatchedEnv12Chirps, (u8*)0x80102138, sizeof(PatchedEnv12Chirps));
     __osRestoreInt(i);
 }
 

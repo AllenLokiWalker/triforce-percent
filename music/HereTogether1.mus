@@ -1,0 +1,56 @@
+; Nintendo 64 Music Macro Language (Audioseq) (.mus) sequence: HereTogether1
+; Converted by SEQ64 V2.0 [https://github.com/sauraen/seq64]
+
+; Sequence Header
+
+_start:
+    mutebhv 32
+    mutescale 50
+    initchan 0x0D7E
+tsec0:
+    startchan 8, tsec0_chn8
+    tempo 85
+    svol 88
+    delay 4000
+    disablechan 0x0D7E
+    end
+; Section total ticks: 1728
+
+; Channel Headers
+
+tsec0_chn8:
+    shortoff
+    startlayer 0, tsec0_chn8_ly0
+    cpan 54
+    reverb 32
+    cvol 127
+    instr 8
+    delay 4000
+    end
+; Section total ticks: 1728
+
+tsec0_chn8_ly0:
+    ltp 0
+    notedv 62, 96, 97
+    ltp 12
+    notedv 53, 48, 97
+    notedv 48, 96, 97
+    notedv 46, 24, 97
+    notevg 48, 97, 0
+    notedv 50, 96, 97
+    notedv 53, 48, 97
+    notedv 46, 24, 97
+    notevg 48, 97, 0
+    notedv 50, 96, 97
+    notedv 46, 24, 97
+    notevg 48, 97, 0
+    notedv 50, 96, 97
+    notedv 46, 24, 97
+    notevg 48, 97, 0
+    notedv 50, 96, 97
+    notedv 46, 24, 97
+    notevg 48, 97, 0
+    notedv 50, 96, 97
+    notedvg 48, 1296, 97, 227
+    end
+; Section total ticks: 1728

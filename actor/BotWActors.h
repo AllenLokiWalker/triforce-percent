@@ -129,12 +129,13 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 		botw->actor.world.pos.y = finv * (f32)action->startPos.y + frac * (f32)action->endPos.y;
 		botw->actor.world.pos.z = finv * (f32)action->startPos.z + frac * (f32)action->endPos.z;
 		s16 drot = botw->actor.shape.rot.y - action->rot.y;
+        const s16 minrot = 0x100;
 		if(drot < 0) drot = -drot;
-		if(drot > 0x5000){
+		if(drot <= minrot){
 			botw->actor.shape.rot.y = action->rot.y;
 		}else{
 			drot >>= 3;
-			if(drot < 0x100) drot = 0x100;
+			if(drot < minrot) drot = minrot;
 			Math_StepToAngleS(&botw->actor.shape.rot.y, action->rot.y, drot);
 		}
 		if(def->func != NULL) def->func(botw, globalCtx);
