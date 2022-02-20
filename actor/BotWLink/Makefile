@@ -8,16 +8,24 @@ OBJECTNUM = 122
 OBJECTOBJS = \
 	BotWLinkMesh.o \
 	BotWLinkMeshIdleAnim.o \
-	BotWLinkMeshBobokuwaAnim.o \
-	BotWLinkMeshHeadmoveAnim.o \
+	BotWLinkMeshLinksdialogAnim.o \
 	BotWLinkMeshLookatitselfAnim.o \
+	BotWLinkMeshLookstozeldaAnim.o \
+	BotWLinkMeshModerate_walkAnim.o \
+	BotWLinkMeshTakeszeldahandAnim.o \
+	BotWLinkMeshTurnleftAnim.o \
+	BotWLinkMeshTurnrightAnim.o \
 	BotWLinkMeshTex.o
 OBJECTHDRS = \
 	BotWLinkMesh.h \
 	BotWLinkMeshIdleAnim.h \
-	BotWLinkMeshBobokuwaAnim.h \
-	BotWLinkMeshHeadmoveAnim.h \
+	BotWLinkMeshLinksdialogAnim.h \
 	BotWLinkMeshLookatitselfAnim.h \
+	BotWLinkMeshLookstozeldaAnim.h \
+	BotWLinkMeshModerate_walkAnim.h \
+	BotWLinkMeshTakeszeldahandAnim.h \
+	BotWLinkMeshTurnleftAnim.h \
+	BotWLinkMeshTurnrightAnim.h \
 	BotWLinkMeshTex.h
 SHDRS = \
 	../BotWActors.h \

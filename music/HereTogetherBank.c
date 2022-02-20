@@ -1343,7 +1343,7 @@ Instrument Glockenspiel_Inst =
 Instrument Strings_Inst = 
 {
     .loaded = 0x0,
-    .normalRangeLo = 0x1e,
+    .normalRangeLo = 0x19,
     .normalRangeHi = 0x28,
     .releaseRate = 0xef,
     .envelope = Strings_Env,
@@ -1441,7 +1441,7 @@ Instrument Bell_Inst =
     },
     .normalNotesSound = {
         .sample = &Bell_Sample,
-        .tuning = 0.6890624761581421,
+        .tuning = 0.668f,
     },
     .highNotesSound = {
         .sample = NULL,

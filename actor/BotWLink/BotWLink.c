@@ -2,9 +2,13 @@
 #include "../BotWActors.h"
 #include "BotWLinkMesh.h"
 #include "BotWLinkMeshIdleAnim.h"
-#include "BotWLinkMeshBobokuwaAnim.h"
-#include "BotWLinkMeshHeadmoveAnim.h"
+#include "BotWLinkMeshLinksdialogAnim.h"
 #include "BotWLinkMeshLookatitselfAnim.h"
+#include "BotWLinkMeshLookstozeldaAnim.h"
+#include "BotWLinkMeshModerate_walkAnim.h"
+#include "BotWLinkMeshTakeszeldahandAnim.h"
+#include "BotWLinkMeshTurnleftAnim.h"
+#include "BotWLinkMeshTurnrightAnim.h"
 #include "BotWLinkMeshTex.h"
 #include "../loader/debugger/debugger.h"
 #include "../statics/hairphys.h"
@@ -125,16 +129,41 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 	BotWActor_Destroy(&en->botw, globalCtx);
 }
 
-#define VO_LINK_BOBOKUWA NA_SE_EN_GANON_LAUGH
-#define VO_LINK_TAKUSAN NA_SE_EN_GANON_VOICE_DEMO
-#define VO_LINK_DAIJINA NA_SE_EN_GANON_THROW
+#define VO_LINK_ZERUDAHIME NA_SE_EN_GANON_LAUGH
+#define VO_LINK_ISSHONI NA_SE_EN_GANON_VOICE_DEMO
 
-#define NACTIONDEFS 4
+static void BotWLink_DialogCallback(BotWActor *botw, GlobalContext *globalCtx) {
+	Entity *en = (Entity*)botw;
+	if(en->botw.actionframe == 60) BotWActor_VO(&en->botw, VO_LINK_ISSHONI);
+}
+
+static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx) {
+	// Entity *en = (Entity*)botw;
+	// if(en->botw.actionframe == 0) Actor_Spawn(TODO);
+}
+
+#define NACTIONDEFS 9
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
-	/*0*/{NULL, 0.0f, NULL, 0.0f, FLAG_INVISIBLE, 0, /**/ 0, 0, NULL},
-	/*1*/{&BotWLinkMeshIdleAnim, 0.0f, NULL, 0.0f, 0, FLAG_INVISIBLE, /**/ 0, 0, NULL},
-	/*2*/{&BotWLinkMeshBobokuwaAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f, 0, FLAG_INVISIBLE, /**/ VO_LINK_BOBOKUWA, 5, NULL},
-	/*3*/{&BotWLinkMeshLookatitselfAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f, 0, FLAG_INVISIBLE, /**/ 0, 0, NULL},
+	/*0*/{NULL, 0.0f, NULL, 0.0f,
+			FLAG_INVISIBLE, 0, 0, 0, NULL},
+	/*1*/{&BotWLinkMeshIdleAnim, 0.0f, NULL, 0.0f,
+			0, 0, 0, 0, NULL},
+	/*2*/{&BotWLinkMeshModerate_walkAnim, -8.0f, NULL, 0.0f,
+			0, 0, 0, 0, NULL},
+	/*3*/{&BotWLinkMeshLookatitselfAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
+			0, 0, 0, 0, NULL},
+	/*4*/{&BotWLinkMeshTurnleftAnim, -8.0f, &BotWLinkMeshIdleAnim, 0.0f,
+			FLAG_DELAYROT, 0, 0, 0, NULL},
+	/*5*/{&BotWLinkMeshTurnrightAnim, -8.0f, &BotWLinkMeshIdleAnim, 0.0f,
+			FLAG_DELAYROT, 0, 0, 0, NULL},
+	/*6*/{&BotWLinkMeshLookstozeldaAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
+			0, 0, 0, 0, NULL},
+	/*7*/{&BotWLinkMeshLinksdialogAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
+			0, 0, VO_LINK_ZERUDAHIME, 5, BotWLink_DialogCallback},
+	/*8*/{&BotWLinkMeshTakeszeldahandAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
+			0, 0, 0, 0, NULL},
+	/*9*/{NULL, 0.0f, NULL, 0.0f,
+			FLAG_INVISIBLE, 0, 0, 0, BotWLink_TimeWarpCallback},
 };
 
 static void update(Entity *en, GlobalContext *globalCtx) {
@@ -153,7 +182,7 @@ s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
 		return false;
 	}
 	if(p >= 0) HairPhys_Update(en->physStates[p], &physc[p], pos, rot,
-		en->botw.windX, en->botw.windZ, ACTOR_SCALE);
+		en->botw.windX, en->botw.windZ, ACTOR_SCALE, false);
 	if(limbIndex == BOTWLINKMESH_LTHIGH_LIMB || limbIndex == BOTWLINKMESH_RTHIGH_LIMB){
 		bool isl = (limbIndex == BOTWLINKMESH_LTHIGH_LIMB);
 		s16 r = rot->y;

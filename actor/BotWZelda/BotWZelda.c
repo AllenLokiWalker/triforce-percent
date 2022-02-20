@@ -119,7 +119,7 @@ s32 BotWZelda_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dL
 		return false;
 	}
 	if(p >= 0) HairPhys_Update(en->physStates[p], &physc[p], pos, rot,
-		en->botw.windX, en->botw.windZ, ACTOR_SCALE);
+		en->botw.windX, en->botw.windZ, ACTOR_SCALE, true);
 	return false;
 }
 

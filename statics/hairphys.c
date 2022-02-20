@@ -304,11 +304,13 @@ static void ApplyLimbPosRot(Vec3f *pos1, Vec3f *pos2, float len, float actorscal
 }
 
 void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
-        Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale){
+        Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale, bool ignoreY){
     const HairPhysDouble *dbl = c->dbl;
     Vec3f fulcrum; float costwist, sintwist;
     s16 twist = ExtractFulcrumTwist(actorscale, c->b->len, lPos,
         &fulcrum, &costwist, &sintwist, c->b->parentaxis);
+    float oldy = fulcrum.y;
+    if(ignoreY) fulcrum.y = 0.0f;
     if(!s->initted){
         s->initted = 1;
         s->s1.pos.x = fulcrum.x;
@@ -325,7 +327,12 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
         PhysSegment(&s->s2, &dbl->b, dbl->lim, &s->s1.pos, &s->s1.fnext, 
             costwist, sintwist, windX, windZ);
     }
-    ApplyLimbPosRot(&s->s1.pos, &s->s2.pos, dbl->b.len, actorscale,
+    Vec3f s1p = s->s1.pos, s2p = s->s2.pos;
+    if(ignoreY){
+        s1p.y += oldy;
+        s2p.y += oldy;
+    }
+    ApplyLimbPosRot(&s1p, &s2p, dbl->b.len, actorscale,
         lPos, lRot, twist);
 }
 
@@ -346,10 +353,12 @@ void TunicPullOther(HairPhysTunicState *s, const HairPhysConstants *c, void *con
 }
 
 void HairPhys_UpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c,
-        Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale){
+        Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale, bool ignoreY){
     Vec3f fulcrum; float costwist, sintwist;
     s16 twist = ExtractFulcrumTwist(actorscale, 0.0f, lPos,
         &fulcrum, &costwist, &sintwist, c->b->parentaxis);
+    float oldy = fulcrum.y;
+    if(ignoreY) fulcrum.y = 0.0f;
     if(!s->initted){
         s->initted = 1;
         s->s.pos.x = fulcrum.x;
@@ -361,12 +370,17 @@ void HairPhys_UpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c,
         TunicPullOther(s, c, s->conn1);
         TunicPullOther(s, c, s->conn2);
     }
-    ApplyLimbPosRot(&fulcrum, &s->s.pos, c->b->len, actorscale, lPos, lRot, twist);
+    Vec3f sp = s->s.pos;
+    if(ignoreY){
+        fulcrum.y = oldy;
+        sp.y += oldy;
+    }
+    ApplyLimbPosRot(&fulcrum, &sp, c->b->len, actorscale, lPos, lRot, twist);
 }
 
 typedef void (*HairPhysInitFunc)(void *s, const HairPhysConstants *c);
 typedef void (*HairPhysUpdateFunc)(void *s, const HairPhysConstants *c, 
-        Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale);
+        Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale, bool ignoreY);
 typedef void (*HairPhysCulledUpdateFunc)(void *s, const HairPhysConstants *c);
 static const HairPhysInitFunc initFuncs[3] = {
     (HairPhysInitFunc)HairPhys_InitSimple,
@@ -390,9 +404,9 @@ void HairPhys_Init(void *s, const HairPhysConstants *c){
 }
 
 void HairPhys_Update(void *s, const HairPhysConstants *c, Vec3f *lPos, 
-    Vec3s *lRot, float windX, float windZ, float actorscale){
+    Vec3s *lRot, float windX, float windZ, float actorscale, bool ignoreY){
     if(c->mode >= 3) return;
-    updateFuncs[c->mode](s, c, lPos, lRot, windX, windZ, actorscale);
+    updateFuncs[c->mode](s, c, lPos, lRot, windX, windZ, actorscale, ignoreY);
 }
 
 void HairPhys_UpdateCulled(void *s, const HairPhysConstants *c){

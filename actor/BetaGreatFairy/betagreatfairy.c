@@ -22,11 +22,17 @@ extern s32 UnicornFountain_scene_header00_cutscene[];
 #define SCALE_TINY 0.001f
 #define SCALE_MAIN 0.085f
 
+#define FLOWER_COLOR_DARK  0x00, 0x00, 0x80
+#define FLOWER_COLOR_LIGHT 0x80, 0x80, 0xFF
+
 typedef struct {
 	Actor actor;
 	u8 state;
 	u8 frames;
+	float ratio;
 	float lastFloatY;
+	Vec3f wingtip;
+	Vec3f lastWingtip;
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
@@ -78,19 +84,29 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 			Audio_PlayActorSound2(&(en->actor), en->state == 3 ? 
 				NA_SE_EV_GREAT_FAIRY_VANISH : NA_SE_EV_GREAT_FAIRY_APPEAR);
 		}
-		float ratio = (float)en->frames / (float)RISE_FRAMES;
-		if(en->state == 1) ratio = 1.0f - ratio;
-		float scale = ratio * (SCALE_TINY - SCALE_MAIN) + SCALE_MAIN;
+		en->ratio = (float)en->frames / (float)RISE_FRAMES;
+		if(en->state == 1) en->ratio = 1.0f - en->ratio;
+		
+		float scale = en->ratio * (SCALE_TINY - SCALE_MAIN) + SCALE_MAIN;
 		Actor_SetScale(&en->actor, scale);
-		en->actor.world.pos.y += (1.0f - ratio) * en->lastFloatY;
-		float rot = (ratio * ratio) * SPIRAL_ROTATIONS * 0x10000;
+		en->actor.world.pos.y += (1.0f - en->ratio) * en->lastFloatY;
+		float rot = (en->ratio * en->ratio) * SPIRAL_ROTATIONS * 0x10000;
 		en->actor.shape.rot.y = (s16)((s32)rot & 0xFFFF);
 		if(en->state == 1) en->actor.shape.rot.y = -en->actor.shape.rot.y;
-		if(ratio < LEAN_RATIO){
-			float leanratio = 1.0f - (ratio / LEAN_RATIO);
+		
+		if(en->ratio < LEAN_RATIO){
+			float leanratio = 1.0f - (en->ratio / LEAN_RATIO);
 			en->actor.shape.rot.x = (s16)((float)LEAN_FORWARD * leanratio);
 			en->actor.world.pos.z -= leanratio * LEAN_SHIFT_Z;
 		}
+		
+		en->lastWingtip = en->wingtip;
+		float rad = (100.0f / SCALE_MAIN) * scale;
+		float height = (130.0f / SCALE_MAIN) * scale;
+		en->wingtip.x = rad *  Math_CosS(en->actor.shape.rot.y);
+		en->wingtip.z = rad * -Math_SinS(en->actor.shape.rot.y);
+		en->wingtip.y = height;
+		
 		++en->frames;
 		if(en->frames == RISE_FRAMES){
 			en->frames = 0;
@@ -99,9 +115,68 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 	}
 }
 
+static Vec3f Kira2Velocity = { 0.0f, 0.0f, 0.0f };
+static Vec3f Kira2Accel = { 0.0f, 0.0f, 0.0f };
+static Color_RGBA8 KiraPrimColor = { 240, 255, 80, 255 };
+static Color_RGBA8 KiraEnvColor = { 200, 230, 0, 0 };
+#define KIRA1_FRAMES 10
+
 static void draw(Entity *en, GlobalContext *globalCtx) {
 	Gfx_DrawDListOpa(globalCtx, (Gfx*)DL_BETAGREATFAIRY);
+	//Fix flower
+	gDPSetCombineLERP(((Gfx*)DL_BETAGREATFAIRY_FLOWER + 0x50),
+		PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, TEXEL0,
+		0, 0, 0, COMBINED, 0, 0, 0, COMBINED);
+	gDPSetPrimColor(((Gfx*)DL_BETAGREATFAIRY_FLOWER + 0x70),
+		0, 0, FLOWER_COLOR_DARK, 0xFF);
+	gDPSetEnvColor(POLY_XLU_DISP++, FLOWER_COLOR_LIGHT, 0xFF);
 	Gfx_DrawDListXlu(globalCtx, (Gfx*)DL_BETAGREATFAIRY_FLOWER);
+	//Particles
+	if(en->state == 2){
+		const s32 nspawn = 1;
+		for(s32 i=0; i<nspawn; ++i){
+			Vec3f pos = en->actor.world.pos;
+			pos.x += 160.0f * (Rand_ZeroOne() - 0.5f);
+			pos.y += 120.0f * Rand_ZeroOne();
+			pos.z += 50.0f * (Rand_ZeroOne() - 0.5f);
+			EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &Kira2Velocity, &Kira2Accel,
+				&KiraPrimColor, &KiraEnvColor, 3000, 10);
+		}
+	}else if(en->state != 0){
+		s32 nspawn_perside = 1;
+		float size = (1.0f - en->ratio) * 20.0f;
+		Vec3f vel, accel;
+		vel.x = en->wingtip.x - en->lastWingtip.x;
+		vel.y = en->wingtip.y - en->lastWingtip.y;
+		vel.z = en->wingtip.z - en->lastWingtip.z;
+		accel.x = (1.0f / KIRA1_FRAMES) * -vel.x;
+		accel.y = (1.0f / KIRA1_FRAMES) * -vel.y - 0.5f;
+		accel.z = (1.0f / KIRA1_FRAMES) * -vel.z;
+		for(s32 i=0; i<nspawn_perside; ++i){
+			Vec3f mainpos = en->actor.world.pos;
+			pos.x += size * (Rand_ZeroOne() - 0.5f);
+			pos.y += size * (Rand_ZeroOne() - 0.5f);
+			pos.z += size * (Rand_ZeroOne() - 0.5f);
+			Vec3f pos = mainpos;
+			pos.x += en->wingtip.x;
+			pos.y += en->wingtip.y;
+			pos.z += en->wingtip.z;
+			EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &vel, &accel,
+				&KiraPrimColor, &KiraEnvColor, (1.0f - en->ratio) * 3000.0f, KIRA1_FRAMES);
+			pos.x = mainpos.x - en->wingtip.x;
+			pos.z = mainpos.z - en->wingtip.z;
+			vel.x = -vel.x;
+			vel.z = -vel.z;
+			accel.x = -accel.x;
+			accel.z = -accel.z;
+			EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &vel, &accel,
+				&KiraPrimColor, &KiraEnvColor, (1.0f - en->ratio) * 3000.0f, KIRA1_FRAMES);
+			vel.x = -vel.x;
+			vel.z = -vel.z;
+			accel.x = -accel.x;
+			accel.z = -accel.z;
+		}
+	}
 }
 
 const ActorInitExplPad init_vars = {

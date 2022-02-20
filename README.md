@@ -70,7 +70,11 @@ and verify that the output is a reasonable MIPS64 GCC version info.
 
 # Credits
 
+(Hyrule Field)
+
 ### TRIFORCE% OOT ACE SHOWCASE
+
+-
 
 Director \
 SAURAEN
@@ -86,6 +90,7 @@ REBECCAETRIPP \
 TERUSTHEBIRD \
 DWANGOAC
 
+(Scene TBD)
 
 ### ASSET UNIT
 
@@ -104,11 +109,12 @@ Screen Text \
 KIM-SUKLEY \
 SAURAEN
 
--
+(Scene TBD)
 
 Cinema Scenes \
 SAURAEN \
-DEFENESAM
+DEFENESAM \
+DWANGOAC
 
 BotW Model Conversion \
 ALI1234 \
@@ -117,13 +123,14 @@ SAURAEN
 -
 
 Animation \
+UNESAG \
 AEROARTWORK \
 SAURAEN
 
-Motion Capture Actors \
+Motion Reference \
 TBD
 
--
+(Scene TBD)
 
 Zelda (English Voice) \
 SAOIRSE
@@ -142,6 +149,7 @@ KIM-SUKLEY \
 CDI-FAILS \
 SAURAEN
 
+(Scene TBD)
 
 ### PROGRAM UNIT
 
@@ -150,10 +158,6 @@ SAURAEN \
 RANKAISIJA \
 Z64ME \
 \/ZEL\/
-
-Cel Shading \
-SAURAEN \
-GLANK
 
 -
 
@@ -166,6 +170,12 @@ System Patches \
 SAURAEN \
 \/ZEL\/
 
+(Scene TBD)
+
+Cel Shading \
+SAURAEN \
+GLANK
+
 -
 
 Bootstrapper Chain \
@@ -175,7 +185,7 @@ Hyperspeed Loader \
 TERUSTHEBIRD \
 SAURAEN
 
--
+(Scene TBD)
 
 Host Frontend \
 SAURAEN \
@@ -195,11 +205,13 @@ Build Toolchain \
 SAURAEN \
 Z64ME
 
+(Scene TBD)
 
 ### COMMUNITY UNIT
 
 Partner Creators \
 SWANKYBOX \
+SCOTTFALCO \
 RETRO GAME MECHANICS EXPLAINED
 
 -
@@ -212,7 +224,7 @@ TBD
 OST Published By \
 SIIVAGUNNER
 
--
+(Scene TBD)
 
 Video Editing \
 MUSKET012 \
@@ -229,7 +241,7 @@ MZXRULES \
 THARO \
 JACK WALKER
 
--
+(Scene TBD)
 
 Special Thanks \
 KAZE EMANUAR \
@@ -246,7 +258,7 @@ DWANGOAC
 
 Summer Games Done Quick 2022
 
-### 
+(Finale Scene)
 
 Assets, Toolchain, and Performance \
 Copyright (C) 2019-2022 \

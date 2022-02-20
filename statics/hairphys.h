@@ -64,7 +64,7 @@ s16 Statics_ExtractRotationAxis(float actorscale, u8 axis);
 void HairPhys_SetDebug(u8 d);
 void HairPhys_Init(void *s, const HairPhysConstants *c);
 void HairPhys_Update(void *s, const HairPhysConstants *c, Vec3f *lPos, 
-    Vec3s *lRot, float windX, float windZ, float actorscale);
+    Vec3s *lRot, float windX, float windZ, float actorscale, bool ignoreY);
 void HairPhys_UpdateCulled(void *s, const HairPhysConstants *c);
 
 #endif //_HAIRPHYS_H_

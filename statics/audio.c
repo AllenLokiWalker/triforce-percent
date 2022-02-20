@@ -19,32 +19,27 @@
 #include "audio.h"
 #include "../toolchain/AudiobankToC/include/audiobank.h"
 
-#define link_demo_1_32Table NULL
-#define link_demo_2_32Table NULL
-#define link_demo_3_32Table NULL
+#define vo_link_zerudahime_32Table NULL
+#define vo_link_isshoni_32Table NULL
 
-#include "../voice/link_demo_1_32.c"
-#include "../voice/link_demo_2_32.c"
-#include "../voice/link_demo_3_32.c"
+#include "../voice/vo_link_zerudahime.c"
+#include "../voice/vo_link_isshoni.c"
 
-#define NUM_CUST_SAMPLES 3
+#define NUM_CUST_SAMPLES 2
 AudioBankSample *cust_samples[NUM_CUST_SAMPLES] = {
-    &link_demo_1_32Sample,
-    &link_demo_2_32Sample,
-    &link_demo_3_32Sample,
+    &vo_link_zerudahime_32Sample,
+    &vo_link_isshoni_32Sample,
 };
 float cust_sample_tuning[NUM_CUST_SAMPLES] = {
-    1.0f,
     1.0f,
     1.0f
 };
 s32 sound_replace_offset[NUM_CUST_SAMPLES] = {
     0x1660 + 8*23, // EN_GANON_LAUGH
     0x1660 + 8*24, // EN_GANON_VOICE_DEMO
-    0x1660 + 8*25, // EN_GANON_THROW
 };
 u8 cust_sample_bank_idx[NUM_CUST_SAMPLES] = {
-    1, 1, 1,
+    1, 1,
 };
 s32 bank_ram_addr[2] = {
     0x80192A10, // Master Bank

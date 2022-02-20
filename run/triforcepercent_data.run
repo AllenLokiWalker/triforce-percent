@@ -11,6 +11,9 @@ PATCH 0xC004E0 ../actor/z_en_girla/actor.pat
 
 //Ending scene
 //Don't forget TriforceChest and TriforcePiece if move up
+//Voice acting
+STATICDATA ../voice/vo_link_zerudahime_32Raw.bin 3 0 0
+STATICDATA ../voice/vo_link_isshoni_32Raw.bin 3 1 0
 STATICDATA ../music/HereTogether1.aseq 1 0x73020201 0x27000000
 STATICDATA ../music/HereTogether2.aseq 1 0x74020201 0x27000000
 STATICDATA ../music/HereTogether3.aseq 1 0x75020201 0x27000000
@@ -116,8 +119,3 @@ STATICDATA ../anim/anim.bin 0 0x0 0x0
 OBJECT 16 ../actor/TriforceLight/zobj.zobj
 ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
 SCENE 46 ../scene/TriforceRoom/TriforceRoom_scene.zscene
-
-//Voice acting
-STATICDATA ../voice/link_demo_1_32Raw.bin 3 0 0
-//STATICDATA ../voice/link_demo_2_32Raw.bin 3 1 0
-//STATICDATA ../voice/link_demo_3_32Raw.bin 3 2 0
