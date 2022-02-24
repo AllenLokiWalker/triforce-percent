@@ -34,6 +34,12 @@ typedef struct {
     u8 sfxframe;
     BotWCSActionFunc func;
 } BotWCSActionDef;
+
+typedef struct {
+    s8 bone;
+    u8 dim;
+	s8 dir;
+} BotWFixRotAnimDef;
  
 static inline void BotWActor_Init(BotWActor *botw, GlobalContext *globalCtx, 
         FlexSkeletonHeader *skel, AnimationHeader *initAnim,
@@ -104,7 +110,8 @@ static void BotWActor_UpdateEyes(BotWActor *botw){
 }
 
 static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx, 
-		const BotWCSActionDef *ActionDefs, s32 nActionDefs, s32 actionSlot) {
+		const BotWCSActionDef *ActionDefs, s32 nActionDefs, s32 actionSlot,
+		const BotWFixRotAnimDef *FixRotAnimDefs) {
 	++botw->actionframe;
     CsCmdActorAction *action = globalCtx->csCtx.npcActions[actionSlot];
 	bool actionValid = (globalCtx->csCtx.state != 0) && (action != NULL) && (action->action < nActionDefs);
@@ -151,13 +158,19 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 	BotWActor_UpdateEyes(botw);
 	s32 animFinished = SkelAnime_Update(&botw->skelAnime);
 	if(animFinished){
+		if(actionValid && (botw->flags & FLAG_DELAYROT)){
+			s16 drot = botw->actor.shape.rot.y - action->rot.y;
+			botw->actor.shape.rot.y = action->rot.y;
+			while(FixRotAnimDefs->bone >= 0){
+				(&(botw->skelAnime.jointTable[FixRotAnimDefs->bone].x))[FixRotAnimDefs->dim] 
+					+= drot * (s16)FixRotAnimDefs->dir;
+				++FixRotAnimDefs;
+			}
+		}
 		if(botw->anim_whendone != NULL){
 			BotWActor_SetAnim(botw, botw->anim_whendone, ANIMMODE_LOOP, botw->morph_whendone);
 			botw->anim = botw->anim_whendone;
 			botw->anim_whendone = NULL;
-		}
-		if(actionValid && (botw->flags & FLAG_DELAYROT)){
-			botw->actor.shape.rot.y = action->rot.y;
 		}
 	}
 	if(botw->sfx != 0 && (u16)botw->sfxframe == botw->actionframe){

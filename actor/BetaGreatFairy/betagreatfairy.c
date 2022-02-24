@@ -22,9 +22,6 @@ extern s32 UnicornFountain_scene_header00_cutscene[];
 #define SCALE_TINY 0.001f
 #define SCALE_MAIN 0.085f
 
-#define FLOWER_COLOR_DARK  0x00, 0x00, 0x80
-#define FLOWER_COLOR_LIGHT 0x80, 0x80, 0xFF
-
 typedef struct {
 	Actor actor;
 	u8 state;
@@ -128,8 +125,8 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 		PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, TEXEL0,
 		0, 0, 0, COMBINED, 0, 0, 0, COMBINED);
 	gDPSetPrimColor(((Gfx*)DL_BETAGREATFAIRY_FLOWER + 0x70),
-		0, 0, FLOWER_COLOR_DARK, 0xFF);
-	gDPSetEnvColor(POLY_XLU_DISP++, FLOWER_COLOR_LIGHT, 0xFF);
+		0, 0, 0x00, 0x00, 0x80, 0xFF);
+	gDPSetEnvColor(POLY_XLU_DISP++, 0x80, 0x80, 0xFF, 0xFF);
 	Gfx_DrawDListXlu(globalCtx, (Gfx*)DL_BETAGREATFAIRY_FLOWER);
 	//Particles
 	if(en->state == 2){
@@ -154,9 +151,9 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 		accel.z = (1.0f / KIRA1_FRAMES) * -vel.z;
 		for(s32 i=0; i<nspawn_perside; ++i){
 			Vec3f mainpos = en->actor.world.pos;
-			pos.x += size * (Rand_ZeroOne() - 0.5f);
-			pos.y += size * (Rand_ZeroOne() - 0.5f);
-			pos.z += size * (Rand_ZeroOne() - 0.5f);
+			mainpos.x += size * (Rand_ZeroOne() - 0.5f);
+			mainpos.y += size * (Rand_ZeroOne() - 0.5f);
+			mainpos.z += size * (Rand_ZeroOne() - 0.5f);
 			Vec3f pos = mainpos;
 			pos.x += en->wingtip.x;
 			pos.y += en->wingtip.y;

@@ -19,16 +19,16 @@
 #include "audio.h"
 #include "../toolchain/AudiobankToC/include/audiobank.h"
 
-#define vo_link_zerudahime_32Table NULL
-#define vo_link_isshoni_32Table NULL
+#define vo_link_zerudahimeTable NULL
+#define vo_link_isshoniTable NULL
 
 #include "../voice/vo_link_zerudahime.c"
 #include "../voice/vo_link_isshoni.c"
 
 #define NUM_CUST_SAMPLES 2
 AudioBankSample *cust_samples[NUM_CUST_SAMPLES] = {
-    &vo_link_zerudahime_32Sample,
-    &vo_link_isshoni_32Sample,
+    &vo_link_zerudahimeSample,
+    &vo_link_isshoniSample,
 };
 float cust_sample_tuning[NUM_CUST_SAMPLES] = {
     1.0f,

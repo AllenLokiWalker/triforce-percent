@@ -134,7 +134,7 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 
 static void BotWLink_DialogCallback(BotWActor *botw, GlobalContext *globalCtx) {
 	Entity *en = (Entity*)botw;
-	if(en->botw.actionframe == 60) BotWActor_VO(&en->botw, VO_LINK_ISSHONI);
+	if(en->botw.actionframe == 80) BotWActor_VO(&en->botw, VO_LINK_ISSHONI);
 }
 
 static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx) {
@@ -142,7 +142,7 @@ static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx)
 	// if(en->botw.actionframe == 0) Actor_Spawn(TODO);
 }
 
-#define NACTIONDEFS 9
+#define NACTIONDEFS 10
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*0*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, 0, NULL},
@@ -152,22 +152,29 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 			0, 0, 0, 0, NULL},
 	/*3*/{&BotWLinkMeshLookatitselfAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			0, 0, 0, 0, NULL},
-	/*4*/{&BotWLinkMeshTurnleftAnim, -8.0f, &BotWLinkMeshIdleAnim, 0.0f,
+	/*4*/{&BotWLinkMeshTurnleftAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			FLAG_DELAYROT, 0, 0, 0, NULL},
-	/*5*/{&BotWLinkMeshTurnrightAnim, -8.0f, &BotWLinkMeshIdleAnim, 0.0f,
+	/*5*/{&BotWLinkMeshTurnrightAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			FLAG_DELAYROT, 0, 0, 0, NULL},
 	/*6*/{&BotWLinkMeshLookstozeldaAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			0, 0, 0, 0, NULL},
 	/*7*/{&BotWLinkMeshLinksdialogAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			0, 0, VO_LINK_ZERUDAHIME, 5, BotWLink_DialogCallback},
-	/*8*/{&BotWLinkMeshTakeszeldahandAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
+	/*8*/{&BotWLinkMeshTakeszeldahandAnim, -8.0f, NULL, 0.0f,
 			0, 0, 0, 0, NULL},
 	/*9*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, 0, BotWLink_TimeWarpCallback},
 };
 
+static const BotWFixRotAnimDef FixRotAnimDefs[] = {
+	{ BOTWLINKMESH_HIPS_LIMB, 2, 1 },
+	{ BOTWLINKMESH_TORSO_LIMB, 2, 1 },
+	{ -1, 0, 0 }
+};
+
 static void update(Entity *en, GlobalContext *globalCtx) {
-	BotWActor_Update(&en->botw, globalCtx, ActionDefs, NACTIONDEFS, ACTIONSLOT);
+	BotWActor_Update(&en->botw, globalCtx, ActionDefs, NACTIONDEFS, ACTIONSLOT,
+		FixRotAnimDefs);
 }
 
 s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {

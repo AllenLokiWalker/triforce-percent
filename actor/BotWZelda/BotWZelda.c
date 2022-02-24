@@ -101,8 +101,13 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*2*/{&BotWZeldaMeshNormalidleAnim, -8.0f, NULL, 0.0f, 0, FLAG_INVISIBLE | FLAG_EYESCLOSED, /**/ 0, 0, NULL},
 };
 
+static const BotWFixRotAnimDef FixRotAnimDefs[] = {
+	{ -1, 0, 0 }
+};
+
 static void update(Entity *en, GlobalContext *globalCtx) {
-	BotWActor_Update(&en->botw, globalCtx, ActionDefs, NACTIONDEFS, ACTIONSLOT);
+	BotWActor_Update(&en->botw, globalCtx, ActionDefs, NACTIONDEFS, ACTIONSLOT,
+		FixRotAnimDefs);
 }
 
 s32 BotWZelda_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {

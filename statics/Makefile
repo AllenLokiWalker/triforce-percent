@@ -43,9 +43,8 @@ audio.o: \
 	audio.h \
 	bankdata.c \
 	../toolchain/AudiobankToC/include/audiobank.h \
-	../voice/link_demo_1_32.c \
-	../voice/link_demo_2_32.c \
-	../voice/link_demo_3_32.c
+	../voice/vo_link_zerudahime.c \
+	../voice/vo_link_isshoni.c
 
 scene.o: scene.h
 
