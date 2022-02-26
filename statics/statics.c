@@ -214,8 +214,8 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 1;
             // globalCtx->nextEntranceIndex = 0x04A6;
             //Warp to Unicorn Fountain
-            // globalCtx->linkAgeOnLoad = 0;
-            // globalCtx->nextEntranceIndex = 0x0560;
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x0560;
             //Warp to Chamber of Sages
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x006B;
@@ -224,8 +224,8 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x034D;
             //Warp to ending
-            globalCtx->linkAgeOnLoad = 0;
-            globalCtx->nextEntranceIndex = 0x03FC;
+            // globalCtx->linkAgeOnLoad = 0;
+            // globalCtx->nextEntranceIndex = 0x03FC;
             //Common warp
             gSaveContext.respawnFlag = -2;
             globalCtx->sceneLoadFlag = 0x14;

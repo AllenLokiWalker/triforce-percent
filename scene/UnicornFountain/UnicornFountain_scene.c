@@ -46,10 +46,10 @@ LightSettings UnicornFountain_scene_header00_lightSettings[1] = {
 	{ 0x3E, 0x63, 0x8F, 0x49, 0x49, 0x49, 0xDB, 0xD8, 0xAA, 0xB7, 0xB7, 0xB7, 0x15, 0x68, 0x85, 0xB8, 0xB1, 0xC4, 0x07E1, 0x3200 },
 };
 
-u32 UnicornFountain_polygonTypes[] = {
-	 0x00000000, 0x00000002,
-	 0x00000000, 0x00000000,
-	 0x00000100, 0x00000008,
+SurfaceType UnicornFountain_polygonTypes[] = {
+	{ 0x00000000, 0x00000002 },
+	{ 0x00000000, 0x00000000 },
+	{ 0x00000100, 0x00000008 },
 };
 
 CollisionPoly UnicornFountain_polygons[] = {
@@ -442,7 +442,22 @@ WaterBox UnicornFountain_waterBoxes[] = {
 	{ -301, -20, -1061, 602, 602, 0x00000000 },
 };
 
-CollisionHeader UnicornFountain_collisionHeader = { -372, -30, -1121, 370, 369, 567, 148, UnicornFountain_vertices, 232, UnicornFountain_polygons, UnicornFountain_polygonTypes, 0, 1, UnicornFountain_waterBoxes };
+CollisionHeader UnicornFountain_collisionHeader = {
+	-372,
+	-30,
+	-1121,
+	370,
+	369,
+	567,
+	148,
+	UnicornFountain_vertices,
+	232,
+	UnicornFountain_polygons,
+	UnicornFountain_polygonTypes,
+	0,
+	1,
+	UnicornFountain_waterBoxes
+};
 
 s32 UnicornFountain_scene_header00_cutscene[] = {
 	CS_BEGIN_CUTSCENE(21, 1046),
@@ -475,8 +490,8 @@ s32 UnicornFountain_scene_header00_cutscene[] = {
 		CS_CAM_POS(0, 0, 0, 0x42700000, -153, 86, -779, 0),
 		CS_CAM_POS(0, 0, 0, 0x42700000, -63, 152, -639, 0),
 		CS_CAM_POS(0, 0, 0, 0x42700000, 64, 200, -661, 0),
-		CS_CAM_POS(0, 0, 0, 0x42700000, 77, 202, -696, 0),
-		CS_CAM_POS(0, 0, 0, 0x42700000, 76, 202, -699, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 48, 202, -704, 0),
+		CS_CAM_POS(0, 0, 0, 0x42700000, 47, 202, -707, 0),
 		CS_CAM_POS(-1, 0, 0, 0x0, 0, 0, 0, 0),
 	CS_CAM_POS_LIST(320, 581),
 		CS_CAM_POS(0, 0, 0, 0x42700000, 318, 25, -605, 0),
@@ -624,3 +639,4 @@ s32 UnicornFountain_scene_header00_cutscene[] = {
 		CS_NPC_ACTION(2, 1010, 1011, 0x0, 0x0, 0x0, 15, 0, 0, 15, 0, -10, 0, 0, 0),
 	CS_END(),
 };
+

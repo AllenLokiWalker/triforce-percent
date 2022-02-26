@@ -98,8 +98,8 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		}
 		
 		en->lastWingtip = en->wingtip;
-		float rad = (100.0f / SCALE_MAIN) * scale;
-		float height = (130.0f / SCALE_MAIN) * scale;
+		float rad = (130.0f / SCALE_MAIN) * scale;
+		float height = (150.0f / SCALE_MAIN) * scale;
 		en->wingtip.x = rad *  Math_CosS(en->actor.shape.rot.y);
 		en->wingtip.z = rad * -Math_SinS(en->actor.shape.rot.y);
 		en->wingtip.y = height;
@@ -119,14 +119,16 @@ static Color_RGBA8 KiraEnvColor = { 200, 230, 0, 0 };
 #define KIRA1_FRAMES 10
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
+	if(en->state == 0) return;
 	Gfx_DrawDListOpa(globalCtx, (Gfx*)DL_BETAGREATFAIRY);
 	//Fix flower
-	gDPSetCombineLERP(((Gfx*)DL_BETAGREATFAIRY_FLOWER + 0x50),
+	Gfx *flowerDL = SEGMENTED_TO_VIRTUAL(DL_BETAGREATFAIRY_FLOWER);
+	gDPSetCombineLERP(flowerDL + 10,
 		PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, TEXEL0,
 		0, 0, 0, COMBINED, 0, 0, 0, COMBINED);
-	gDPSetPrimColor(((Gfx*)DL_BETAGREATFAIRY_FLOWER + 0x70),
-		0, 0, 0x00, 0x00, 0x80, 0xFF);
-	gDPSetEnvColor(POLY_XLU_DISP++, 0x80, 0x80, 0xFF, 0xFF);
+	gDPSetPrimColor(flowerDL + 14,
+		0, 0, 0x80, 0x80, 0xFF, 0xFF);
+	gDPSetEnvColor(POLY_XLU_DISP++, 0x00, 0x00, 0x80, 0xFF);
 	Gfx_DrawDListXlu(globalCtx, (Gfx*)DL_BETAGREATFAIRY_FLOWER);
 	//Particles
 	if(en->state == 2){
@@ -135,19 +137,19 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 			Vec3f pos = en->actor.world.pos;
 			pos.x += 160.0f * (Rand_ZeroOne() - 0.5f);
 			pos.y += 120.0f * Rand_ZeroOne();
-			pos.z += 50.0f * (Rand_ZeroOne() - 0.5f);
+			pos.z += 70.0f * Rand_ZeroOne() + 10.0f;
 			EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &Kira2Velocity, &Kira2Accel,
 				&KiraPrimColor, &KiraEnvColor, 3000, 10);
 		}
-	}else if(en->state != 0){
-		s32 nspawn_perside = 1;
+	}else{
+		s32 nspawn_perside = 2;
 		float size = (1.0f - en->ratio) * 20.0f;
 		Vec3f vel, accel;
-		vel.x = en->wingtip.x - en->lastWingtip.x;
-		vel.y = en->wingtip.y - en->lastWingtip.y;
-		vel.z = en->wingtip.z - en->lastWingtip.z;
+		vel.x = (en->wingtip.x - en->lastWingtip.x) * 0.1f;
+		vel.y = (en->wingtip.y - en->lastWingtip.y) * 0.1f;
+		vel.z = (en->wingtip.z - en->lastWingtip.z) * 0.1f;
 		accel.x = (1.0f / KIRA1_FRAMES) * -vel.x;
-		accel.y = (1.0f / KIRA1_FRAMES) * -vel.y - 0.5f;
+		accel.y = (1.0f / KIRA1_FRAMES) * -vel.y - 0.4f;
 		accel.z = (1.0f / KIRA1_FRAMES) * -vel.z;
 		for(s32 i=0; i<nspawn_perside; ++i){
 			Vec3f mainpos = en->actor.world.pos;

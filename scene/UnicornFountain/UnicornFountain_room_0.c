@@ -1,13 +1,12 @@
 #include "ultra64.h"
 #include "z64.h"
 #include "macros.h"
-#include "UnicornFountain_room_0.h"
+#include "UnicornFountain_scene.h"
 
 #include "segment_symbols.h"
 #include "command_macros_base.h"
 #include "z64cutscene_commands.h"
 #include "variables.h"
-#include "UnicornFountain_scene.h"
 
 SCmdBase UnicornFountain_room_0_header00[] = {
 	SCENE_CMD_ECHO_SETTINGS(0x00),
@@ -16,7 +15,7 @@ SCmdBase UnicornFountain_room_0_header00[] = {
 	SCENE_CMD_TIME_SETTINGS(0xFF, 0xFF, 10),
 	SCENE_CMD_MESH(&UnicornFountain_room_0_meshHeader),
 	SCENE_CMD_OBJECT_LIST(2, &UnicornFountain_room_0_header00_objectList),
-	SCENE_CMD_ACTOR_LIST(3, &UnicornFountain_room_0_header00_actorList),
+	SCENE_CMD_ACTOR_LIST(4, &UnicornFountain_room_0_header00_actorList),
 	SCENE_CMD_END(),
 };
 
@@ -25,9 +24,10 @@ s16 UnicornFountain_room_0_header00_objectList[2] = {
 	OBJECT_MJIN_OKA,
 };
 
-ActorEntry UnicornFountain_room_0_header00_actorList[3] = {
-	{ 6, 0, 29, -760, 0, 0, 0, 0x0000 },
+ActorEntry UnicornFountain_room_0_header00_actorList[4] = {
 	{ ACTOR_EN_OKARINA_TAG, 0, -21, -568, 0, 0, 0, 0x1CA0 },
+	{ ACTOR_EN_RIVER_SOUND, -2, -245, -3408, 0, 0, 0, 0x0001 },
+	{ 6, -2, 29, -760, 0, 0, 0, 0x0000 },
 	{ 23, 0, -28, -568, 0, 0, 0, 0x0000 },
 };
 
