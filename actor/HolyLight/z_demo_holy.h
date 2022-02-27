@@ -1,10 +1,6 @@
 #ifndef Z_DEMO_HOLY_H
 #define Z_DEMO_HOLY_H
 
-#include "ultra64.h"
-#include "z64.h"
-#include "macros.h"
-
 struct EnHolyLight;
 
 typedef void (*UpdateFunc)(struct EnHolyLight*, GlobalContext*, f32);

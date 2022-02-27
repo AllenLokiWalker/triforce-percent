@@ -5,11 +5,12 @@
  * Author: MNGoldenEagle
  */
 
+#include "ootmain.h"
 #include "z_demo_holy.h"
 #include "holy_light_gfx.h"
 
 #define OBJ_ID 126
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_19 | ACTOR_FLAG_22 | ACTOR_FLAG_25 | ACTOR_FLAG_27)
+#define FLAGS ((1 << 4) | (1 << 5) | (1 << 19) | (1 << 22) | (1 << 25) | (1 << 27))
 
 #define  BRIGHT_RANGE ((280.0f - 150.0f) / 2.0f)
 #define BRIGHT_OFFSET ((280.0f + 150.0f) / 2.0f)
@@ -27,16 +28,18 @@ void Update_WaitForCutscene(EnHolyLight* this, GlobalContext* globalCtx, f32 cur
 void Update_FadeIn(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame);
 void Update_Glow(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame);
 void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame);
-void Update_Cycle(EnHolyLight* this, GlobalContext* globalCtx, f32 unused);
-void ChangeCycle(EnHolyLight* this, bool firstCycle);
+//void Update_Cycle(EnHolyLight* this, GlobalContext* globalCtx, f32 unused);
+//void ChangeCycle(EnHolyLight* this, bool firstCycle);
 
 //static Vec3f KiraVelocity = { 0.0f, 3.0f, 0.0f };
 //static Vec3f KiraAccel = { 0.0f, -1.0f, 0.0f };
+/*
 static u16 CycleFramePoints[3][2] = {
     { 0, 80 },
     { 80, 200 },
     { 200, 280 }
 };
+*/
 
 void HolyLight_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnHolyLight* this = (EnHolyLight*)thisx;
@@ -44,16 +47,18 @@ void HolyLight_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->lightNode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfo);
     Lights_PointNoGlowSetInfo(&this->lightInfo, this->actor.home.pos.x, this->actor.home.pos.y + 125, this->actor.home.pos.z,
                             255, 255, 255, 50);
-    if (this->actor.params >= 0 && this->actor.params < ARRAY_COUNT(globalCtx->csCtx.npcActions)) {
+    //if (this->actor.params >= 0 && this->actor.params < ARRAY_COUNT(globalCtx->csCtx.npcActions)) {
         this->actorSlot = this->actor.params;
         this->update = &Update_WaitForCutscene;
         this->actor.draw = NULL;
         this->scaleFactor = 0.0f;
+        /*
     } else {
         this->actorSlot = -1;
         this->update = &Update_Cycle;
         ChangeCycle(this, true);
     }
+    */
 }
 
 void HolyLight_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -145,6 +150,7 @@ void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFram
     this->lightInfo.params.point.radius = calc;
 }
 
+/*
 void ChangeCycle(EnHolyLight* this, bool firstCycle) {
     HolyLightMode newMode = firstCycle ? HLYLGT_MD_FADEIN : (this->mode + 1) % HLYLGT_MD_MAX;
     this->mode = newMode;
@@ -179,23 +185,25 @@ void Update_Cycle(EnHolyLight* this, GlobalContext* globalCtx, f32 unused) {
 
     this->currentFrame++;
 }
+*/
 
 void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
     EnHolyLight* this = (EnHolyLight*)thisx;
-    f32 currentFrame = globalCtx->csCtx.frames;
-    this->update(this, globalCtx, currentFrame);
 
-    if (this->actorSlot < ARRAY_COUNT(globalCtx->csCtx.npcActions) && globalCtx->csCtx.frames == this->endFrame) {
+    if (this->actorSlot < ARRAY_COUNT(globalCtx->csCtx.npcActions) && globalCtx->csCtx.frames > this->endFrame) {
         this->update = &Update_WaitForCutscene;
         this->actor.draw = NULL;
         this->startFrame = 0;
         this->endFrame = 0;
     }
+    
+    f32 currentFrame = globalCtx->csCtx.frames;
+    this->update(this, globalCtx, currentFrame);
 }
 
 void HolyLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnHolyLight* this = (EnHolyLight*)thisx;
-    s32 frame = this->currentFrame;
+    s32 frame = globalCtx->gameplayFrames;
 
     //OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_holy.c", __LINE__);
     gSPSegment(POLY_XLU_DISP++, 10, Gfx_TexScroll(globalCtx->state.gfxCtx, frame * 3, 0, 16, 32));
@@ -216,7 +224,7 @@ const ActorInitExplPad init_vars = {
     .id = 0xDEAD, .padding = 0xBEEF,
     .category = ACTORCAT_PROP,
     .flags = FLAGS,
-    .objectId = OBJECT_GAMEPLAY_KEEP,
+    .objectId = OBJ_ID,
     .instanceSize = sizeof(EnHolyLight),
     .init = (ActorFunc)HolyLight_Init,
     .destroy = (ActorFunc)HolyLight_Destroy,
