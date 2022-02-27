@@ -1,12 +1,14 @@
 /*
  * File: z_demo_holy.c
  * Overlay: ovl_En_HolyLight
- * Description: Holy Light for Zelda
+ * Description: Holy Light for BotW Zelda
+ * Author: MNGoldenEagle
  */
 
 #include "z_demo_holy.h"
 #include "holy_light_gfx.h"
 
+#define OBJ_ID 126
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_19 | ACTOR_FLAG_22 | ACTOR_FLAG_25 | ACTOR_FLAG_27)
 
 #define  BRIGHT_RANGE ((280.0f - 150.0f) / 2.0f)
@@ -28,21 +30,8 @@ void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFram
 void Update_Cycle(EnHolyLight* this, GlobalContext* globalCtx, f32 unused);
 void ChangeCycle(EnHolyLight* this, bool firstCycle);
 
-const ActorInit En_Poh_InitVars = {
-    .id = 0xDEAD,
-    .padding = 0xBEEF,
-    .category = ACTORCAT_PROP,
-    .flags = FLAGS,
-    .objectId = OBJECT_GAMEPLAY_KEEP,
-    .instanceSize = sizeof(EnHolyLight),
-    .init = (ActorFunc)HolyLight_Init,
-    .destroy = (ActorFunc)HolyLight_Destroy,
-    .update = (ActorFunc)HolyLight_Update,
-    .draw = (ActorFunc)HolyLight_Draw,
-};
-
-static Vec3f KiraVelocity = { 0.0f, 3.0f, 0.0f };
-static Vec3f KiraAccel = { 0.0f, -1.0f, 0.0f };
+//static Vec3f KiraVelocity = { 0.0f, 3.0f, 0.0f };
+//static Vec3f KiraAccel = { 0.0f, -1.0f, 0.0f };
 static u16 CycleFramePoints[3][2] = {
     { 0, 80 },
     { 80, 200 },
@@ -76,6 +65,9 @@ void HolyLight_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 void Update_WaitForCutscene(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
     if (globalCtx->csCtx.state != 0 && globalCtx->csCtx.npcActions[this->actorSlot] != NULL) {
         CsCmdActorAction* action = globalCtx->csCtx.npcActions[this->actorSlot];
+        if (action->endFrame < globalCtx->csCtx.frames) {
+            return;
+        }
         this->startFrame = action->startFrame;
         this->endFrame = action->endFrame;
         this->periodFactor = 10.0f / ((action->endFrame - action->startFrame) * M_PI);
@@ -193,7 +185,7 @@ void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
     f32 currentFrame = globalCtx->csCtx.frames;
     this->update(this, globalCtx, currentFrame);
 
-    if (this->actorSlot > ARRAY_COUNT(globalCtx->csCtx.npcActions) && globalCtx->csCtx.frames == this->endFrame) {
+    if (this->actorSlot < ARRAY_COUNT(globalCtx->csCtx.npcActions) && globalCtx->csCtx.frames == this->endFrame) {
         this->update = &Update_WaitForCutscene;
         this->actor.draw = NULL;
         this->startFrame = 0;
@@ -205,7 +197,7 @@ void HolyLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnHolyLight* this = (EnHolyLight*)thisx;
     s32 frame = this->currentFrame;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_holy.c", __LINE__);
+    //OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_holy.c", __LINE__);
     gSPSegment(POLY_XLU_DISP++, 10, Gfx_TexScroll(globalCtx->state.gfxCtx, frame * 3, 0, 16, 32));
     gSPSegment(POLY_XLU_DISP++, 11, Gfx_TexScroll(globalCtx->state.gfxCtx, ABS(-frame), 0, 16, 32));
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, this->primColor.r, this->primColor.g, this->primColor.b, this->primColor.a);
@@ -217,7 +209,17 @@ void HolyLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_XLU_DISP++, &holyLight1);
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, this->envColor.r, this->envColor.g, this->envColor.b, this->primColor.a);
     gSPDisplayList(POLY_XLU_DISP++, &holyLight2);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_holy.c", __LINE__);
+    //CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_holy.c", __LINE__);
 }
 
-#include "holy_light_gfx.c"
+const ActorInitExplPad init_vars = {
+    .id = 0xDEAD, .padding = 0xBEEF,
+    .category = ACTORCAT_PROP,
+    .flags = FLAGS,
+    .objectId = OBJECT_GAMEPLAY_KEEP,
+    .instanceSize = sizeof(EnHolyLight),
+    .init = (ActorFunc)HolyLight_Init,
+    .destroy = (ActorFunc)HolyLight_Destroy,
+    .update = (ActorFunc)HolyLight_Update,
+    .draw = (ActorFunc)HolyLight_Draw,
+};

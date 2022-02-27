@@ -478,7 +478,7 @@ CollisionHeader Ending_collisionHeader = {
 };
 
 s32 FinaleCS[] = {
-	CS_BEGIN_CUTSCENE(33, 3444),
+	CS_BEGIN_CUTSCENE(34, 3444),
 	CS_TERMINATOR(81, 3400, 3444),
 	CS_PLAY_BGM_LIST(3),
 		CS_PLAY_BGM(0x0073 + 1, 1275, 1, 0, 0, 0, 0, 0, 0, 0, 0),
@@ -741,6 +741,10 @@ s32 FinaleCS[] = {
 		CS_NPC_ACTION(0x0002, 1623, 2790, 0x0, 0x14ca, 0x0, 437, -50, 354, 437, -50, 354, 0, 0, 0),
 		CS_NPC_ACTION(0x0002, 2790, 3100, 0x0, 0xffffd4ca, 0x0, 437, -50, 354, 437, -50, 354, 0, 0, 0),
 		CS_NPC_ACTION(0x0002, 3100, 5000, 0x0, 0x14ca, 0x0, 437, -50, 354, 437, -50, 354, 0, 0, 0),
+	CS_NPC_ACTION_LIST(36, 3),
+		CS_NPC_ACTION(0x0001, 1146, 1188, 0x0, 0x0, 0x0, 437, -50, 354, 437, -50, 354, 0, 0, 0),
+		CS_NPC_ACTION(0x0002, 1188, 1333, 0x0, 0x0, 0x0, 437, -50, 354, 437, -50, 354, 0, 0, 0),
+		CS_NPC_ACTION(0x0003, 1333, 1370, 0x0, 0x0, 0x0, 437, -50, 354, 437, -50, 254, 0, 0, 0),
 	CS_END(),
 };
 

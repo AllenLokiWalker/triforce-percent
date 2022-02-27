@@ -31,6 +31,8 @@ ACTOR 116 ../actor/TwitchMessages/TwitchMessages.zovl
 //ACTOR 117 ../actor/TestCelShading/TestCelShading.zovl
 OBJECT 123 ../actor/SilentPrincess/zobj.zobj
 ACTOR 120 ../actor/SilentPrincess/SilentPrincess.zovl
+OBJECT 126 ../actor/HolyLight/zobj.zobj
+ACTOR 122 ../actor/HolyLight/z_demo_holy.zovl
 SCENE 58 ../scene/Ending/Ending_scene.zscene
 
 

@@ -6,6 +6,7 @@ BotWLink/ \
 BotWZelda/ \
 CoSSages/ \
 CoSStaircases/ \
+HolyLight/ \
 Nabooru/ \
 SilentPrincess/ \
 TestCelShading/ \
