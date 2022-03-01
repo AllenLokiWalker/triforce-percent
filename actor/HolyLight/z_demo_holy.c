@@ -44,6 +44,7 @@ static u16 CycleFramePoints[3][2] = {
 void HolyLight_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnHolyLight* this = (EnHolyLight*)thisx;
 
+    this->sound = 0;
     this->lightNode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfo);
     Lights_PointNoGlowSetInfo(&this->lightInfo, this->actor.home.pos.x, this->actor.home.pos.y + 125, this->actor.home.pos.z,
                             255, 255, 255, 50);
@@ -79,9 +80,12 @@ void Update_WaitForCutscene(EnHolyLight* this, GlobalContext* globalCtx, f32 cur
         this->actor.draw = &HolyLight_Draw;
         switch (action->action) {
             case HLYLGT_MD_FADEIN:
+                this->sound = 1;
                 this->update = &Update_FadeIn;
                 Update_FadeIn(this, globalCtx, currentFrame);
                 break;
+            case HLYLGT_MD_GLOW_SILENT:
+                this->sound = 0;
             case HLYLGT_MD_GLOW:
                 this->update = &Update_Glow;
                 Update_Glow(this, globalCtx, currentFrame);
@@ -199,6 +203,21 @@ void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
     
     f32 currentFrame = globalCtx->csCtx.frames;
     this->update(this, globalCtx, currentFrame);
+    
+    if(this->sound){
+        /*
+        other candidates:
+        NA_SE_EV_SPIRIT_STONE
+        NA_SE_EV_HEALING
+        NA_SE_EV_TRIFORCE
+        NA_SE_EV_ZELDA_POWER
+        */
+        static f32 FreqScale = 1.0f;
+        static f32 Vol = 0.99f;
+        static u32 ReverbAdd = 0;
+        Audio_PlaySoundGeneral(NA_SE_EV_AURORA - SFX_FLAG, &this->actor.projectedPos, 4, 
+            &FreqScale, &Vol, (f32*)&ReverbAdd);
+    }
 }
 
 void HolyLight_Draw(Actor* thisx, GlobalContext* globalCtx) {

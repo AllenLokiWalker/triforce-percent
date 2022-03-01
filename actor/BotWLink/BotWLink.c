@@ -137,9 +137,22 @@ static void BotWLink_DialogCallback(BotWActor *botw, GlobalContext *globalCtx) {
 	if(en->botw.actionframe == 80) BotWActor_VO(&en->botw, VO_LINK_ISSHONI);
 }
 
+typedef struct {
+	u8 dummy[0x188];
+	s16 shrinkTimer;
+} FakeDemoEffect;
+
 static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx) {
-	// Entity *en = (Entity*)botw;
-	// if(en->botw.actionframe == 0) Actor_Spawn(TODO);
+	Entity *en = (Entity*)botw;
+	if(en->botw.actionframe == 0) Actor_Spawn(&globalCtx->actorCtx, globalCtx,
+		ACTOR_DEMO_EFFECT, en->botw.actor.world.pos.x, en->botw.actor.world.pos.y,
+		en->botw.actor.world.pos.z, 0, 0, 0, 0x0019);
+	Actor *tw_actor = Actor_Find(&globalCtx->actorCtx, ACTOR_DEMO_EFFECT, ACTORCAT_BG);
+	if(tw_actor == NULL) return;
+	FakeDemoEffect *de = (FakeDemoEffect*)tw_actor;
+	if(de->shrinkTimer >= 30 && de->shrinkTimer <= 70 && (globalCtx->gameplayFrames & 3)){
+		--de->shrinkTimer;
+	}
 }
 
 #define NACTIONDEFS 10

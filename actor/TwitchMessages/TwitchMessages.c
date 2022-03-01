@@ -25,7 +25,7 @@ typedef struct {
 #define MSG_POS_EXTENT_X 1000.0f
 #define MSG_POS_EXTENT_Y 300.0f
 #define MSG_POS_EXTENT_Z 300.0f
-#define MSG_SCALE 2.0f
+#define MSG_SCALE 1.6f
 
 #define RAM_END 0x80800000
 #define UNAME_TEX_SZ (UNAME_TEX_COLS * sizeof(u64))
