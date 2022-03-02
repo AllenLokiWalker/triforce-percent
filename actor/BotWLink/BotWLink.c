@@ -6,6 +6,7 @@
 #include "BotWLinkMeshLookatitselfAnim.h"
 #include "BotWLinkMeshLookstozeldaAnim.h"
 #include "BotWLinkMeshModerate_walkAnim.h"
+#include "BotWLinkMeshModerate_walk_lookingaroundAnim.h"
 #include "BotWLinkMeshTakeszeldahandAnim.h"
 #include "BotWLinkMeshTurnleftAnim.h"
 #include "BotWLinkMeshTurnrightAnim.h"
@@ -138,7 +139,7 @@ static void BotWLink_DialogCallback(BotWActor *botw, GlobalContext *globalCtx) {
 }
 
 typedef struct {
-	u8 dummy[0x188];
+	u8 dummy[0x178];
 	s16 shrinkTimer;
 } FakeDemoEffect;
 
@@ -150,12 +151,12 @@ static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx)
 	Actor *tw_actor = Actor_Find(&globalCtx->actorCtx, ACTOR_DEMO_EFFECT, ACTORCAT_BG);
 	if(tw_actor == NULL) return;
 	FakeDemoEffect *de = (FakeDemoEffect*)tw_actor;
-	if(de->shrinkTimer >= 30 && de->shrinkTimer <= 70 && (globalCtx->gameplayFrames & 3)){
+	if(de->shrinkTimer >= 20 && de->shrinkTimer <= 60 && (globalCtx->gameplayFrames & 1)){
 		--de->shrinkTimer;
 	}
 }
 
-#define NACTIONDEFS 10
+#define NACTIONDEFS 11
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*0*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, 0, NULL},
@@ -177,6 +178,8 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 			0, 0, 0, 0, NULL},
 	/*9*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, 0, BotWLink_TimeWarpCallback},
+	/*A*/{&BotWLinkMeshModerate_walk_lookingaroundAnim, -8.0f, NULL, 0.0f,
+			0, 0, 0, 0, NULL},
 };
 
 static const BotWFixRotAnimDef FixRotAnimDefs[] = {
