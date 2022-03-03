@@ -254,3 +254,4 @@ JointIndex BotWLinkMeshModerate_walk_lookingaroundAnimJointIndices[30] = {
 };
 
 AnimationHeader BotWLinkMeshModerate_walk_lookingaroundAnim = { { 91 }, BotWLinkMeshModerate_walk_lookingaroundAnimFrameData, BotWLinkMeshModerate_walk_lookingaroundAnimJointIndices, 11 };
+

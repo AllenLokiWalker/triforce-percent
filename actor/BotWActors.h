@@ -1,4 +1,9 @@
 #include "ootmain.h"
+#include "../loader/debugger/debugger.h"
+#include "../statics/anime.h"
+#include "../statics/hairphys.h"
+#include "../statics/scene.h"
+#include "../statics/statics.h"
 
 #define FLAG_INVISIBLE (1 << 8)
 #define FLAG_EYESCLOSED (1 << 9)
@@ -109,7 +114,7 @@ static void BotWActor_UpdateEyes(BotWActor *botw){
 	}
 }
 
-static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx, 
+static inline void BotWActor_UpdateImpl(BotWActor *botw, GlobalContext *globalCtx, 
 		const BotWCSActionDef *ActionDefs, s32 nActionDefs, s32 actionSlot,
 		const BotWFixRotAnimDef *FixRotAnimDefs) {
 	++botw->actionframe;
@@ -176,6 +181,16 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 	if(botw->sfx != 0 && (u16)botw->sfxframe == botw->actionframe){
 		BotWActor_VO(botw, botw->sfx);
 		botw->sfx = 0;
+	}
+}
+
+static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx, 
+		const BotWCSActionDef *ActionDefs, s32 nActionDefs, s32 actionSlot,
+		const BotWFixRotAnimDef *FixRotAnimDefs){
+	u32 lagframes = Statics_GetLagFrames();
+	for(u32 i=0; i<=lagframes; ++i){
+		BotWActor_UpdateImpl(botw, globalCtx, ActionDefs, nActionDefs,
+			actionSlot, FixRotAnimDefs);
 	}
 }
 

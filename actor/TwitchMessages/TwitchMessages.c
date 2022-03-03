@@ -6,6 +6,7 @@ typedef struct {
     Actor actor;
     MtxF modelf;
     Mtx modelrsp;
+    u32 lastOSCount;
     u16 frames_fade;
 } Entity;
 
@@ -262,6 +263,7 @@ static void SetUpMessage(Entity *en, u16 m, TwitchMessage *msg) {
 }
 
 static void init(Entity *en, GlobalContext *globalCtx) {
+    en->lastOSCount = 0;
     en->frames_fade = FRAMES_FADE_MAX;
     bzero((void*)VTX_BEGIN, UNAME_TEX_BEGIN - VTX_BEGIN);
     //Create model matrix

@@ -11,10 +11,6 @@
 #include "BotWLinkMeshTurnleftAnim.h"
 #include "BotWLinkMeshTurnrightAnim.h"
 #include "BotWLinkMeshTex.h"
-#include "../loader/debugger/debugger.h"
-#include "../statics/hairphys.h"
-#include "../statics/statics.h"
-#include "../statics/anime.h"
 
 // Actor Information
 #define OBJ_ID 122 // primary object dependency
@@ -108,6 +104,7 @@ typedef struct {
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
+    Statics_EnableLagCorr(1);
 	BotWActor_Init(&en->botw, globalCtx, &BotWLinkMesh, &BotWLinkMeshIdleAnim,
 		en->jointTable, en->morphTable, BOTWLINKMESH_NUM_LIMBS, ACTOR_SCALE);
 	//Physics initialization
@@ -128,6 +125,7 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
 	BotWActor_Destroy(&en->botw, globalCtx);
+	Statics_EnableLagCorr(0);
 }
 
 #define VO_LINK_ZERUDAHIME NA_SE_EN_GANON_LAUGH
