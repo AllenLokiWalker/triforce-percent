@@ -8,6 +8,7 @@ typedef void (*UpdateFunc)(struct EnHolyLight*, GlobalContext*, f32);
 typedef enum HolyLightMode {
     HLYLGT_MD_FADEIN,
     HLYLGT_MD_GLOW,
+    HLYLGT_MD_GLOW_SILENT,
     HLYLGT_MD_FADEOUT,
     HLYLGT_MD_MAX
 } HolyLightMode;
@@ -27,6 +28,7 @@ typedef struct EnHolyLight {
     s16 currentFrame; // This is only used during cycle mode.  Otherwise the current frame inside csCtx will be used.
     HolyLightMode mode;
     u8 actorSlot;
+    u8 sound;
 } EnHolyLight; // size = 0x03A8
 
 #endif

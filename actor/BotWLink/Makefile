@@ -12,6 +12,7 @@ OBJECTOBJS = \
 	BotWLinkMeshLookatitselfAnim.o \
 	BotWLinkMeshLookstozeldaAnim.o \
 	BotWLinkMeshModerate_walkAnim.o \
+	BotWLinkMeshModerate_walk_lookingaroundAnim.o \
 	BotWLinkMeshTakeszeldahandAnim.o \
 	BotWLinkMeshTurnleftAnim.o \
 	BotWLinkMeshTurnrightAnim.o \
@@ -23,6 +24,7 @@ OBJECTHDRS = \
 	BotWLinkMeshLookatitselfAnim.h \
 	BotWLinkMeshLookstozeldaAnim.h \
 	BotWLinkMeshModerate_walkAnim.h \
+	BotWLinkMeshModerate_walk_lookingaroundAnim.h \
 	BotWLinkMeshTakeszeldahandAnim.h \
 	BotWLinkMeshTurnleftAnim.h \
 	BotWLinkMeshTurnrightAnim.h \

@@ -4,3 +4,5 @@ Object_InitBank_AfterSpaceSize = 0x80081480;
 bgCheckSceneMemList = 0x800EC0E4;
 DemoTerminatorTable = 0x8010736C;
 DemoTerminatorReturn = 0x80054C3C;
+func_80052364 = 0x80052364;
+func_800523B0 = 0x800523B0;

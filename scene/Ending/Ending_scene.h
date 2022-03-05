@@ -15,7 +15,7 @@ extern CollisionHeader Ending_collisionHeader;
 extern s32 FinaleCS[];
 extern SCmdBase Ending_room_0_header00[];
 extern SCmdBase* Ending_room_0_alternateHeaders[];
-extern s16 Ending_room_0_header00_objectList[5];
+extern s16 Ending_room_0_header00_objectList[6];
 extern ActorEntry Ending_room_0_header00_actorList[23];
 extern SCmdBase Ending_room_0_header04[];
 extern s16 Ending_room_0_header04_objectList[3];

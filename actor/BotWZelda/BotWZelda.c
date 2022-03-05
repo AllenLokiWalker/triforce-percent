@@ -4,10 +4,6 @@
 #include "BotWZeldaMeshDescendidleAnim.h"
 #include "BotWZeldaMeshNormalidleAnim.h"
 #include "BotWZeldaMeshTex.h"
-#include "../loader/debugger/debugger.h"
-#include "../statics/hairphys.h"
-#include "../statics/statics.h"
-#include "../statics/anime.h"
 
 // Actor Information
 #define OBJ_ID 125 // primary object dependency

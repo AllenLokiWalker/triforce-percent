@@ -6,14 +6,11 @@
 #include "BotWLinkMeshLookatitselfAnim.h"
 #include "BotWLinkMeshLookstozeldaAnim.h"
 #include "BotWLinkMeshModerate_walkAnim.h"
+#include "BotWLinkMeshModerate_walk_lookingaroundAnim.h"
 #include "BotWLinkMeshTakeszeldahandAnim.h"
 #include "BotWLinkMeshTurnleftAnim.h"
 #include "BotWLinkMeshTurnrightAnim.h"
 #include "BotWLinkMeshTex.h"
-#include "../loader/debugger/debugger.h"
-#include "../statics/hairphys.h"
-#include "../statics/statics.h"
-#include "../statics/anime.h"
 
 // Actor Information
 #define OBJ_ID 122 // primary object dependency
@@ -107,6 +104,7 @@ typedef struct {
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
+    Statics_EnableLagCorr(1);
 	BotWActor_Init(&en->botw, globalCtx, &BotWLinkMesh, &BotWLinkMeshIdleAnim,
 		en->jointTable, en->morphTable, BOTWLINKMESH_NUM_LIMBS, ACTOR_SCALE);
 	//Physics initialization
@@ -127,6 +125,7 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 
 static void destroy(Entity *en, GlobalContext *globalCtx) {
 	BotWActor_Destroy(&en->botw, globalCtx);
+	Statics_EnableLagCorr(0);
 }
 
 #define VO_LINK_ZERUDAHIME NA_SE_EN_GANON_LAUGH
@@ -137,12 +136,25 @@ static void BotWLink_DialogCallback(BotWActor *botw, GlobalContext *globalCtx) {
 	if(en->botw.actionframe == 80) BotWActor_VO(&en->botw, VO_LINK_ISSHONI);
 }
 
+typedef struct {
+	u8 dummy[0x178];
+	s16 shrinkTimer;
+} FakeDemoEffect;
+
 static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx) {
-	// Entity *en = (Entity*)botw;
-	// if(en->botw.actionframe == 0) Actor_Spawn(TODO);
+	Entity *en = (Entity*)botw;
+	if(en->botw.actionframe == 0) Actor_Spawn(&globalCtx->actorCtx, globalCtx,
+		ACTOR_DEMO_EFFECT, en->botw.actor.world.pos.x, en->botw.actor.world.pos.y,
+		en->botw.actor.world.pos.z, 0, 0, 0, 0x0019);
+	Actor *tw_actor = Actor_Find(&globalCtx->actorCtx, ACTOR_DEMO_EFFECT, ACTORCAT_BG);
+	if(tw_actor == NULL) return;
+	FakeDemoEffect *de = (FakeDemoEffect*)tw_actor;
+	if(de->shrinkTimer >= 20 && de->shrinkTimer <= 60 && (globalCtx->gameplayFrames & 1)){
+		--de->shrinkTimer;
+	}
 }
 
-#define NACTIONDEFS 10
+#define NACTIONDEFS 11
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*0*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, 0, NULL},
@@ -164,6 +176,8 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 			0, 0, 0, 0, NULL},
 	/*9*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, 0, BotWLink_TimeWarpCallback},
+	/*A*/{&BotWLinkMeshModerate_walk_lookingaroundAnim, -8.0f, NULL, 0.0f,
+			0, 0, 0, 0, NULL},
 };
 
 static const BotWFixRotAnimDef FixRotAnimDefs[] = {

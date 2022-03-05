@@ -314,12 +314,66 @@ static const u32 CelShadingPatch2[7] = {
     0x4a1bef67, 0x0800050e, 0x4afff8e1
 };
 
-void Statics_CelShadingPatch(){
+static void Statics_CelShadingPatch(){
     s32 i = __osDisableInt();
     bcopy(CelShadingPatch1, (void*)CELSHADING_PATCH_ADDR, 14*4);
     bcopy(CelShadingPatch2, (void*)(CELSHADING_PATCH_ADDR + 0x9C), 7*4);
     osWritebackDCache(NULL, 0x4000);
     __osRestoreInt(i);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Finale Cutscene Lag Correction
+////////////////////////////////////////////////////////////////////////////////
+
+extern void func_80052364(GlobalContext* globalCtx, CutsceneContext* csCtx);
+extern void func_800523B0(GlobalContext* globalCtx, CutsceneContext* csCtx);
+
+static u32 lastlagcount = 0;
+static u16 lagframes = 0;
+static u8 enablelagcorr = 0;
+#define CPU_CLOCK 93750000
+#define COUNTS_PER_20FPS ((CPU_CLOCK / 2) / 20)
+#define COUNTS_PER_HALFFRAME (COUNTS_PER_20FPS / 2)
+
+void Statics_CallCutsceneFuncsPatched(GlobalContext* globalCtx, CutsceneContext* csCtx){
+    u32 count = osGetCount();
+    if(!enablelagcorr || csCtx->state == 0){
+        lagframes = 0;
+        lastlagcount = 0;
+    }else if(lastlagcount == 0){
+        lagframes = 0;
+        lastlagcount = count;
+    }else{
+        s32 d = count - lastlagcount;
+        d -= COUNTS_PER_HALFFRAME;
+        if(d < 0) d = 0;
+        lagframes = d / COUNTS_PER_20FPS;
+        if(lagframes > 4) lagframes = 0;
+        lastlagcount = count;
+    }
+    if(lagframes > 0){
+        if(gSaveContext.rupeeAccumulator > 90) gSaveContext.rupeeAccumulator = 2;
+        gSaveContext.rupeeAccumulator += lagframes;
+    }
+    //Advance cutscene multiple times, once normally plus once more for each lag frame
+    for(u32 i=0; i<=lagframes; ++i){
+        func_80052364(globalCtx, csCtx); //debug: func_80064558
+        func_800523B0(globalCtx, csCtx); //debug: func_800645A0
+    }
+}
+
+static void Statics_LagPatch(){
+    *((u32*)0x8009BD74) = JALINSTR(Statics_CallCutsceneFuncsPatched);
+    *((u32*)0x8009BD80) = 0; //nop
+}
+
+u32 Statics_GetLagFrames(){
+    return lagframes;
+}
+
+void Statics_EnableLagCorr(u8 enabled){
+    enablelagcorr = enabled;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -342,4 +396,6 @@ void Statics_SceneCodePatches(){
     Statics_SetUpRouting();
     //F3DZEX Cel Shading Patch
     Statics_CelShadingPatch();
+    //Finale Cutscene Lag Correction
+    Statics_LagPatch();
 }
