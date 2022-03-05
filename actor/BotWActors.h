@@ -9,6 +9,9 @@
 #define FLAG_EYESCLOSED (1 << 9)
 #define FLAG_DELAYROT (1 << 10)
 
+#define CHECK_ON_FRAME(timer, tgtframe) \
+	(timer == tgtframe || (Statics_LagRepeatFrame() && (timer == tgtframe + 1)))
+
 typedef struct {
     Actor actor;
 	SkelAnime skelAnime;
@@ -83,14 +86,14 @@ static inline void BotWActor_SetAnim(BotWActor *botw, AnimationHeader *anim, u8 
 		Animation_GetLastFrame(anim), mode, morphFrames);
 }
 
-static void BotWActor_UpdateEyes(BotWActor *botw){
+static inline void BotWActor_UpdateEyes(BotWActor *botw, u8 repeatCurFrame){
 	if((botw->flags & FLAG_EYESCLOSED) && (botw->eyeState == 0 || botw->eyeState == 3)){
 		botw->eyeState = 1; //Start closing eyes
 	}else if(!(botw->flags & FLAG_EYESCLOSED) && (botw->eyeState == 1 || botw->eyeState == 2)){
 		botw->eyeState = 3; //Start opening eyes
 	}
 	if(botw->eyeState == 1){
-		++botw->blinkTimer;
+		botw->blinkTimer += 1 + repeatCurFrame;
 		botw->eyeTextureIndex = 1;
 		if(botw->blinkTimer > 5){
 			botw->eyeState = 2;
@@ -98,7 +101,7 @@ static void BotWActor_UpdateEyes(BotWActor *botw){
 	}else if(botw->eyeState == 2){
 		botw->eyeTextureIndex = 2;
 	}else if(botw->eyeState == 3){
-		++botw->blinkTimer;
+		botw->blinkTimer += 1 + repeatCurFrame;
 		botw->eyeTextureIndex = 1;
 		if(botw->blinkTimer > 5){
 			botw->eyeState = 0;
@@ -107,17 +110,20 @@ static void BotWActor_UpdateEyes(BotWActor *botw){
 	}else{
 		if(botw->blinkTimer == 0){
 			botw->blinkTimer = Rand_S16Offset(60, 60);
-		}else{
+		}else if(botw->blinkTimer < 4){
 			--botw->blinkTimer;
+		}else{
+			botw->blinkTimer -= 1 + repeatCurFrame;
 		}
 		botw->eyeTextureIndex = (botw->blinkTimer < 3) ? botw->blinkTimer : 0;
 	}
 }
 
-static inline void BotWActor_UpdateImpl(BotWActor *botw, GlobalContext *globalCtx, 
+static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx, 
 		const BotWCSActionDef *ActionDefs, s32 nActionDefs, s32 actionSlot,
 		const BotWFixRotAnimDef *FixRotAnimDefs) {
-	++botw->actionframe;
+    u8 repeatCurFrame = Statics_LagRepeatFrame();
+	botw->actionframe += 1 + repeatCurFrame;
     CsCmdActorAction *action = globalCtx->csCtx.npcActions[actionSlot];
 	bool actionValid = (globalCtx->csCtx.state != 0) && (action != NULL) && (action->action < nActionDefs);
 	if(actionValid){
@@ -160,7 +166,8 @@ static inline void BotWActor_UpdateImpl(BotWActor *botw, GlobalContext *globalCt
 		}
 		if(def->func != NULL) def->func(botw, globalCtx);
 	}
-	BotWActor_UpdateEyes(botw);
+	BotWActor_UpdateEyes(botw, repeatCurFrame);
+	botw->skelAnime.playSpeed = Statics_LagPlaySpeed();
 	s32 animFinished = SkelAnime_Update(&botw->skelAnime);
 	if(animFinished){
 		if(actionValid && (botw->flags & FLAG_DELAYROT)){
@@ -178,19 +185,9 @@ static inline void BotWActor_UpdateImpl(BotWActor *botw, GlobalContext *globalCt
 			botw->anim_whendone = NULL;
 		}
 	}
-	if(botw->sfx != 0 && (u16)botw->sfxframe == botw->actionframe){
+	if(botw->sfx != 0 && CHECK_ON_FRAME(botw->actionframe, (u16)botw->sfxframe)){
 		BotWActor_VO(botw, botw->sfx);
 		botw->sfx = 0;
-	}
-}
-
-static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx, 
-		const BotWCSActionDef *ActionDefs, s32 nActionDefs, s32 actionSlot,
-		const BotWFixRotAnimDef *FixRotAnimDefs){
-	u32 lagframes = Statics_GetLagFrames();
-	for(u32 i=0; i<=lagframes; ++i){
-		BotWActor_UpdateImpl(botw, globalCtx, ActionDefs, nActionDefs,
-			actionSlot, FixRotAnimDefs);
 	}
 }
 

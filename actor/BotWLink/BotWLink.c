@@ -133,7 +133,7 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 
 static void BotWLink_DialogCallback(BotWActor *botw, GlobalContext *globalCtx) {
 	Entity *en = (Entity*)botw;
-	if(en->botw.actionframe == 80) BotWActor_VO(&en->botw, VO_LINK_ISSHONI);
+	if(CHECK_ON_FRAME(en->botw.actionframe, 80)) BotWActor_VO(&en->botw, VO_LINK_ISSHONI);
 }
 
 typedef struct {

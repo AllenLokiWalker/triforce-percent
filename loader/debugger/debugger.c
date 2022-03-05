@@ -275,6 +275,10 @@ static const u32 rsp_target_code[8] = {
 };
 */
 
+u32 sPerfCount = 0;
+u8 sDbgLagRepeat = 0;
+f32 sDbgLagPlaySpeed = 0;
+
 static void Debugger_Draw()
 {
 	/*
@@ -284,12 +288,8 @@ static void Debugger_Draw()
 		globalCtx->nextEntranceIndex, gSaveContext.cutsceneIndex, gSaveContext.nextCutsceneIndex);
 	*/
 	
-	static u32 last_frame_count = 0;
-	u32 count = osGetCount();
-	//_printf(8, 8, "last %d avg %d 60hz %d",
-	//	last_fl_count, avg_fl_count, count - last_frame_count);
-	_printf(8, 8, "60hz %d", count - last_frame_count);
-	last_frame_count = count;
+	_printf(4, 4, "%4d %d %d %5.3f", gGlobalContext.csCtx.frames, 
+		sPerfCount, sDbgLagRepeat, sDbgLagPlaySpeed);
 	
 	/*
 	static s32 searchaddr = 0x80000000;

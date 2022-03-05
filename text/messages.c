@@ -689,25 +689,25 @@ DECLARE_MESSAGE(0x0E07, BOX_BLACK, POS_MIDDLE,
 
 DECLARE_MESSAGE(0x0E10, BOX_NONE_BOTTOM, POS_VARIABLE,
     UNSKIPPABLE QUICKTEXT_ENABLE
-    SHIFT("\x50") "Link..." FADE("\x46")
+    SHIFT("\x50") "Link..." FADE("\x1C")
 )
 
 DECLARE_MESSAGE(0x0E11, BOX_NONE_BOTTOM, POS_VARIABLE,
     UNSKIPPABLE QUICKTEXT_ENABLE
     SHIFT("\x04") "It seems you've managed to bring" NEWLINE
-    SHIFT("\x01") "together a great number of people." FADE("\x46")
+    SHIFT("\x01") "together a great number of people." FADE("\x53")
 )
 
 DECLARE_MESSAGE(0x0E12, BOX_NONE_BOTTOM, POS_VARIABLE,
     UNSKIPPABLE QUICKTEXT_ENABLE
-    SHIFT("\x1A") "I'm so happy to see this." FADE("\x46")
+    SHIFT("\x1A") "I'm so happy to see this." FADE("\x2C")
 )
 
 DECLARE_MESSAGE(0x0E13, BOX_NONE_BOTTOM, POS_VARIABLE,
     UNSKIPPABLE QUICKTEXT_ENABLE
     SHIFT("\x0C") "I know they're out there, but it" NEWLINE
                   "would be nice if we could see them," NEWLINE
-    SHIFT("\x38") "don't you think?" FADE("\x46")
+    SHIFT("\x38") "don't you think?" FADE("\x75")
 )
 
 DECLARE_MESSAGE(0x0E14, BOX_BLUE, POS_TOP,
@@ -719,34 +719,34 @@ DECLARE_MESSAGE(0x0E14, BOX_BLUE, POS_TOP,
 
 DECLARE_MESSAGE(0x0E15, BOX_NONE_BOTTOM, POS_VARIABLE,
     UNSKIPPABLE QUICKTEXT_ENABLE
-    SHIFT("\x50") "Look!" FADE("\x26")
+    SHIFT("\x50") "Look!" FADE("\x15")
 )
 
 DECLARE_MESSAGE(0x0E16, BOX_NONE_BOTTOM, POS_VARIABLE,
     UNSKIPPABLE QUICKTEXT_ENABLE
-    SHIFT("\x08") "You asked to see our future?" FADE("\x28")
+    SHIFT("\x08") "You asked to see our future?" FADE("\x27")
 )
 
 DECLARE_MESSAGE(0x0E17, BOX_NONE_BOTTOM, POS_VARIABLE,
     UNSKIPPABLE QUICKTEXT_ENABLE
-    SHIFT("\x40") "Here it is." FADE("\x28")
+    SHIFT("\x40") "Here it is." FADE("\x17")
 )
 
 DECLARE_MESSAGE(0x0E18, BOX_NONE_BOTTOM, POS_VARIABLE,
     UNSKIPPABLE QUICKTEXT_ENABLE
     SHIFT("\x38") "Thank you, Link," NEWLINE
-    SHIFT("\x18") "for all you have done for us." FADE("\x40")
+    SHIFT("\x18") "for all you have done for us." FADE("\x51")
 )
 
 DECLARE_MESSAGE(0x0E20, BOX_NONE_BOTTOM, POS_VARIABLE,
     UNSKIPPABLE QUICKTEXT_ENABLE
-    SHIFT("\x2C") "Thank you, Zelda." FADE("\x40")
+    SHIFT("\x2C") "Thank you, Zelda." FADE("\x19")
 )
 
 DECLARE_MESSAGE(0x0E21, BOX_NONE_BOTTOM, POS_VARIABLE,
     UNSKIPPABLE QUICKTEXT_ENABLE
     SHIFT("\x1C") "Let us create the future," NEWLINE
-    SHIFT("\x4C") "together." FADE("\x40")
+    SHIFT("\x4C") "together." FADE("\x33")
 )
 
 

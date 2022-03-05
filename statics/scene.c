@@ -1,8 +1,11 @@
 #include "ootmain.h"
 #include "scene.h"
+#include "statics.h"
 
 #include "../scene/TriforceRoom/TriforceRoom_scene.h"
 #include "../scene/Ending/Ending_scene.h"
+
+#include "../loader/debugger/debugger.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Scene Draw Configs
@@ -326,50 +329,104 @@ static void Statics_CelShadingPatch(){
 // Finale Cutscene Lag Correction
 ////////////////////////////////////////////////////////////////////////////////
 
+extern void func_80080BA4(GlobalContext* globalCtx, RoomContext* roomCtx); // debug func_800973FC
 extern void func_80052364(GlobalContext* globalCtx, CutsceneContext* csCtx);
 extern void func_800523B0(GlobalContext* globalCtx, CutsceneContext* csCtx);
+extern void Statics_CameraSplinePatch_ret();
 
 static u32 lastlagcount = 0;
-static u16 lagframes = 0;
+static u16 lagVIscount = 0;
 static u8 enablelagcorr = 0;
-#define CPU_CLOCK 93750000
-#define COUNTS_PER_20FPS ((CPU_CLOCK / 2) / 20)
-#define COUNTS_PER_HALFFRAME (COUNTS_PER_20FPS / 2)
+static u8 repeatCurFrame = 0;
+static f32 lagPlaySpeed = 1.0f;
 
-void Statics_CallCutsceneFuncsPatched(GlobalContext* globalCtx, CutsceneContext* csCtx){
+#define CPU_CLOCK 93750000
+#define COUNTS_PER_VI ((CPU_CLOCK / 2) / 60)
+
+void Statics_MeasureLag(GlobalContext* globalCtx, RoomContext* roomCtx){
     u32 count = osGetCount();
-    if(!enablelagcorr || csCtx->state == 0){
-        lagframes = 0;
+    repeatCurFrame = 0;
+    lagPlaySpeed = 1.0f;
+    if(!enablelagcorr || globalCtx->csCtx.state == 0){
         lastlagcount = 0;
     }else if(lastlagcount == 0){
-        lagframes = 0;
         lastlagcount = count;
     }else{
         s32 d = count - lastlagcount;
-        d -= COUNTS_PER_HALFFRAME;
-        if(d < 0) d = 0;
-        lagframes = d / COUNTS_PER_20FPS;
-        if(lagframes > 4) lagframes = 0;
         lastlagcount = count;
+        d += COUNTS_PER_VI / 2; //round to nearest
+        s32 VIsperframe = d / COUNTS_PER_VI;
+        if(sIsLiveRun) sPerfCount = VIsperframe;
+        s32 lagVIs = VIsperframe - 3;
+        if(lagVIs < 0) lagVIs = 0;
+        //Need to track 2 things:
+        //1. For cutscene frame counts and any actor logic which counts frames,
+        //whether to run things twice to make up for a total of 3 lag VIs.
+        lagVIscount += lagVIs;
+        if(lagVIscount >= 3){
+            repeatCurFrame = 1;
+            lagVIscount -= 3;
+        }
+        //2. For camera motion and animation which take a float number of frames
+        //to advance by, the playback speed to run.
+        lagPlaySpeed = 1.0f + (f32)lagVIs * 0.33333333f;
     }
-    if(lagframes > 0){
-        if(gSaveContext.rupeeAccumulator > 90) gSaveContext.rupeeAccumulator = 2;
-        gSaveContext.rupeeAccumulator += lagframes;
+    if(sIsLiveRun){
+        sDbgLagRepeat = repeatCurFrame;
+        sDbgLagPlaySpeed = lagPlaySpeed;
     }
-    //Advance cutscene multiple times, once normally plus once more for each lag frame
-    for(u32 i=0; i<=lagframes; ++i){
+    //patch overwrote
+    func_80080BA4(globalCtx, roomCtx);
+}
+
+void Statics_CallCutsceneFuncsPatched(GlobalContext* globalCtx, CutsceneContext* csCtx){
+    //Advance cutscene once normally plus once more if lag frame
+    for(u32 i=0; i<=repeatCurFrame; ++i){
         func_80052364(globalCtx, csCtx); //debug: func_80064558
         func_800523B0(globalCtx, csCtx); //debug: func_800645A0
     }
 }
 
-static void Statics_LagPatch(){
-    *((u32*)0x8009BD74) = JALINSTR(Statics_CallCutsceneFuncsPatched);
-    *((u32*)0x8009BD80) = 0; //nop
+void Statics_CameraSplinePatch(){
+    //f0: advance
+    //f2: *curFrame
+    //f8: output to *curFrame
+    //f18: 0
+    /*overwrote:
+    c.lt.s  $f0, $f18                  
+    nop
+    bc1fl   lbl_80099BF4               
+    add.s   $f8, $f2, $f0              # curFrame += advance
+    mtc1    $zero, $f0                 ## $f0 = 0.000
+    nop
+    add.s   $f8, $f2, $f0              # curFrame += advance
+    */
+    asm(".set noat\n .set noreorder\n"
+    "c.lt.s  $f0, $f18\n"
+    "lui     $t4, %hi(lagPlaySpeed)\n"
+    "bc1fl   Statics_CameraSplinePatch_1\n"
+    "lwc1    $f6, %lo(lagPlaySpeed)($t4)\n"
+    "mtc1    $zero, $f0\n"
+    "Statics_CameraSplinePatch_1:\n"
+    "mul.s   $f4, $f6, $f0\n"
+    "j       Statics_CameraSplinePatch_ret\n"
+    "add.s   $f8, $f2, $f4\n"
+    ".set at\n .set reorder");
 }
 
-u32 Statics_GetLagFrames(){
-    return lagframes;
+static void Statics_LagPatch(){
+    *((u32*)0x8009BD10) = JALINSTR(Statics_MeasureLag);
+    *((u32*)0x8009BD74) = JALINSTR(Statics_CallCutsceneFuncsPatched);
+    *((u32*)0x8009BD80) = 0; //nop
+    *((u32*)0x80099BD8) = JUMPINSTR(Statics_CameraSplinePatch);
+}
+
+u8 Statics_LagRepeatFrame(){
+    return repeatCurFrame;
+}
+
+f32 Statics_LagPlaySpeed(){
+    return lagPlaySpeed;
 }
 
 void Statics_EnableLagCorr(u8 enabled){
