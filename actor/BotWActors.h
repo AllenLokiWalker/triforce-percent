@@ -8,6 +8,9 @@
 #define FLAG_INVISIBLE (1 << 8)
 #define FLAG_EYESCLOSED (1 << 9)
 #define FLAG_DELAYROT (1 << 10)
+#define FLAG_SKIPLASTFRAME (1 << 11)
+#define FLAG_SKIPLASTFRAMEWHENDONE (1 << 12)
+#define FLAGS_ALLCOMMON 0x1F00
 
 #define CHECK_ON_FRAME(timer, tgtframe) \
 	(timer == tgtframe || (Statics_LagRepeatFrame() && (timer == tgtframe + 1)))
@@ -36,8 +39,7 @@ typedef struct {
     f32 morph;
     AnimationHeader *anim_whendone;
     f32 morph_whendone;
-    u16 flags_set;
-    u16 flags_clear;
+    u16 flags;
     u16 sfx;
     u8 sfxframe;
     BotWCSActionFunc func;
@@ -81,9 +83,10 @@ static inline void BotWActor_VO(BotWActor *botw, u16 sfx) {
 		&VoiceFreqScale, &VoiceVol,	(f32*)&VoiceReverbAdd);
 }
 
-static inline void BotWActor_SetAnim(BotWActor *botw, AnimationHeader *anim, u8 mode, f32 morphFrames) {
+static inline void BotWActor_SetAnim(BotWActor *botw, AnimationHeader *anim, 
+		u8 mode, f32 morphFrames, s32 skipLast) {
 	Animation_Change(&botw->skelAnime, anim, 1.0f, 0.0f, 
-		Animation_GetLastFrame(anim), mode, morphFrames);
+		Animation_GetLastFrame(anim) - (skipLast ? 1 : 0), mode, morphFrames);
 }
 
 static inline void BotWActor_UpdateEyes(BotWActor *botw, u8 repeatCurFrame){
@@ -128,12 +131,15 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 	bool actionValid = (globalCtx->csCtx.state != 0) && (action != NULL) && (action->action < nActionDefs);
 	if(actionValid){
 		const BotWCSActionDef *def = &ActionDefs[action->action];
+		botw->flags &= ~FLAGS_ALLCOMMON;
+		botw->flags |= def->flags;
 		if(action->action != botw->actionnum){
 			botw->actionnum = action->action;
 			botw->actionframe = 0;
 			if(def->anim != NULL && def->anim != botw->anim){
 				BotWActor_SetAnim(botw, def->anim, 
-					def->anim_whendone == NULL ? ANIMMODE_LOOP : ANIMMODE_ONCE, def->morph);
+					def->anim_whendone == NULL ? ANIMMODE_LOOP : ANIMMODE_ONCE,
+					def->morph, botw->flags & FLAG_SKIPLASTFRAME);
 				botw->anim = def->anim;
 				botw->anim_whendone = def->anim_whendone;
 				botw->morph_whendone = def->morph_whendone;
@@ -143,8 +149,6 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 				botw->sfxframe = def->sfxframe;
 			}
 		}
-		botw->flags &= ~(u32)(def->flags_clear | FLAG_INVISIBLE | FLAG_DELAYROT);
-		botw->flags |= def->flags_set;
 		f32 frac = (f32)(globalCtx->csCtx.frames - action->startFrame) / (f32)(action->endFrame - action->startFrame);
 		if(frac < 0.0f) frac = 0.0f;
 		if(frac > 1.0f) frac = 1.0f;
@@ -180,7 +184,8 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 			}
 		}
 		if(botw->anim_whendone != NULL){
-			BotWActor_SetAnim(botw, botw->anim_whendone, ANIMMODE_LOOP, botw->morph_whendone);
+			BotWActor_SetAnim(botw, botw->anim_whendone, ANIMMODE_LOOP,
+				botw->morph_whendone, botw->flags & FLAG_SKIPLASTFRAMEWHENDONE);
 			botw->anim = botw->anim_whendone;
 			botw->anim_whendone = NULL;
 		}

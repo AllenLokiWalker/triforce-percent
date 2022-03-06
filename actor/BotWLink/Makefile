@@ -11,10 +11,11 @@ OBJECTOBJS = \
 	BotWLinkMeshLinksdialogAnim.o \
 	BotWLinkMeshLookatitselfAnim.o \
 	BotWLinkMeshLookstozeldaAnim.o \
-	BotWLinkMeshModerate_walkAnim.o \
 	BotWLinkMeshModerate_walk_lookingaroundAnim.o \
+	BotWLinkMeshModerate_walkAnim.o \
 	BotWLinkMeshTakeszeldahandAnim.o \
 	BotWLinkMeshTurnleftAnim.o \
+	BotWLinkMeshTurnleftzeldadescendingAnim.o \
 	BotWLinkMeshTurnrightAnim.o \
 	BotWLinkMeshTex.o
 OBJECTHDRS = \
@@ -23,10 +24,10 @@ OBJECTHDRS = \
 	BotWLinkMeshLinksdialogAnim.h \
 	BotWLinkMeshLookatitselfAnim.h \
 	BotWLinkMeshLookstozeldaAnim.h \
-	BotWLinkMeshModerate_walkAnim.h \
 	BotWLinkMeshModerate_walk_lookingaroundAnim.h \
+	BotWLinkMeshModerate_walkAnim.h \
 	BotWLinkMeshTakeszeldahandAnim.h \
-	BotWLinkMeshTurnleftAnim.h \
+	BotWLinkMeshTurnleftzeldadescendingAnim.h \
 	BotWLinkMeshTurnrightAnim.h \
 	BotWLinkMeshTex.h
 SHDRS = \

@@ -92,9 +92,12 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 
 #define NACTIONDEFS 3
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
-	/*0*/{NULL, 0.0f, NULL, 0.0f, FLAG_INVISIBLE, 0, /**/ 0, 0, NULL},
-	/*1*/{&BotWZeldaMeshDescendidleAnim, -8.0f, NULL, 0.0f, FLAG_EYESCLOSED, FLAG_INVISIBLE, /**/ 0, 0, NULL},
-	/*2*/{&BotWZeldaMeshNormalidleAnim, -8.0f, NULL, 0.0f, 0, FLAG_INVISIBLE | FLAG_EYESCLOSED, /**/ 0, 0, NULL},
+	/*0*/{NULL, 0.0f, NULL, 0.0f,
+			FLAG_INVISIBLE, 0, 0, NULL},
+	/*1*/{&BotWZeldaMeshDescendidleAnim, -8.0f, NULL, 0.0f,
+			FLAG_EYESCLOSED, 0, 0, NULL},
+	/*2*/{&BotWZeldaMeshNormalidleAnim, -8.0f, NULL, 0.0f,
+			0, 0, 0, NULL},
 };
 
 static const BotWFixRotAnimDef FixRotAnimDefs[] = {

@@ -5,10 +5,11 @@
 #include "BotWLinkMeshLinksdialogAnim.h"
 #include "BotWLinkMeshLookatitselfAnim.h"
 #include "BotWLinkMeshLookstozeldaAnim.h"
-#include "BotWLinkMeshModerate_walkAnim.h"
 #include "BotWLinkMeshModerate_walk_lookingaroundAnim.h"
+#include "BotWLinkMeshModerate_walkAnim.h"
 #include "BotWLinkMeshTakeszeldahandAnim.h"
 #include "BotWLinkMeshTurnleftAnim.h"
+#include "BotWLinkMeshTurnleftzeldadescendingAnim.h"
 #include "BotWLinkMeshTurnrightAnim.h"
 #include "BotWLinkMeshTex.h"
 
@@ -149,35 +150,37 @@ static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx)
 	Actor *tw_actor = Actor_Find(&globalCtx->actorCtx, ACTOR_DEMO_EFFECT, ACTORCAT_BG);
 	if(tw_actor == NULL) return;
 	FakeDemoEffect *de = (FakeDemoEffect*)tw_actor;
-	if(de->shrinkTimer >= 20 && de->shrinkTimer <= 60 && (globalCtx->gameplayFrames & 1)){
+	if(de->shrinkTimer >= 10 && de->shrinkTimer <= 50 && (globalCtx->gameplayFrames & 1)){
 		--de->shrinkTimer;
 	}
 }
 
-#define NACTIONDEFS 11
+#define NACTIONDEFS 12
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*0*/{NULL, 0.0f, NULL, 0.0f,
-			FLAG_INVISIBLE, 0, 0, 0, NULL},
+			FLAG_INVISIBLE, 0, 0, NULL},
 	/*1*/{&BotWLinkMeshIdleAnim, 0.0f, NULL, 0.0f,
-			0, 0, 0, 0, NULL},
+			0, 0, 0, NULL},
 	/*2*/{&BotWLinkMeshModerate_walkAnim, -8.0f, NULL, 0.0f,
-			0, 0, 0, 0, NULL},
+			FLAG_SKIPLASTFRAME, 0, 0, NULL},
 	/*3*/{&BotWLinkMeshLookatitselfAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
-			0, 0, 0, 0, NULL},
+			0, 0, 0, NULL},
 	/*4*/{&BotWLinkMeshTurnleftAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
-			FLAG_DELAYROT, 0, 0, 0, NULL},
+			FLAG_DELAYROT, 0, 0, NULL},
 	/*5*/{&BotWLinkMeshTurnrightAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
-			FLAG_DELAYROT, 0, 0, 0, NULL},
+			FLAG_DELAYROT, 0, 0, NULL},
 	/*6*/{&BotWLinkMeshLookstozeldaAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
-			0, 0, 0, 0, NULL},
+			0, 0, 0, NULL},
 	/*7*/{&BotWLinkMeshLinksdialogAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
-			0, 0, VO_LINK_ZERUDAHIME, 5, BotWLink_DialogCallback},
+			0, VO_LINK_ZERUDAHIME, 5, BotWLink_DialogCallback},
 	/*8*/{&BotWLinkMeshTakeszeldahandAnim, -8.0f, NULL, 0.0f,
-			0, 0, 0, 0, NULL},
+			0, 0, 0, NULL},
 	/*9*/{NULL, 0.0f, NULL, 0.0f,
-			FLAG_INVISIBLE, 0, 0, 0, BotWLink_TimeWarpCallback},
+			FLAG_INVISIBLE, 0, 0, BotWLink_TimeWarpCallback},
 	/*A*/{&BotWLinkMeshModerate_walk_lookingaroundAnim, -8.0f, NULL, 0.0f,
-			0, 0, 0, 0, NULL},
+			0, 0, 0, NULL},
+	/*B*/{&BotWLinkMeshTurnleftzeldadescendingAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
+			FLAG_DELAYROT, 0, 0, NULL},
 };
 
 static const BotWFixRotAnimDef FixRotAnimDefs[] = {
