@@ -48,6 +48,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
+	func_80093D18(globalCtx->state.gfxCtx);
 	SkelAnime_DrawOpa(globalCtx, en->skelanime.skeleton, en->skelanime.jointTable,
 		NULL, NULL, &en->actor);
 }
