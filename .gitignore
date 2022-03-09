@@ -10,6 +10,8 @@ local.mk
 *.map
 *.xdat
 *.blend1
+*.reapeaks
+*.rpp-bak
 
 __pycache__/
 
