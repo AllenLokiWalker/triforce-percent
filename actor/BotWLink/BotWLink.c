@@ -174,7 +174,7 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*7*/{&BotWLinkMeshLinksdialogAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			0, VO_LINK_ZERUDAHIME, 5, BotWLink_DialogCallback},
 	/*8*/{&BotWLinkMeshTakeszeldahandAnim, -8.0f, NULL, 0.0f,
-			0, 0, 0, NULL},
+			FLAG_NOLOOP, 0, 0, NULL},
 	/*9*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, BotWLink_TimeWarpCallback},
 	/*A*/{&BotWLinkMeshModerate_walk_lookingaroundAnim, -8.0f, NULL, 0.0f,

@@ -10,7 +10,8 @@
 #define FLAG_DELAYROT (1 << 10)
 #define FLAG_SKIPLASTFRAME (1 << 11)
 #define FLAG_SKIPLASTFRAMEWHENDONE (1 << 12)
-#define FLAGS_ALLCOMMON 0x1F00
+#define FLAG_NOLOOP (1 << 13)
+#define FLAGS_ALLCOMMON 0x3F00
 
 #define CHECK_ON_FRAME(timer, tgtframe) \
 	(timer == tgtframe || (Statics_LagRepeatFrame() && (timer == tgtframe + 1)))
@@ -138,7 +139,8 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 			botw->actionframe = 0;
 			if(def->anim != NULL && def->anim != botw->anim){
 				BotWActor_SetAnim(botw, def->anim, 
-					def->anim_whendone == NULL ? ANIMMODE_LOOP : ANIMMODE_ONCE,
+					(def->anim_whendone == NULL && !(botw->flags & FLAG_NOLOOP))
+					 	? ANIMMODE_LOOP : ANIMMODE_ONCE,
 					def->morph, botw->flags & FLAG_SKIPLASTFRAME);
 				botw->anim = def->anim;
 				botw->anim_whendone = def->anim_whendone;

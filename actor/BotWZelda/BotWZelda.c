@@ -115,7 +115,7 @@ static void BotWZelda_LinkitseemsyouveCallback(BotWActor *botw, GlobalContext *g
 
 static void BotWZelda_YouaskedCallback(BotWActor *botw, GlobalContext *globalCtx) {
 	Entity *en = (Entity*)botw;
-	if(CHECK_ON_FRAME(en->botw.actionframe, 65)) BotWActor_VO(&en->botw, VO_ZELDA_HEREITIS);
+	if(CHECK_ON_FRAME(en->botw.actionframe, 75)) BotWActor_VO(&en->botw, VO_ZELDA_HEREITIS);
 }
 
 #define NACTIONDEFS 0xB
@@ -141,7 +141,7 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*9*/{&BotWZeldaMeshThankyoulinkAnim, -8.0f, &BotWZeldaMeshNormalidleAnim, -8.0f,
 			0, VO_ZELDA_THANKYOU, 5, NULL},
 	/*A*/{&BotWZeldaMeshHoldinghandsAnim, -8.0f, NULL, 0.0f,
-			0, 0, 0, NULL},
+			FLAG_NOLOOP, 0, 0, NULL},
 };
 
 static const BotWFixRotAnimDef FixRotAnimDefs[] = {
