@@ -40,9 +40,6 @@ void HolyLight_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnHolyLight* this = (EnHolyLight*)thisx;
 
     this->sound = 0;
-    this->lightNode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfo);
-    Lights_PointNoGlowSetInfo(&this->lightInfo, this->actor.home.pos.x, this->actor.home.pos.y + 125, this->actor.home.pos.z,
-                            255, 255, 255, 50);
 
     this->actorSlot = this->actor.params;
     this->update = &Update_WaitForCutscene;
