@@ -180,7 +180,6 @@ void HolyLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_XLU_DISP++, &holyLight1);
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, this->envColor.r, this->envColor.g, this->envColor.b, this->primColor.a);
     gSPDisplayList(POLY_XLU_DISP++, &holyLight2);
-    gSPDisplayList(POLY_XLU_DISP++, &holyLight2);
     if (this->mode != HLYLGT_MD_FADEOUT) {
         EffectSsKiraKira_SpawnDispersed(globalCtx, &this->spawnPos, &SparkleVelocity, &SparkleAccel, &SparklePrim, &SparkleEnv, 1000, 60);
     }
