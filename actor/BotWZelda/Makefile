@@ -8,12 +8,28 @@ OBJECTNUM = 125
 OBJECTOBJS = \
 	BotWZeldaMesh.o \
 	BotWZeldaMeshDescendidleAnim.o \
+	BotWZeldaMeshHoldinghandsAnim.o \
+	BotWZeldaMeshIknowtheyreoutthereAnim.o \
+	BotWZeldaMeshLinkitseemsyouveAnim.o \
+	BotWZeldaMeshLookpointAnim.o \
 	BotWZeldaMeshNormalidleAnim.o \
+	BotWZeldaMeshRotatedidleAnim.o \
+	BotWZeldaMeshThankyoulinkAnim.o \
+	BotWZeldaMeshWakeupAnim.o \
+	BotWZeldaMeshYouaskedAnim.o \
 	BotWZeldaMeshTex.o
 OBJECTHDRS = \
 	BotWZeldaMesh.h \
 	BotWZeldaMeshDescendidleAnim.h \
+	BotWZeldaMeshHoldinghandsAnim.h \
+	BotWZeldaMeshIknowtheyreoutthereAnim.h \
+	BotWZeldaMeshLinkitseemsyouveAnim.h \
+	BotWZeldaMeshLookpointAnim.h \
 	BotWZeldaMeshNormalidleAnim.h \
+	BotWZeldaMeshRotatedidleAnim.h \
+	BotWZeldaMeshThankyoulinkAnim.h \
+	BotWZeldaMeshWakeupAnim.h \
+	BotWZeldaMeshYouaskedAnim.h \
 	BotWZeldaMeshTex.h
 SHDRS = \
 	../BotWActors.h \

@@ -21,25 +21,56 @@
 
 #define vo_link_zerudahimeTable NULL
 #define vo_link_isshoniTable NULL
+#define vo_zelda_linkTable NULL
+#define vo_zelda_itseemsTable NULL
+#define vo_zelda_imsohappyTable NULL
+#define vo_zelda_iknowtheyreTable NULL
+#define vo_zelda_lookTable NULL
+#define vo_zelda_youaskedTable NULL
+#define vo_zelda_hereitisTable NULL
+#define vo_zelda_thankyouTable NULL
 
 #include "../voice/vo_link_zerudahime.c"
 #include "../voice/vo_link_isshoni.c"
+#include "../voice/vo_zelda_link.c"
+#include "../voice/vo_zelda_itseems.c"
+#include "../voice/vo_zelda_imsohappy.c"
+#include "../voice/vo_zelda_iknowtheyre.c"
+#include "../voice/vo_zelda_look.c"
+#include "../voice/vo_zelda_youasked.c"
+#include "../voice/vo_zelda_hereitis.c"
+#include "../voice/vo_zelda_thankyou.c"
 
-#define NUM_CUST_SAMPLES 2
+#define NUM_CUST_SAMPLES 10
 AudioBankSample *cust_samples[NUM_CUST_SAMPLES] = {
     &vo_link_zerudahimeSample,
     &vo_link_isshoniSample,
+    &vo_zelda_linkSample,
+    &vo_zelda_itseemsSample,
+    &vo_zelda_imsohappySample,
+    &vo_zelda_iknowtheyreSample,
+    &vo_zelda_lookSample,
+    &vo_zelda_youaskedSample,
+    &vo_zelda_hereitisSample,
+    &vo_zelda_thankyouSample
 };
 float cust_sample_tuning[NUM_CUST_SAMPLES] = {
-    1.0f,
-    1.0f
+    1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f
 };
 s32 sound_replace_offset[NUM_CUST_SAMPLES] = {
     0x1660 + 8*23, // EN_GANON_LAUGH
     0x1660 + 8*24, // EN_GANON_VOICE_DEMO
+    0x1660 + 8*25, // EN_GANON_THROW
+    0x1660 + 8*26, // EN_GANON_AT_RETURN
+    0x1660 + 8*27, // EN_GANON_HIT_GND
+    0x1660 + 8*28, // EN_GANON_DAMAGE1
+    0x1660 + 8*29, // EN_GANON_DAMAGE2
+    0x1660 + 8*30, // EN_GANON_DOWN
+    0x1660 + 8*31, // EN_GANON_RESTORE
+    0x1660 + 8*32, // EN_GANON_DEAD
 };
 u8 cust_sample_bank_idx[NUM_CUST_SAMPLES] = {
-    1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 };
 s32 bank_ram_addr[2] = {
     0x80192A10, // Master Bank

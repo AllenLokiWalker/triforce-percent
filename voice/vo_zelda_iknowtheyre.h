@@ -1,0 +1,4 @@
+extern u8 vo_zelda_iknowtheyreTable[];
+AdpcmLoop vo_zelda_iknowtheyreLoop;
+AdpcmBook vo_zelda_iknowtheyreBook;
+AudioBankSample vo_zelda_iknowtheyreSample;

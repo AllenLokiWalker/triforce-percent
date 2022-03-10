@@ -2779,7 +2779,7 @@ Gfx BotWZeldaMesh_HairR_mesh_layer_Opaque_tri_0[] = {
 	gsSPEndDisplayList(),
 };
 
-Vtx BotWZeldaMesh_Jaw_mesh_layer_Opaque_vtx_0[57] = {
+Vtx BotWZeldaMesh_Jaw_mesh_layer_Opaque_vtx_0[60] = {
 	{{{-42, 59, 45},0, {1972, 887},{0x9F, 0x4A, 0x24, 0xFF}}},
 	{{{42, 59, 45},0, {1972, 887},{0x61, 0x4A, 0x24, 0xFF}}},
 	{{{42, 93, -12},0, {1678, 1739},{0x4C, 0x64, 0xEF, 0xFF}}},
@@ -2814,6 +2814,8 @@ Vtx BotWZeldaMesh_Jaw_mesh_layer_Opaque_vtx_0[57] = {
 	{{{64, 55, 29},0, {1960, 1718},{0x58, 0xA8, 0xE6, 0xFF}}},
 	{{{-64, 55, 29},0, {1960, 1718},{0xA8, 0xA8, 0xE6, 0xFF}}},
 	{{{-82, 94, 73},0, {1796, 1548},{0x8C, 0xDE, 0x27, 0xFF}}},
+	{{{20, 71, 72},0, {342, 1538},{0x8F, 0xF1, 0x38, 0xFF}}},
+	{{{-20, 71, 72},0, {342, 1538},{0x71, 0xF4, 0x38, 0xFF}}},
 	{{{12, 119, 3},0, {1637, 1888},{0x36, 0x73, 0xFB, 0xFF}}},
 	{{{0, 121, 3},0, {1616, 1929},{0x0, 0x7F, 0x2, 0xFF}}},
 	{{{0, 111, 23},0, {1696, 1960},{0x0, 0x64, 0x4F, 0xFF}}},
@@ -2828,7 +2830,7 @@ Vtx BotWZeldaMesh_Jaw_mesh_layer_Opaque_vtx_0[57] = {
 	{{{15, 78, 45},0, {1848, 1921},{0x3F, 0x6C, 0x17, 0xFF}}},
 	{{{-54, 77, 14},0, {1796, 1748},{0xA6, 0x4E, 0x2C, 0xFF}}},
 	{{{10, 111, -24},0, {1404, 523},{0x3C, 0x60, 0xC7, 0xFF}}},
-	{{{0, 106, -30},0, {1398, 598},{0x0, 0x42, 0x94, 0xFF}}},
+	{{{0, 106, -30},0, {1398, 598},{0x0, 0xF, 0x82, 0xFF}}},
 	{{{0, 113, -24},0, {1452, 560},{0x0, 0x76, 0xD1, 0xFF}}},
 	{{{-10, 111, -24},0, {1404, 523},{0xC4, 0x60, 0xC7, 0xFF}}},
 	{{{0, 113, -24},0, {368, 1486},{0x0, 0x76, 0xD1, 0xFF}}},
@@ -2837,6 +2839,7 @@ Vtx BotWZeldaMesh_Jaw_mesh_layer_Opaque_vtx_0[57] = {
 	{{{0, 112, -15},0, {358, 1440},{0x0, 0x7E, 0xF0, 0xFF}}},
 	{{{-9, 111, -14},0, {301, 1441},{0xD0, 0x72, 0xE3, 0xFF}}},
 	{{{-10, 111, -24},0, {307, 1490},{0xC4, 0x60, 0xC7, 0xFF}}},
+	{{{0, 106, -30},0, {297, 1575},{0x0, 0xF, 0x82, 0xFF}}},
 };
 
 Gfx BotWZeldaMesh_Jaw_mesh_layer_Opaque_tri_0_cel0[] = {
@@ -2857,16 +2860,16 @@ Gfx BotWZeldaMesh_Jaw_mesh_layer_Opaque_tri_0_cel0[] = {
 };
 
 Gfx BotWZeldaMesh_Jaw_mesh_layer_Opaque_tri_0_cel1[] = {
-	gsSP2Triangles(2, 3, 4, 0, 5, 4, 3, 0),
-	gsSP2Triangles(5, 6, 4, 0, 7, 6, 5, 0),
-	gsSP2Triangles(8, 6, 7, 0, 8, 7, 9, 0),
-	gsSP2Triangles(8, 9, 10, 0, 6, 8, 11, 0),
-	gsSP2Triangles(6, 11, 4, 0, 12, 4, 11, 0),
-	gsSP2Triangles(12, 11, 13, 0, 14, 0, 10, 0),
-	gsSP2Triangles(0, 14, 1, 0, 15, 16, 17, 0),
-	gsSP2Triangles(18, 17, 16, 0, 19, 20, 21, 0),
-	gsSP2Triangles(19, 22, 20, 0, 19, 23, 22, 0),
-	gsSP1Triangle(19, 24, 23, 0),
+	gsSP2Triangles(4, 5, 6, 0, 7, 6, 5, 0),
+	gsSP2Triangles(7, 8, 6, 0, 9, 8, 7, 0),
+	gsSP2Triangles(10, 8, 9, 0, 10, 9, 11, 0),
+	gsSP2Triangles(10, 11, 12, 0, 8, 10, 13, 0),
+	gsSP2Triangles(8, 13, 6, 0, 14, 6, 13, 0),
+	gsSP2Triangles(14, 13, 15, 0, 16, 0, 12, 0),
+	gsSP2Triangles(0, 16, 1, 0, 17, 18, 19, 0),
+	gsSP2Triangles(20, 19, 18, 0, 21, 22, 23, 0),
+	gsSP2Triangles(21, 24, 22, 0, 21, 25, 24, 0),
+	gsSP2Triangles(21, 26, 25, 0, 27, 2, 3, 0),
 	gsSPEndDisplayList(),
 };
 
@@ -2884,9 +2887,9 @@ Gfx BotWZeldaMesh_Jaw_mesh_layer_Opaque_tri_0[] = {
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 30),
 	gsDPSetBlendColor(255, 255, 255, 128),
 	gsSPDisplayList(BotWZeldaMesh_Jaw_mesh_layer_Opaque_tri_0_cel0),
-	gsSPVertex(BotWZeldaMesh_Jaw_mesh_layer_Opaque_vtx_0 + 32, 2, 0),
+	gsSPVertex(BotWZeldaMesh_Jaw_mesh_layer_Opaque_vtx_0 + 32, 4, 0),
 	gsSPMatrix(0x0d000280, G_MTX_LOAD),
-	gsSPVertex(BotWZeldaMesh_Jaw_mesh_layer_Opaque_vtx_0 + 34, 23, 2),
+	gsSPVertex(BotWZeldaMesh_Jaw_mesh_layer_Opaque_vtx_0 + 36, 24, 4),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 225),
@@ -2946,34 +2949,37 @@ Gfx BotWZeldaMesh_Jaw_mesh_layer_Opaque_tri_1[] = {
 	gsSPEndDisplayList(),
 };
 
-Vtx BotWZeldaMesh_MouthL_mesh_layer_Opaque_vtx_0[12] = {
+Vtx BotWZeldaMesh_MouthL_mesh_layer_Opaque_vtx_0[15] = {
 	{{{3, 59, 1},0, {1243, 475},{0x2, 0x7A, 0xDE, 0xFF}}},
 	{{{3, 59, 1},0, {1493, 1764},{0x2, 0x7A, 0xDE, 0xFF}}},
 	{{{3, 59, 1},0, {232, 1458},{0x2, 0x7A, 0xDE, 0xFF}}},
+	{{{3, 59, 1},0, {298, 1513},{0x2, 0x7A, 0xDE, 0xFF}}},
 	{{{3, 59, 1},0, {1597, 1726},{0x2, 0x7A, 0xDE, 0xFF}}},
 	{{{10, 111, -24},0, {1404, 523},{0x3C, 0x60, 0xC7, 0xFF}}},
-	{{{0, 106, -30},0, {1398, 598},{0x0, 0x42, 0x94, 0xFF}}},
+	{{{0, 106, -30},0, {1398, 598},{0x0, 0xF, 0x82, 0xFF}}},
 	{{{42, 93, -12},0, {1678, 1739},{0x4C, 0x64, 0xEF, 0xFF}}},
 	{{{9, 111, -14},0, {1553, 1873},{0x30, 0x72, 0xE3, 0xFF}}},
 	{{{10, 111, -24},0, {307, 1490},{0x3C, 0x60, 0xC7, 0xFF}}},
 	{{{9, 111, -14},0, {301, 1441},{0x30, 0x72, 0xE3, 0xFF}}},
+	{{{0, 106, -30},0, {297, 1575},{0x0, 0xF, 0x82, 0xFF}}},
+	{{{20, 71, 72},0, {342, 1538},{0x8F, 0xF1, 0x38, 0xFF}}},
 	{{{24, 90, 122},0, {1537, 1668},{0x4F, 0xF3, 0x63, 0xFF}}},
 	{{{17, 84, 127},0, {1512, 1688},{0x56, 0xD5, 0x53, 0xFF}}},
 };
 
 Gfx BotWZeldaMesh_MouthL_mesh_layer_Opaque_tri_0_cel0[] = {
-	gsSP2Triangles(4, 0, 5, 0, 6, 1, 7, 0),
-	gsSP2Triangles(8, 9, 2, 0, 6, 10, 3, 0),
-	gsSP1Triangle(3, 10, 11, 0),
+	gsSP2Triangles(5, 0, 6, 0, 7, 1, 8, 0),
+	gsSP2Triangles(9, 10, 2, 0, 11, 3, 12, 0),
+	gsSP2Triangles(7, 13, 4, 0, 4, 13, 14, 0),
 	gsSPEndDisplayList(),
 };
 
 Gfx BotWZeldaMesh_MouthL_mesh_layer_Opaque_tri_0[] = {
-	gsSPVertex(BotWZeldaMesh_MouthL_mesh_layer_Opaque_vtx_0 + 0, 4, 0),
+	gsSPVertex(BotWZeldaMesh_MouthL_mesh_layer_Opaque_vtx_0 + 0, 5, 0),
 	gsSPMatrix(0x0d000280, G_MTX_LOAD),
-	gsSPVertex(BotWZeldaMesh_MouthL_mesh_layer_Opaque_vtx_0 + 4, 6, 4),
+	gsSPVertex(BotWZeldaMesh_MouthL_mesh_layer_Opaque_vtx_0 + 5, 7, 5),
 	gsSPMatrix(0x0d000180, G_MTX_LOAD),
-	gsSPVertex(BotWZeldaMesh_MouthL_mesh_layer_Opaque_vtx_0 + 10, 2, 10),
+	gsSPVertex(BotWZeldaMesh_MouthL_mesh_layer_Opaque_vtx_0 + 12, 3, 12),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 225),
@@ -2987,34 +2993,37 @@ Gfx BotWZeldaMesh_MouthL_mesh_layer_Opaque_tri_0[] = {
 	gsSPEndDisplayList(),
 };
 
-Vtx BotWZeldaMesh_MouthR_mesh_layer_Opaque_vtx_0[12] = {
+Vtx BotWZeldaMesh_MouthR_mesh_layer_Opaque_vtx_0[15] = {
 	{{{-3, 59, 1},0, {232, 1458},{0xFE, 0x7A, 0xDE, 0xFF}}},
 	{{{-3, 59, 1},0, {1243, 475},{0xFE, 0x7A, 0xDE, 0xFF}}},
 	{{{-3, 59, 1},0, {1493, 1764},{0xFE, 0x7A, 0xDE, 0xFF}}},
+	{{{-3, 59, 1},0, {298, 1513},{0xFE, 0x7A, 0xDE, 0xFF}}},
 	{{{-3, 59, 1},0, {1597, 1726},{0xFE, 0x7A, 0xDE, 0xFF}}},
 	{{{-10, 111, -24},0, {307, 1490},{0xC4, 0x60, 0xC7, 0xFF}}},
 	{{{-9, 111, -14},0, {301, 1441},{0xD0, 0x72, 0xE3, 0xFF}}},
 	{{{-10, 111, -24},0, {1404, 523},{0xC4, 0x60, 0xC7, 0xFF}}},
-	{{{0, 106, -30},0, {1398, 598},{0x0, 0x42, 0x94, 0xFF}}},
+	{{{0, 106, -30},0, {1398, 598},{0x0, 0xF, 0x82, 0xFF}}},
 	{{{-42, 93, -12},0, {1678, 1739},{0xB4, 0x64, 0xEF, 0xFF}}},
 	{{{-9, 111, -14},0, {1553, 1873},{0xD0, 0x72, 0xE3, 0xFF}}},
+	{{{0, 106, -30},0, {297, 1575},{0x0, 0xF, 0x82, 0xFF}}},
+	{{{-20, 71, 72},0, {342, 1538},{0x71, 0xF4, 0x38, 0xFF}}},
 	{{{-24, 90, 122},0, {1537, 1668},{0xB1, 0xF3, 0x63, 0xFF}}},
 	{{{-17, 84, 127},0, {1512, 1688},{0xAA, 0xD5, 0x53, 0xFF}}},
 };
 
 Gfx BotWZeldaMesh_MouthR_mesh_layer_Opaque_tri_0_cel0[] = {
-	gsSP2Triangles(4, 0, 5, 0, 6, 7, 1, 0),
-	gsSP2Triangles(2, 8, 9, 0, 8, 3, 10, 0),
-	gsSP1Triangle(3, 11, 10, 0),
+	gsSP2Triangles(5, 0, 6, 0, 7, 8, 1, 0),
+	gsSP2Triangles(2, 9, 10, 0, 3, 11, 12, 0),
+	gsSP2Triangles(9, 4, 13, 0, 4, 14, 13, 0),
 	gsSPEndDisplayList(),
 };
 
 Gfx BotWZeldaMesh_MouthR_mesh_layer_Opaque_tri_0[] = {
-	gsSPVertex(BotWZeldaMesh_MouthR_mesh_layer_Opaque_vtx_0 + 0, 4, 0),
+	gsSPVertex(BotWZeldaMesh_MouthR_mesh_layer_Opaque_vtx_0 + 0, 5, 0),
 	gsSPMatrix(0x0d000280, G_MTX_LOAD),
-	gsSPVertex(BotWZeldaMesh_MouthR_mesh_layer_Opaque_vtx_0 + 4, 6, 4),
+	gsSPVertex(BotWZeldaMesh_MouthR_mesh_layer_Opaque_vtx_0 + 5, 7, 5),
 	gsSPMatrix(0x0d000180, G_MTX_LOAD),
-	gsSPVertex(BotWZeldaMesh_MouthR_mesh_layer_Opaque_vtx_0 + 10, 2, 10),
+	gsSPVertex(BotWZeldaMesh_MouthR_mesh_layer_Opaque_vtx_0 + 12, 3, 12),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 225),
@@ -3028,40 +3037,44 @@ Gfx BotWZeldaMesh_MouthR_mesh_layer_Opaque_tri_0[] = {
 	gsSPEndDisplayList(),
 };
 
-Vtx BotWZeldaMesh_MouthU_mesh_layer_Opaque_vtx_0[14] = {
-	{{{-8, 14, 0},0, {331, 1506},{0xD5, 0xC4, 0x99, 0xFF}}},
-	{{{0, 28, 0},0, {326, 1547},{0x0, 0x10, 0x82, 0xFF}}},
-	{{{0, 16, -1},0, {324, 1526},{0x0, 0xD9, 0x87, 0xFF}}},
-	{{{8, 14, 0},0, {331, 1506},{0x2B, 0xC4, 0x99, 0xFF}}},
+Vtx BotWZeldaMesh_MouthU_mesh_layer_Opaque_vtx_0[16] = {
 	{{{8, 14, 0},0, {1486, 1745},{0x2B, 0xC4, 0x99, 0xFF}}},
 	{{{0, 16, -1},0, {1462, 1761},{0x0, 0xD9, 0x87, 0xFF}}},
 	{{{-8, 14, 0},0, {1486, 1745},{0xD5, 0xC4, 0x99, 0xFF}}},
-	{{{-3, 59, 1},0, {423, 1513},{0xFE, 0x7A, 0xDE, 0xFF}}},
-	{{{-3, 59, 1},0, {1597, 1726},{0xFE, 0x7A, 0xDE, 0xFF}}},
-	{{{3, 59, 1},0, {423, 1513},{0x2, 0x7A, 0xDE, 0xFF}}},
+	{{{-8, 14, 0},0, {362, 1513},{0xD5, 0xC4, 0x99, 0xFF}}},
+	{{{0, 28, 0},0, {362, 1513},{0x0, 0x31, 0x8B, 0xFF}}},
+	{{{8, 14, 0},0, {362, 1513},{0x2B, 0xC4, 0x99, 0xFF}}},
+	{{{0, 16, -1},0, {362, 1513},{0x0, 0xD9, 0x87, 0xFF}}},
 	{{{3, 59, 1},0, {1597, 1726},{0x2, 0x7A, 0xDE, 0xFF}}},
+	{{{3, 59, 1},0, {362, 1513},{0x2, 0x7A, 0xDE, 0xFF}}},
 	{{{17, 84, 127},0, {1512, 1688},{0x56, 0xD5, 0x53, 0xFF}}},
 	{{{0, 82, 134},0, {1447, 1717},{0x0, 0xC4, 0x70, 0xFF}}},
 	{{{-17, 84, 127},0, {1512, 1688},{0xAA, 0xD5, 0x53, 0xFF}}},
+	{{{-20, 71, 72},0, {362, 1513},{0x71, 0xF4, 0x38, 0xFF}}},
+	{{{20, 71, 72},0, {362, 1513},{0x8F, 0xF1, 0x38, 0xFF}}},
+	{{{-3, 59, 1},0, {1597, 1726},{0xFE, 0x7A, 0xDE, 0xFF}}},
+	{{{-3, 59, 1},0, {362, 1513},{0xFE, 0x7A, 0xDE, 0xFF}}},
 };
 
 Gfx BotWZeldaMesh_MouthU_mesh_layer_Opaque_tri_0_cel0[] = {
-	gsSP2Triangles(0, 7, 1, 0, 1, 2, 0, 0),
-	gsSP2Triangles(1, 3, 2, 0, 3, 1, 9, 0),
-	gsSP2Triangles(4, 10, 11, 0, 11, 12, 4, 0),
-	gsSP2Triangles(12, 5, 4, 0, 12, 6, 5, 0),
-	gsSP2Triangles(13, 6, 12, 0, 6, 13, 8, 0),
+	gsSP2Triangles(0, 7, 9, 0, 9, 10, 0, 0),
+	gsSP2Triangles(10, 1, 0, 0, 10, 2, 1, 0),
+	gsSP2Triangles(11, 2, 10, 0, 2, 11, 14, 0),
+	gsSP2Triangles(3, 15, 4, 0, 4, 15, 12, 0),
+	gsSP2Triangles(13, 4, 12, 0, 8, 4, 13, 0),
+	gsSP2Triangles(5, 4, 8, 0, 4, 5, 6, 0),
+	gsSP1Triangle(4, 6, 3, 0),
 	gsSPEndDisplayList(),
 };
 
 Gfx BotWZeldaMesh_MouthU_mesh_layer_Opaque_tri_0[] = {
 	gsSPVertex(BotWZeldaMesh_MouthU_mesh_layer_Opaque_vtx_0 + 0, 7, 0),
-	gsSPMatrix(0x0d000300, G_MTX_LOAD),
-	gsSPVertex(BotWZeldaMesh_MouthU_mesh_layer_Opaque_vtx_0 + 7, 2, 7),
 	gsSPMatrix(0x0d0002c0, G_MTX_LOAD),
-	gsSPVertex(BotWZeldaMesh_MouthU_mesh_layer_Opaque_vtx_0 + 9, 2, 9),
+	gsSPVertex(BotWZeldaMesh_MouthU_mesh_layer_Opaque_vtx_0 + 7, 2, 7),
 	gsSPMatrix(0x0d000180, G_MTX_LOAD),
-	gsSPVertex(BotWZeldaMesh_MouthU_mesh_layer_Opaque_vtx_0 + 11, 3, 11),
+	gsSPVertex(BotWZeldaMesh_MouthU_mesh_layer_Opaque_vtx_0 + 9, 5, 9),
+	gsSPMatrix(0x0d000300, G_MTX_LOAD),
+	gsSPVertex(BotWZeldaMesh_MouthU_mesh_layer_Opaque_vtx_0 + 14, 2, 14),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0, TEXEL0, 0, PRIMITIVE_ALPHA, 0, 1, SHADE, TEXEL0, 0),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 225),

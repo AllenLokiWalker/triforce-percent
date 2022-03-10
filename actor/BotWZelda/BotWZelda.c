@@ -2,7 +2,15 @@
 #include "../BotWActors.h"
 #include "BotWZeldaMesh.h"
 #include "BotWZeldaMeshDescendidleAnim.h"
+#include "BotWZeldaMeshHoldinghandsAnim.h"
+#include "BotWZeldaMeshIknowtheyreoutthereAnim.h"
+#include "BotWZeldaMeshLinkitseemsyouveAnim.h"
+#include "BotWZeldaMeshLookpointAnim.h"
 #include "BotWZeldaMeshNormalidleAnim.h"
+#include "BotWZeldaMeshRotatedidleAnim.h"
+#include "BotWZeldaMeshThankyoulinkAnim.h"
+#include "BotWZeldaMeshWakeupAnim.h"
+#include "BotWZeldaMeshYouaskedAnim.h"
 #include "BotWZeldaMeshTex.h"
 
 // Actor Information
@@ -90,13 +98,49 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 	BotWActor_Destroy(&en->botw, globalCtx);
 }
 
-#define NACTIONDEFS 3
+#define VO_ZELDA_LINK NA_SE_EN_GANON_THROW
+#define VO_ZELDA_ITSEEMS NA_SE_EN_GANON_AT_RETURN
+#define VO_ZELDA_IMSOHAPPY NA_SE_EN_GANON_HIT_GND
+#define VO_ZELDA_IKNOWTHEYRE NA_SE_EN_GANON_DAMAGE1
+#define VO_ZELDA_LOOK NA_SE_EN_GANON_DAMAGE2
+#define VO_ZELDA_YOUASKED NA_SE_EN_GANON_DOWN
+#define VO_ZELDA_HEREITIS NA_SE_EN_GANON_RESTORE
+#define VO_ZELDA_THANKYOU NA_SE_EN_GANON_DEAD
+
+static void BotWZelda_LinkitseemsyouveCallback(BotWActor *botw, GlobalContext *globalCtx) {
+	Entity *en = (Entity*)botw;
+	if(CHECK_ON_FRAME(en->botw.actionframe, 35)) BotWActor_VO(&en->botw, VO_ZELDA_ITSEEMS);
+	if(CHECK_ON_FRAME(en->botw.actionframe, 122)) BotWActor_VO(&en->botw, VO_ZELDA_IMSOHAPPY);
+}
+
+static void BotWZelda_YouaskedCallback(BotWActor *botw, GlobalContext *globalCtx) {
+	Entity *en = (Entity*)botw;
+	if(CHECK_ON_FRAME(en->botw.actionframe, 65)) BotWActor_VO(&en->botw, VO_ZELDA_HEREITIS);
+}
+
+#define NACTIONDEFS 0xB
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*0*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, NULL},
 	/*1*/{&BotWZeldaMeshDescendidleAnim, -8.0f, NULL, 0.0f,
 			FLAG_EYESCLOSED, 0, 0, NULL},
 	/*2*/{&BotWZeldaMeshNormalidleAnim, -8.0f, NULL, 0.0f,
+			0, 0, 0, NULL},
+	/*3*/{&BotWZeldaMeshRotatedidleAnim, -8.0f, NULL, 0.0f,
+			0, 0, 0, NULL},
+	/*4*/{&BotWZeldaMeshWakeupAnim, -8.0f, &BotWZeldaMeshNormalidleAnim, -8.0f,
+			0, 0, 0, NULL},
+	/*5*/{&BotWZeldaMeshLinkitseemsyouveAnim, -8.0f, &BotWZeldaMeshNormalidleAnim, -8.0f,
+			0, VO_ZELDA_LINK, 5, BotWZelda_LinkitseemsyouveCallback},
+	/*6*/{&BotWZeldaMeshIknowtheyreoutthereAnim, -8.0f, &BotWZeldaMeshRotatedidleAnim, -8.0f,
+			0, VO_ZELDA_IKNOWTHEYRE, 5, NULL},
+	/*7*/{&BotWZeldaMeshLookpointAnim, -8.0f, NULL, 0.0f,
+			0, VO_ZELDA_LOOK, 2, NULL},
+	/*8*/{&BotWZeldaMeshYouaskedAnim, -8.0f, &BotWZeldaMeshRotatedidleAnim, -8.0f,
+			0, VO_ZELDA_YOUASKED, 0, BotWZelda_YouaskedCallback},
+	/*9*/{&BotWZeldaMeshThankyoulinkAnim, -8.0f, &BotWZeldaMeshNormalidleAnim, -8.0f,
+			0, VO_ZELDA_THANKYOU, 5, NULL},
+	/*A*/{&BotWZeldaMeshHoldinghandsAnim, -8.0f, NULL, 0.0f,
 			0, 0, 0, NULL},
 };
 
