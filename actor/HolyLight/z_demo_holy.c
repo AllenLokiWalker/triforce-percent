@@ -16,9 +16,11 @@
 #define BRIGHT_OFFSET ((280.0f + 150.0f) / 2.0f)
 #define     DIM_RANGE ((255.0f - 50.0f) / 2.0f)
 #define    DIM_OFFSET ((255.0f + 50.0f) / 2.0f)
-#define  OFFSET_RANGE ((255.0f - 90.0f) / 2.0f)
-#define OFFSET_OFFSET ((255.0f + 90.0f) / 2.0f)
-#define    FADE_RANGE (255.0f / 2.0f)
+#define  OFFSET_RANGE ((285.0f - 90.0f) / 2.0f)
+#define OFFSET_OFFSET ((285.0f + 90.0f) / 2.0f)
+#define    FADE_RANGE (128.0f / 2.0f)
+
+#define PARTICLE_HEIGHT 120.0f
 
 void HolyLight_Init(Actor* thisx, GlobalContext* globalCtx);
 void HolyLight_Destroy(Actor* thisx, GlobalContext* globalCtx);
@@ -28,18 +30,11 @@ void Update_WaitForCutscene(EnHolyLight* this, GlobalContext* globalCtx, f32 cur
 void Update_FadeIn(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame);
 void Update_Glow(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame);
 void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame);
-//void Update_Cycle(EnHolyLight* this, GlobalContext* globalCtx, f32 unused);
-//void ChangeCycle(EnHolyLight* this, bool firstCycle);
 
-//static Vec3f KiraVelocity = { 0.0f, 3.0f, 0.0f };
-//static Vec3f KiraAccel = { 0.0f, -1.0f, 0.0f };
-/*
-static u16 CycleFramePoints[3][2] = {
-    { 0, 80 },
-    { 80, 200 },
-    { 200, 280 }
-};
-*/
+static Vec3f SparkleVelocity = { 0.0f, 3.0f, 0.0f };
+static Vec3f SparkleAccel = { 0.0f, -0.8f, 0.0f };
+static Color_RGBA8 SparklePrim = { 253, 255, 199, 0 };
+static Color_RGBA8 SparkleEnv = { 255, 255, 245, 0 };
 
 void HolyLight_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnHolyLight* this = (EnHolyLight*)thisx;
@@ -48,24 +43,14 @@ void HolyLight_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->lightNode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfo);
     Lights_PointNoGlowSetInfo(&this->lightInfo, this->actor.home.pos.x, this->actor.home.pos.y + 125, this->actor.home.pos.z,
                             255, 255, 255, 50);
-    //if (this->actor.params >= 0 && this->actor.params < ARRAY_COUNT(globalCtx->csCtx.npcActions)) {
-        this->actorSlot = this->actor.params;
-        this->update = &Update_WaitForCutscene;
-        this->actor.draw = NULL;
-        this->scaleFactor = 0.0f;
-        /*
-    } else {
-        this->actorSlot = -1;
-        this->update = &Update_Cycle;
-        ChangeCycle(this, true);
-    }
-    */
+
+    this->actorSlot = this->actor.params;
+    this->update = &Update_WaitForCutscene;
+    this->actor.draw = NULL;
+    this->scaleFactor = 0.0f;
 }
 
 void HolyLight_Destroy(Actor* thisx, GlobalContext* globalCtx) {
-    EnHolyLight* this = (EnHolyLight*)thisx;
-
-    LightContext_RemoveLight(globalCtx, &globalCtx->lightCtx, this->lightNode);
 }
 
 void Update_WaitForCutscene(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
@@ -78,6 +63,7 @@ void Update_WaitForCutscene(EnHolyLight* this, GlobalContext* globalCtx, f32 cur
         this->endFrame = action->endFrame;
         this->periodFactor = 10.0f / ((action->endFrame - action->startFrame) * M_PI);
         this->actor.draw = &HolyLight_Draw;
+        this->actor.mode = action->action;
         switch (action->action) {
             case HLYLGT_MD_FADEIN:
                 this->sound = 1;
@@ -109,24 +95,16 @@ void SetLightGlow(EnHolyLight* this, f32 currentFrame) {
 
     // Bright cycle (30 frames, 225 to 255 to 225)
     calc = BRIGHT_RANGE * sinf(2.0f * periodFactor * (currentFrame - (f32)this->startFrame) - (M_PI / 2.0f)) + BRIGHT_OFFSET;
-    this->lightColor.r =
-     this->lightColor.g =
-     this->primColor.r =
-     this->primColor.g = CLAMP_MAX(calc, 255);
+    this->primColor.r = this->primColor.g = CLAMP_MAX(calc, 255);
 
     // Dim cycle (60 frames, 80 to 255 to 80)
     calc = DIM_RANGE * sinf(periodFactor * (currentFrame - (f32)this->startFrame) - (M_PI / 2.0f)) + DIM_OFFSET;
-    this->lightColor.b =
-     this->primColor.b = CLAMP_MAX(calc, 255);
+    this->primColor.b = CLAMP_MAX(calc, 255);
 
     // Offset cycle (60 frames, 100 to 255 to 100)
     this->envColor.r = OFFSET_RANGE * sinf(periodFactor * (currentFrame - (f32)this->startFrame) - (M_PI / 2.0f)) + OFFSET_OFFSET;
-    this->envColor.g = OFFSET_RANGE * sinf(periodFactor * (currentFrame - (f32)this->startFrame - 4) - (M_PI / 2.0f)) + OFFSET_OFFSET;
-    this->envColor.b = OFFSET_RANGE * sinf(periodFactor * (currentFrame - (f32)this->startFrame - 7) - (M_PI / 2.0f)) + OFFSET_OFFSET;
-
-    this->lightInfo.params.point.color[0] = this->primColor.r;
-    this->lightInfo.params.point.color[1] = this->primColor.g;
-    this->lightInfo.params.point.color[2] = this->primColor.b;
+    this->envColor.g = OFFSET_RANGE * sinf(periodFactor * (currentFrame - (f32)this->startFrame - 8) - (M_PI / 2.0f)) + OFFSET_OFFSET;
+    this->envColor.b = OFFSET_RANGE * sinf(periodFactor * (currentFrame - (f32)this->startFrame - 13) - (M_PI / 2.0f)) + OFFSET_OFFSET;
 }
 
 void Update_FadeIn(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
@@ -134,14 +112,13 @@ void Update_FadeIn(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame
 
     SetLightGlow(this, currentFrame);
     calc = FADE_RANGE * sinf(this->periodFactor * (currentFrame - (f32)this->startFrame) - (M_PI / 2.0f)) + FADE_RANGE;
-    this->lightColor.a = this->envColor.a = this->primColor.a = CLAMP_MAX(calc, 255.0f);
+    this->envColor.a = this->primColor.a = CLAMP_MAX(calc, 255.0f);
     this->scaleFactor = calc / 255.0f;
-    this->lightInfo.params.point.radius = calc;
 }
 
 void Update_Glow(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
     SetLightGlow(this, currentFrame);
-    this->lightColor.a = this->envColor.a = this->primColor.a = 255;
+    this->envColor.a = this->primColor.a = 255;
 }
 
 void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
@@ -149,47 +126,9 @@ void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFram
 
     SetLightGlow(this, currentFrame);
     calc = FADE_RANGE * sinf(this->periodFactor * (currentFrame - (f32)this->startFrame) + (M_PI / 2.0f)) + FADE_RANGE;
-    this->lightColor.a = this->envColor.a = this->primColor.a = CLAMP_MAX(calc, 255.0f);
+    this->envColor.a = this->primColor.a = CLAMP_MAX(calc, 255.0f);
     this->scaleFactor = calc / 255.0f;
-    this->lightInfo.params.point.radius = calc;
 }
-
-/*
-void ChangeCycle(EnHolyLight* this, bool firstCycle) {
-    HolyLightMode newMode = firstCycle ? HLYLGT_MD_FADEIN : (this->mode + 1) % HLYLGT_MD_MAX;
-    this->mode = newMode;
-    this->startFrame = CycleFramePoints[newMode][0];
-    this->endFrame = CycleFramePoints[newMode][1];
-    if (newMode == HLYLGT_MD_FADEIN) {
-        this->currentFrame = 0;
-    }
-    this->periodFactor = 10.0f / ((this->endFrame - this->startFrame) * M_PI);
-}
-
-void Update_Cycle(EnHolyLight* this, GlobalContext* globalCtx, f32 unused) {
-    if (this->currentFrame == this->endFrame) {
-        ChangeCycle(this, false);
-    }
-
-    switch (this->mode) {
-        case HLYLGT_MD_FADEIN:
-            Update_FadeIn(this, globalCtx, this->currentFrame);
-            break;
-        case HLYLGT_MD_GLOW:
-            Update_Glow(this, globalCtx, this->currentFrame);
-            break;
-        case HLYLGT_MD_FADEOUT:
-            Update_FadeOut(this, globalCtx, this->currentFrame);
-            break;
-        default:
-            // This shouldn't have happened!
-            this->lightColor.a = this->envColor.a = this->primColor.a = 0;
-            this->lightInfo.params.point.radius = 0;
-    }
-
-    this->currentFrame++;
-}
-*/
 
 void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
     EnHolyLight* this = (EnHolyLight*)thisx;
@@ -202,9 +141,17 @@ void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
     
     f32 currentFrame = globalCtx->csCtx.frames;
+    Vec3i startPos = action->startPos, endPos = action->endPos;
+    f32 lerp = Environment_LerpWeight(action->endFrame, action->startFrame, globalCtx->csCtx.frames);
+    this->actor.world.pos.x = startPos.x + ((endPos.x - startPos.x) * lerp);
+    this->actor.world.pos.y = startPos.y + ((endPos.y - startPos.y) * lerp);
+    this->actor.world.pos.z = startPos.z + ((endPos.z - startPos.z) * lerp);
+    this->spawnPos.x = this->actor.world.pos.x;
+    this->spawnPos.y = this->actor.world.pos.y + PARTICLE_HEIGHT;
+    this->spawnPos.z = this->actor.world.pos.z;
     this->update(this, globalCtx, currentFrame);
     
-    if(this->sound){
+    if(this->sound) {
         /*
         other candidates:
         NA_SE_EV_SPIRIT_STONE
@@ -236,6 +183,10 @@ void HolyLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_XLU_DISP++, &holyLight1);
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, this->envColor.r, this->envColor.g, this->envColor.b, this->primColor.a);
     gSPDisplayList(POLY_XLU_DISP++, &holyLight2);
+    gSPDisplayList(POLY_XLU_DISP++, &holyLight2);
+    if (this->mode != HLYLGT_MD_FADEOUT) {
+        EffectSsKiraKira_SpawnDispersed(globalCtx, &this->spawnPos, &SparkleVelocity, &SparkleAccel, &SparklePrim, &SparkleEnv, 1000, 60);
+    }
     //CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_holy.c", __LINE__);
 }
 
