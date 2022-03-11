@@ -159,10 +159,10 @@ static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx)
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*0*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, NULL},
-	/*1*/{&BotWLinkMeshIdleAnim, 0.0f, NULL, 0.0f,
+	/*1*/{&BotWLinkMeshIdleAnim, -8.0f, NULL, 0.0f,
 			0, 0, 0, NULL},
 	/*2*/{&BotWLinkMeshModerate_walkAnim, -8.0f, NULL, 0.0f,
-			FLAG_SKIPLASTFRAME, 0, 0, NULL},
+			FLAG_SKIPLASTFRAME | FLAG_DECEL, 0, 0, NULL},
 	/*3*/{&BotWLinkMeshLookatitselfAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			0, 0, 0, NULL},
 	/*4*/{&BotWLinkMeshTurnleftAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
@@ -178,7 +178,7 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*9*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, BotWLink_TimeWarpCallback},
 	/*A*/{&BotWLinkMeshModerate_walk_lookingaroundAnim, -8.0f, NULL, 0.0f,
-			0, 0, 0, NULL},
+			FLAG_ACCEL, 0, 0, NULL},
 	/*B*/{&BotWLinkMeshTurnleftzeldadescendingAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			FLAG_DELAYROT, 0, 0, NULL},
 };

@@ -11,7 +11,9 @@
 #define FLAG_SKIPLASTFRAME (1 << 11)
 #define FLAG_SKIPLASTFRAMEWHENDONE (1 << 12)
 #define FLAG_NOLOOP (1 << 13)
-#define FLAGS_ALLCOMMON 0x3F00
+#define FLAG_ACCEL (1 << 14)
+#define FLAG_DECEL (1 << 15)
+#define FLAGS_ALLCOMMON 0xFF00
 
 #define CHECK_ON_FRAME(timer, tgtframe) \
 	(timer == tgtframe || (Statics_LagRepeatFrame() && (timer == tgtframe + 1)))
@@ -151,7 +153,9 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 				botw->sfxframe = def->sfxframe;
 			}
 		}
-		f32 frac = (f32)(globalCtx->csCtx.frames - action->startFrame) / (f32)(action->endFrame - action->startFrame);
+		f32 frac = Environment_LerpWeightAccelDecel(
+			action->endFrame, action->startFrame, globalCtx->csCtx.frames,
+			(botw->flags & FLAG_ACCEL) ? 8 : 0, (botw->flags & FLAG_DECEL) ? 8 : 0);
 		if(frac < 0.0f) frac = 0.0f;
 		if(frac > 1.0f) frac = 1.0f;
 		f32 finv = 1.0f - frac;

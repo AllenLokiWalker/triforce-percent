@@ -165,6 +165,8 @@ extern void Audio_FadeOut(u16 frames);
 extern MtxF* Matrix_GetCurrent();
 
 #define Math_GetProjectionPos func_8002BE04
+#define Environment_LerpWeight func_8006F93C
+#define Environment_LerpWeightAccelDecel func_8006F9BC
 
 //Inline functions
 

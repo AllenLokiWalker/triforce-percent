@@ -21,6 +21,8 @@ typedef struct EnHolyLight {
     f32 periodFactor;
     Color_RGBA8 primColor;
     Color_RGBA8 envColor;
+    Vec3i startPos;
+    Vec3i endPos;
     s16 startFrame;
     s16 endFrame;
     s16 currentFrame; // This is only used during cycle mode.  Otherwise the current frame inside csCtx will be used.

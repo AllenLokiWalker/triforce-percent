@@ -123,7 +123,7 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*0*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, NULL},
 	/*1*/{&BotWZeldaMeshDescendidleAnim, -8.0f, NULL, 0.0f,
-			FLAG_EYESCLOSED, 0, 0, NULL},
+			FLAG_EYESCLOSED | FLAG_DECEL, 0, 0, NULL},
 	/*2*/{&BotWZeldaMeshNormalidleAnim, -8.0f, NULL, 0.0f,
 			0, 0, 0, NULL},
 	/*3*/{&BotWZeldaMeshRotatedidleAnim, -8.0f, NULL, 0.0f,

@@ -58,9 +58,11 @@ void Update_WaitForCutscene(EnHolyLight* this, GlobalContext* globalCtx, f32 cur
         }
         this->startFrame = action->startFrame;
         this->endFrame = action->endFrame;
+        this->startPos = action->startPos;
+        this->endPos = action->endPos;
         this->periodFactor = 10.0f / ((action->endFrame - action->startFrame) * M_PI);
         this->actor.draw = &HolyLight_Draw;
-        this->actor.mode = action->action;
+        this->mode = action->action;
         switch (action->action) {
             case HLYLGT_MD_FADEIN:
                 this->sound = 1;
@@ -138,8 +140,8 @@ void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
     
     f32 currentFrame = globalCtx->csCtx.frames;
-    Vec3i startPos = action->startPos, endPos = action->endPos;
-    f32 lerp = Environment_LerpWeight(action->endFrame, action->startFrame, globalCtx->csCtx.frames);
+    Vec3i startPos = this->startPos, endPos = this->endPos;
+    f32 lerp = Environment_LerpWeight(this->endFrame, this->startFrame, globalCtx->csCtx.frames);
     this->actor.world.pos.x = startPos.x + ((endPos.x - startPos.x) * lerp);
     this->actor.world.pos.y = startPos.y + ((endPos.y - startPos.y) * lerp);
     this->actor.world.pos.z = startPos.z + ((endPos.z - startPos.z) * lerp);
