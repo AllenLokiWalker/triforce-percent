@@ -15,14 +15,12 @@ typedef enum HolyLightMode {
 
 typedef struct EnHolyLight {
     Actor actor;
-    LightNode* lightNode;
     UpdateFunc update;
+    Vec3f spawnPos;
     f32 scaleFactor;
     f32 periodFactor;
     Color_RGBA8 primColor;
     Color_RGBA8 envColor;
-    Color_RGBA8 lightColor;
-    LightInfo lightInfo;
     s16 startFrame;
     s16 endFrame;
     s16 currentFrame; // This is only used during cycle mode.  Otherwise the current frame inside csCtx will be used.
