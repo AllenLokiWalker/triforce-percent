@@ -33,6 +33,7 @@ typedef struct {
 	AnimationHeader *anim_whendone;
 	f32 morph_whendone;
 	float windX, windZ;
+	f32 volume;
 } BotWActor;
 
 typedef void (*BotWCSActionFunc)(BotWActor *botw, GlobalContext* globalCtx);
@@ -56,7 +57,7 @@ typedef struct {
  
 static inline void BotWActor_Init(BotWActor *botw, GlobalContext *globalCtx, 
         FlexSkeletonHeader *skel, AnimationHeader *initAnim,
-        Vec3s *jointTable, Vec3s *morphTable, s32 numLimbs, f32 scale) {
+        Vec3s *jointTable, Vec3s *morphTable, s32 numLimbs, f32 scale, f32 volume) {
     botw->flags = 0;
     botw->actionnum = -1;
 	botw->actionframe = 0;
@@ -68,6 +69,7 @@ static inline void BotWActor_Init(BotWActor *botw, GlobalContext *globalCtx,
 	botw->anim_whendone = NULL;
 	botw->windX = 0.707f;
 	botw->windZ = -0.707f;
+	botw->volume = volume;
 	Actor_SetScale(&botw->actor, scale);
     SkelAnime_InitFlex(globalCtx, &botw->skelAnime, skel, initAnim, 
 		jointTable, morphTable, numLimbs);
@@ -80,10 +82,9 @@ static inline void BotWActor_Destroy(BotWActor *botw, GlobalContext *globalCtx) 
 
 static inline void BotWActor_VO(BotWActor *botw, u16 sfx) {
     static f32 VoiceFreqScale = 1.0f;
-    static f32 VoiceVol = 0.99f;
     static u32 VoiceReverbAdd = 0;
     Audio_PlaySoundGeneral(sfx, &botw->actor.projectedPos, 4, 
-		&VoiceFreqScale, &VoiceVol,	(f32*)&VoiceReverbAdd);
+		&VoiceFreqScale, &botw->volume, (f32*)&VoiceReverbAdd);
 }
 
 static inline void BotWActor_SetAnim(BotWActor *botw, AnimationHeader *anim, 

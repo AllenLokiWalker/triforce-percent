@@ -9,6 +9,7 @@
 #include "BotWZeldaMeshNormalidleAnim.h"
 #include "BotWZeldaMeshRotatedidleAnim.h"
 #include "BotWZeldaMeshThankyoulinkAnim.h"
+#include "BotWZeldaMeshTurnrightAnim.h"
 #include "BotWZeldaMeshWakeupAnim.h"
 #include "BotWZeldaMeshYouaskedAnim.h"
 #include "BotWZeldaMeshTex.h"
@@ -78,7 +79,7 @@ typedef struct {
 
 static void init(Entity *en, GlobalContext *globalCtx) {
 	BotWActor_Init(&en->botw, globalCtx, &BotWZeldaMesh, &BotWZeldaMeshDescendidleAnim, 
-		en->jointTable, en->morphTable, BOTWZELDAMESH_NUM_LIMBS, ACTOR_SCALE);
+		en->jointTable, en->morphTable, BOTWZELDAMESH_NUM_LIMBS, ACTOR_SCALE, 1.5f);
 	//Physics initialization
 	s32 c = 0;
 	for(s32 i=0; i<3; ++i) en->physStates[c++] = &en->physDouble[i];
@@ -118,7 +119,7 @@ static void BotWZelda_YouaskedCallback(BotWActor *botw, GlobalContext *globalCtx
 	if(CHECK_ON_FRAME(en->botw.actionframe, 75)) BotWActor_VO(&en->botw, VO_ZELDA_HEREITIS);
 }
 
-#define NACTIONDEFS 0xB
+#define NACTIONDEFS 0xC
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*0*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, NULL},
@@ -142,6 +143,8 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 			0, VO_ZELDA_THANKYOU, 5, NULL},
 	/*A*/{&BotWZeldaMeshHoldinghandsAnim, -8.0f, NULL, 0.0f,
 			FLAG_NOLOOP, 0, 0, NULL},
+	/*B*/{&BotWZeldaMeshTurnrightAnim, -8.0f, &BotWZeldaMeshNormalidleAnim, -8.0f,
+			0, 0, 0, NULL},
 };
 
 static const BotWFixRotAnimDef FixRotAnimDefs[] = {

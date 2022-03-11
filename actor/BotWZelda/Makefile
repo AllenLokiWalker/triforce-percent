@@ -15,6 +15,7 @@ OBJECTOBJS = \
 	BotWZeldaMeshNormalidleAnim.o \
 	BotWZeldaMeshRotatedidleAnim.o \
 	BotWZeldaMeshThankyoulinkAnim.o \
+	BotWZeldaMeshTurnrightAnim.o \
 	BotWZeldaMeshWakeupAnim.o \
 	BotWZeldaMeshYouaskedAnim.o \
 	BotWZeldaMeshTex.o
@@ -28,6 +29,7 @@ OBJECTHDRS = \
 	BotWZeldaMeshNormalidleAnim.h \
 	BotWZeldaMeshRotatedidleAnim.h \
 	BotWZeldaMeshThankyoulinkAnim.h \
+	BotWZeldaMeshTurnrightAnim.h \
 	BotWZeldaMeshWakeupAnim.h \
 	BotWZeldaMeshYouaskedAnim.h \
 	BotWZeldaMeshTex.h
