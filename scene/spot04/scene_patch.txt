@@ -1,0 +1,2 @@
+0
+B9A0 .include spot04cspatch.bin

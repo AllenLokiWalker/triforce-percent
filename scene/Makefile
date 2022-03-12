@@ -4,6 +4,7 @@ MAKESUBDIRS = \
 	gerudoway \
 	shop1 \
 	spot00 \
+	spot04 \
 	spot07_scene \
 	spot10 \
 	spot11 \

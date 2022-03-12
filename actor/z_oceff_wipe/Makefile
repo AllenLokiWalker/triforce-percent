@@ -30,7 +30,7 @@ actor.zovl: ${ACTORDIR}/actor.zovl.orig ${FUNCNAME}.bin
 	dd conv=notrunc if=${FUNCNAME}.bin of=actor.zovl bs=1 seek=${FUNCOFFSET}
 
 actor.pat: actor.zovl ${ACTORDIR}/actor.zovl.orig
-	${PYTHON3} ../../toolchain/create_patch.py ${ACTORDIR}/actor.zovl.orig actor.zovl actor.pat
+	${CREATE_PATCH} ${ACTORDIR}/actor.zovl.orig actor.zovl actor.pat
 
 clean:
 	rm -f *.o *.bin *.zovl *.pat

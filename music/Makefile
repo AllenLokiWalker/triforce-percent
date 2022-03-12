@@ -50,7 +50,7 @@ default: $(TARGETS)
 	#echo "dtype 1\ndata1 0x1F020201\ndata2 0x03000000" > $(STATICDATADIR)/8/conf.txt
 
 # %.pat: %.aseq
-# 	$(PYTHON3) ../toolchain/create_patch.py --full $< $@
+# 	$(CREATE_PATCH) --full $< $@
 
 CCFLAGS := $(CCOPTFLAGS) -I ../toolchain/AudiobankToC/include
 LDFLAGS += -T ../toolchain/AudiobankToC/audiobank.ld
