@@ -108,8 +108,10 @@ void SetLightGlow(EnHolyLight* this, f32 currentFrame) {
 
 void SpawnSparkles(EnHolyLight* this, GlobalContext* globalCtx) {
     f32 r = 12.0f * this->scaleFactor;
+    f32 yOffset = Rand_ZeroFloat(50.0f);
     f32 theta = Rand_ZeroFloat(2 * M_PI);
     this->spawnPos.x += r * Math_SinF(theta);
+    this->spawnPos.y -= yOffset;
     this->spawnPos.z += r * Math_CosF(theta);
     EffectSsKiraKira_SpawnFocused(globalCtx, &this->spawnPos, &SparkleVelocity, &SparkleAccel, &SparklePrim, &SparkleEnv, 1000, 45);
 }
@@ -136,7 +138,7 @@ void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFram
     SetLightGlow(this, currentFrame);
     calc = FADE_RANGE * sinf(this->periodFactor * (currentFrame - (f32)this->startFrame) + (M_PI / 2.0f)) + FADE_RANGE;
     this->envColor.a = this->primColor.a = CLAMP_MAX(calc, 255.0f);
-    this->scaleFactor = calc / 255.0f;
+    this->scaleFactor = calc / 128.0f;
 }
 
 void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
