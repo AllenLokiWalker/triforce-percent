@@ -20,7 +20,9 @@
 #define OFFSET_OFFSET ((285.0f + 90.0f) / 2.0f)
 #define    FADE_RANGE (128.0f / 2.0f)
 
-#define PARTICLE_HEIGHT 120.0f
+#define      PARTICLE_HEIGHT 120.0f
+#define PARTICLE_SCALE_START 200
+#define   PARTICLE_SCALE_MAX 1000
 
 void HolyLight_Init(Actor* thisx, GlobalContext* globalCtx);
 void HolyLight_Destroy(Actor* thisx, GlobalContext* globalCtx);
@@ -31,10 +33,10 @@ void Update_FadeIn(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame
 void Update_Glow(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame);
 void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame);
 
-static Vec3f SparkleVelocity = { 0.0f, 3.0f, 0.0f };
-static Vec3f SparkleAccel = { 0.0f, -0.8f, 0.0f };
+static Vec3f SparkleVelocity = { 0.0f, 0.2f, 0.0f };
+static Vec3f SparkleAccel = { 0.0f, -0.06f, 0.0f };
 static Color_RGBA8 SparklePrim = { 253, 255, 199, 0 };
-static Color_RGBA8 SparkleEnv = { 255, 255, 245, 0 };
+static Color_RGBA8 SparkleEnv = { 60, 60, 20, 0 };
 
 void HolyLight_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnHolyLight* this = (EnHolyLight*)thisx;
@@ -106,27 +108,48 @@ void SetLightGlow(EnHolyLight* this, f32 currentFrame) {
     this->envColor.b = OFFSET_RANGE * sinf(periodFactor * (currentFrame - (f32)this->startFrame - 13) - (M_PI / 2.0f)) + OFFSET_OFFSET;
 }
 
+void SpawnSparkles(EnHolyLight* this, GlobalContext* globalCtx, s16 scale) {
+    f32 r = 12.0f * this->scaleFactor;
+    f32 theta = Rand_ZeroFloat(2 * M_PI);
+    f32 yOffset = Rand_ZeroFloat(50.0f);
+    this->spawnPos.x += r * Math_SinF(theta);
+    this->spawnPos.y -= yOffset;
+    this->spawnPos.z += r * Math_CosF(theta);
+    EffectSsKiraKira_SpawnFocused(globalCtx, &this->spawnPos, &SparkleVelocity, &SparkleAccel, &SparklePrim, &SparkleEnv, scale, 45);
+}
+
 void Update_FadeIn(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
     f32 calc;
+    s16 scale;
 
     SetLightGlow(this, currentFrame);
     calc = FADE_RANGE * sinf(this->periodFactor * (currentFrame - (f32)this->startFrame) - (M_PI / 2.0f)) + FADE_RANGE;
     this->envColor.a = this->primColor.a = CLAMP_MAX(calc, 255.0f);
-    this->scaleFactor = calc / 255.0f;
+    this->scaleFactor = calc / 128.0f;
+    scale = PARTICLE_SCALE_START + ((PARTICLE_SCALE_MAX / (this->endFrame - this->startFrame)) * ((s16)currentFrame - this->startFrame));
+    SpawnSparkles(this, globalCtx, scale);
 }
 
 void Update_Glow(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
     SetLightGlow(this, currentFrame);
-    this->envColor.a = this->primColor.a = 255;
+    this->envColor.a = this->primColor.a = 128;
+    SpawnSparkles(this, globalCtx, 1000);
 }
 
 void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
     f32 calc;
+    s16 scale, mod, frame;
+    frame = (s16)currentFrame;
 
     SetLightGlow(this, currentFrame);
     calc = FADE_RANGE * sinf(this->periodFactor * (currentFrame - (f32)this->startFrame) + (M_PI / 2.0f)) + FADE_RANGE;
     this->envColor.a = this->primColor.a = CLAMP_MAX(calc, 255.0f);
-    this->scaleFactor = calc / 255.0f;
+    this->scaleFactor = calc / 128.0f;
+    scale = PARTICLE_SCALE_START + ((PARTICLE_SCALE_MAX / (this->endFrame - this->startFrame)) * (this->endFrame - frame));
+    mod = frame < ((this->endFrame - this->startFrame) / 2) ? 2 : 3;
+    if (frame % mod == 0) {
+        SpawnSparkles(this, globalCtx, scale);
+    }
 }
 
 void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
@@ -182,9 +205,6 @@ void HolyLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_XLU_DISP++, &holyLight1);
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, this->envColor.r, this->envColor.g, this->envColor.b, this->primColor.a);
     gSPDisplayList(POLY_XLU_DISP++, &holyLight2);
-    if (this->mode != HLYLGT_MD_FADEOUT) {
-        EffectSsKiraKira_SpawnDispersed(globalCtx, &this->spawnPos, &SparkleVelocity, &SparkleAccel, &SparklePrim, &SparkleEnv, 1000, 60);
-    }
     //CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_holy.c", __LINE__);
 }
 
