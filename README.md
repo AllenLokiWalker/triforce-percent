@@ -70,11 +70,7 @@ and verify that the output is a reasonable MIPS64 GCC version info.
 
 # Credits
 
-(Hyrule Field)
-
 ### TRIFORCE% OOT ACE SHOWCASE
-
--
 
 Director \
 SAURAEN
@@ -82,15 +78,11 @@ SAURAEN
 RTA Speedrunner \
 SAVESTATE
 
--
-
 Scenario \
 SAURAEN \
 REBECCAETRIPP \
 TERUSTHEBIRD \
 DWANGOAC
-
-(Scene TBD)
 
 ### ASSET UNIT
 
@@ -98,8 +90,6 @@ Scene Design \
 CDI-FAILS \
 \/ZEL\/ \
 SAURAEN
-
--
 
 Music \
 SAURAEN \
@@ -109,28 +99,23 @@ Screen Text \
 KIM-SUKLEY \
 SAURAEN
 
-(Scene TBD)
-
 Cinema Scenes \
 SAURAEN \
-DEFENESAM \
-DWANGOAC
+DWANGOAC \
+DEFENESAM
 
 BotW Model Conversion \
 ALI1234 \
 SAURAEN
 
--
-
 Animation \
 UNESAG \
-AEROARTWORK \
-SAURAEN
+RANKAISIJA \
+SAURAEN \
+AEROARTWORK
 
-Motion Reference \
+Motion Actor \
 TBD
-
-(Scene TBD)
 
 Zelda (English Voice) \
 SAOIRSE
@@ -141,15 +126,11 @@ ZERO
 Translator \
 YUKLOJ
 
--
-
 Textures \
+CDI-FAILS \
 KIM-SUKLEY \
 \/ZEL\/ \
-CDI-FAILS \
 SAURAEN
-
-(Scene TBD)
 
 ### PROGRAM UNIT
 
@@ -157,9 +138,8 @@ Actor Program \
 SAURAEN \
 RANKAISIJA \
 Z64ME \
+MNGOLDENEAGLE \
 \/ZEL\/
-
--
 
 Game / Actor Patches \
 SAURAEN \
@@ -170,13 +150,9 @@ System Patches \
 SAURAEN \
 \/ZEL\/
 
-(Scene TBD)
-
 Cel Shading \
 SAURAEN \
 GLANK
-
--
 
 Bootstrapper Chain \
 SAURAEN
@@ -184,8 +160,6 @@ SAURAEN
 Hyperspeed Loader \
 TERUSTHEBIRD \
 SAURAEN
-
-(Scene TBD)
 
 Host Frontend \
 SAURAEN \
@@ -195,8 +169,6 @@ TAStm32 Firmware \
 OWNASAURUS \
 SAURAEN
 
--
-
 SRM / ACE Setup \
 MRCHEEZE \
 SAVESTATE
@@ -205,34 +177,30 @@ Build Toolchain \
 SAURAEN \
 Z64ME
 
-(Scene TBD)
-
 ### COMMUNITY UNIT
 
 Partner Creators \
 SWANKYBOX \
 SCOTTFALCO \
-RETRO GAME MECHANICS EXPLAINED
-
--
-
-Partner Reactors \
+RETRO GAME MECHANICS EXPLAINED \
+TBD \
 TBD
 
--
+Partner Reactors \
+TBD \
+TBD \
+TBD \
+TBD \
+TBD
 
 OST Published By \
 SIIVAGUNNER
-
-(Scene TBD)
 
 Video Editing \
 MUSKET012 \
 GRAVATOS \
 SAVESTATE \
 SAURAEN
-
--
 
 Technical Support \
 \/ZEL\/ \
@@ -247,8 +215,6 @@ Special Thanks \
 KAZE EMANUAR \
 XDANIEL \
 ARIANA ALMANDOZ
-
--
 
 Executive Producer \
 DWANGOAC
