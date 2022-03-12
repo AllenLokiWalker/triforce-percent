@@ -20,7 +20,9 @@
 #define OFFSET_OFFSET ((285.0f + 90.0f) / 2.0f)
 #define    FADE_RANGE (128.0f / 2.0f)
 
-#define PARTICLE_HEIGHT 120.0f
+#define      PARTICLE_HEIGHT 120.0f
+#define PARTICLE_SCALE_START 200
+#define   PARTICLE_SCALE_MAX 1000
 
 void HolyLight_Init(Actor* thisx, GlobalContext* globalCtx);
 void HolyLight_Destroy(Actor* thisx, GlobalContext* globalCtx);
@@ -106,39 +108,48 @@ void SetLightGlow(EnHolyLight* this, f32 currentFrame) {
     this->envColor.b = OFFSET_RANGE * sinf(periodFactor * (currentFrame - (f32)this->startFrame - 13) - (M_PI / 2.0f)) + OFFSET_OFFSET;
 }
 
-void SpawnSparkles(EnHolyLight* this, GlobalContext* globalCtx) {
+void SpawnSparkles(EnHolyLight* this, GlobalContext* globalCtx, s16 scale) {
     f32 r = 12.0f * this->scaleFactor;
-    f32 yOffset = Rand_ZeroFloat(50.0f);
     f32 theta = Rand_ZeroFloat(2 * M_PI);
+    f32 yOffset = Rand_ZeroFloat(50.0f);
     this->spawnPos.x += r * Math_SinF(theta);
     this->spawnPos.y -= yOffset;
     this->spawnPos.z += r * Math_CosF(theta);
-    EffectSsKiraKira_SpawnFocused(globalCtx, &this->spawnPos, &SparkleVelocity, &SparkleAccel, &SparklePrim, &SparkleEnv, 1000, 45);
+    EffectSsKiraKira_SpawnFocused(globalCtx, &this->spawnPos, &SparkleVelocity, &SparkleAccel, &SparklePrim, &SparkleEnv, scale, 45);
 }
 
 void Update_FadeIn(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
     f32 calc;
+    s16 scale;
 
     SetLightGlow(this, currentFrame);
     calc = FADE_RANGE * sinf(this->periodFactor * (currentFrame - (f32)this->startFrame) - (M_PI / 2.0f)) + FADE_RANGE;
     this->envColor.a = this->primColor.a = CLAMP_MAX(calc, 255.0f);
     this->scaleFactor = calc / 128.0f;
-    SpawnSparkles(this, globalCtx);
+    scale = PARTICLE_SCALE_START + ((PARTICLE_SCALE_MAX / (this->endFrame - this->startFrame)) * ((s16)currentFrame - this->startFrame));
+    SpawnSparkles(this, globalCtx, scale);
 }
 
 void Update_Glow(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
     SetLightGlow(this, currentFrame);
     this->envColor.a = this->primColor.a = 128;
-    SpawnSparkles(this, globalCtx);
+    SpawnSparkles(this, globalCtx, 1000);
 }
 
 void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
     f32 calc;
+    s16 scale, mod, frame;
+    frame = (s16)currentFrame;
 
     SetLightGlow(this, currentFrame);
     calc = FADE_RANGE * sinf(this->periodFactor * (currentFrame - (f32)this->startFrame) + (M_PI / 2.0f)) + FADE_RANGE;
     this->envColor.a = this->primColor.a = CLAMP_MAX(calc, 255.0f);
     this->scaleFactor = calc / 128.0f;
+    scale = PARTICLE_SCALE_START + ((PARTICLE_SCALE_MAX / (this->endFrame - this->startFrame)) * (this->endFrame - frame));
+    mod = frame < ((this->endFrame - this->startFrame) / 2) ? 2 : 3;
+    if (frame % mod == 0) {
+        SpawnSparkles(this, globalCtx, scale);
+    }
 }
 
 void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
