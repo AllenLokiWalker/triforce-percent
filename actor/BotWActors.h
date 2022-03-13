@@ -5,6 +5,8 @@
 #include "../statics/scene.h"
 #include "../statics/statics.h"
 
+#define VO_EXTRA_FRAMES 3
+
 #define FLAG_INVISIBLE (1 << 8)
 #define FLAG_EYESCLOSED (1 << 9)
 #define FLAG_DELAYROT (1 << 10)

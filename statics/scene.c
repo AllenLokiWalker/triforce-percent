@@ -178,12 +178,78 @@ void Statics_TerminatorWarpToSacredRealm(){
     TERMINATOR_RETURN;
 }
 
-#define NUM_PATCH_TERMINATOR 4
+void Statics_TerminatorStaffRollHyruleField(){
+    
+    TERMINATOR_RETURN;
+}
+
+void Statics_TerminatorStaffRollDeathMountain(){
+    
+    TERMINATOR_RETURN;
+}
+
+void Statics_TerminatorStaffRollGerudoValley(){
+    
+    TERMINATOR_RETURN;
+}
+
+void Statics_TerminatorStaffRollDekuTree(){
+    
+    TERMINATOR_RETURN;
+}
+
+void Statics_TerminatorStaffRollZoraFountain(){
+    
+    TERMINATOR_RETURN;
+}
+
+void Statics_TerminatorStaffRollZoraRiver(){
+    
+    TERMINATOR_RETURN;
+}
+
+void Statics_TerminatorStaffRollKokiriForest(){
+    
+    TERMINATOR_RETURN;
+}
+
+void Statics_TerminatorStaffRollLonLonRanch(){
+    
+    TERMINATOR_RETURN;
+}
+
+void Statics_TerminatorStaffRollWasteland(){
+    
+    TERMINATOR_RETURN;
+}
+
+void Statics_TerminatorStaffRollHyruleCastle(){
+    
+    TERMINATOR_RETURN;
+}
+
+void Statics_TerminatorStaffRollFinale(){
+    
+    TERMINATOR_RETURN;
+}
+
+#define NUM_PATCH_TERMINATOR 15
 static const struct { u8 index; void (*function)(); } DemoTerminatorPatchTable[NUM_PATCH_TERMINATOR] = {
     {0x4F, Statics_TerminatorNabooruToDesertColossus},
     {0x50, Statics_TerminatorReturnToNabooru},
     {0x51, Statics_TerminatorTriforceToEnding},
-    {0x52, Statics_TerminatorWarpToSacredRealm}
+    {0x52, Statics_TerminatorWarpToSacredRealm},
+    {0x53, Statics_TerminatorStaffRollHyruleField},
+    {0x54, Statics_TerminatorStaffRollDeathMountain},
+    {0x55, Statics_TerminatorStaffRollGerudoValley},
+    {0x56, Statics_TerminatorStaffRollDekuTree},
+    {0x57, Statics_TerminatorStaffRollZoraFountain},
+    {0x58, Statics_TerminatorStaffRollZoraRiver},
+    {0x59, Statics_TerminatorStaffRollKokiriForest},
+    {0x5A, Statics_TerminatorStaffRollLonLonRanch},
+    {0x5B, Statics_TerminatorStaffRollWasteland},
+    {0x5C, Statics_TerminatorStaffRollHyruleCastle},
+    {0x5D, Statics_TerminatorStaffRollFinale}
 };
 
 ////////////////////////////////////////////////////////////////////////////////

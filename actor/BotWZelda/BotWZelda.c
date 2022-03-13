@@ -110,13 +110,13 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 
 static void BotWZelda_LinkitseemsyouveCallback(BotWActor *botw, GlobalContext *globalCtx) {
 	Entity *en = (Entity*)botw;
-	if(CHECK_ON_FRAME(en->botw.actionframe, 35)) BotWActor_VO(&en->botw, VO_ZELDA_ITSEEMS);
-	if(CHECK_ON_FRAME(en->botw.actionframe, 122)) BotWActor_VO(&en->botw, VO_ZELDA_IMSOHAPPY);
+	if(CHECK_ON_FRAME(en->botw.actionframe, 35+VO_EXTRA_FRAMES)) BotWActor_VO(&en->botw, VO_ZELDA_ITSEEMS);
+	if(CHECK_ON_FRAME(en->botw.actionframe, 122+VO_EXTRA_FRAMES)) BotWActor_VO(&en->botw, VO_ZELDA_IMSOHAPPY);
 }
 
 static void BotWZelda_YouaskedCallback(BotWActor *botw, GlobalContext *globalCtx) {
 	Entity *en = (Entity*)botw;
-	if(CHECK_ON_FRAME(en->botw.actionframe, 75)) BotWActor_VO(&en->botw, VO_ZELDA_HEREITIS);
+	if(CHECK_ON_FRAME(en->botw.actionframe, 75+VO_EXTRA_FRAMES)) BotWActor_VO(&en->botw, VO_ZELDA_HEREITIS);
 }
 
 #define NACTIONDEFS 0xC
@@ -132,15 +132,15 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*4*/{&BotWZeldaMeshWakeupAnim, -8.0f, &BotWZeldaMeshNormalidleAnim, -8.0f,
 			0, 0, 0, NULL},
 	/*5*/{&BotWZeldaMeshLinkitseemsyouveAnim, -8.0f, &BotWZeldaMeshNormalidleAnim, -8.0f,
-			0, VO_ZELDA_LINK, 5, BotWZelda_LinkitseemsyouveCallback},
+			0, VO_ZELDA_LINK, 5+VO_EXTRA_FRAMES, BotWZelda_LinkitseemsyouveCallback},
 	/*6*/{&BotWZeldaMeshIknowtheyreoutthereAnim, -8.0f, &BotWZeldaMeshRotatedidleAnim, -8.0f,
-			0, VO_ZELDA_IKNOWTHEYRE, 5, NULL},
+			0, VO_ZELDA_IKNOWTHEYRE, 5+VO_EXTRA_FRAMES, NULL},
 	/*7*/{&BotWZeldaMeshLookpointAnim, -8.0f, NULL, 0.0f,
-			0, VO_ZELDA_LOOK, 2, NULL},
+			0, VO_ZELDA_LOOK, 2+VO_EXTRA_FRAMES, NULL},
 	/*8*/{&BotWZeldaMeshYouaskedAnim, -8.0f, &BotWZeldaMeshRotatedidleAnim, -8.0f,
-			0, VO_ZELDA_YOUASKED, 0, BotWZelda_YouaskedCallback},
+			0, VO_ZELDA_YOUASKED, 0+VO_EXTRA_FRAMES, BotWZelda_YouaskedCallback},
 	/*9*/{&BotWZeldaMeshThankyoulinkAnim, -8.0f, &BotWZeldaMeshNormalidleAnim, -8.0f,
-			0, VO_ZELDA_THANKYOU, 5, NULL},
+			0, VO_ZELDA_THANKYOU, 5+VO_EXTRA_FRAMES, NULL},
 	/*A*/{&BotWZeldaMeshHoldinghandsAnim, -8.0f, NULL, 0.0f,
 			FLAG_NOLOOP, 0, 0, NULL},
 	/*B*/{&BotWZeldaMeshTurnrightAnim, -8.0f, &BotWZeldaMeshNormalidleAnim, -8.0f,

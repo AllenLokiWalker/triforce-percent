@@ -134,7 +134,7 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {
 
 static void BotWLink_DialogCallback(BotWActor *botw, GlobalContext *globalCtx) {
 	Entity *en = (Entity*)botw;
-	if(CHECK_ON_FRAME(en->botw.actionframe, 80)) BotWActor_VO(&en->botw, VO_LINK_ISSHONI);
+	if(CHECK_ON_FRAME(en->botw.actionframe, 72+VO_EXTRA_FRAMES)) BotWActor_VO(&en->botw, VO_LINK_ISSHONI);
 }
 
 typedef struct {
@@ -172,7 +172,7 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*6*/{&BotWLinkMeshLookstozeldaAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			0, 0, 0, NULL},
 	/*7*/{&BotWLinkMeshLinksdialogAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
-			0, VO_LINK_ZERUDAHIME, 5, BotWLink_DialogCallback},
+			0, VO_LINK_ZERUDAHIME, 5+VO_EXTRA_FRAMES, BotWLink_DialogCallback},
 	/*8*/{&BotWLinkMeshTakeszeldahandAnim, -8.0f, NULL, 0.0f,
 			FLAG_NOLOOP, 0, 0, NULL},
 	/*9*/{NULL, 0.0f, NULL, 0.0f,
