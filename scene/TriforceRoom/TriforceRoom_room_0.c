@@ -27,12 +27,12 @@ s16 TriforceRoom_room_0_header00_objectList[4] = {
 };
 
 ActorEntry TriforceRoom_room_0_header00_actorList[6] = {
-	{ 1, 0, 0, 0, 0, 0, 0, 0x0001 },
-	{ 1, 0, 0, 0, 0, 0, 0, 0x0000 },
 	{ 5, 0, 0, 0, 0, 0, 0, 0x0000 },
+	{ 1, 0, 0, 0, 0, 0, 0, 0x0001 },
+	{ 3, 0, 0, 0, 0, 0, 0, 0x0000 },
 	{ ACTOR_DEMO_EFFECT, 0, -54, 248, 0, 0, 0, 0x000F },
 	{ 1, 0, 0, 0, 0, 0, 0, 0x0002 },
-	{ 3, 0, 0, 0, 0, 0, 0, 0x0000 },
+	{ 1, 0, 0, 0, 0, 0, 0, 0x0000 },
 };
 
 MeshHeader0 TriforceRoom_room_0_meshHeader = { {0}, 1, (u32)&TriforceRoom_room_0_meshDListEntry, (u32)&(TriforceRoom_room_0_meshDListEntry) + sizeof(TriforceRoom_room_0_meshDListEntry) };
@@ -675,8 +675,7 @@ Gfx TriforceRoom_dl_TriforceRoomMeshObj_mesh_layer_Transparent_tri_0[] = {
 Gfx mat_TriforceRoom_dl_StoneMatl_layerOpaque[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_FOG | G_SHADING_SMOOTH),
-	gsSPClearGeometryMode(G_CULL_FRONT | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
+	gsSPLoadGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_FOG | G_SHADING_SMOOTH),
 	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_NOISE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_2CYCLE | G_PM_NPRIMITIVE),
 	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_ZS_PIXEL | G_RM_FOG_SHADE_A | G_RM_AA_ZB_OPA_SURF2),
 	gsSPTexture(65535, 65535, 0, 0, 1),
@@ -702,8 +701,7 @@ Gfx mat_TriforceRoom_dl_StoneMatl_layerOpaque[] = {
 Gfx mat_TriforceRoom_dl_TileMatl_layerOpaque[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_FOG | G_SHADING_SMOOTH),
-	gsSPClearGeometryMode(G_CULL_FRONT | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
+	gsSPLoadGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_FOG | G_SHADING_SMOOTH),
 	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_NOISE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_2CYCLE | G_PM_NPRIMITIVE),
 	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_ZS_PIXEL | G_RM_FOG_SHADE_A | G_RM_AA_ZB_OPA_SURF2),
 	gsSPTexture(65535, 65535, 0, 0, 1),
@@ -723,8 +721,7 @@ Gfx mat_TriforceRoom_dl_TileMatl_layerOpaque[] = {
 Gfx mat_TriforceRoom_dl_WaterMatl_layerTransparent[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL1, TEXEL0, ENV_ALPHA, TEXEL0, TEXEL1, TEXEL0, ENVIRONMENT, TEXEL0, COMBINED, 0, SHADE, 0, COMBINED, 0, PRIMITIVE, 0),
-	gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_FOG | G_SHADING_SMOOTH),
-	gsSPClearGeometryMode(G_CULL_FRONT | G_CULL_BACK | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
+	gsSPLoadGeometryMode(G_ZBUFFER | G_SHADE | G_FOG | G_SHADING_SMOOTH),
 	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_NOISE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_2CYCLE | G_PM_NPRIMITIVE),
 	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_ZS_PIXEL | G_RM_FOG_SHADE_A | G_RM_AA_ZB_XLU_SURF2),
 	gsSPTexture(65535, 65535, 0, 0, 1),

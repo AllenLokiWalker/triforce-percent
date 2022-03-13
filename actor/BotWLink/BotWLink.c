@@ -11,6 +11,7 @@
 #include "BotWLinkMeshTurnleftAnim.h"
 #include "BotWLinkMeshTurnleftzeldadescendingAnim.h"
 #include "BotWLinkMeshTurnrightAnim.h"
+#include "BotWLinkMeshTurnrightfromspeechAnim.h"
 #include "BotWLinkMeshTex.h"
 
 // Actor Information
@@ -155,7 +156,7 @@ static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx)
 	}
 }
 
-#define NACTIONDEFS 12
+#define NACTIONDEFS 13
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*0*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, NULL},
@@ -171,7 +172,7 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 			FLAG_DELAYROT, 0, 0, NULL},
 	/*6*/{&BotWLinkMeshLookstozeldaAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			0, 0, 0, NULL},
-	/*7*/{&BotWLinkMeshLinksdialogAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
+	/*7*/{&BotWLinkMeshLinksdialogAnim, -8.0f, NULL, 0.0f,
 			0, VO_LINK_ZERUDAHIME, 5+VO_EXTRA_FRAMES, BotWLink_DialogCallback},
 	/*8*/{&BotWLinkMeshTakeszeldahandAnim, -8.0f, NULL, 0.0f,
 			FLAG_NOLOOP, 0, 0, NULL},
@@ -180,6 +181,8 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*A*/{&BotWLinkMeshModerate_walk_lookingaroundAnim, -8.0f, NULL, 0.0f,
 			FLAG_ACCEL, 0, 0, NULL},
 	/*B*/{&BotWLinkMeshTurnleftzeldadescendingAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
+			FLAG_DELAYROT, 0, 0, NULL},
+	/*C*/{&BotWLinkMeshTurnrightfromspeechAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			FLAG_DELAYROT, 0, 0, NULL},
 };
 
