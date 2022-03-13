@@ -8,19 +8,6 @@ PATCH 0xCB66A0 ../actor/z_bg_toki_swd/actor.pat
 PATCH 0xE9F0D0 ../actor/z_en_ge2/actor.pat
 PATCH 0xC004E0 ../actor/z_en_girla/actor.pat
 
-//Custom Link animations
-STATICDATA ../anim/anim.bin 0 0x0 0x0
-
-//TriforceRoom scene
-//Don't forget TriforceChest and TriforcePiece if move
-OBJECT 4 ../actor/TriforcePiece/zobj.zobj
-ACTOR 1 ../actor/TriforcePiece/triforcepiece.zovl
-OBJECT 5 ../actor/TriforceChest/zobj.zobj
-ACTOR 3 ../actor/TriforceChest/triforcechest.zovl
-OBJECT 16 ../actor/TriforceLight/zobj.zobj
-ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
-SCENE 46 ../scene/TriforceRoom/TriforceRoom_scene.zscene
-
 //Voice acting
 STATICDATA ../voice/vo_link_zerudahimeRaw.bin 3 0 0
 STATICDATA ../voice/vo_link_isshoniRaw.bin 3 1 0
@@ -38,6 +25,11 @@ STATICDATA ../music/HereTogether3.aseq 1 0x75020201 0x27000000
 STATICDATA ../music/HereTogetherBank.abnk 2 0x27020201 0x10400000
 
 //Ending scene
+//Don't forget TriforceChest and TriforcePiece if move
+OBJECT 4 ../actor/TriforcePiece/zobj.zobj
+ACTOR 1 ../actor/TriforcePiece/triforcepiece.zovl
+OBJECT 5 ../actor/TriforceChest/zobj.zobj
+ACTOR 3 ../actor/TriforceChest/triforcechest.zovl
 OBJECT 122 ../actor/BotWLink/zobj.zobj
 ACTOR 118 ../actor/BotWLink/BotWLink.zovl
 OBJECT 125 ../actor/BotWZelda/zobj.zobj
@@ -129,3 +121,11 @@ OBJECT 17 ../actor/CoSStaircases/zobj.zobj
 ACTOR 26 ../actor/CoSStaircases/cosstaircases.zovl
 ACTOR 31 ../actor/CoSSages/cossages.zovl
 SCENE 68 ../scene/ChamberOfSages/ChamberOfSages_scene.zscene
+
+//Custom Link animations
+STATICDATA ../anim/anim.bin 0 0x0 0x0
+
+//TriforceRoom scene
+OBJECT 16 ../actor/TriforceLight/zobj.zobj
+ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
+SCENE 46 ../scene/TriforceRoom/TriforceRoom_scene.zscene

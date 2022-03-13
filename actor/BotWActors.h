@@ -7,6 +7,9 @@
 
 #define VO_EXTRA_FRAMES 3
 
+#define LIGHTS_ACTIONNUM 37
+#define LIGHTS_ACTIONSLOT 3
+
 #define FLAG_INVISIBLE (1 << 8)
 #define FLAG_EYESCLOSED (1 << 9)
 #define FLAG_DELAYROT (1 << 10)
@@ -36,6 +39,7 @@ typedef struct {
 	f32 morph_whendone;
 	float windX, windZ;
 	f32 volume;
+	//s8 lightDir[3];
 } BotWActor;
 
 typedef void (*BotWCSActionFunc)(BotWActor *botw, GlobalContext* globalCtx);
@@ -45,7 +49,7 @@ typedef struct {
     f32 morph;
     AnimationHeader *anim_whendone;
     f32 morph_whendone;
-    u16 flags;
+    u32 flags;
     u16 sfx;
     u8 sfxframe;
     BotWCSActionFunc func;
@@ -56,7 +60,41 @@ typedef struct {
     u8 dim;
 	s8 dir;
 } BotWFixRotAnimDef;
- 
+
+static inline void BotWLights_Draw(GlobalContext *globalCtx){
+	CsCmdActorAction *action = globalCtx->csCtx.npcActions[LIGHTS_ACTIONSLOT];
+	if(globalCtx->csCtx.state == 0 || action == NULL) return;
+	float x, y, z;
+	y = 1.5f;
+	switch(action->action){
+	case 0:
+		x = 5.0f;
+		z = -1.0f;
+		break;
+	case 1:
+		x = 4.0f;
+		z = 4.0f;
+		break;
+	default:
+		return;
+	}
+	float n = 127.0f / sqrt(x * x + y * y + z * z);
+	s8 lx, ly, lz;
+	lx = x * n;
+	ly = y * n;
+	lz = z * n;
+	
+	Lights* lights = Lights_New(globalCtx->state.gfxCtx, 0, 0, 0);
+    lights->numLights = 1;
+	lights->l.l[0].l.col[0] = lights->l.l[0].l.colc[0] = 255;
+	lights->l.l[0].l.col[1] = lights->l.l[0].l.colc[1] = 255;
+	lights->l.l[0].l.col[2] = lights->l.l[0].l.colc[2] = 255;
+	lights->l.l[0].l.dir[0] = lx;
+	lights->l.l[0].l.dir[1] = ly;
+	lights->l.l[0].l.dir[2] = lz;
+	Lights_Draw(lights, globalCtx->state.gfxCtx);
+}
+
 static inline void BotWActor_Init(BotWActor *botw, GlobalContext *globalCtx, 
         FlexSkeletonHeader *skel, AnimationHeader *initAnim,
         Vec3s *jointTable, Vec3s *morphTable, s32 numLimbs, f32 scale, f32 volume) {
@@ -72,6 +110,7 @@ static inline void BotWActor_Init(BotWActor *botw, GlobalContext *globalCtx,
 	botw->windX = 0.707f;
 	botw->windZ = -0.707f;
 	botw->volume = volume;
+	//botw->lightDir[0] = 127; botw->lightDir[1] = botw->lightDir[2] = 0;
 	Actor_SetScale(&botw->actor, scale);
     SkelAnime_InitFlex(globalCtx, &botw->skelAnime, skel, initAnim, 
 		jointTable, morphTable, numLimbs);
@@ -208,6 +247,7 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 static inline void BotWActor_DrawMain(BotWActor *botw, GlobalContext *globalCtx,
 		void *const *EyeTextures, OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw) {
 	func_80093D18(globalCtx->state.gfxCtx);
+	BotWLights_Draw(globalCtx);
 	void *seg08Tex = EyeTextures[botw->eyeTextureIndex];
 	gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(seg08Tex));
 	SkelAnime_DrawFlexOpa(globalCtx, botw->skelAnime.skeleton, botw->skelAnime.jointTable,
