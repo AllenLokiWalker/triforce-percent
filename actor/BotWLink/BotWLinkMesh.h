@@ -207,7 +207,7 @@ extern Gfx mat_BotWLinkMesh_N_Boots_layerOpaque[];
 extern Gfx mat_BotWLinkMesh_N_Face_layerOpaque[];
 extern Gfx mat_BotWLinkMesh_N_Undershirts_layerOpaque[];
 extern Gfx mat_BotWLinkMesh_N_Eyes_layerOpaque[];
-extern Gfx mat_BotWLinkMesh_N_Hair_layerOpaque[];
+extern Gfx mat_BotWLinkMesh_N_Hair_Complex_layerOpaque[];
 extern Gfx mat_BotWLinkMesh_N_Hairband_Solid_layerOpaque[];
 extern Gfx mat_BotWLinkMesh_N_Tunic_Sleeves_layerOpaque[];
 extern Gfx mat_BotWLinkMesh_N_Undershirt_Solid_layerOpaque[];
