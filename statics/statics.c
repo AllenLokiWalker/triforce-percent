@@ -34,6 +34,9 @@ void Statics_SetGameState(){
     gSaveContext.eventChkInf[0xC] |= 0x0002; //Spoke to Saria on Lost Woods Bridge
     gSaveContext.itemGetInf[0x2] |= 0x0478; //Obtained Mask of Truth, all trading masks
     gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
+    //Set flags so Staff Roll entrance cutscenes are not shown
+    gSaveContext.eventChkInf[0xA] |= (1 << 8) | (1 << 5);
+    gSaveContext.eventChkInf[0xB] |= (1 << B) | (1 << C);
     //TODO
     WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
     WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
@@ -224,8 +227,13 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x034D;
             //Warp to ending
-            globalCtx->linkAgeOnLoad = 0;
-            globalCtx->nextEntranceIndex = 0x03FC;
+            // globalCtx->linkAgeOnLoad = 0;
+            // globalCtx->nextEntranceIndex = 0x03FC;
+            //Warp to Staff Roll
+            gSaveContext.linkAgeOnLoad = 1;
+            globalCtx->nextEntranceIndex = 0x00CD;
+            gSaveContext.cutsceneIndex = 0xFFF8;
+            Statics_ClearSRCSFlags();
             //Common warp
             gSaveContext.respawnFlag = -2;
             globalCtx->sceneLoadFlag = 0x14;

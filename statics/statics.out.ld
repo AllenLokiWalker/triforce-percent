@@ -7,6 +7,7 @@ Statics_TimeTravel = 0x80404754;
 Statics_Ge2DialogueGet = 0x804048f4;
 Statics_Ge2DialogueUpdate = 0x80404918;
 Statics_UncullObject = 0x8040493c;
+Statics_ClearSRCSFlags = 0;
 Statics_LagRepeatFrame = 0x804076c4;
 Statics_LagPlaySpeed = 0x804076d0;
 Statics_EnableLagCorr = 0x804076dc;

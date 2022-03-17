@@ -13,6 +13,7 @@ extern CollisionPoly Ending_polygons[];
 extern Vec3s Ending_vertices[130];
 extern CollisionHeader Ending_collisionHeader;
 extern s32 FinaleCS[];
+extern s32 StaffRollFinaleCS[];
 extern SCmdBase Ending_room_0_header00[];
 extern SCmdBase* Ending_room_0_alternateHeaders[];
 extern s16 Ending_room_0_header00_objectList[6];

@@ -45,6 +45,9 @@ default: $(TARGETS)
 	mkdir -p                                             $(STATICDATADIR)/15
 	cp HereTogetherBank.abnk                             $(STATICDATADIR)/15/staticdata.bin
 	echo "dtype 2\ndata1 0x27020201\ndata2 0x10400000" > $(STATICDATADIR)/15/conf.txt
+	mkdir -p                                             $(STATICDATADIR)/16
+	cp StaffRoll.aseq                                    $(STATICDATADIR)/16/staticdata.bin
+	echo "dtype 1\ndata1 0x76020201\ndata2 0x03000000" > $(STATICDATADIR)/16/conf.txt
 	#mkdir -p                                             $(STATICDATADIR)/8
 	#cp Trailer.aseq                                      $(STATICDATADIR)/8/staticdata.bin
 	#echo "dtype 1\ndata1 0x1F020201\ndata2 0x03000000" > $(STATICDATADIR)/8/conf.txt

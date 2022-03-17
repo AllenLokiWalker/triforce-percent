@@ -13,6 +13,7 @@
 #include "BotWLinkMeshTurnrightAnim.h"
 #include "BotWLinkMeshTurnrightfromspeechAnim.h"
 #include "BotWLinkMeshTex.h"
+#include "../../statics/scene.h"
 
 // Actor Information
 #define OBJ_ID 122 // primary object dependency
@@ -107,6 +108,7 @@ typedef struct {
 
 static void init(Entity *en, GlobalContext *globalCtx) {
     Statics_EnableLagCorr(1);
+	Statics_ClearSRCSFlags();
 	BotWActor_Init(&en->botw, globalCtx, &BotWLinkMesh, &BotWLinkMeshIdleAnim,
 		en->jointTable, en->morphTable, BOTWLINKMESH_NUM_LIMBS, ACTOR_SCALE, 1.0f);
 	//Physics initialization

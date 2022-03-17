@@ -179,57 +179,102 @@ void Statics_TerminatorWarpToSacredRealm(){
 }
 
 void Statics_TerminatorStaffRollHyruleField(){
-    
+    gSaveContext.linkAgeOnLoad = 1;
+    gGlobalContext.nextEntranceIndex = 0x00CD;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0xFFF8;
+    gGlobalContext.fadeTransition = 2;
+    gSaveContext.nextTransition = 2;
     TERMINATOR_RETURN;
 }
 
 void Statics_TerminatorStaffRollDeathMountain(){
-    
+    gGlobalContext.nextEntranceIndex = 0x13D;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0xFFF3;
+    gGlobalContext.fadeTransition = 2;
+    gSaveContext.nextTransition = 2;
     TERMINATOR_RETURN;
 }
 
 void Statics_TerminatorStaffRollGerudoValley(){
-    
+    gGlobalContext.nextEntranceIndex = 0x117;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0xFFF1;
+    gGlobalContext.fadeTransition = 2;
+    gSaveContext.nextTransition = 2;
     TERMINATOR_RETURN;
 }
 
 void Statics_TerminatorStaffRollDekuTree(){
-    
+    gGlobalContext.nextEntranceIndex = 0;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0;
+    gGlobalContext.fadeTransition = 2;
+    gSaveContext.nextTransition = 2;
     TERMINATOR_RETURN;
 }
 
 void Statics_TerminatorStaffRollZoraFountain(){
-    
+    gGlobalContext.nextEntranceIndex = 0x10E;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0xFFF0;
+    gGlobalContext.fadeTransition = 2;
+    gSaveContext.nextTransition = 2;
     TERMINATOR_RETURN;
 }
 
 void Statics_TerminatorStaffRollZoraRiver(){
-    
+    gGlobalContext.nextEntranceIndex = 0x19D;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0;
+    gGlobalContext.fadeTransition = 3;
+    gSaveContext.nextTransition = 3;
     TERMINATOR_RETURN;
 }
 
 void Statics_TerminatorStaffRollKokiriForest(){
-    
+    gGlobalContext.nextEntranceIndex = 0x0EE;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0xFFF5;
+    gGlobalContext.fadeTransition = 2;
+    gSaveContext.nextTransition = 2;
     TERMINATOR_RETURN;
 }
 
 void Statics_TerminatorStaffRollLonLonRanch(){
-    
+    gGlobalContext.nextEntranceIndex = 0x157;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0xFFF2;
+    gGlobalContext.fadeTransition = 2;
+    gSaveContext.nextTransition = 2;
     TERMINATOR_RETURN;
 }
 
 void Statics_TerminatorStaffRollWasteland(){
-    
+    gGlobalContext.nextEntranceIndex = 0x130;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0;
+    gGlobalContext.fadeTransition = 2;
+    gSaveContext.nextTransition = 2;
     TERMINATOR_RETURN;
 }
 
 void Statics_TerminatorStaffRollHyruleCastle(){
-    
+    gGlobalContext.nextEntranceIndex = 0x138;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0;
+    gGlobalContext.fadeTransition = 2;
+    gSaveContext.nextTransition = 2;
     TERMINATOR_RETURN;
 }
 
 void Statics_TerminatorStaffRollFinale(){
-    
+    gGlobalContext.nextEntranceIndex = 0x30D;
+    gGlobalContext.sceneLoadFlag = 0x14;
+    gSaveContext.cutsceneIndex = 0xFFF0;
+    gGlobalContext.fadeTransition = 2;
+    gSaveContext.nextTransition = 2;
     TERMINATOR_RETURN;
 }
 
@@ -260,6 +305,19 @@ static void PatchEntranceTable(u16 entryIdx, u8 count, const EntranceTableEntry 
 {
     for(u8 i=0; i<count; ++i)
         gFakeEntranceTable[entryIdx+i] = *contents;
+}
+
+static inline void AdjustSREntrySettings(u16 entryIdx, u8 setup, u8 in, u8 out)
+{
+    gFakeEntranceTable[entryIdx+setup].keepMusic = 1;
+    gFakeEntranceTable[entryIdx+setup].titleCard = 0;
+    gFakeEntranceTable[entryIdx+setup].transitionIn = in;
+    gFakeEntranceTable[entryIdx+setup].transitionOut = out;
+}
+
+void Statics_ClearSRCSFlags(){
+    gSaveContext.eventChkInf[0xA] &= ~((1 << 8) | (1 << 5));
+    gSaveContext.eventChkInf[0xB] &= ~((1 << B) | (1 << C));
 }
 
 static void Statics_SetUpRouting(){
@@ -341,6 +399,34 @@ static void Statics_SetUpRouting(){
     gFakeEntranceTable[0x0174] = gFakeEntranceTable[0x0172];
     gFakeEntranceTable[0x0474] = gFakeEntranceTable[0x0472];
     gFakeEntranceTable[0x0475] = gFakeEntranceTable[0x0473];
+    //
+    //Staff Roll
+    //Hyrule Field
+    AdjustSREntrySettings(0x0CD, 12, 2, 2);
+    //Death Mountain Trail
+    AdjustSREntrySettings(0x13D, 7, 2, 2);
+    //Gerudo Valley
+    AdjustSREntrySettings(0x117, 5, 2, 2);
+    //Deku Tree
+    AdjustSREntrySettings(0x000, 0, 2, 2);
+    //Zora's Fountain
+    AdjustSREntrySettings(0x10E, 4, 2, 3);
+    //Zora's River
+    gEntranceCutsceneTable[24].entrance = 0x19D;
+    gEntranceCutsceneTable[24].segAddr = river_cutscene_TODO;
+    AdjustSREntrySettings(0x19D, 0, 3, 2);
+    //Kokiri Forest
+    AdjustSREntrySettings(0x0EE, 9, 2, 2);
+    //Lon Lon Ranch
+    AdjustSREntrySettings(0x157, 6, 2, 2);
+    //Haunted Wasteland
+    gEntranceCutsceneTable[25].entrance = 0x130;
+    gEntranceCutsceneTable[25].segAddr = wasteland_cutscene_TODO;
+    AdjustSREntrySettings(0x130, 0, 2, 2);
+    //Hyrule Castle
+    AdjustSREntrySettings(0x138, 0, 2, 2);
+    //Finale
+    AdjustSREntrySettings(0x30D, 4, 2, 2);
     //
     //Debugging
     
