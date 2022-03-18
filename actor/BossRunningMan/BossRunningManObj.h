@@ -41,6 +41,10 @@ extern FlexSkeletonHeader gBossRunningManObj_SkelRunningMan;
 #define  SKEL_RUNNINGMAN_NUMBONES_DT  16
 extern Gfx gBossRunningManObj_DLFistLLimb10;
 extern Gfx gBossRunningManObj_DLFistRLimb13;
+extern AnimationHeader gBossRunningManObj_AnimDeadFall;
+extern AnimationHeader gBossRunningManObj_AnimDeadLoopExplain;
+extern AnimationHeader gBossRunningManObj_AnimDeadLoopIdle;
+extern AnimationHeader gBossRunningManObj_AnimDeadLoopRegret;
 extern AnimationHeader gBossRunningManObj_AnimDodgeKick;
 extern AnimationHeader gBossRunningManObj_AnimHurt;
 extern AnimationHeader gBossRunningManObj_AnimJumpRocket;

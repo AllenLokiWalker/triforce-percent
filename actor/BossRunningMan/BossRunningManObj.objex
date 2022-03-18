@@ -1,8 +1,8 @@
-# Blender v2.93.0 Objex File: 'BossRunningManObj.blend'
+# Blender v3.0.0 Objex File: 'BossRunningMan.blend'
 # www.blender.org
 # io_export_objex2 v2.0.0
 version 2.0
-exportid 1630954174.493755
+exportid 1647622743.239066
 softinfo animation_framerate 20
 mtllib BossRunningManObj.mtlex
 skellib BossRunningManObj.skel

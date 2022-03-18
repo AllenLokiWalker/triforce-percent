@@ -1,2 +1,3 @@
 0
 DCB0 .include HyruleFieldFlyover.bin
+12187 .byte 0x76

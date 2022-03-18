@@ -53,7 +53,7 @@ LightSettings Ending_scene_header00_lightSettings[4] = {
 };
 
 SCmdBase Ending_scene_header04[] = {
-	SCENE_CMD_SOUND_SETTINGS(0x00, 0x1E, 0),
+	SCENE_CMD_SOUND_SETTINGS(0x00, 0x1E, 0x76),
 	SCENE_CMD_ROOM_LIST(1, &Ending_scene_roomList),
 	SCENE_CMD_MISC_SETTINGS(0x00, 0x0E),
 	SCENE_CMD_COL_HEADER(&Ending_collisionHeader),

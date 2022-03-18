@@ -1,6 +1,7 @@
 #include "ootmain.h"
 #include "scene.h"
 #include "statics.h"
+#include "audio.h"
 
 #include "../scene/TriforceRoom/TriforceRoom_scene.h"
 #include "../scene/Ending/Ending_scene.h"
@@ -432,7 +433,11 @@ static void Statics_SetUpRouting(){
     //Hyrule Castle
     AdjustSREntrySettings(0x138, 0, 2, 2);
     //Finale
-    AdjustSREntrySettings(0x30D, 4, 2, 2);
+    static const EntranceTableEntry finale_field_river_water_entry = {
+        .scene = SCENE_ENDING, 
+        .spawn = 0, .keepMusic = 1, .titleCard = 0, .transitionIn = 2, .transitionOut = 2
+    };
+    PatchEntranceTable(0x030D+4, 1, &finale_field_river_water_entry);
     //
     //Debugging
     
@@ -458,6 +463,21 @@ static void Statics_SetUpRouting(){
 }
 
 //extern void Environment_PlaySceneSequence(GlobalContext *globalCtx);
+
+extern void Scene_Cmd0x15SoundSettings(GlobalContext* globalCtx, SceneCmd* cmd);
+
+void Statics_PatchedCmd0x15(GlobalContext* globalCtx, SceneCmd* cmd){
+    u8 seq = cmd->soundSettings.seqIndex;
+    if(sIsStaffRoll && gSaveContext.entranceIndex >= 0x19D && gSaveContext.entranceIndex <= 0x1A0){
+        seq = 0x76;
+    }
+    globalCtx->soundCtx.seqIndex = seq;
+    globalCtx->soundCtx.nightSeqIndex = cmd->soundSettings.nightSeqIndex;
+
+    if (gSaveContext.seqIndex == (u8)(0xFFFF)) {
+        Audio_QueueSeqCmd(cmd->soundSettings.bgmId | 0xF0000000);
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // F3DZEX Cel Shading Patch
@@ -610,6 +630,9 @@ void Statics_SceneCodePatches(){
         DemoTerminatorTable[DemoTerminatorPatchTable[i].index - 1] = 
             (void*)DemoTerminatorPatchTable[i].function;
     }
+    //Zora's Fountain scene music cmd patch
+    *((u32*)(Scene_Cmd0x15SoundSettings)  ) = JUMPINSTR(Statics_PatchedCmd0x15);
+    *((u32*)(Scene_Cmd0x15SoundSettings)+1) = 0;
     //Entrance Table && Entrance Cutscene Table Patches
     Statics_SetUpRouting();
     //F3DZEX Cel Shading Patch

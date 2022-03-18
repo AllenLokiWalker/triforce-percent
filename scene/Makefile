@@ -10,6 +10,7 @@ MAKESUBDIRS = \
 	spot09 \
 	spot10 \
 	spot11 \
+	spot13 \
 	spot15 \
 	spot16 \
 	spot20 \

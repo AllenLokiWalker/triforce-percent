@@ -1,2 +1,7 @@
 0
 2410 .include GerudoValleyFlyover.bin
+3067 .byte 0x76
+30A4 .byte 1
+30A6 .byte 0
+30B1 .byte 0xC
+30B6 .short 0x00F0

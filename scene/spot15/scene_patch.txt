@@ -1,2 +1,3 @@
 0
+7 .byte 0x76
 3F40 .include CastleFlyover.bin

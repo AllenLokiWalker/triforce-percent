@@ -1,2 +1,5 @@
 0
 2D10 .include ZoraFountainFlyover.bin
+4737 .byte 0x76
+4779 .byte 0xC
+477E .short 0x00F8

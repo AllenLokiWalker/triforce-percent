@@ -1,8 +1,8 @@
-# Blender MTL File: 'BossRunningManObj.blend'
+# Blender MTL File: 'BossRunningMan.blend'
 # Material Count: 9
-exportid 1630954174.493755
+exportid 1647622743.239066
 newtex "object_mmTex_000930.ci8.png"
-map textures\object_mmTex_000930.ci8.png
+map textures/object_mmTex_000930.ci8.png
 newmtl "Skin"
 vertexshading normal
 texel0 "object_mmTex_000930.ci8.png"
@@ -18,7 +18,7 @@ gbivar shiftt0 0
 gbi _loadtexels
 gbi gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, qu102(_texel0width-1), qu102(_texel0height-1))
 newtex "object_mmTex_001030.ci8.png"
-map textures\object_mmTex_001030.ci8.png
+map textures/object_mmTex_001030.ci8.png
 newmtl "Hands"
 vertexshading normal
 texel0 "object_mmTex_001030.ci8.png"
@@ -34,7 +34,7 @@ gbivar shiftt0 0
 gbi _loadtexels
 gbi gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, qu102(_texel0width-1), qu102(_texel0height-1))
 newtex "object_mmTex_000970.ci8.png"
-map textures\object_mmTex_000970.ci8.png
+map textures/object_mmTex_000970.ci8.png
 newmtl "Hair"
 vertexshading normal
 texel0 "object_mmTex_000970.ci8.png"
@@ -50,7 +50,7 @@ gbivar shiftt0 0
 gbi _loadtexels
 gbi gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, qu102(_texel0width-1), qu102(_texel0height-1))
 newtex "object_mmTex_0009F0.ci8.png"
-map textures\object_mmTex_0009F0.ci8.png
+map textures/object_mmTex_0009F0.ci8.png
 newmtl "HairLine"
 vertexshading normal
 texel0 "object_mmTex_0009F0.ci8.png"
@@ -66,7 +66,7 @@ gbivar shiftt0 0
 gbi _loadtexels
 gbi gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, qu102(_texel0width-1), qu102(_texel0height-1))
 newtex "object_mmTex_000A30.ci8.png"
-map textures\object_mmTex_000A30.ci8.png
+map textures/object_mmTex_000A30.ci8.png
 newmtl "Eyes"
 vertexshading normal
 texel0 "object_mmTex_000A30.ci8.png"
@@ -82,7 +82,7 @@ gbivar shiftt0 0
 gbi _loadtexels
 gbi gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, qu102(_texel0width-1), qu102(_texel0height-1))
 newtex "object_mmTex_000B30.ci8.png"
-map textures\object_mmTex_000B30.ci8.png
+map textures/object_mmTex_000B30.ci8.png
 newmtl "Eyebrows"
 vertexshading normal
 texel0 "object_mmTex_000B30.ci8.png"
@@ -98,9 +98,9 @@ gbivar shiftt0 0
 gbi _loadtexels
 gbi gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, qu102(_texel0width-1), qu102(_texel0height-1))
 newtex "Mouth.png"
-map textures\Mouth.png
+map textures/Mouth.png
 format ci8
-texturebank textures\MouthBank.png
+texturebank textures/MouthBank.png
 newmtl "Mouth"
 vertexshading normal
 texel0 "Mouth.png"
@@ -116,7 +116,7 @@ gbivar shiftt0 0
 gbi _loadtexels
 gbi gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, qu102(_texel0width-1), qu102(_texel0height-1))
 newtex "bnd.png"
-map textures\bnd.png
+map textures/bnd.png
 newmtl "mtl_06001130"
 vertexshading normal
 texel0 "bnd.png"
@@ -132,7 +132,7 @@ gbivar shiftt0 0
 gbi _loadtexels
 gbi gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, qu102(_texel0width-1), qu102(_texel0height-1))
 newtex "bunnyLogo.png"
-map textures\bunnyLogo.png
+map textures/bunnyLogo.png
 newmtl "mtl_06001330"
 vertexshading normal
 texel0 "bunnyLogo.png"

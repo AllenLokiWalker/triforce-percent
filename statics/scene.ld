@@ -9,3 +9,4 @@ func_80052364 = 0x80052364;
 func_800523B0 = 0x800523B0;
 Statics_CameraSplinePatch_ret = 0x80099BF4;
 Environment_PlaySceneSequence = 0x800617DC;
+Scene_Cmd0x15SoundSettings = 0x80082478;
