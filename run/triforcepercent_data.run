@@ -17,7 +17,9 @@ PATCH 0x213D000 ../scene/spot09/room_0.pat
 PATCH 0x2499000 ../scene/ydan/scene.pat
 PATCH 0x2110000 ../scene/spot08/scene.pat
 PATCH 0x206F000 ../scene/spot04/scene.pat
+PATCH 0x2081000 ../scene/spot04/room_0.pat
 PATCH 0x29BC000 ../scene/spot20/scene.pat
+PATCH 0x29CE000 ../scene/spot20/room_0.pat
 PATCH 0x21DC000 ../scene/spot13/scene.pat
 PATCH 0x21F6000 ../scene/spot15/scene.pat
 
