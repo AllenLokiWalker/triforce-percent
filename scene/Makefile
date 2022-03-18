@@ -6,9 +6,15 @@ MAKESUBDIRS = \
 	spot00 \
 	spot04 \
 	spot07_scene \
+	spot08 \
+	spot09 \
 	spot10 \
 	spot11 \
-	tokinoma
+	spot15 \
+	spot16 \
+	spot20 \
+	tokinoma \
+	ydan
 
 OUTFILES = \
 	UnicornFountain/UnicornFountain_scene.zscene \

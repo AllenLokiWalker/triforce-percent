@@ -8,7 +8,23 @@ PATCH 0xCB66A0 ../actor/z_bg_toki_swd/actor.pat
 PATCH 0xE9F0D0 ../actor/z_en_ge2/actor.pat
 PATCH 0xC004E0 ../actor/z_en_girla/actor.pat
 
-//Voice acting
+//Staff Roll
+STATICDATA ../music/StaffRoll.aseq 1 0x76020201 0x03000000
+PATCH 0x1FB8000 ../scene/spot00/scene.pat
+PATCH 0x221D000 ../scene/spot16/scene.pat
+PATCH 0x212B000 ../scene/spot09/scene.pat
+PATCH 0x2499000 ../scene/ydan/scene.pat
+PATCH 0x2110000 ../scene/spot08/scene.pat
+PATCH 0x206F000 ../scene/spot04/scene.pat
+PATCH 0x29BC000 ../scene/spot20/scene.pat
+PATCH 0x21F6000 ../scene/spot15/scene.pat
+
+//Ending scene
+//Don't forget TriforceChest and TriforcePiece if move
+OBJECT 4 ../actor/TriforcePiece/zobj.zobj
+ACTOR 1 ../actor/TriforcePiece/triforcepiece.zovl
+OBJECT 5 ../actor/TriforceChest/zobj.zobj
+ACTOR 3 ../actor/TriforceChest/triforcechest.zovl
 STATICDATA ../voice/vo_link_zerudahimeRaw.bin 3 0 0
 STATICDATA ../voice/vo_link_isshoniRaw.bin 3 1 0
 STATICDATA ../voice/vo_zelda_linkRaw.bin 3 2 0
@@ -23,13 +39,6 @@ STATICDATA ../music/HereTogether1.aseq 1 0x73020201 0x27000000
 STATICDATA ../music/HereTogether2.aseq 1 0x74020201 0x27000000
 STATICDATA ../music/HereTogether3.aseq 1 0x75020201 0x27000000
 STATICDATA ../music/HereTogetherBank.abnk 2 0x27020201 0x10400000
-
-//Ending scene
-//Don't forget TriforceChest and TriforcePiece if move
-OBJECT 4 ../actor/TriforcePiece/zobj.zobj
-ACTOR 1 ../actor/TriforcePiece/triforcepiece.zovl
-OBJECT 5 ../actor/TriforceChest/zobj.zobj
-ACTOR 3 ../actor/TriforceChest/triforcechest.zovl
 OBJECT 122 ../actor/BotWLink/zobj.zobj
 ACTOR 118 ../actor/BotWLink/BotWLink.zovl
 OBJECT 125 ../actor/BotWZelda/zobj.zobj
@@ -42,7 +51,6 @@ ACTOR 120 ../actor/SilentPrincess/SilentPrincess.zovl
 OBJECT 126 ../actor/HolyLight/zobj.zobj
 ACTOR 122 ../actor/HolyLight/z_demo_holy.zovl
 SCENE 58 ../scene/Ending/Ending_scene.zscene
-
 
 //Misc scene patches
 PATCH 0x217C000 ../scene/spot10/spot10_room_7.pat
@@ -93,30 +101,24 @@ ACTOR 312 ../actor/z_en_ge1/z_en_ge1.zovl
 ACTOR 34 ../actor/Nabooru/nabooru.zovl
 ACTOR 54 ../actor/z_en_mm3/z_en_mm3.zovl
 ACTOR 288 ../actor/z_bg_spot07_taki/z_bg_spot07_taki.zovl
-ACTOR 83 ../actor/WSRCutscene/wsrcutscene.zovl
 
 //Larger custom actors
 OBJECT 59 ../actor/BossRunningMan/zobj.zobj
 ACTOR 115 ../actor/BossRunningMan/BossRunningMan.zovl
 
-//TestVAlpha scene
-//SCENE 41 ../scene/TestVAlpha/TestVAlpha_scene.zscene
-
-//Custom music
-STATICDATA ../music/OvertureOfSages.aseq 1 0x6E020201 0x09000000
-STATICDATA ../music/OvertureOfSagesWarp.aseq 1 0x33020201 0x09000000
-STATICDATA ../music/ChamberOfSages.aseq 1 0x70020201 0x26000000
-STATICDATA ../music/ChamberOfSagesBank.abnk 2 0x26020201 0x0B000000
-STATICDATA ../music/triforce.aseq 1 0x71020201 0x03000000
-STATICDATA ../music/PowerOfTheGoddesses.aseq 1 0x72020201 0x03000000
-//STATICDATA ../music/Trailer.aseq 1 0x1F020201 0x03000000
-
 //UnicornFountain scene
+STATICDATA ../music/OvertureOfSages.aseq 1 0x6E020201 0x09000000
 ACTOR 23 ../actor/z_bg_mjin/actor.zovl
 ACTOR 6 ../actor/BetaGreatFairy/betagreatfairy.zovl
 SCENE 78 ../scene/UnicornFountain/UnicornFountain_scene.zscene
 
+//Warp to the Sacred Realm
+STATICDATA ../music/OvertureOfSagesWarp.aseq 1 0x33020201 0x09000000
+ACTOR 83 ../actor/WSRCutscene/wsrcutscene.zovl
+
 //ChamberOfSages scene
+STATICDATA ../music/ChamberOfSages.aseq 1 0x70020201 0x26000000
+STATICDATA ../music/ChamberOfSagesBank.abnk 2 0x26020201 0x0B000000
 OBJECT 17 ../actor/CoSStaircases/zobj.zobj
 ACTOR 26 ../actor/CoSStaircases/cosstaircases.zovl
 ACTOR 31 ../actor/CoSSages/cossages.zovl
@@ -126,6 +128,12 @@ SCENE 68 ../scene/ChamberOfSages/ChamberOfSages_scene.zscene
 STATICDATA ../anim/anim.bin 0 0x0 0x0
 
 //TriforceRoom scene
+STATICDATA ../music/triforce.aseq 1 0x71020201 0x03000000
+STATICDATA ../music/PowerOfTheGoddesses.aseq 1 0x72020201 0x03000000
 OBJECT 16 ../actor/TriforceLight/zobj.zobj
 ACTOR 5 ../actor/TriforceLight/triforcelight.zovl
 SCENE 46 ../scene/TriforceRoom/TriforceRoom_scene.zscene
+
+//Unused
+//SCENE 41 ../scene/TestVAlpha/TestVAlpha_scene.zscene
+//STATICDATA ../music/Trailer.aseq 1 0x1F020201 0x03000000

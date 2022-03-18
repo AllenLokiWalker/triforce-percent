@@ -5,6 +5,9 @@
 #include "../scene/TriforceRoom/TriforceRoom_scene.h"
 #include "../scene/Ending/Ending_scene.h"
 
+#include "../scene/spot03/ZoraRiverFlyover.c"
+#include "../scene/spot13/HauntedWastelandFlyover.c"
+
 #include "../loader/debugger/debugger.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -413,7 +416,7 @@ static void Statics_SetUpRouting(){
     AdjustSREntrySettings(0x10E, 4, 2, 3);
     //Zora's River
     gEntranceCutsceneTable[24].entrance = 0x19D;
-    gEntranceCutsceneTable[24].segAddr = river_cutscene_TODO;
+    gEntranceCutsceneTable[24].segAddr = &ZoraRiverFlyover;
     AdjustSREntrySettings(0x19D, 0, 3, 2);
     //Kokiri Forest
     AdjustSREntrySettings(0x0EE, 9, 2, 2);
@@ -421,7 +424,7 @@ static void Statics_SetUpRouting(){
     AdjustSREntrySettings(0x157, 6, 2, 2);
     //Haunted Wasteland
     gEntranceCutsceneTable[25].entrance = 0x130;
-    gEntranceCutsceneTable[25].segAddr = wasteland_cutscene_TODO;
+    gEntranceCutsceneTable[25].segAddr = &HauntedWastelandFlyover;
     AdjustSREntrySettings(0x130, 0, 2, 2);
     //Hyrule Castle
     AdjustSREntrySettings(0x138, 0, 2, 2);
