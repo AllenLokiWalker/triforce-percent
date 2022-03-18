@@ -94,6 +94,7 @@ def patchinstr(data, patchfile):
             print('baseaddr: ' + hex(baseaddr))
             continue
         doreloc = False
+        noprint = False
         if toks[0][0] == '!':
             toks[0] = toks[0][1:]
             if relocaddr is None:
@@ -142,15 +143,20 @@ def patchinstr(data, patchfile):
         elif toks[1][0] == '.':
             if toks[1] not in dotinstr:
                 raise RuntimeError('Invalid dot command: ' + toks[1])
-            val = int(toks[2], 0)
             nbits = dotinstr[toks[1]]
             nbytes = nbits >> 3
             assert (addr & (nbytes - 1)) == 0
-            if val < -(1 << (nbits - 1)) or val >= (1 << nbits):
-                raise RuntimeError('Value ' + str(val) + ' does not fit in ' + toks[1])
-            if val < 0:
-                val += (1 << nbits)
-            data[addr:addr+nbytes] = val.to_bytes(nbytes, 'big')
+            assert len(toks) >= 3
+            for t in range(2, len(toks)):
+                val = int(toks[t], 0)
+                if val < -(1 << (nbits - 1)) or val >= (1 << nbits):
+                    raise RuntimeError('Value ' + str(val) + ' does not fit in ' + toks[1])
+                if val < 0:
+                    val += (1 << nbits)
+                data[addr:addr+nbytes] = val.to_bytes(nbytes, 'big')
+                print(hex(addr) + ": " + data[addr:addr+nbytes].hex())
+                addr += nbytes
+            noprint = True
         elif toks[1] in branchinstr:
             assert len(toks) == 5
             rs = getreg(toks[2], False)
@@ -217,7 +223,8 @@ def patchinstr(data, patchfile):
             else:
                 raise RuntimeError('Unknown instruction ' + toks[1])
             data[addr:addr+2] = topval.to_bytes(2, 'big')
-        print(hex(addr) + ": " + data[addr:addr+4].hex())
+        if not noprint:
+            print(hex(addr) + ": " + data[addr:addr+4].hex())
     return data
 
 if __name__ == '__main__':
