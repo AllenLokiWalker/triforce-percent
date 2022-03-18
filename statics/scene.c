@@ -457,11 +457,7 @@ static void Statics_SetUpRouting(){
     */
 }
 
-extern void Environment_PlaySceneSequence(GlobalContext *globalCtx);
-
-void Statics_SRDisableMusicChangePatch(GlobalContext *globalCtx){
-    if(!sIsStaffRoll) Environment_PlaySceneSequence(globalCtx);
-}
+//extern void Environment_PlaySceneSequence(GlobalContext *globalCtx);
 
 ////////////////////////////////////////////////////////////////////////////////
 // F3DZEX Cel Shading Patch
@@ -616,8 +612,6 @@ void Statics_SceneCodePatches(){
     }
     //Entrance Table && Entrance Cutscene Table Patches
     Statics_SetUpRouting();
-    //Disable music set by scene during Staff Roll
-    *(u32*)0x8009AEC8 = JALINSTR(Statics_SRDisableMusicChangePatch);
     //F3DZEX Cel Shading Patch
     Statics_CelShadingPatch();
     //Finale Cutscene Lag Correction
