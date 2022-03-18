@@ -36,7 +36,10 @@ rom-setup/: statics/ $(CONTENTS)
 	rm $*scene/7/title.png
 	rm $*scene/8/title.png
 	rm $*scene/9/title.png
+	rm $*scene/11/title.png
+	rm $*scene/13/title.png
 	rm $*scene/16/title.png
+	rm $*scene/34/title.png
 	rm $*scene/45/title.png
 	rm $*scene/46/title.png
 	rm $*scene/47/title.png
@@ -45,7 +48,11 @@ rom-setup/: statics/ $(CONTENTS)
 	rm $*scene/50/title.png
 	rm $*scene/51/title.png
 	rm $*scene/54/title.png
+	rm $*scene/56/title.png
 	rm $*scene/58/title.png
+	rm $*scene/59/title.png
+	rm $*scene/60/title.png
+	rm $*scene/61/title.png
 	rm $*scene/65/title.png
 	rm $*scene/66/title.png
 	rm $*scene/68/title.png

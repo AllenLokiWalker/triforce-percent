@@ -12,3 +12,7 @@ Message_PostLoadEngAddr = 0x800DCC2C;
 
 Message_OpenText = 0x800DC838;
 Message_OpenText_4 = 0x800DC848;
+
+Message_OpenTextCreditsPatchStart = 0x800DC8E4;
+Message_OpenTextCreditsPatchNotCredits = 0x800DC92C;
+Message_OpenTextCreditsPatchIsCredits = 0x800DC8F4;

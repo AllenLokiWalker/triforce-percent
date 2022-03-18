@@ -108,7 +108,7 @@ typedef struct {
 
 static void init(Entity *en, GlobalContext *globalCtx) {
     Statics_EnableLagCorr(1);
-	Statics_ClearSRCSFlags();
+	Statics_SetUpStaffRoll();
 	BotWActor_Init(&en->botw, globalCtx, &BotWLinkMesh, &BotWLinkMeshIdleAnim,
 		en->jointTable, en->morphTable, BOTWLINKMESH_NUM_LIMBS, ACTOR_SCALE, 1.0f);
 	//Physics initialization

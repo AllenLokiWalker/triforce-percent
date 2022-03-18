@@ -129,6 +129,30 @@ void Message_OpenText_Wrapper(){
 }
 */
 
+extern void Message_OpenTextCreditsPatchStart();
+extern void Message_OpenTextCreditsPatchNotCredits();
+extern void Message_OpenTextCreditsPatchIsCredits();
+
+void Message_OpenTextCreditsPatch(){
+    asm(".set noat\n .set noreorder\n"
+    "slti $at, $v1, 0x0500\n"
+    "bne  $at, $zero, Message_OpenTextCreditsPatchNo1\n"
+    "slti $at, $v1, 0x1000\n"
+    "beq  $at, $zero, Message_OpenTextCreditsPatchNo1\n"
+    "slti $at, $v1, 0x0600\n"
+    "bne  $at, $zero, Message_OpenTextCreditsPatchYes1\n"
+    "slti $at, $v1, 0x0F00\n"
+    "beq  $at, $zero, Message_OpenTextCreditsPatchYes1\n"
+    "nop\n"
+    "Message_OpenTextCreditsPatchNo1:\n"
+    "j Message_OpenTextCreditsPatchNotCredits\n"
+    "nop\n"
+    "Message_OpenTextCreditsPatchYes1:\n"
+    "j Message_OpenTextCreditsPatchIsCredits\n"
+    "nop\n"
+    ".set at\n .set reorder");
+}
+
 extern void Message_PostLoadStaffAddr();
 extern void Message_PostLoadJpnAddr();
 extern void Message_PostLoadEngAddr();
@@ -159,6 +183,9 @@ void Statics_MessageCodePatches(){
     *(((u32*)Message_PostLoadEngAddr  )+2) = 0;
     *(((u32*)Message_PostLoadEngAddr  )+4) = 0;
     *(((u32*)Message_PostLoadEngAddr  )+7) = JALINSTR(Statics_N64DDTextCallback);
+    //Credits patch
+    *( (u32*)Message_OpenTextCreditsPatchStart   ) = JUMPINSTR(Message_OpenTextCreditsPatch);
+    *(((u32*)Message_OpenTextCreditsPatchStart)+1) = 0;
     //Debugging
     //*(((u32*)Message_OpenText)+2) = JUMPINSTR(Message_OpenText_Wrapper);
 }

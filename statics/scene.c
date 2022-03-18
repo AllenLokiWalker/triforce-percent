@@ -182,7 +182,7 @@ void Statics_TerminatorWarpToSacredRealm(){
 }
 
 void Statics_TerminatorStaffRollHyruleField(){
-    gSaveContext.linkAgeOnLoad = 1;
+    gGlobalContext.linkAgeOnLoad = 1;
     gGlobalContext.nextEntranceIndex = 0x00CD;
     gGlobalContext.sceneLoadFlag = 0x14;
     gSaveContext.cutsceneIndex = 0xFFF8;
@@ -318,9 +318,12 @@ static inline void AdjustSREntrySettings(u16 entryIdx, u8 setup, u8 in, u8 out)
     gFakeEntranceTable[entryIdx+setup].transitionOut = out;
 }
 
-void Statics_ClearSRCSFlags(){
+static u8 sIsStaffRoll = 0;
+
+void Statics_SetUpStaffRoll(){
+    sIsStaffRoll = 1;
     gSaveContext.eventChkInf[0xA] &= ~((1 << 8) | (1 << 5));
-    gSaveContext.eventChkInf[0xB] &= ~((1 << B) | (1 << C));
+    gSaveContext.eventChkInf[0xB] &= ~((1 << 0xB) | (1 << 0xC));
 }
 
 static void Statics_SetUpRouting(){
@@ -452,6 +455,12 @@ static void Statics_SetUpRouting(){
     };
     gEntranceCutsceneTable[32] = dmc2_entry;
     */
+}
+
+extern void Environment_PlaySceneSequence(GlobalContext *globalCtx);
+
+void Statics_SRDisableMusicChangePatch(GlobalContext *globalCtx){
+    if(!sIsStaffRoll) Environment_PlaySceneSequence(globalCtx);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -593,6 +602,7 @@ void Statics_EnableLagCorr(u8 enabled){
 ////////////////////////////////////////////////////////////////////////////////
 
 void Statics_SceneCodePatches(){
+    sIsStaffRoll = 0;
     //Scene Draw Configs
     sceneDrawConfigJumpTable[0x20] = Patched_CoSSceneDrawConfig;
     //Scene Memory Patches
@@ -606,6 +616,8 @@ void Statics_SceneCodePatches(){
     }
     //Entrance Table && Entrance Cutscene Table Patches
     Statics_SetUpRouting();
+    //Disable music set by scene during Staff Roll
+    *(u32*)0x8009AEC8 = JALINSTR(Statics_SRDisableMusicChangePatch);
     //F3DZEX Cel Shading Patch
     Statics_CelShadingPatch();
     //Finale Cutscene Lag Correction

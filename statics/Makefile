@@ -46,7 +46,13 @@ audio.o: \
 	../voice/vo_link_zerudahime.c \
 	../voice/vo_link_isshoni.c
 
-scene.o: scene.h
+scene.o: scene.h \
+	statics.h \
+	../scene/TriforceRoom/TriforceRoom_scene.h \
+	../scene/Ending/Ending_scene.h \
+	../scene/spot03/ZoraRiverFlyover.c \
+	../scene/spot13/HauntedWastelandFlyover.c \
+	../loader/debugger/debugger.h
 
 LINK_OBJS = \
 	statics.o \

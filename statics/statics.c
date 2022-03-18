@@ -36,7 +36,7 @@ void Statics_SetGameState(){
     gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
     //Set flags so Staff Roll entrance cutscenes are not shown
     gSaveContext.eventChkInf[0xA] |= (1 << 8) | (1 << 5);
-    gSaveContext.eventChkInf[0xB] |= (1 << B) | (1 << C);
+    gSaveContext.eventChkInf[0xB] |= (1 << 0xB) | (1 << 0xC);
     //TODO
     WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
     WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
@@ -230,10 +230,10 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x03FC;
             //Warp to Staff Roll
-            gSaveContext.linkAgeOnLoad = 1;
+            globalCtx->linkAgeOnLoad = 1;
             globalCtx->nextEntranceIndex = 0x00CD;
             gSaveContext.cutsceneIndex = 0xFFF8;
-            Statics_ClearSRCSFlags();
+            Statics_SetUpStaffRoll();
             //Common warp
             gSaveContext.respawnFlag = -2;
             globalCtx->sceneLoadFlag = 0x14;

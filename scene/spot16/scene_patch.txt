@@ -1,2 +1,2 @@
 0
-7CE0 .include DeathMountainTrail.bin
+6550 .include DeathMountainTrail.bin
