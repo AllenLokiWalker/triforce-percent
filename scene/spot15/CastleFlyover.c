@@ -6,7 +6,7 @@
 
 #include "CastleFlyover.h"
 
-s32 Something[] = {
+s32 CastleFlyover[] = {
 	CS_BEGIN_CUTSCENE(4, 271),
 	CS_TERMINATOR(93, 99, 100),
 	CS_TEXT_LIST(3),
