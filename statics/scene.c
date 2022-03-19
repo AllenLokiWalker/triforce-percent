@@ -282,8 +282,13 @@ void Statics_TerminatorStaffRollFinale(){
     TERMINATOR_RETURN;
 }
 
+typedef struct {
+    u8 index;
+    void (*function)();
+} FuncPtrPatchTblEntry;
+
 #define NUM_PATCH_TERMINATOR 15
-static const struct { u8 index; void (*function)(); } DemoTerminatorPatchTable[NUM_PATCH_TERMINATOR] = {
+static const FuncPtrPatchTblEntry DemoTerminatorPatchTable[NUM_PATCH_TERMINATOR] = {
     {0x4F, Statics_TerminatorNabooruToDesertColossus},
     {0x50, Statics_TerminatorReturnToNabooru},
     {0x51, Statics_TerminatorTriforceToEnding},
@@ -299,6 +304,45 @@ static const struct { u8 index; void (*function)(); } DemoTerminatorPatchTable[N
     {0x5B, Statics_TerminatorStaffRollWasteland},
     {0x5C, Statics_TerminatorStaffRollHyruleCastle},
     {0x5D, Statics_TerminatorStaffRollFinale}
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// Cutscene Misc. Command Patches
+////////////////////////////////////////////////////////////////////////////////
+
+extern void* DemoMiscTable[];
+extern void DemoMiscReturn();
+
+void Statics_MiscLoadRoom(GlobalContext *globalCtx, s32 isFirstFrame, s32 roomNum){
+    if(isFirstFrame) func_8009728C(globalCtx, &globalCtx->roomCtx, roomNum);
+}
+
+void Statics_Misc04LoadRoom0(){
+    asm(".set noat\n .set noreorder\n"
+        "ori $a2, $zero, 0x0000\n"
+        "or $a0, $s0, $zero\n"
+        "jal Statics_MiscLoadRoom\n"
+        "or $a1, $v0, $zero\n"
+        "j DemoMiscReturn\n"
+        "nop\n"
+        ".set at\n .set reorder");
+}
+
+void Statics_Misc05LoadRoom1(){
+    asm(".set noat\n .set noreorder\n"
+        "ori $a2, $zero, 0x0001\n"
+        "or $a0, $s0, $zero\n"
+        "jal Statics_MiscLoadRoom\n"
+        "or $a1, $v0, $zero\n"
+        "j DemoMiscReturn\n"
+        "nop\n"
+        ".set at\n .set reorder");
+}
+
+#define NUM_PATCH_MISC 2
+static const FuncPtrPatchTblEntry DemoMiscPatchTable[NUM_PATCH_MISC] = {
+    {4, Statics_Misc04LoadRoom0},
+    {5, Statics_Misc05LoadRoom1}
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -624,11 +668,16 @@ void Statics_SceneCodePatches(){
     //Scene Memory Patches
     bcopy((void*)Patched_ObjectInitBank, (void*)Object_InitBank + 4*4, 7*4);
     bgCheckSceneMemList[4].memSize = 0x1CC00; //Temple of Time slot; default mem size
-    //Cutscene Terminators
+    //Cutscene Terminators & Misc
     for(int i=0; i<NUM_PATCH_TERMINATOR; ++i){
         //Jump table starts at 1
         DemoTerminatorTable[DemoTerminatorPatchTable[i].index - 1] = 
             (void*)DemoTerminatorPatchTable[i].function;
+    }
+    for(int i=0; i<NUM_PATCH_MISC; ++i){
+        //Jump table starts at 1
+        DemoMiscTable[DemoMiscPatchTable[i].index - 1] = 
+            (void*)DemoMiscPatchTable[i].function;
     }
     //Zora's Fountain scene music cmd patch
     *((u32*)(Scene_Cmd0x15SoundSettings)  ) = JUMPINSTR(Statics_PatchedCmd0x15);

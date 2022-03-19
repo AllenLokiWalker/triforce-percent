@@ -207,6 +207,16 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 		}
 		en->frame = frame;
 	}
+	//The end
+	if(en->theendmode){
+		en->actor.shape.rot.y = (s16)((float)0x4000 * (40.0f / 90.0f));
+		float x = en->actor.world.pos.x;
+		float z = en->actor.world.pos.z;
+		const float sin40 = 0.6427876f;
+		const float cos40 = 0.7660444f;
+		en->actor.world.pos.x =  cos40 * x + sin40 * z;
+		en->actor.world.pos.z = -sin40 * x + cos40 * z;
+	}
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
