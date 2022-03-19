@@ -20,7 +20,7 @@
 #define OFFSET_OFFSET ((285.0f + 90.0f) / 2.0f)
 #define    FADE_RANGE (128.0f / 2.0f)
 
-#define      PARTICLE_HEIGHT 120.0f
+#define  PARTICLE_MAX_HEIGHT 150.0f
 #define PARTICLE_SCALE_START 200
 #define   PARTICLE_SCALE_MAX 1000
 
@@ -110,22 +110,18 @@ void SetLightGlow(EnHolyLight* this, f32 currentFrame) {
 
 void SpawnSparkles(EnHolyLight* this, GlobalContext* globalCtx, s16 scale, u8 count) {
     Vec3f pos, vel;
-    f32 r, vr, theta, yOffset;
+    f32 r, theta;
     s32 i;
 
-    r = 12.0f * this->scaleFactor;
-    vr = 12.06f * this->scaleFactor;
+    r = 13.0f * this->scaleFactor;
 
     for (i = 0; i < count; i++) {
         theta = Rand_ZeroFloat(2 * M_PI);
-        yOffset = Rand_ZeroFloat(80.0f);
         Math_Vec3f_Copy(&pos, &this->actor.world.pos);
         pos.x += r * Math_SinF(theta);
-        pos.y += PARTICLE_HEIGHT - yOffset;
+        pos.y += Rand_ZeroFloat(PARTICLE_MAX_HEIGHT);
         pos.z += r * Math_CosF(theta);
         Math_Vec3f_Copy(&vel, &SparkleVelocity);
-        vel.x += (vr * Math_SinF(theta)) - pos.x;
-        vel.z += (vr * Math_CosF(theta)) - pos.z;
         EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &vel, &SparkleAccel, &SparklePrim, &SparkleEnv, scale, 11);
     }
 }
@@ -150,6 +146,7 @@ void Update_Glow(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) 
 
 void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
     s16 scale, mod, frame, third;
+    f32 calc;
     frame = (s16)currentFrame;
 
     SetLightGlow(this, currentFrame);

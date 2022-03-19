@@ -227,13 +227,13 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x034D;
             //Warp to ending
-            // globalCtx->linkAgeOnLoad = 0;
-            // globalCtx->nextEntranceIndex = 0x03FC;
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x03FC;
             //Warp to Staff Roll
-            globalCtx->linkAgeOnLoad = 1;
-            globalCtx->nextEntranceIndex = 0x00CD;
-            gSaveContext.cutsceneIndex = 0xFFF8;
-            Statics_SetUpStaffRoll();
+            // globalCtx->linkAgeOnLoad = 1;
+            // globalCtx->nextEntranceIndex = 0x00CD;
+            // gSaveContext.cutsceneIndex = 0xFFF8;
+            // Statics_SetUpStaffRoll();
             //Common warp
             gSaveContext.respawnFlag = -2;
             globalCtx->sceneLoadFlag = 0x14;
