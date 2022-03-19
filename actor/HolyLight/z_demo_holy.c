@@ -33,8 +33,8 @@ void Update_FadeIn(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame
 void Update_Glow(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame);
 void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame);
 
-static Vec3f SparkleVelocity = { 0.0f, 0.2f, 0.0f };
-static Vec3f SparkleAccel = { 0.0f, -0.06f, 0.0f };
+static Vec3f SparkleVelocity = { 0.0f, 0.1f, 0.0f };
+static Vec3f SparkleAccel = { 0.0f, -0.08f, 0.0f };
 static Color_RGBA8 SparklePrim = { 253, 255, 199, 0 };
 static Color_RGBA8 SparkleEnv = { 60, 60, 20, 0 };
 
@@ -108,14 +108,26 @@ void SetLightGlow(EnHolyLight* this, f32 currentFrame) {
     this->envColor.b = OFFSET_RANGE * sinf(periodFactor * (currentFrame - (f32)this->startFrame - 13) - (M_PI / 2.0f)) + OFFSET_OFFSET;
 }
 
-void SpawnSparkles(EnHolyLight* this, GlobalContext* globalCtx, s16 scale) {
-    f32 r = 12.0f * this->scaleFactor;
-    f32 theta = Rand_ZeroFloat(2 * M_PI);
-    f32 yOffset = Rand_ZeroFloat(50.0f);
-    this->spawnPos.x += r * Math_SinF(theta);
-    this->spawnPos.y -= yOffset;
-    this->spawnPos.z += r * Math_CosF(theta);
-    EffectSsKiraKira_SpawnFocused(globalCtx, &this->spawnPos, &SparkleVelocity, &SparkleAccel, &SparklePrim, &SparkleEnv, scale, 45);
+void SpawnSparkles(EnHolyLight* this, GlobalContext* globalCtx, s16 scale, u8 count) {
+    Vec3f pos, vel;
+    f32 r, vr, theta, yOffset;
+    s32 i;
+
+    r = 12.0f * this->scaleFactor;
+    vr = 12.06f * this->scaleFactor;
+
+    for (i = 0; i < count; i++) {
+        theta = Rand_ZeroFloat(2 * M_PI);
+        yOffset = Rand_ZeroFloat(80.0f);
+        Math_Vec3f_Copy(&pos, &this->actor.world.pos);
+        pos.x += r * Math_SinF(theta);
+        pos.y += PARTICLE_HEIGHT - yOffset;
+        pos.z += r * Math_CosF(theta);
+        Math_Vec3f_Copy(&vel, &SparkleVelocity);
+        vel.x += (vr * Math_SinF(theta)) - pos.x;
+        vel.z += (vr * Math_CosF(theta)) - pos.z;
+        EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &vel, &SparkleAccel, &SparklePrim, &SparkleEnv, scale, 11);
+    }
 }
 
 void Update_FadeIn(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
@@ -127,28 +139,36 @@ void Update_FadeIn(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame
     this->envColor.a = this->primColor.a = CLAMP_MAX(calc, 255.0f);
     this->scaleFactor = calc / 128.0f;
     scale = PARTICLE_SCALE_START + ((PARTICLE_SCALE_MAX / (this->endFrame - this->startFrame)) * ((s16)currentFrame - this->startFrame));
-    SpawnSparkles(this, globalCtx, scale);
+    SpawnSparkles(this, globalCtx, scale, 2);
 }
 
 void Update_Glow(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
     SetLightGlow(this, currentFrame);
     this->envColor.a = this->primColor.a = 128;
-    SpawnSparkles(this, globalCtx, 1000);
+    SpawnSparkles(this, globalCtx, 1000, 3);
 }
 
 void Update_FadeOut(EnHolyLight* this, GlobalContext* globalCtx, f32 currentFrame) {
-    f32 calc;
-    s16 scale, mod, frame;
+    s16 scale, mod, frame, third;
     frame = (s16)currentFrame;
 
     SetLightGlow(this, currentFrame);
     calc = FADE_RANGE * sinf(this->periodFactor * (currentFrame - (f32)this->startFrame) + (M_PI / 2.0f)) + FADE_RANGE;
     this->envColor.a = this->primColor.a = CLAMP_MAX(calc, 255.0f);
     this->scaleFactor = calc / 128.0f;
+    // frame 0 = 400, frame 20 = 550, frame 40 = 700, frame 60 = 850, frame 80 = 1000
     scale = PARTICLE_SCALE_START + ((PARTICLE_SCALE_MAX / (this->endFrame - this->startFrame)) * (this->endFrame - frame));
-    mod = frame < ((this->endFrame - this->startFrame) / 2) ? 2 : 3;
+    third = (this->endFrame - this->startFrame) / 3;
+
+    if (frame < this->startFrame + third) {
+        mod = 1;
+    } else if (frame < this->startFrame + (third * 2)) {
+        mod = 2;
+    } else {
+        mod = 3;
+    }
     if (frame % mod == 0) {
-        SpawnSparkles(this, globalCtx, scale);
+        SpawnSparkles(this, globalCtx, scale, 4 - mod);
     }
 }
 
@@ -168,9 +188,6 @@ void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.world.pos.x = startPos.x + ((endPos.x - startPos.x) * lerp);
     this->actor.world.pos.y = startPos.y + ((endPos.y - startPos.y) * lerp);
     this->actor.world.pos.z = startPos.z + ((endPos.z - startPos.z) * lerp);
-    this->spawnPos.x = this->actor.world.pos.x;
-    this->spawnPos.y = this->actor.world.pos.y + PARTICLE_HEIGHT;
-    this->spawnPos.z = this->actor.world.pos.z;
     this->update(this, globalCtx, currentFrame);
     
     if(this->sound) {

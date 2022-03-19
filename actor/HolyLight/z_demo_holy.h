@@ -16,7 +16,6 @@ typedef enum HolyLightMode {
 typedef struct EnHolyLight {
     Actor actor;
     UpdateFunc update;
-    Vec3f spawnPos;
     f32 scaleFactor;
     f32 periodFactor;
     Color_RGBA8 primColor;
