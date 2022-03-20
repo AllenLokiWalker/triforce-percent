@@ -69,6 +69,7 @@ typedef struct {
 	u8 attachColToHead : 1;
 	u8 headTrack       : 1;
 	u8 enableDraw      : 1;
+	u8 deadLookMod     : 1;
 } RunManState;
 
 typedef struct BossRunningMan {
@@ -99,6 +100,7 @@ typedef struct BossRunningMan {
 			s16      rotShapeTarget;
 			s16      stepMax;
 			u8       chuTimer;
+			s8       numPastChoices;
 		} boss;
 		struct {
 			u16 timer;

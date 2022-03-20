@@ -253,13 +253,13 @@ static void RunningMan_ChangeToBoss(BossRunningMan* this, GlobalContext* globalC
 }
 
 static void RunningMan_ChangeToNPC(BossRunningMan* this, GlobalContext* globalCtx) {
-	this->actor.shape.rot = this->actor.world.rot = (Vec3s){0, 0, 0};
-	//TODO different animation
-	AnimChange(&this->skelAnime, &gBossRunningManObj_AnimHurt, 
-		0.0f, 1.0f, ANIMMODE_LOOP_INTERP, 0);
+	//this->actor.shape.rot = this->actor.world.rot = (Vec3s){0, 0, 0};
+	AnimChange(&this->skelAnime, &gBossRunningManObj_AnimDeadLoopIdle, 
+		0.0f, 1.0f, ANIMMODE_LOOP_INTERP, -4.0f);
 	RunningMan_ClearReusedVars(this);
 	this->state = (RunManState) {
 		.enableDraw = true,
+		.deadLookMod = true
 	};
 	this->actor.update = (void*)RunningMan_UpdateDialogue;
 	this->actor.textId = 0x0C30;
@@ -271,8 +271,9 @@ static void RunningMan_ChangeToNPC(BossRunningMan* this, GlobalContext* globalCt
 	pos.y += 50.0f;
 	globalCtx->mainCamera.at = pos;
 	pos = PLAYER->actor.world.pos;
-	pos.x += 50.0f;
-	pos.y += 100.0f;
+	pos.x -= 100.0f;
+	pos.y += 70.0f;
+	pos.z -= 50.0f;
 	globalCtx->mainCamera.eye = globalCtx->mainCamera.eyeNext = pos;
 	globalCtx->mainCamera.xzSpeed = 0.0f;
 }
@@ -310,6 +311,8 @@ void RunningMan_UpdateIntro(BossRunningMan* this, GlobalContext* globalCtx){
 			pos.x += 15.0f;
 			PLAYER->actor.world.pos = pos;
 			func_8002F698(globalCtx, &this->actor, 20.0f, 0x1000, 8.0f, 2, 0);
+		}else{
+			betaGiantRupee->uncullZoneForward = 10000.0f;
 		}
 	}else{
 		++this->npc.timer;
@@ -324,49 +327,53 @@ void RunningMan_UpdateIntro(BossRunningMan* this, GlobalContext* globalCtx){
 	}
 }
 
-void RunningMan_UpdateDialogue(BossRunningMan* en, GlobalContext* globalCtx) {
-	RunManState* state = &en->state;
+void RunningMan_UpdateDialogue(BossRunningMan* this, GlobalContext* globalCtx) {
+	RunManState* state = &this->state;
+	BossRunningMan* en = this; //for Triforce% macros
 	
-	state->headTrack = (en->actor.xzDistToPlayer < 180);
-	
-	Actor_RequestToTalkInRange(&en->actor, globalCtx, 1000.0f);
-	if(Actor_IsTalking(&en->actor, globalCtx)){
-		en->actor.flags &= ~0x10000; //auto talk
+	Actor_RequestToTalkInRange(&this->actor, globalCtx, 1000.0f);
+	if(Actor_IsTalking(&this->actor, globalCtx)){
+		this->actor.flags &= ~0x10000; //auto talk
 	}
 	if(MESSAGE_ADVANCE_EVENT){
-		if(en->actor.textId == 0x0C30){
-			//TODO change animation
-			en->actor.textId = 0x0C31;
+		if(this->actor.textId == 0x0C30){
+			state->headTrack = true;
+			this->actor.textId = 0x0C31;
 			MESSAGE_CONTINUE;
-		}else if(en->actor.textId == 0x0C31){
-			//TODO change animation
-			en->actor.textId = 0x0C32;
+		}else if(this->actor.textId == 0x0C31){
+			AnimChange(&this->skelAnime, &gBossRunningManObj_AnimDeadLoopExplain, 
+				0.0f, 1.0f, ANIMMODE_LOOP_INTERP, -8.0f);
+			this->actor.textId = 0x0C32;
 			MESSAGE_CONTINUE;
-		}else if(en->actor.textId == 0x0C32){
-			//TODO change animation
-			en->actor.textId = 0x0C33;
+		}else if(this->actor.textId == 0x0C32){
+			state->headTrack = false;
+			AnimChange(&this->skelAnime, &gBossRunningManObj_AnimDeadLoopRegret, 
+				0.0f, 1.0f, ANIMMODE_LOOP_INTERP, -8.0f);
+			this->actor.textId = 0x0C33;
 			MESSAGE_CONTINUE;
-		}else if(en->actor.textId == 0x0C33){
-			//TODO change animation
-			en->actor.textId = 0x0C34;
+		}else if(this->actor.textId == 0x0C33){
+			state->headTrack = true;
+			AnimChange(&this->skelAnime, &gBossRunningManObj_AnimDeadLoopIdle, 
+				0.0f, 1.0f, ANIMMODE_LOOP_INTERP, -8.0f);
+			this->actor.textId = 0x0C34;
 			MESSAGE_CONTINUE;
 		}
-	}else if(en->actor.textId == 0x0C34 && MESSAGE_ADVANCE_END){
-		en->npc.getItemId = GI_SAGES_CHARM;
-		en->actor.textId = 0;
+	}else if(this->actor.textId == 0x0C34 && MESSAGE_ADVANCE_END){
+		this->npc.getItemId = GI_SAGES_CHARM;
+		this->actor.textId = 0;
 	}
-	if(en->npc.getItemId >= 0){
-		if(en->actor.parent != NULL){
-			en->actor.parent = NULL;
-			en->npc.getItemId = -1;
-			en->npc.timer = 1;
+	if(this->npc.getItemId >= 0){
+		if(this->actor.parent != NULL){
+			this->actor.parent = NULL;
+			this->npc.getItemId = -1;
+			this->npc.timer = 1;
 		}else{
-			Actor_PickUp(&en->actor, globalCtx, en->npc.getItemId, 2000.0f, 2000.0f);
+			Actor_PickUp(&this->actor, globalCtx, this->npc.getItemId, 2000.0f, 2000.0f);
 		}
 	}
-	if(en->npc.timer >= 1 && en->npc.timer < 100){
-		++en->npc.timer;
-		if(en->npc.timer == 25){
+	if(this->npc.timer >= 1 && this->npc.timer < 100){
+		++this->npc.timer;
+		if(this->npc.timer == 25){
 			SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
 			gSaveContext.magic >>= 1; //half magic because we're scaling up the bar 2x
 			gSaveContext.unk_13F6 = 0x60; //max magic
@@ -374,18 +381,19 @@ void RunningMan_UpdateDialogue(BossRunningMan* en, GlobalContext* globalCtx) {
 			gSaveContext.unk_13F0 = 9; //magic mode = filling
 		}
 	}
-	if(en->actor.textId == 0 && en->npc.getItemId < 0 && en->npc.timer > 40 
+	if(this->actor.textId == 0 && this->npc.getItemId < 0 && this->npc.timer > 40 
 			&& func_8010BDBC(&globalCtx->msgCtx) == 0){
 		//The timer is because when Link gets the item, while he's in the
 		//animation of moving it up to above his head, dialogue is not active
 		//and the Running Man would just run away at that time.
-		Animation_Change(&en->skelAnime, &gBossRunningManObj_AnimRunFast, 1.0f, 0.0f,
+		Animation_Change(&this->skelAnime, &gBossRunningManObj_AnimRunFast, 1.0f, 0.0f,
 			Animation_GetLastFrame(&gBossRunningManObj_AnimRunFast), ANIMMODE_LOOP_INTERP, 8);
-		en->actor.world.rot.y = 0xC000;
-		en->actor.world.rot.x = en->actor.world.rot.z = 0;
-		en->actor.shape.rot = en->actor.world.rot;
-		en->actor.speedXZ = 10.0f;
-		en->actor.update = (ActorFunc)RunningMan_UpdateRunAway;
+		state->headTrack = false;
+		this->actor.world.rot.y = 0xC000;
+		this->actor.world.rot.x = this->actor.world.rot.z = 0;
+		this->actor.shape.rot = this->actor.world.rot;
+		this->actor.speedXZ = 10.0f;
+		this->actor.update = (ActorFunc)RunningMan_UpdateRunAway;
 		if(gSaveContext.dayTime >= 0xC001 || gSaveContext.dayTime < 0x4555){
 			Audio_SetBGM(1); //Night ambience
 		}else{
@@ -545,9 +553,9 @@ void RunningMan_BossUpdate(BossRunningMan* this, GlobalContext* globalCtx) {
 
 s32 RunningMan_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** disp) {
 	BossRunningMan* this = (BossRunningMan*)thisx;
-	Vec3f head = { 0, 38.0f, 38.0f };
-	Vec3f foot = { 0, -34.0f, 0.0f };
-	Vec3f front = { 0, 38.0f, 50.0f };
+	static Vec3f head = { 0, 38.0f, 38.0f };
+	static Vec3f foot = { 0, -34.0f, 0.0f };
+	static Vec3f front = { 0, 38.0f, 50.0f };
 	Vec3f f;
 	s16 targetYaw;
 	s16 targetPitch;
@@ -562,8 +570,14 @@ s32 RunningMan_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
 			    Matrix_MultVec3f(&front, &f);
 			    
 			    if (this->state.headTrack) {
-				    targetYaw = -Math_Vec3f_Yaw(&this->actor.focus.pos, &f) + Math_Vec3f_Yaw(&this->actor.focus.pos, &p->actor.world.pos);
-				    targetPitch = -Math_Vec3f_Pitch(&this->actor.focus.pos, &f) + Math_Vec3f_Pitch(&this->actor.focus.pos, &p->actor.world.pos);
+					Vec3f playerHeadPos = p->actor.world.pos;
+					playerHeadPos.y += 70.0f;
+				    targetYaw = -Math_Vec3f_Yaw(&this->actor.focus.pos, &f) 
+						+ Math_Vec3f_Yaw(&this->actor.focus.pos, &playerHeadPos);
+				    targetPitch = -Math_Vec3f_Pitch(&this->actor.focus.pos, &f) 
+						+ Math_Vec3f_Pitch(&this->actor.focus.pos, &playerHeadPos);
+						
+					if(this->state.deadLookMod) targetYaw *= 2;
 				    
 				    targetYaw = CLAMP(targetYaw, -DEGF_TO_BINANG(80), DEGF_TO_BINANG(80));
 				    targetPitch = CLAMP(targetPitch, -DEGF_TO_BINANG(30), DEGF_TO_BINANG(30));
@@ -811,11 +825,13 @@ void RunningMan_SetupOutro(BossRunningMan* this, GlobalContext* globalCtx) {
 void RunningMan_Outro(BossRunningMan* this, GlobalContext* globalCtx) {
 	if(mOutroMode == 0){
 		mSpeedFactor -= 0.005f;
-		if(mSpeedFactor <= 0.0f){
+		if(mSpeedFactor <= 0.12f/*0.0f*/){
 			this->actor.speedXZ = 0.0f;
 			this->skelAnime.playSpeed = 0.0f;
 			mTimer = 0;
 			mOutroMode = 1;
+			AnimChange(&this->skelAnime, &gBossRunningManObj_AnimDeadFall,
+				0.0f, 1.0f, ANIMMODE_ONCE_INTERP, -8.0f);
 		}else{
 			this->actor.speedXZ = initRunSpeed * mSpeedFactor;
 			this->skelAnime.playSpeed = mSpeedFactor;
@@ -826,6 +842,14 @@ void RunningMan_Outro(BossRunningMan* this, GlobalContext* globalCtx) {
 			mLastFrame = frame;
 		}
 	}else if(mOutroMode == 1){
+		if(fabsf(this->skelAnime.curFrame - 7.0f) < 0.5f){
+			Audio_PlayActorSound2(&this->actor, NA_SE_PL_BODY_HIT);
+		}
+		if(this->skelAnime.curFrame >= this->skelAnime.endFrame){
+			RunningMan_ChangeToNPC(this, globalCtx);
+		}
+		/*
+		//Old silly outro
 		if(mTimer == 15){
 			Audio_PlayActorSound2(&this->actor, NA_SE_VO_IN_LOST);
 			mSpeedFactor = 0.2f;
@@ -849,6 +873,7 @@ void RunningMan_Outro(BossRunningMan* this, GlobalContext* globalCtx) {
 		}else{
 			++mTimer;
 		}
+		*/
 	}
 }
 
@@ -963,10 +988,14 @@ void RunningMan_Run(BossRunningMan* this, GlobalContext* globalCtx) {
 	DECR(mGetTo);
 	
 	if (DECR(mFlipTimer) == 0) {
-		if(Rand_ZeroOne() < 0.3f){
+		if(this->boss.numPastChoices >= 3 || (this->boss.numPastChoices >= -1 && Rand_ZeroOne() < 0.3f)){
+			if(this->boss.numPastChoices > 0) this->boss.numPastChoices = 0;
+			--this->boss.numPastChoices;
 			ExecuteAction(SetupArrow);
 			return;
 		}
+		if(this->boss.numPastChoices < 0) this->boss.numPastChoices = 0;
+		++this->boss.numPastChoices;
 		mDirectRand = -mDirectRand;
 		mFlipTimer = Rand_S16Offset(10, 90);
 		Math_StepToAngleS(&this->actor.world.rot.y, (s16)(this->actor.yawTowardsPlayer + 0x8000), 4000);

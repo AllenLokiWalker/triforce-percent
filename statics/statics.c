@@ -208,10 +208,10 @@ void Statics_TestShortcuts(){
             // gSaveContext.eventInf[1] |= 1;
             // gSaveContext.timer2State = -30;
             //Warp to the Running Man
-            // RUNNINGMAN_WANTS_TO_BATTLE_VAR |= RUNNINGMAN_WANTS_TO_BATTLE_BIT;
-            // SAGES_CHARM_VAR &= ~SAGES_CHARM_BIT;
-            // globalCtx->linkAgeOnLoad = 0;
-            // globalCtx->nextEntranceIndex = 0x01F9;
+            RUNNINGMAN_WANTS_TO_BATTLE_VAR |= RUNNINGMAN_WANTS_TO_BATTLE_BIT;
+            SAGES_CHARM_VAR &= ~SAGES_CHARM_BIT;
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x01F9;
             //Warp to Nabooru
             // NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
             // globalCtx->linkAgeOnLoad = 1;
@@ -227,8 +227,8 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x034D;
             //Warp to ending
-            globalCtx->linkAgeOnLoad = 0;
-            globalCtx->nextEntranceIndex = 0x03FC;
+            // globalCtx->linkAgeOnLoad = 0;
+            // globalCtx->nextEntranceIndex = 0x03FC;
             //Warp to Staff Roll
             // globalCtx->linkAgeOnLoad = 1;
             // globalCtx->nextEntranceIndex = 0x00CD;
