@@ -1,6 +1,8 @@
 #include "ultra64.h"
 #include "global.h"
 
+#define G_CELSHADING 0x00400000
+
 u64 SilentPrincessMesh_Sacred_Flower_00_rgba16[] = {
 	0xc76ebf6ebf6cb76c, 0xb76aaf6aaf68af68, 0xaf28af28aeeab6aa, 0xae6aae2aa5ea9d68, 0x956895288d268ce6, 0x84e47ca474a26ca0, 0x6c606c606c606c60, 0x6c606c606c606c60, 
 	0xc76ebf6eb76cafac, 0xafaaa76aa768af68, 0xaf28b72ab72abeec, 0xbeacb62cadea9d68, 0x9528952895288d26, 0x84e47ca474a26c60, 0x6c606c606c606c60, 0x6c606c606c606c60, 
@@ -63,9 +65,8 @@ Gfx SilentPrincessMesh_Plane_mesh_layer_Opaque_tri_0[] = {
 
 Gfx mat_SilentPrincessMesh_SilentPrincessMatl_layerOpaque[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, SHADE, 0, 0, 0, 0, TEXEL0),
-	gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_FOG | G_LIGHTING | G_SHADING_SMOOTH),
-	gsSPClearGeometryMode(G_CULL_FRONT | G_CULL_BACK | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0),
+	gsSPLoadGeometryMode(G_ZBUFFER | G_SHADE | G_FOG | G_LIGHTING | G_SHADING_SMOOTH),
 	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_NOISE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_1CYCLE | G_PM_NPRIMITIVE),
 	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_ZS_PIXEL | AA_EN | Z_CMP | Z_UPD | CVG_DST_CLAMP | ZMODE_OPA | CVG_X_ALPHA | ALPHA_CVG_SEL | FORCE_BL | GBL_c1(G_BL_CLR_FOG, G_BL_A_SHADE, G_BL_CLR_IN, G_BL_1MA) | GBL_c2(G_BL_CLR_FOG, G_BL_A_SHADE, G_BL_CLR_IN, G_BL_1MA)),
 	gsSPTexture(65535, 65535, 0, 0, 1),

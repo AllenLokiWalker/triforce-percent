@@ -15,25 +15,18 @@ u8 sIsLiveRun = 0;
 
 void Statics_SetGameState(){
     //Set some event flags
-    //TODO set flags for have picked up item drops before (magic jar, deku
-    //seeds/nuts, etc.)
-    /*
-    gSaveContext.event_chk_inf[0x0] |= 1 << 0x7; //Obtained Kokiri's Emerald & Deku Tree Dead
-    gSaveContext.event_chk_inf[0x1] |= 1 << 0x7; //Great Deku Tree is Dead
-    gSaveContext.event_chk_inf[0x1] |= 1 << 0x9; //Obtained Kokiri's Emerald
-    gSaveContext.event_chk_inf[0x4] |= 1 << 0x3; //Obtained Ocarina of Time
-    gSaveContext.event_chk_inf[0x8] |= 1 << 0x0; //Zelda Fled Hyrule Castle
-    gSaveContext.event_chk_inf[0x8] |= 1 << 0x2; //Bridge Unlocked (After Zelda Escape Cutscene)
-    gSaveContext.event_chk_inf[0xA] |= 1 << 0x9; //Learned Song of Time
-    gSaveContext.inf_table    [0x0] |= 1 << 0x0; //Greeted by Saria
-    */
+    gSaveContext.eventChkInf[0x1] |= 0x0100; /*0x0902*/ //Ingo/Epona flags
     gSaveContext.eventChkInf[0x2] |= 0x8000; //Death Mountain not on fire
-    gSaveContext.eventChkInf[0x9] |= 0xF; //Rescued carpenters (not get arrested by Gerudos)
+    gSaveContext.eventChkInf[0x9] |= 0x000F; //Rescued carpenters (not get arrested by Gerudos)
     gSaveContext.eventChkInf[0xA] |= 0x0011; //Entered Hyrule Field and Zora's Domain
     gSaveContext.eventChkInf[0xB] |= 0x010C; //Entered Gerudo Valley, Gerudo's Fortress, Desert Colossus
     gSaveContext.eventChkInf[0xC] |= 0x0002; //Spoke to Saria on Lost Woods Bridge
+    gSaveContext.itemGetInf[0x1] |= 0x0008; //Has picked up Deku Seeds before
     gSaveContext.itemGetInf[0x2] |= 0x0478; //Obtained Mask of Truth, all trading masks
     gSaveContext.itemGetInf[0x3] |= 0x8F00; //Obtained Mask of Truth, sold all masks
+    //gSaveContext.infTable[0x9] |= 0x0490; //Ingo flags
+    //gSaveContext.infTable[0xA] |= 0x0800; //Ingo flags
+    gSaveContext.infTable[25] |= 0x0100; //Has picked up magic jar before
     //Set flags so Staff Roll entrance cutscenes are not shown
     gSaveContext.eventChkInf[0xA] |= (1 << 8) | (1 << 5);
     gSaveContext.eventChkInf[0xB] |= (1 << 0xB) | (1 << 0xC);
@@ -208,10 +201,10 @@ void Statics_TestShortcuts(){
             // gSaveContext.eventInf[1] |= 1;
             // gSaveContext.timer2State = -30;
             //Warp to the Running Man
-            RUNNINGMAN_WANTS_TO_BATTLE_VAR |= RUNNINGMAN_WANTS_TO_BATTLE_BIT;
-            SAGES_CHARM_VAR &= ~SAGES_CHARM_BIT;
-            globalCtx->linkAgeOnLoad = 0;
-            globalCtx->nextEntranceIndex = 0x01F9;
+            // RUNNINGMAN_WANTS_TO_BATTLE_VAR |= RUNNINGMAN_WANTS_TO_BATTLE_BIT;
+            // SAGES_CHARM_VAR &= ~SAGES_CHARM_BIT;
+            // globalCtx->linkAgeOnLoad = 0;
+            // globalCtx->nextEntranceIndex = 0x01F9;
             //Warp to Nabooru
             // NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
             // globalCtx->linkAgeOnLoad = 1;
@@ -227,8 +220,8 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x034D;
             //Warp to ending
-            // globalCtx->linkAgeOnLoad = 0;
-            // globalCtx->nextEntranceIndex = 0x03FC;
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x03FC;
             //Warp to Staff Roll
             // globalCtx->linkAgeOnLoad = 1;
             // globalCtx->nextEntranceIndex = 0x00CD;
