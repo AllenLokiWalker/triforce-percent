@@ -1,4 +1,4 @@
-<REAPER_PROJECT 0.1 "5.99/x64" 1646545503
+<REAPER_PROJECT 0.1 "5.99/x64" 1647797941
   RIPPLE 0
   GROUPOVERRIDE 0 0 0
   AUTOXFADE 1
@@ -14,8 +14,8 @@
   TIMEMODE 1 5 -1 30 0 0 -1
   VIDEO_CONFIG 0 0 256
   PANMODE 3
-  CURSOR 23.63013698630119
-  ZOOM 49.49026122520148 478 0
+  CURSOR 72.32876712328749
+  ZOOM 17.74701176226421 0 0
   VZOOMEX 3
   USE_REC_CFG 0
   RECMODE 1
@@ -5003,14 +5003,14 @@
     MIDIOUT -1
     MAINSEND 1 0
     <FXCHAIN
-      WNDRECT 379 399 750 601
+      WNDRECT 704 670 718 605
       SHOW 0
       LASTSEL 0
       DOCKED 0
       BYPASS 0 0 0
       <VST "VSTi: ReaSamplOmatic5000 (Cockos)" reasamplomatic.dll 0 "" 1920167789<56535472736F6D72656173616D706C6F> ""
         bW9zcu5e7f4AAAAAAgAAAAEAAAAAAAAAAgAAAAAAAABBAQAAAQAAAAAAEAA=
-        RzpcR2FtZXNcTjY0XERhdGFcU291bmRcT29UXEJhbmsgMDUgLSBIeWxpYW4gVHJvdXBlXDAyIC0gQmFzc29vbi53YXYAAAAAoHYFyz8AAAAAAADgPwAAAOCMRIs/AAAA
+        RzpcR2FtZXNcTjY0XERhdGFcU291bmRcT29UXEJhbmsgMDUgLSBIeWxpYW4gVHJvdXBlXDAyIC0gQmFzc29vbi53YXYAAAAA4CbE0j8AAAAAAADgPwAAAOCMRIs/AAAA
         AAAAAAAAAAAAAADwPwAAAAAAANQ/zczMzMzM6z/Jdr6fGi/NP5qZmZmZmck/F034o3B3dj+5/m4jstWTPwAAAAAAAPA/AAAAAAAA8D8AAAAAAAAAAAAAAAAAAPA/AAAA
         AAAA4D8CAAAAAAAAAAAAAAAAAAAAAADwP0AAAABVVVVVVVXFP/////8AAAAAAAAAAAAAAAAAAPA/AAAAAAAA8D8AAAAAAAAAAAAAAAAAAAAAbXh6pSxDfD+yU5lPQ0F2
         P86kISEaZZA/AAAAAAAA8D/hCxNX9cajPwAAAAAAAPA/
@@ -5090,50 +5090,50 @@
         HASDATA 1 960 QN
         POOLEDEVTS {C9D6458E-B6DF-4D0E-A228-8A4C02C92E82}
         E 0 b3 07 72
-        E 1440 93 37 60
-        E 240 83 37 00
-        E 0 93 37 60
-        E 240 83 37 00
-        E 0 93 37 60
-        E 1440 83 37 00
-        E 2400 93 39 57
-        E 1440 83 39 00
-        E 2400 93 37 51
-        E 1440 83 37 00
-        E 2400 93 35 57
-        E 960 83 35 00
-        E 0 93 39 57
-        E 960 83 39 00
-        E 1920 93 37 60
-        E 1920 83 37 00
-        E 1560 93 35 5e
-        E 240 83 35 00
-        E 120 93 39 5e
-        E 240 83 39 00
-        E 240 93 35 5e
-        E 240 83 35 00
-        E 240 93 39 5e
-        E 240 83 39 00
-        E 240 93 3c 5e
-        E 240 83 3c 00
-        E 240 93 3f 5e
-        E 1920 83 3f 00
-        E 0 93 3a 5e
-        E 1920 83 3a 00
-        E 0 93 39 5e
-        E 3840 83 39 00
+        e 1440 93 37 58
+        e 240 83 37 00
+        e 0 93 37 58
+        e 240 83 37 00
+        e 0 93 37 58
+        e 1440 83 37 00
+        e 2400 93 39 4f
+        e 1440 83 39 00
+        e 2400 93 37 49
+        e 1440 83 37 00
+        e 2400 93 35 4f
+        e 960 83 35 00
+        e 0 93 39 4f
+        e 960 83 39 00
+        e 1920 93 37 58
+        e 1920 83 37 00
+        e 1560 93 35 56
+        e 240 83 35 00
+        e 120 93 39 56
+        e 240 83 39 00
+        e 240 93 35 56
+        e 240 83 35 00
+        e 240 93 39 56
+        e 240 83 39 00
+        e 240 93 3c 56
+        e 240 83 3c 00
+        e 240 93 3f 56
+        e 1920 83 3f 00
+        e 0 93 3a 56
+        e 1920 83 3a 00
+        e 0 93 39 56
+        e 3840 83 39 00
         E 0 b0 7b 00
         CHASE_CC_TAKEOFFS 1
         GUID {1136FB94-968B-4BA3-968D-A8E8BB9ECA86}
         IGNTEMPO 0 120 4 4
         SRCCOLOR 76340
         VELLANE 7 135 0
-        VELLANE -1 124 0
-        CFGEDITVIEW -2000.33 0.039498 52 12 0 -1 0 0 0 0.5
+        VELLANE -1 209 0
+        CFGEDITVIEW -1920 0.016722 52 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 512 -1 -1 -1 -1 9 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 10 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 64 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
@@ -5158,71 +5158,71 @@
         HASDATA 1 960 QN
         POOLEDEVTS {5241521A-0220-47D5-B63B-C25D64106B6A}
         E 0 b3 07 7f
-        E 0 93 2b 52
-        E 240 83 2b 00
-        E 1200 93 2b 52
-        E 240 83 2b 00
-        E 1200 93 2b 52
-        E 240 83 2b 00
-        E 720 93 2b 52
-        E 240 83 2b 00
-        E 1200 93 2b 52
-        E 240 83 2b 00
-        E 1200 93 2b 52
-        E 240 83 2b 00
-        E 720 93 2b 52
-        E 240 83 2b 00
-        E 1200 93 2b 52
-        E 240 83 2b 00
-        E 1200 93 2b 52
-        E 240 83 2b 00
-        E 720 93 2b 52
-        E 240 83 2b 00
-        E 1200 93 2b 52
-        E 240 83 2b 00
-        E 720 93 2b 52
-        E 240 83 2b 00
-        E 240 93 2b 52
-        E 240 83 2b 00
-        E 720 93 2b 52
-        E 240 83 2b 00
-        E 1200 93 2b 52
-        E 240 83 2b 00
-        E 1200 93 2b 52
-        E 240 83 2b 00
-        E 720 93 2b 52
-        E 240 83 2b 00
-        E 1200 93 2b 52
-        E 240 83 2b 00
-        E 1200 93 2b 52
-        E 240 83 2b 00
-        E 720 93 29 52
-        E 240 83 29 00
-        E 1200 93 29 52
-        E 240 83 29 00
-        E 1200 93 29 52
-        E 240 83 29 00
-        E 720 93 27 52
-        E 240 83 27 00
-        E 1200 93 27 52
-        E 240 83 27 00
-        E 720 93 27 52
-        E 240 83 27 00
-        E 240 93 27 52
-        E 240 83 27 00
-        E 240 93 27 52
-        E 240 83 27 00
+        e 0 93 2b 3f
+        e 240 83 2b 00
+        e 1200 93 2b 3f
+        e 240 83 2b 00
+        e 1200 93 2b 3f
+        e 240 83 2b 00
+        e 720 93 2b 3f
+        e 240 83 2b 00
+        e 1200 93 2b 3f
+        e 240 83 2b 00
+        e 1200 93 2b 3f
+        e 240 83 2b 00
+        e 720 93 2b 3f
+        e 240 83 2b 00
+        e 1200 93 2b 3f
+        e 240 83 2b 00
+        e 1200 93 2b 3f
+        e 240 83 2b 00
+        e 720 93 2b 3f
+        e 240 83 2b 00
+        e 1200 93 2b 3f
+        e 240 83 2b 00
+        e 720 93 2b 3f
+        e 240 83 2b 00
+        e 240 93 2b 3f
+        e 240 83 2b 00
+        e 720 93 2b 3f
+        e 240 83 2b 00
+        e 1200 93 2b 3f
+        e 240 83 2b 00
+        e 1200 93 2b 3f
+        e 240 83 2b 00
+        e 720 93 2b 3f
+        e 240 83 2b 00
+        e 1200 93 2b 3f
+        e 240 83 2b 00
+        e 1200 93 2b 3f
+        e 240 83 2b 00
+        e 720 93 29 3f
+        e 240 83 29 00
+        e 1200 93 29 3f
+        e 240 83 29 00
+        e 1200 93 29 3f
+        e 240 83 29 00
+        e 720 93 27 3f
+        e 240 83 27 00
+        e 1200 93 27 3f
+        e 240 83 27 00
+        e 720 93 27 3f
+        e 240 83 27 00
+        e 240 93 27 3f
+        e 240 83 27 00
+        e 240 93 27 3f
+        e 240 83 27 00
         E 240 b0 7b 00
         GUID {3A5A76F4-18BE-445C-AE54-7DB5932A77AA}
         IGNTEMPO 0 120 4 4
         SRCCOLOR 43494
         VELLANE 7 135 0
-        VELLANE -1 124 0
-        CFGEDITVIEW -2131.878966 0.039498 52 12 0 -1 0 0 0 0.5
+        VELLANE -1 209 0
+        CFGEDITVIEW -32640 0.016722 52 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 512 -1 -1 -1 -1 9 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 10 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 64 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
@@ -5275,12 +5275,12 @@
         IGNTEMPO 0 120 4 4
         SRCCOLOR 44459
         VELLANE 7 135 0
-        VELLANE -1 124 0
-        CFGEDITVIEW -59947.296 0.039498 52 12 0 -1 0 0 0 0.5
+        VELLANE -1 209 0
+        CFGEDITVIEW -59947.296 0.016722 52 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 512 -1 -1 -1 -1 9 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 10 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 64 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
@@ -5304,37 +5304,37 @@
       <SOURCE MIDI
         HASDATA 1 960 QN
         POOLEDEVTS {21AD0AC4-5F5A-4D31-835D-4682969717B2}
-        E 0 93 37 4b
-        E 3840 83 37 00
-        E 0 93 35 4b
-        E 3840 83 35 00
-        E 0 93 34 4b
-        E 3840 83 34 00
-        E 0 93 33 4b
-        E 3360 83 33 00
-        E 480 93 32 4b
-        E 2640 83 32 00
-        E 240 93 32 4b
-        E 960 83 32 00
-        E 0 93 31 4b
-        E 1920 83 31 00
-        E 0 93 2d 4b
-        E 1920 83 2d 00
-        E 0 93 32 4b
-        E 3840 83 32 00
-        E 0 93 32 4b
-        E 3840 83 32 00
+        e 0 93 37 41
+        e 3840 83 37 00
+        e 0 93 35 41
+        e 3840 83 35 00
+        e 0 93 34 41
+        e 3840 83 34 00
+        e 0 93 33 41
+        e 3360 83 33 00
+        e 480 93 32 41
+        e 2640 83 32 00
+        e 240 93 32 41
+        e 960 83 32 00
+        e 0 93 31 41
+        e 1920 83 31 00
+        e 0 93 2d 41
+        e 1920 83 2d 00
+        e 0 93 32 41
+        e 3840 83 32 00
+        e 0 93 32 41
+        e 3840 83 32 00
         E 0 b0 7b 00
         GUID {958E610D-46BD-4843-A5DB-CFDB9D646649}
         IGNTEMPO 0 120 4 4
         SRCCOLOR 46874
         VELLANE 7 135 0
-        VELLANE -1 124 0
-        CFGEDITVIEW -13997.472 0.039498 52 12 0 -1 0 0 0 0.5
+        VELLANE -1 209 0
+        CFGEDITVIEW 62101.196427 0.016722 52 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 512 -1 -1 -1 -1 9 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 10 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 64 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
@@ -5445,28 +5445,28 @@
         E 240 93 4a 7f
         E 360 83 4a 00
         E 3000 b3 07 60
-        E 480 93 39 4e
+        e 480 93 39 43
         E 480 b3 07 66
         E 480 b3 07 69
         E 480 b3 07 6d
         E 480 b3 07 70
-        E 0 83 39 00
-        E 0 93 3e 4e
+        e 0 83 39 00
+        e 0 93 3e 43
         E 480 b3 07 74
         E 480 b3 07 77
         E 480 b3 07 7b
-        E 480 83 3e 00
+        e 480 83 3e 00
         E 0 b0 7b 00
         GUID {794A04B4-F189-4AC9-A9E9-01803059BE85}
         IGNTEMPO 0 120 4 4
         SRCCOLOR 49221
         VELLANE 7 135 0
-        VELLANE -1 124 0
-        CFGEDITVIEW -19333.92 0.039498 52 12 0 -1 0 0 0 0.5
+        VELLANE -1 209 0
+        CFGEDITVIEW 661.196427 0.016722 52 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 512 -1 -1 -1 -1 9 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 10 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 64 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
@@ -5490,40 +5490,40 @@
       <SOURCE MIDI
         HASDATA 1 960 QN
         POOLEDEVTS {065BE77D-3A80-4216-8C81-B3C2B484A49F}
-        e 0 b3 07 7c
-        E 0 93 37 3a
-        e 240 b3 07 71
-        e 240 b3 07 67
-        e 240 b3 07 5e
-        e 480 b3 07 5a
-        e 480 b3 07 5d
-        e 480 b3 07 60
-        e 480 b3 07 63
-        e 480 b3 07 66
-        e 480 b3 07 68
-        e 480 b3 07 6b
-        e 480 b3 07 6e
-        e 480 b3 07 71
-        e 480 b3 07 74
-        e 480 b3 07 77
-        e 480 b3 07 79
-        e 480 b3 07 7c
-        E 240 83 37 00
-        e 240 b3 07 7f
-        E 240 93 37 3a
-        E 480 83 37 00
+        E 0 b3 07 7c
+        e 0 93 37 32
+        E 240 b3 07 71
+        E 240 b3 07 67
+        E 240 b3 07 5e
+        E 480 b3 07 5a
+        E 480 b3 07 5d
+        E 480 b3 07 60
+        E 480 b3 07 63
+        E 480 b3 07 66
+        E 480 b3 07 68
+        E 480 b3 07 6b
+        E 480 b3 07 6e
+        E 480 b3 07 71
+        E 480 b3 07 74
+        E 480 b3 07 77
+        E 480 b3 07 79
+        E 480 b3 07 7c
+        e 240 83 37 00
+        E 240 b3 07 7f
+        e 240 93 37 32
+        e 480 83 37 00
         E 3360 b0 7b 00
         CHASE_CC_TAKEOFFS 1
         GUID {EBCFF2BE-94AE-4E6A-8182-AA644F476B8B}
         IGNTEMPO 0 120 4 4
         SRCCOLOR 77380
         VELLANE 7 135 0
-        VELLANE -1 124 0
-        CFGEDITVIEW -6702.199533 0.061393 50 12 0 -1 0 0 0 0.5
+        VELLANE -1 209 0
+        CFGEDITVIEW -2725.128214 0.016722 52 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 512 -1 -1 -1 -1 9 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 10 1 1 0.25 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 64 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
@@ -8397,51 +8397,51 @@
       <SOURCE MIDI
         HASDATA 1 960 QN
         POOLEDEVTS {9EAE9A56-C327-46C0-9659-5B948CF2518F}
-        E 1440 96 32 61
+        E 1440 96 32 64
         E 240 86 32 00
-        E 0 96 32 61
+        E 0 96 32 64
         E 240 86 32 00
-        E 0 96 32 61
+        E 0 96 32 64
         E 1440 86 32 00
-        E 2400 96 30 58
+        E 2400 96 30 5b
         E 1440 86 30 00
-        E 2400 96 33 52
+        E 2400 96 33 55
         E 1440 86 33 00
-        E 2400 96 32 58
+        E 2400 96 32 5b
         E 960 86 32 00
-        E 0 96 35 58
+        E 0 96 35 5b
         E 960 86 35 00
-        E 0 96 3e 4f
+        E 0 96 3e 52
         E 1760 86 3e 00
-        E 160 96 32 61
+        E 160 96 32 64
         E 1760 86 32 00
-        E 1600 96 30 5f
+        E 1600 96 30 62
         E 240 86 30 00
-        E 240 96 35 5f
+        E 240 96 35 62
         E 240 86 35 00
-        E 240 96 30 5f
+        E 240 96 30 62
         E 240 86 30 00
-        E 240 96 35 5f
+        E 240 96 35 62
         E 240 86 35 00
-        E 240 96 39 5f
+        E 240 96 39 62
         E 240 86 39 00
-        E 240 96 3a 5f
+        E 240 96 3a 62
         E 1440 86 3a 00
-        E 0 96 39 5f
+        E 0 96 39 62
         E 160 86 39 00
-        E 0 96 3a 5f
+        E 0 96 3a 62
         E 160 86 3a 00
-        E 0 96 39 5f
+        E 0 96 39 62
         E 160 86 39 00
-        E 0 96 37 5f
+        E 0 96 37 62
         E 960 86 37 00
-        E 0 96 33 5f
+        E 0 96 33 62
         E 960 86 33 00
-        E 0 96 37 5f
+        E 0 96 37 62
         E 1920 86 37 00
-        E 0 96 36 5f
+        E 0 96 36 62
         E 1920 86 36 00
-        E 0 96 32 66
+        E 0 96 32 69
         E 320 86 32 00
         E 640 b0 7b 00
         CHASE_CC_TAKEOFFS 1
@@ -8449,12 +8449,12 @@
         IGNTEMPO 0 120 4 4
         SRCCOLOR 76344
         VELLANE 7 135 0
-        VELLANE -1 124 0
-        CFGEDITVIEW 34721.230667 0.061393 36 12 0 -1 0 0 0 0.5
+        VELLANE -1 209 0
+        CFGEDITVIEW 121621.196427 0.016722 52 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
-        EVTFILTER 8 -1 -1 -1 -1 3 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
-        CFGEDIT 1 1 0 1 0 0 1 0 4 1 1 0.25 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
+        EVTFILTER 64 -1 -1 -1 -1 6 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
+        CFGEDIT 1 1 0 1 0 0 1 0 7 1 1 0.16666667 699 1826 2571 2858 0 0 0 1 0 0 0 1 0 0.66 0 0 1 64
       >
     >
     <ITEM
@@ -10160,27 +10160,27 @@
       BYPASS 0 0 0
       <VST "VSTi: shortcircuit (x86) (vember|audio) (16 out)" shortcircuit.dll 0 "" 1667920739<565354636A736373686F727463697263> ""
         Y3NqY+5e7f4AAAAAEAAAAAEAAAAAAAAAAgAAAAAAAAAEAAAAAAAAAAgAAAAAAAAAEAAAAAAAAAAgAAAAAAAAAEAAAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAACAAAAAAAA
-        AAQAAAAAAAAACAAAAAAAAAAQAAAAAAAAACAAAAAAAAAAQAAAAAAAAACAAAAAAAAAQwcAAAEAAAAAABAA
+        AAQAAAAAAAAACAAAAAAAAAAQAAAAAAAAACAAAAAAAAAAQAAAAAAAAACAAAAAAAAARAcAAAEAAAAAABAA
         PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyIgPz48c2hvcnRjaXJjdWl0IGFwcD0ic2hvcnRjaXJjdWl0IiB2ZXJzaW9u
-        PSIxLjEuMiIgcmV2aXNpb249IjkiPjxncm91cCBpc19yb290X2dyb3VwPSJ5ZXMiPjx6b25lIG5hbWU9IjA4IC0gR2xvY2tlbnNwaWVsLndhdiIga2V5X3Jvb3Q9IjU4
-        IiBrZXlfbG93PSIzNiIga2V5X2hpZ2g9Ijk2IiBsb192ZWw9IjAiIGhpX3ZlbD0iMTI3IiBrZXlfbG93X2ZhZGU9IjAiIGtleV9oaWdoX2ZhZGU9IjAiIGxvX3ZlbF9m
-        YWRlPSIwIiBoaV92ZWxfZmFkZT0iMCIgY2hhbm5lbD0iOCIgb3V0cHV0PSIwIiBhdXhfb3V0cHV0PSItMSIgdHJhbnNwb3NlPSIwIiBmaW5ldHVuZT0iMC4wMDAwMDAi
-        IHBpdGNoY29ycmVjdD0iMC4wMDAwMDAiIHBsYXltb2RlPSJmd2RfbG9vcCIgc2FtcGxlX3N0YXJ0PSIwIiBzYW1wbGVfZW5kPSIzODAxNiIgbG9vcF9zdGFydD0iMzU4
-        MjEiIGxvb3BfZW5kPSIzNzk5MiIgbG9vcF9jcm9zc2ZhZGVfbGVuZ3RoPSIwIiB2ZWxzZW5zZT0iLTMwLjAwMDAwMCIga2V5dHJhY2s9IjEuMDAwMDAwIiBhbXBsaXR1
-        ZGU9IjAuMDAwMDAwIiBhdXhfbGV2ZWw9IjAuMDAwMDAwIiBwYW49IjAuMDAwMDAwIiBwcmVmaWx0ZXJfZ2Fpbj0iMC4wMDAwMDAiIFBCX2RlcHRoPSIxMiIgbXV0ZV9n
-        cm91cD0iMCIgcG9seW1vZGU9IjAiIHBvcnRhbW9kZT0iMCIgcG9ydGFtZW50bz0iLTEwLjAwMDAwMCIgbXV0ZT0ibm8iIG1vbm9fb3V0cHV0PSJubyIgYXV4X21vbm9f
-        b3V0cHV0PSJubyIgZWZfYXR0YWNrPSIwLjAwMDAwMCIgZWZfcmVsZWFzZT0iMC4wMDAwMDAiIGxhZzA9IjAuMDAwMDAwIiBsYWcxPSIwLjAwMDAwMCIgZmlsZW5hbWU9
-        Ikc6XEdhbWVzXE42NFxEYXRhXFNvdW5kXE9vVFxCYW5rIDAzIC0gTWFpbiBPcmNoZXN0cmFcMDggLSBHbG9ja2Vuc3BpZWwud2F2Ij48ZmlsdGVyIGlkZW50aWZpZXI9
-        IjAiIHR5cGU9Ik5PTkUiIGJ5cGFzcz0ibm8iIC8+PGZpbHRlciBpZGVudGlmaWVyPSIxIiB0eXBlPSJOT05FIiBieXBhc3M9Im5vIiAvPjxlbnZlbG9wZSBpZGVudGlm
-        aWVyPSIwIiBhdHRhY2s9Ii0xMC4wMDAwMDAiIGF0dGFja19zaGFwZT0iMC4wMDAwMDAiIGhvbGQ9Ii0xMC4wMDAwMDAiIGRlY2F5PSIwLjAwMDAwMCIgZGVjYXlfc2hh
-        cGU9IjEuMDAwMDAwIiBzdXN0YWluPSIwLjAwMDAwMCIgcmVsZWFzZT0iLTQuNTAwMDAwIiByZWxlYXNlX3NoYXBlPSIxLjAwMDAwMCIgLz48ZW52ZWxvcGUgaWRlbnRp
-        Zmllcj0iMSIgYXR0YWNrPSItMi4wMDAwMDAiIGF0dGFja19zaGFwZT0iMC4wMDAwMDAiIGhvbGQ9Ii0xMC4wMDAwMDAiIGRlY2F5PSItMi4wMDAwMDAiIGRlY2F5X3No
-        YXBlPSIwLjAwMDAwMCIgc3VzdGFpbj0iMS4wMDAwMDAiIHJlbGVhc2U9Ii01LjAwMDAwMCIgcmVsZWFzZV9zaGFwZT0iMC4wMDAwMDAiIC8+PGxmbyBpZGVudGlmaWVy
-        PSIwIiByYXRlPSIwLjAwMDAwMCIgc21vb3RoPSIwLjAwMDAwMCIgc3luY21vZGU9IjAiIGtleXRyaWdnZXI9Im5vIiByZXBlYXQ9IjE2IiAvPjxsZm8gaWRlbnRpZmll
-        cj0iMSIgcmF0ZT0iMC4wMDAwMDAiIHNtb290aD0iMC4wMDAwMDAiIHN5bmNtb2RlPSIwIiBrZXl0cmlnZ2VyPSJubyIgcmVwZWF0PSIxNiIgLz48bGZvIGlkZW50aWZp
-        ZXI9IjIiIHJhdGU9IjAuMDAwMDAwIiBzbW9vdGg9IjAuMDAwMDAwIiBzeW5jbW9kZT0iMCIga2V5dHJpZ2dlcj0ibm8iIHJlcGVhdD0iMTYiIC8+PHNsaWNlIGlkZW50
-        aWZpZXI9IjAiIHNhbXBsZXBvcz0iMCIgZW5kPSIzODAxNiIgZW52PSIwLjAwMDAwMCIgbXV0ZT0ibm8iIC8+PC96b25lPjwvZ3JvdXA+PGdsb2JhbCBoZWFkcm9vbT0i
-        MCIgcG9seV9jYXA9IjI1NiIgLz48L3Nob3J0Y2lyY3VpdD4=
+        PSIxLjEuMiIgcmV2aXNpb249IjkiPjxncm91cCBpc19yb290X2dyb3VwPSJ5ZXMiPjx6b25lIG5hbWU9IjA4IC0gR2xvY2tlbnNwaWVsLndhdiIga2V5X3Jvb3Q9Ijcw
+        IiBrZXlfbG93PSIzNiIga2V5X2hpZ2g9IjEwMyIgbG9fdmVsPSIwIiBoaV92ZWw9IjEyNyIga2V5X2xvd19mYWRlPSIwIiBrZXlfaGlnaF9mYWRlPSIwIiBsb192ZWxf
+        ZmFkZT0iMCIgaGlfdmVsX2ZhZGU9IjAiIGNoYW5uZWw9IjgiIG91dHB1dD0iMCIgYXV4X291dHB1dD0iLTEiIHRyYW5zcG9zZT0iMCIgZmluZXR1bmU9IjAuMDAwMDAw
+        IiBwaXRjaGNvcnJlY3Q9IjAuMDAwMDAwIiBwbGF5bW9kZT0iZndkX2xvb3AiIHNhbXBsZV9zdGFydD0iMCIgc2FtcGxlX2VuZD0iMzgwMTYiIGxvb3Bfc3RhcnQ9IjM1
+        ODIxIiBsb29wX2VuZD0iMzc5OTIiIGxvb3BfY3Jvc3NmYWRlX2xlbmd0aD0iMCIgdmVsc2Vuc2U9Ii0zMC4wMDAwMDAiIGtleXRyYWNrPSIxLjAwMDAwMCIgYW1wbGl0
+        dWRlPSIwLjAwMDAwMCIgYXV4X2xldmVsPSIwLjAwMDAwMCIgcGFuPSIwLjAwMDAwMCIgcHJlZmlsdGVyX2dhaW49IjAuMDAwMDAwIiBQQl9kZXB0aD0iMTIiIG11dGVf
+        Z3JvdXA9IjAiIHBvbHltb2RlPSIwIiBwb3J0YW1vZGU9IjAiIHBvcnRhbWVudG89Ii0xMC4wMDAwMDAiIG11dGU9Im5vIiBtb25vX291dHB1dD0ibm8iIGF1eF9tb25v
+        X291dHB1dD0ibm8iIGVmX2F0dGFjaz0iMC4wMDAwMDAiIGVmX3JlbGVhc2U9IjAuMDAwMDAwIiBsYWcwPSIwLjAwMDAwMCIgbGFnMT0iMC4wMDAwMDAiIGZpbGVuYW1l
+        PSJHOlxHYW1lc1xONjRcRGF0YVxTb3VuZFxPb1RcQmFuayAwMyAtIE1haW4gT3JjaGVzdHJhXDA4IC0gR2xvY2tlbnNwaWVsLndhdiI+PGZpbHRlciBpZGVudGlmaWVy
+        PSIwIiB0eXBlPSJOT05FIiBieXBhc3M9Im5vIiAvPjxmaWx0ZXIgaWRlbnRpZmllcj0iMSIgdHlwZT0iTk9ORSIgYnlwYXNzPSJubyIgLz48ZW52ZWxvcGUgaWRlbnRp
+        Zmllcj0iMCIgYXR0YWNrPSItMTAuMDAwMDAwIiBhdHRhY2tfc2hhcGU9IjAuMDAwMDAwIiBob2xkPSItMTAuMDAwMDAwIiBkZWNheT0iMC4wMDAwMDAiIGRlY2F5X3No
+        YXBlPSIxLjAwMDAwMCIgc3VzdGFpbj0iMC4wMDAwMDAiIHJlbGVhc2U9Ii00LjUwMDAwMCIgcmVsZWFzZV9zaGFwZT0iMS4wMDAwMDAiIC8+PGVudmVsb3BlIGlkZW50
+        aWZpZXI9IjEiIGF0dGFjaz0iLTIuMDAwMDAwIiBhdHRhY2tfc2hhcGU9IjAuMDAwMDAwIiBob2xkPSItMTAuMDAwMDAwIiBkZWNheT0iLTIuMDAwMDAwIiBkZWNheV9z
+        aGFwZT0iMC4wMDAwMDAiIHN1c3RhaW49IjEuMDAwMDAwIiByZWxlYXNlPSItNS4wMDAwMDAiIHJlbGVhc2Vfc2hhcGU9IjAuMDAwMDAwIiAvPjxsZm8gaWRlbnRpZmll
+        cj0iMCIgcmF0ZT0iMC4wMDAwMDAiIHNtb290aD0iMC4wMDAwMDAiIHN5bmNtb2RlPSIwIiBrZXl0cmlnZ2VyPSJubyIgcmVwZWF0PSIxNiIgLz48bGZvIGlkZW50aWZp
+        ZXI9IjEiIHJhdGU9IjAuMDAwMDAwIiBzbW9vdGg9IjAuMDAwMDAwIiBzeW5jbW9kZT0iMCIga2V5dHJpZ2dlcj0ibm8iIHJlcGVhdD0iMTYiIC8+PGxmbyBpZGVudGlm
+        aWVyPSIyIiByYXRlPSIwLjAwMDAwMCIgc21vb3RoPSIwLjAwMDAwMCIgc3luY21vZGU9IjAiIGtleXRyaWdnZXI9Im5vIiByZXBlYXQ9IjE2IiAvPjxzbGljZSBpZGVu
+        dGlmaWVyPSIwIiBzYW1wbGVwb3M9IjAiIGVuZD0iMzgwMTYiIGVudj0iMC4wMDAwMDAiIG11dGU9Im5vIiAvPjwvem9uZT48L2dyb3VwPjxnbG9iYWwgaGVhZHJvb209
+        IjAiIHBvbHlfY2FwPSIyNTYiIC8+PC9zaG9ydGNpcmN1aXQ+
         AERlZmF1bHQAEAAAAA==
       >
       PRESETNAME Default
@@ -10306,47 +10306,47 @@
       <SOURCE MIDI
         HASDATA 1 960 QN
         POOLEDEVTS {3CBF10ED-6A66-4CE7-8C5B-A9AB6249974C}
-        E 0 98 43 46
-        E 960 88 43 00
-        E 0 98 3a 46
-        E 1440 88 3a 00
-        E 0 98 3a 46
-        E 480 88 3a 00
-        E 0 98 3a 46
-        E 240 88 3a 00
-        E 0 98 3f 46
-        E 240 88 3f 00
-        E 0 98 43 46
-        E 240 88 43 00
-        E 0 98 46 46
-        E 240 88 46 00
-        E 0 98 46 46
-        E 1920 88 46 00
-        E 0 98 43 46
-        E 1920 88 43 00
-        e 0 98 45 46
-        e 960 88 45 00
-        E 0 98 3c 46
-        E 1440 88 3c 00
-        E 0 98 41 46
-        E 240 88 41 00
-        E 240 98 3c 46
-        E 240 88 3c 00
-        E 0 98 41 46
-        E 240 88 41 00
-        E 0 98 45 46
-        E 240 88 45 00
-        E 0 98 48 46
-        E 240 88 48 00
-        E 0 98 4a 46
-        E 1920 88 4a 00
+        e 0 98 4f 46
+        e 960 88 4f 00
+        e 0 98 46 46
+        e 1440 88 46 00
+        e 0 98 46 46
+        e 480 88 46 00
+        e 0 98 46 46
+        e 240 88 46 00
+        e 0 98 4b 46
+        e 240 88 4b 00
+        e 0 98 4f 46
+        e 240 88 4f 00
+        e 0 98 52 46
+        e 240 88 52 00
+        e 0 98 52 46
+        e 1920 88 52 00
+        e 0 98 4f 46
+        e 1920 88 4f 00
+        e 0 98 51 46
+        e 960 88 51 00
+        e 0 98 48 46
+        e 1440 88 48 00
+        e 0 98 4d 46
+        e 240 88 4d 00
+        e 240 98 48 46
+        e 240 88 48 00
+        e 0 98 4d 46
+        e 240 88 4d 00
+        e 0 98 51 46
+        e 240 88 51 00
+        e 0 98 54 46
+        e 240 88 54 00
+        e 0 98 56 46
+        e 1920 88 56 00
         E 1920 b0 7b 00
         GUID {F0C8681D-C93D-4D55-B31B-1B2C66E67639}
         IGNTEMPO 0 120 4 4
         SRCCOLOR 49580
         VELLANE 7 135 0
         VELLANE -1 124 0
-        CFGEDITVIEW -1237.110808 0.108887 29 12 0 -1 0 0 0 0.5
+        CFGEDITVIEW -2446.735556 0.046099 29 12 0 -1 0 0 0 0.5
         KEYSNAP 0
         TRACKSEL 252
         EVTFILTER 512 -1 -1 -1 -1 9 0 0 0 -1 -1 -1 -1 0 -1 0 -1 -1
