@@ -126,6 +126,15 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
     //randomness, since yawmult is not otherwise used.
     force.x += windX * b->windpush + (Rand_ZeroOne() - 0.5f) * b->yawmult;
     force.z += windZ * b->windpush + (Rand_ZeroOne() - 0.5f) * b->yawmult;
+    //Tame large forces
+    mag = sqrtf(force.x * force.x + force.y * force.y + force.z * force.z);
+    const float flimit = 0.3f;
+    if(mag > flimit){
+        d = sqrtf(flimit / mag);
+        force.x *= d;
+        force.y *= d;
+        force.z *= d;
+    }
     //Dampen velocity (applied to true old velocity)
     ss->vel.x *= b->dampening;
     ss->vel.y *= b->dampening;
@@ -194,15 +203,20 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
         prevFNext->y = force.y - (vel2.y - ss->vel.y) * fps * b->mass;
         prevFNext->z = force.z - (vel2.z - ss->vel.z) * fps * b->mass;
     }
+    //Tame large velocities
+    mag = sqrtf(vel2.x * vel2.x + vel2.y * vel2.y + vel2.z * vel2.z);
+    const float vlimit = 6.0f;
+    if(mag > vlimit){
+        mag = sqrtf(mag * vlimit);
+    }
     //Rotate (project and then fix the scale so the speed stays the same) the
     //velocity to be perpendicular to the rod based on the end state
-    mag = sqrtf(vel2.x * vel2.x + vel2.y * vel2.y + vel2.z * vel2.z);
     d = vel2.x * dp.x + vel2.y * dp.y + vel2.z * dp.z;
     vel2.x -= d * dp.x;
     vel2.y -= d * dp.y;
     vel2.z -= d * dp.z; //projection, but have lost speed
     d = sqrtf(vel2.x * vel2.x + vel2.y * vel2.y + vel2.z * vel2.z) + 1e-6f;
-    mag /= d;
+    mag /= d; //Divide by d does normalize new value, mul by mag returns to orig
     vel2.x *= mag;
     vel2.y *= mag;
     vel2.z *= mag;
@@ -343,12 +357,12 @@ void TunicPullOther(HairPhysTunicState *s, const HairPhysConstants *c, void *con
     float dz = s->s.pos.z - other->s.pos.z;
     float d = sqrtf(dx * dx + dz * dz);
     float n = 1.0f / (d + 0.0001f);
-    dx *= n;
-    dz *= n;
     d -= c->tn->dist;
     if(d > 0.0f){
-        other->s.fnext.x += d * c->tn->pullfmult * dx;
-        other->s.fnext.z += d * c->tn->pullfmult * dz;
+        if(d > 3.0f) d = 3.0f;
+        float mult = n * d * c->tn->pullfmult;
+        other->s.fnext.x += mult * dx;
+        other->s.fnext.z += mult * dz;
     }
 }
 

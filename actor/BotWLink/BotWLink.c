@@ -64,19 +64,19 @@ static const HairPhysLimits bangsLimits      = {{-16.0f, -16.0f, -16.0f}, { 16.0
 static const HairPhysLimits ponytailLimits   = {{-64.0f, -64.0f, -64.0f}, { 64.0f,  64.0f,  64.0f}};
 static const HairPhysLimits tasselLLimits    = {{-3.0f, 0.05f, -1.0f}, {0.0f, 0.0f, 0.0f}};
 static const HairPhysLimits tasselRLimits    = {{ 3.0f, 0.05f, -1.0f}, {0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicFLLimits    = {{-1.0f,  0.1f, -4.0f}, {0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicFLLimits    = {{ 0.0f,  0.1f, -4.0f}, {0.0f, 0.0f, 0.0f}};
 static       HairPhysLimits tunicFCLimits    = {{ 0.0f,  0.1f, -4.0f}, {0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicFRLimits    = {{ 1.0f,  0.1f, -4.0f}, {0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicBLLimits    = {{-1.0f,  0.1f,  4.0f}, {0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicFRLimits    = {{ 0.0f,  0.1f, -4.0f}, {0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicBLLimits    = {{ 0.0f,  0.1f,  4.0f}, {0.0f, 0.0f, 0.0f}};
 static       HairPhysLimits tunicBCLimits    = {{ 0.0f,  0.1f,  4.0f}, {0.0f, 0.0f, 0.0f}};
-static       HairPhysLimits tunicBRLimits    = {{ 1.0f,  0.1f,  4.0f}, {0.0f, 0.0f, 0.0f}};
+static       HairPhysLimits tunicBRLimits    = {{ 0.0f,  0.1f,  4.0f}, {0.0f, 0.0f, 0.0f}};
 static const HairPhysBasic  bangsBasic    =  {0.004f,250.0f,  3.0f,  1.2f, 1.00f, 0.70f, 1.500f, 0};
 static const HairPhysBasic  ponytailBasic =  {0.002f,500.0f,  2.0f,  1.0f, 1.00f, 0.85f, 3.000f, 0};
-static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f, 80.0f, 0.02f, 0.97f, 0.010f, 1};
-static const HairPhysDouble tasselsLDouble= {{0.001f,999.9f,  2.0f, 80.0f, 0.07f, 0.97f, 0.015f, 1}, &tasselLLimits};
-static const HairPhysDouble tasselsRDouble= {{0.001f,999.9f,  2.0f, 80.0f, 0.07f, 0.97f, 0.015f, 1}, &tasselRLimits};
-static const HairPhysBasic  tunicBasic    =  {0.002f,500.0f,  5.0f,100.0f, 0.10f, 0.92f, 0.015f, 2};
-static const HairPhysTunic  tunicTunic    =  {4.0f, 0.05f};
+static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f,120.0f, 0.02f, 0.97f, 0.010f, 1};
+static const HairPhysDouble tasselsLDouble= {{0.001f,999.9f,  2.0f,120.0f, 0.07f, 0.97f, 0.015f, 1}, &tasselLLimits};
+static const HairPhysDouble tasselsRDouble= {{0.001f,999.9f,  2.0f,120.0f, 0.07f, 0.97f, 0.015f, 1}, &tasselRLimits};
+static const HairPhysBasic  tunicBasic    =  {0.002f,500.0f,  5.0f,200.0f, 0.10f, 0.92f, 0.015f, 2};
+static const HairPhysTunic  tunicTunic    =  {4.0f, 0.03f};
 static const HairPhysConstants physc[NUM_PHYS] = {
 	/*ponytail*/{0, &ponytailBasic, &ponytailLimits, NULL, NULL},
 	/*bangs1*/  {0, &bangsBasic, &bangsLimits, NULL, NULL},
@@ -147,15 +147,19 @@ typedef struct {
 
 static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx) {
 	Entity *en = (Entity*)botw;
-	if(en->botw.actionframe == 0) Actor_Spawn(&globalCtx->actorCtx, globalCtx,
-		ACTOR_DEMO_EFFECT, en->botw.actor.world.pos.x, en->botw.actor.world.pos.y,
-		en->botw.actor.world.pos.z, 0, 0, 0, 0x0019);
+	const float backdist = 15.0f;
+	if(en->botw.actionframe == 0) Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_DEMO_EFFECT,
+		en->botw.actor.world.pos.x + backdist * -0.766044f, //-cos(40)
+		en->botw.actor.world.pos.y,
+		en->botw.actor.world.pos.z + backdist * -0.642787f, //-sin(40)
+		0, 0x0AC0, 0, 0x0019);
 	Actor *tw_actor = Actor_Find(&globalCtx->actorCtx, ACTOR_DEMO_EFFECT, ACTORCAT_BG);
 	if(tw_actor == NULL) return;
 	FakeDemoEffect *de = (FakeDemoEffect*)tw_actor;
-	if(de->shrinkTimer >= 10 && de->shrinkTimer <= 50 && (globalCtx->gameplayFrames & 1)){
+	if(de->shrinkTimer >= 10 && de->shrinkTimer <= 30 && (globalCtx->gameplayFrames & 3)){
 		--de->shrinkTimer;
 	}
+	if(de->shrinkTimer >= 95) Actor_Kill(&tw_actor);
 }
 
 #define NACTIONDEFS 13
