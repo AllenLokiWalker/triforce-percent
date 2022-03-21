@@ -1,23 +1,23 @@
 include ../toolchain/make/main.mk
 include ../toolchain/make/assembly.mk
 
-BOOTSTRAPPERS = bootstrapper2.bin bootstrapper4.bin
+RUNS = rta shortcut
+OUTPUTS_M64 = $(patsubst %,../run/bootstrap%.m64,$(RUNS))
+OUTPUTS_INPUTLOG = $(patsubst %,../run/bootstrap%-inputlog.txt,$(RUNS))
+BOOTSTRAPPER_BINS = $(patsubst %,bootstrapper2%.bin,$(RUNS))
 FAST_LOADER = ../loader/fast_loader/fast_loader.bin
-BSM64 = ../run/bootstrap.m64
-BSTXT = ../run/bootstrap-inputlog.txt
 
 .PHONY: default clean
 
-.PRECIOUS: $(BOOTSTRAPPERS)
+.PRECIOUS: $(BOOTSTRAPPER_BINS)
 
-default: $(BSM64) $(BSTXT)
+default: $(OUTPUTS_M64) $(OUTPUTS_INPUTLOG)
 
-$(BSM64): $(BOOTSTRAPPERS) $(FAST_LOADER)
-	$(PYTHON3) ../toolchain/tas/ootbootstrap.py $^ $@
+../run/bootstrap%.m64: bootstrapper2%.bin bootstrapper4.bin $(FAST_LOADER)
+	$(PYTHON3) ../toolchain/tas/ootbootstrap.py $* $^ $@
 
-$(BSTXT): $(BSM64)
+../run/%-inputlog.txt: ../run/%.m64
 	$(PYTHON3) ../toolchain/tas/m642bk2.py $< $@
 
 clean:
-	rm -f *.o *.bin $(BSM64) $(BSTXT)
-
+	rm -f *.o *.bin ../run/*.m64 ../run/*-inputlog.txt

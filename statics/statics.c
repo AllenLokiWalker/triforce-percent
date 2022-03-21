@@ -30,7 +30,7 @@ void Statics_SetGameState(){
     //Set flags so Staff Roll entrance cutscenes are not shown
     gSaveContext.eventChkInf[0xA] |= (1 << 8) | (1 << 5);
     gSaveContext.eventChkInf[0xB] |= (1 << 0xB) | (1 << 0xC);
-    //TODO
+    //Debugging
     // WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
     // WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
     // Statics_GiveLongOfTime();
@@ -191,9 +191,12 @@ void Statics_TestShortcuts(){
                     0, 0, 0, 0);
             }
         }else if((CTRLR_PRESS & BTN_DLEFT)){
+            /*
             //Press L+DL for frog
             func_8010B680(&gGlobalContext, 0x0901, NULL); //textbox_begin
+            */
         }else if((CTRLR_PRESS & BTN_DRIGHT)){
+            /*
             //Press L+DR for....
             //animation test
             //Statics_AnimeTest(0);
@@ -232,10 +235,13 @@ void Statics_TestShortcuts(){
             globalCtx->sceneLoadFlag = 0x14;
             globalCtx->fadeTransition = 0x2C;
             gSaveContext.nextTransition = 5;
+            */
         }else if((CTRLR_PRESS & BTN_DUP)){
+            /*
             //Kill Link (sorry) and try to exit cutscene (this usually does not work)
             gSaveContext.health = 0;
             gGlobalContext.csCtx.state = CS_STATE_IDLE;
+            */
         }
     }
 }

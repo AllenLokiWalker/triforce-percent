@@ -1,2 +1,0 @@
-//Patch Zelda's Lullaby / Song of Time actor
-PATCH 0x372CC70 ../actor/z_oceff_wipe/actor.pat

@@ -288,8 +288,10 @@ static void Debugger_Draw()
 		globalCtx->nextEntranceIndex, gSaveContext.cutsceneIndex, gSaveContext.nextCutsceneIndex);
 	*/
 	
+	/*
 	_printf(4, 4, "%4d %d %d %5.3f", gGlobalContext.csCtx.frames, 
 		sPerfCount, sDbgLagRepeat, sDbgLagPlaySpeed);
+	*/
 	
 	/*
 	static s32 searchaddr = 0x80000000;

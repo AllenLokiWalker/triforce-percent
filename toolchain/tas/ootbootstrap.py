@@ -60,8 +60,8 @@ def bootstrapper1and3(bsidx, smart, data, regstartoffset, jrraaddr, doubleup):
             write_frame(sh_cmd(regstartoffset))
             d += 2
             regstartoffset += 2
-    print('Bootstrapper' + str(bsidx) + (' smart' if smart else ' naive') 
-        + ' is ' + str(float(len(ret)//16)/60) + ' sec.')
+    print('Bootstrapper {} {} is {:.2f} sec.'.format(
+        bsidx, 'smart' if smart else 'naive', float(len(ret)//16)/60))
     return ret
 
 def jumpsingle1(addr):
@@ -83,7 +83,7 @@ def dataforbootstrapper4(data, bs4addr):
         c2data = bytes([0, 0, 0, c2b4])
         ret.extend(c1data + c2data + c3data + c4data)
         d += 8
-    print('Kargaroc payload injection is ' + str(float(len(ret)//16)/60) + ' sec.')
+    print('Kargaroc payload injection is {:.2f} sec.'.format(float(len(ret)//16)/60))
     return ret
 
 def walk_into_bs1(ctrlr3addr):
@@ -98,7 +98,7 @@ def holdr_nop(ctrlr3addr):
     # Instruction: or zero, s0, zero
     return bytes([0, 0x10, 0, 0x25]) + bytes([0]*4) + jumpcmd(ctrlr3addr) + bytes([0]*4)
 
-def ootbootstraprun(bs2data, bs4data, maindata):
+def ootbootstraprun(runtype, bs2data, bs4data, maindata):
     jrraaddr = 0x80000490
     jstackrestore = 0x80020850
     bs1s1 = 0x801C84A0 #global context
@@ -107,10 +107,18 @@ def ootbootstraprun(bs2data, bs4data, maindata):
     bs4loc = 0x80700004 #must be within 0x8000 of a0
     kargaroc_loader_entry = 0x80400000
     ret = bytearray()
-    slingshot_or_shortcut = True
+    if runtype == 'shortcut':
+        walkinto = True
+    elif runtype == 'rta':
+        walkinto = False
+    else:
+        raise RuntimeError('Invalid run type ' + runtype)
+    slingshot = False
+    if slingshot:
+        walkinto = True
     doubleup = True
     threeorsix = 6 if doubleup else 3
-    if slingshot_or_shortcut:
+    if walkinto:
         ret.extend(walk_into_bs1(jrraaddr) * 120) #frames of walking
         ret.extend(holdr_nop(jrraaddr) * threeorsix)
         ret.extend(bootstrapper1and3(1, True, bs2data, bs2loc - bs1s1, jrraaddr, doubleup))
@@ -127,12 +135,13 @@ def ootbootstraprun(bs2data, bs4data, maindata):
     
 if __name__ == '__main__':
     try:
-        bs2data = open(sys.argv[1], 'rb').read()
-        bs4data = open(sys.argv[2], 'rb').read()
-        maindata = open(sys.argv[3], 'rb').read()
-        out = open(sys.argv[4], 'wb')
+        runtype = sys.argv[1]
+        bs2data = open(sys.argv[2], 'rb').read()
+        bs4data = open(sys.argv[3], 'rb').read()
+        maindata = open(sys.argv[4], 'rb').read()
+        out = open(sys.argv[5], 'wb')
     except Exception as e:
         print('Could not open data files: ' + str(e))
         sys.exit(1)
-    out.write(ootbootstraprun(bs2data, bs4data, maindata))
+    out.write(ootbootstraprun(runtype, bs2data, bs4data, maindata))
     out.close()
