@@ -33,3 +33,4 @@ s32 CastleFlyover[] = {
 		CS_CAM_FOCUS_POINT(-1, 0, 0, 0x0, 0, 0, 0, 0),
 	CS_END(),
 };
+
