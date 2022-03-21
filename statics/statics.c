@@ -31,11 +31,11 @@ void Statics_SetGameState(){
     gSaveContext.eventChkInf[0xA] |= (1 << 8) | (1 << 5);
     gSaveContext.eventChkInf[0xB] |= (1 << 0xB) | (1 << 0xC);
     //TODO
-    WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
-    WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
-    Statics_GiveLongOfTime();
-    SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
-    Statics_GiveOvertureOfSages();
+    // WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+    // WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
+    // Statics_GiveLongOfTime();
+    // SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
+    // Statics_GiveOvertureOfSages();
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
