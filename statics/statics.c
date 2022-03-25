@@ -439,6 +439,7 @@ void Statics_TimeTravel(){
         //Timer 2 (Running Man race) is active
         if(LINK_IS_CHILD){
             gSaveContext.timer2Value = -10; //10 seconds to time 0
+            gSaveContext.nextDayTime = 0x4000;
         }else{
             //gCounterDigit0Tex = 02003040, size of each digit is 0x80
             //Want to stay in bounds in segment 2. Over 1:30 should be plenty of
