@@ -16,7 +16,7 @@ UPDATETXT = $(ZZRTLDIR)/update.txt
 	$(LD) $(LDFLAGS) $(ACTORLDFLAGS) -T $(ACTORLD) -o $@ $< 
 	
 %.zovl: %.elf
-	$(NOVL) -c -A $(BASEADDR) -o $@ $<
+	$(NOVL) -vvv -c -A $(BASEADDR) -o $@ $<
 	
 %.yaz0: %.zovl
 	$(YAZ0) $< > $@

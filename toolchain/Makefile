@@ -9,7 +9,7 @@ yaz0/
 default: $(SUBDIRS) z64audio/ z64convert/ $(NOVL)
 	
 clean: yaz0/
-	rm -f novl/novl
+	rm -f $(NOVL)
 	$(MAKE) -C z64convert/ clean
 
 $(SUBDIRS):
