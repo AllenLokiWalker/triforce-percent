@@ -299,6 +299,8 @@ void Statics_MoveOddPotionToChild(){
 void Statics_FixWaterSpawn(){
     InterfaceContext *interfaceCtx = &gGlobalContext.interfaceCtx;
     if(gGlobalContext.sceneNum == SCENE_UNICORNFOUNTAIN){
+        gSaveContext.equips.equipment = (gSaveContext.equips.equipment & 0x0FFF) | 0x1000;
+        gSaveContext.adultEquips.equipment = (gSaveContext.adultEquips.equipment & 0x0FFF) | 0x1000;
         interfaceCtx->restrictions.hGauge = interfaceCtx->restrictions.bButton =
         interfaceCtx->restrictions.aButton = interfaceCtx->restrictions.bottles =
         interfaceCtx->restrictions.tradeItems = interfaceCtx->restrictions.hookshot =
