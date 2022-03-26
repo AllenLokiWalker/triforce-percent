@@ -199,10 +199,21 @@ __attribute__((section(".start"))) void fl_init() {
 static void fl_run(OSMesgQueue* queue) {
 	// Draw green bar in the corner
 	const u64 green64 = 0x7c107c107c107c1ULL;
+	const s32 framebuffer1 = 0x80400000 - (320*240*2);
+	const s32 framebuffer2 = 0x80400000 - (320*240*2)*2;
 	if(!fl_disable_green_bar){
-		(*((volatile u64**)0x8011F56C))[1286] = green64; // shifted two pixels to the right of the "real" one
-		(*((volatile u64**)0x8011F56C))[1287] = green64; // due to longword alignment
+		/*(*((volatile u64**)0x8011F56C))*/
+		((volatile u64*)(framebuffer1))[1286] = green64; // shifted two pixels to the right of the "real" one
+		((volatile u64*)(framebuffer1))[1287] = green64; // due to longword alignment
+		((volatile u64*)(framebuffer2))[1286] = green64;
+		((volatile u64*)(framebuffer2))[1287] = green64;
 	}
+	/*
+	static u64 chaser = 0x0102040880204010ull;
+	((volatile u64*)(framebuffer1))[1288] = chaser;
+	((volatile u64*)(framebuffer2))[1288] = chaser;
+	chaser = (chaser << 1) | ((chaser >> 63) ^ ((chaser >> 56) & 1) ^ ((chaser >> 3) & 1));
+	*/
 	
 	//u32 count_start = osGetCount();
 	

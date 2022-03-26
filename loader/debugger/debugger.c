@@ -142,7 +142,11 @@ void put_pixel( u32 x, u32 y, u16 color ) {
 	if( y >= 240 ) return;
 	y *= 320;
 	y += x;
-	framebuffer16[ y ] = color;
+	//framebuffer16[ y ] = color;
+	const s32 framebuffer1 = 0x80400000 - (320*240*2);
+	const s32 framebuffer2 = 0x80400000 - (320*240*2)*2;
+	((volatile u16*)(framebuffer1))[y] = color;
+	((volatile u16*)(framebuffer2))[y] = color;
 }
 
 // Print letter to the screen
@@ -238,6 +242,7 @@ void Debugger_ShowMessage(u8 timeout, const char *msg)
 	bcopy(msg, Debugger_GetNextMessageBuffer(timeout), DBG_MSG_LEN);
 }
 
+/*
 //Crash debugger
 
 extern const char **sExceptionNames;
@@ -267,6 +272,7 @@ static s32 is_thread_crashed(OSThread *th){
 }
 
 extern OSThread padmgrth;
+*/
 
 /*
 static const u32 rsp_target_code[8] = {
@@ -339,6 +345,7 @@ static void Debugger_Draw()
 		}
 	}
 	
+	/*
 	OSThread *th = NULL;
 	if(is_thread_crashed(__osFaultedThread)){
 		th = __osFaultedThread;
@@ -379,6 +386,13 @@ static void Debugger_Draw()
 			}
 		}
 	}
+	*/
+}
+
+void FaultPatch(){
+	asm(".set noat\n .set noreorder\n" //              line 28 = 80073148
+    "addiu $a0, $zero, 3000\n"
+    ".set at\n .set reorder");
 }
 
 __attribute__((section(".start"))) void Debugger_Init()
@@ -390,4 +404,15 @@ __attribute__((section(".start"))) void Debugger_Init()
 	Debugger_ShowMessage(190, "Hyperspeed polling data loader loaded.");
 	Debugger_ShowMessage(200, "Debugger loaded (HI MOM!).");
 	*/
+	
+	// Disable Fault_WaitForButtonCombo so if it crashes, it shows the info immediately
+	*((u32*)0x800AF360) = 0;
+	*((u32*)0x800AF64C) = 0;
+	
+	// Patch func_800AD5FC (roughly Fault_WaitForInputImpl) to just wait for 3
+	// seconds instead of waiting for controller input
+	*((u32*)0x800AD63C) = ((u32*)FaultPatch)[0];
+	*((u32*)0x800AD648) = 0;
+	*((u32*)0x800AD654) = 0;
+	*((u32*)0x800AD65C) = 0;
 }
