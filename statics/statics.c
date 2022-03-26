@@ -196,7 +196,6 @@ void Statics_TestShortcuts(){
             func_8010B680(&gGlobalContext, 0x0901, NULL); //textbox_begin
             */
         }else if((CTRLR_PRESS & BTN_DRIGHT)){
-            /*
             //Press L+DR for....
             //animation test
             //Statics_AnimeTest(0);
@@ -212,6 +211,13 @@ void Statics_TestShortcuts(){
             // NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
             // globalCtx->linkAgeOnLoad = 1;
             // globalCtx->nextEntranceIndex = 0x04A6;
+            //Warp to Zora's Domain
+            WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+            WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
+            Statics_GiveLongOfTime();
+            SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x0108;
             //Warp to Unicorn Fountain
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x0560;
@@ -223,8 +229,8 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x034D;
             //Warp to ending
-            globalCtx->linkAgeOnLoad = 0;
-            globalCtx->nextEntranceIndex = 0x03FC;
+            // globalCtx->linkAgeOnLoad = 0;
+            // globalCtx->nextEntranceIndex = 0x03FC;
             //Warp to Staff Roll
             // globalCtx->linkAgeOnLoad = 1;
             // globalCtx->nextEntranceIndex = 0x00CD;
@@ -235,7 +241,6 @@ void Statics_TestShortcuts(){
             globalCtx->sceneLoadFlag = 0x14;
             globalCtx->fadeTransition = 0x2C;
             gSaveContext.nextTransition = 5;
-            */
         }else if((CTRLR_PRESS & BTN_DUP)){
             /*
             //Kill Link (sorry) and try to exit cutscene (this usually does not work)
@@ -299,8 +304,8 @@ void Statics_MoveOddPotionToChild(){
 void Statics_FixWaterSpawn(){
     InterfaceContext *interfaceCtx = &gGlobalContext.interfaceCtx;
     if(gGlobalContext.sceneNum == SCENE_UNICORNFOUNTAIN){
-        gSaveContext.equips.equipment = (gSaveContext.equips.equipment & 0x0FFF) | 0x1000;
-        gSaveContext.adultEquips.equipment = (gSaveContext.adultEquips.equipment & 0x0FFF) | 0x1000;
+        //gSaveContext.equips.equipment = (gSaveContext.equips.equipment & 0x0FFF) | 0x1000;
+        //gSaveContext.adultEquips.equipment = (gSaveContext.adultEquips.equipment & 0x0FFF) | 0x1000;
         interfaceCtx->restrictions.hGauge = interfaceCtx->restrictions.bButton =
         interfaceCtx->restrictions.aButton = interfaceCtx->restrictions.bottles =
         interfaceCtx->restrictions.tradeItems = interfaceCtx->restrictions.hookshot =
