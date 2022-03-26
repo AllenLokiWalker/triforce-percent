@@ -1192,9 +1192,13 @@ void RunningMan_Dodge(BossRunningMan* this, GlobalContext* globalCtx) {
 	}
 	
 	if (AnimFromFrame(10.0f)) {
-		if(Rand_ZeroOne() < 0.2f){
+		if(this->boss.numPastChoices >= 3 || (this->boss.numPastChoices >= -1 && Rand_ZeroOne() < 0.3f)){
+			if(this->boss.numPastChoices > 0) this->boss.numPastChoices = 0;
+			--this->boss.numPastChoices;
 			ExecuteAction(SetupArrow);
 		}else{
+			if(this->boss.numPastChoices < 0) this->boss.numPastChoices = 0;
+			++this->boss.numPastChoices;
 			ExecuteAction(SetupKick);
 		}
 	}
