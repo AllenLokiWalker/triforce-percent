@@ -65,6 +65,10 @@ static inline s16 Fixed_atan2s(float y, float x){
         Math_Atan2S(-1.0f, 0.0f) //should be C000 -> displays 8000
     );
     */
+    if(fabsf(y) < 1e-6f && fabsf(x) < 1e-6f){
+        if(sIsLiveRun) Debugger_Printf("atan2s(0,0)!");
+        return 0;
+    }
     return Math_Atan2S(x, y);
 }
 
@@ -79,16 +83,16 @@ static inline void Euler2Quat(const Vec3s *r, Quaternion *q){
     q->x = sx * cy * cz - cx * sy * sz;
     q->y = cx * sy * cz + sx * cy * sz;
     q->z = cx * cy * sz - sx * sy * cz;
-    // float norm = q->w * q->w + q->x * q->x + q->y * q->y + q->z * q->z;
-    // if(norm < 0.9f || norm > 1.1f){
-    //     Debugger_Printf("in norm is %f", norm);
-    // }
+    float norm = q->w * q->w + q->x * q->x + q->y * q->y + q->z * q->z;
+    if(norm < 0.9f || norm > 1.1f){
+        if(sIsLiveRun) Debugger_Printf("quat in norm is %f", norm);
+    }
 }
 
 static inline void Quat2Euler(const Quaternion *q, Vec3s *r){
     float mult = q->w * q->w + q->x * q->x + q->y * q->y + q->z * q->z;
     if(mult < 0.001f){
-        //Debugger_Printf("out is 0");
+        if(sIsLiveRun) Debugger_Printf("quat out is 0");
         mult = 0.001f;
     }
     mult = 2.0f / mult;
