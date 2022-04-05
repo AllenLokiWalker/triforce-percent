@@ -6,7 +6,6 @@ typedef struct {
     Actor actor;
     MtxF modelf;
     Mtx modelrsp;
-    u32 lastOSCount;
     u16 frames_fade;
 } Entity;
 
@@ -263,7 +262,6 @@ static void SetUpMessage(Entity *en, u16 m, TwitchMessage *msg) {
 }
 
 static void init(Entity *en, GlobalContext *globalCtx) {
-    en->lastOSCount = 0;
     en->frames_fade = FRAMES_FADE_MAX;
     bzero((void*)VTX_BEGIN, UNAME_TEX_BEGIN - VTX_BEGIN);
     //Create model matrix
@@ -339,7 +337,7 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
             continue;
         }
         msg->culled = !Statics_UncullObject(globalCtx, &msg->center,
-            180.0f * MSG_SCALE, 8.0f * MSG_SCALE, 8.0f * MSG_SCALE, 100.0f, 1500.0f);
+            180.0f * MSG_SCALE, 8.0f * MSG_SCALE, 8.0f * MSG_SCALE, 100.0f, 3000.0f);
     }
     //Usernames
     gSPDisplayList(POLY_OPA_DISP++, uname_setup_dl);

@@ -121,7 +121,8 @@ static void update(Entity *en, GlobalContext *globalCtx){
 	Player *player = PLAYER;
 	s32 animDone = updateCommon(en, globalCtx);
 	if(animDone < 0) return;
-	Actor_RequestToTalk(&en->actor, globalCtx);
+	Actor_RequestToTalkInRange(&en->actor, globalCtx, en->actor.colChkInfo.cylRadius +
+        ((en->actor.textId == 0x0B15 && (en->actor.flags & 0x10000)) ? 1000.0f : 50.0f));
 	if(Actor_IsTalking(&en->actor, globalCtx)){
 		LOOKING_FOR_BUTTERFLY_VAR |= LOOKING_FOR_BUTTERFLY_BIT;
 		en->actor.flags &= ~0x10000;

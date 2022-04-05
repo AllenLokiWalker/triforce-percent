@@ -209,11 +209,16 @@ typedef struct {
     //6: once, full speed, flags 0x9C
     //7: looping, 2/3 speed, flags 0x1C
     //8: looping, full speed, flags 0x9C
-    //9: once, last speed
-    //A: looping, last speed
-    //B: just anim update
-    //C: if update, goto 4 and set unk_850
-    //
+    //9: once, full speed, no morph
+    //A: looping, full speed, no morph
+    //B: just update
+    //C: update, if finished, goto 4 and set unk_850
+    //D: update, if finished, goto 7 and set unk_850
+    //E: Y = 0, freeze on first frame of anim, speed = 0
+    //F: once, 2/3 speed, no morph
+    //10: looping, 2/3 speed, no morph
+    //11: update, if finished, sometimes copy anim translation, goto 10
+    //12: update; also some state machine thing
     //If negative (-1), calls func. If zero, does nothing.
     /* 0x00 */ s8 type; 
     /* 0x04 */ union {
@@ -243,7 +248,7 @@ LinkActionEntry linkActionInitPatchTable[NUM_ORIG_LINK_ACTIONS+NUM_CUSTOM_LINK_A
     //Patched
     {3, {&linkAnimPatchTable[0]}}, //ReachUp
     {3, {&linkAnimPatchTable[1]}}, //LookToMeditate
-    {8, {&linkAnimPatchTable[2]}}, //Meditate
+    {4, {&linkAnimPatchTable[2]}}, //Meditate
     {0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},
     {0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},{0,{NULL}},
 };

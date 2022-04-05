@@ -79,7 +79,7 @@ typedef struct {
 
 static void init(Entity *en, GlobalContext *globalCtx) {
 	BotWActor_Init(&en->botw, globalCtx, &BotWZeldaMesh, &BotWZeldaMeshDescendidleAnim, 
-		en->jointTable, en->morphTable, BOTWZELDAMESH_NUM_LIMBS, ACTOR_SCALE, 1.5f);
+		en->jointTable, en->morphTable, BOTWZELDAMESH_NUM_LIMBS, ACTOR_SCALE, 1.99f);
 	//Physics initialization
 	s32 c = 0;
 	for(s32 i=0; i<3; ++i) en->physStates[c++] = &en->physDouble[i];

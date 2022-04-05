@@ -127,8 +127,8 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
 		PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, TEXEL0,
 		0, 0, 0, COMBINED, 0, 0, 0, COMBINED);
 	gDPSetPrimColor(flowerDL + 14,
-		0, 0, 0x80, 0x80, 0xFF, 0xFF);
-	gDPSetEnvColor(POLY_XLU_DISP++, 0x00, 0x00, 0x80, 0xFF);
+		0, 0, 0x80, 0x98, 0xFF, 0xFF);
+	gDPSetEnvColor(POLY_XLU_DISP++, 0x00, 0x28, 0x60, 0xFF);
 	Gfx_DrawDListXlu(globalCtx, (Gfx*)DL_BETAGREATFAIRY_FLOWER);
 	//Particles
 	if(en->state == 2){
