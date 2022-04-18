@@ -10,14 +10,15 @@
 #define LIGHTS_ACTIONNUM 37
 #define LIGHTS_ACTIONSLOT 3
 
+//Action-based flags
 #define FLAG_INVISIBLE (1 << 8)
 #define FLAG_EYESCLOSED (1 << 9)
 #define FLAG_DELAYROT (1 << 10)
-#define FLAG_SKIPLASTFRAME (1 << 11)
-#define FLAG_SKIPLASTFRAMEWHENDONE (1 << 12)
-#define FLAG_NOLOOP (1 << 13)
-#define FLAG_ACCEL (1 << 14)
-#define FLAG_DECEL (1 << 15)
+#define FLAG_NOLOOP (1 << 11)
+#define FLAG_ACCEL (1 << 12)
+#define FLAG_DECEL (1 << 13)
+#define FLAG_ENDEARLY (1 << 14)
+#define FLAG_SMOOTHROT (1 << 15)
 #define FLAGS_ALLCOMMON 0xFF00
 
 #define CHECK_ON_FRAME(timer, tgtframe) \
@@ -114,7 +115,6 @@ static inline void BotWActor_Init(BotWActor *botw, GlobalContext *globalCtx,
 	Actor_SetScale(&botw->actor, scale);
     SkelAnime_InitFlex(globalCtx, &botw->skelAnime, skel, initAnim, 
 		jointTable, morphTable, numLimbs);
-    ActorShape_Init(&botw->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f); //TODO not working?
 }
 
 static inline void BotWActor_Destroy(BotWActor *botw, GlobalContext *globalCtx) {
@@ -129,9 +129,10 @@ static inline void BotWActor_VO(BotWActor *botw, u16 sfx) {
 }
 
 static inline void BotWActor_SetAnim(BotWActor *botw, AnimationHeader *anim, 
-		u8 mode, f32 morphFrames, s32 skipLast) {
+		u8 mode, f32 morphFrames) {
 	Animation_Change(&botw->skelAnime, anim, 1.0f, 0.0f, 
-		Animation_GetLastFrame(anim) - (skipLast ? 1 : 0), mode, morphFrames);
+		Animation_GetLastFrame(anim), mode, morphFrames);
+	if(mode <= ANIMMODE_LOOP_INTERP) botw->skelAnime.animLength -= 1.0f;
 }
 
 static inline void BotWActor_UpdateEyes(BotWActor *botw, u8 repeatCurFrame){
@@ -184,8 +185,8 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 			if(def->anim != NULL && def->anim != botw->anim){
 				BotWActor_SetAnim(botw, def->anim, 
 					(def->anim_whendone == NULL && !(botw->flags & FLAG_NOLOOP))
-					 	? ANIMMODE_LOOP : ANIMMODE_ONCE,
-					def->morph, botw->flags & FLAG_SKIPLASTFRAME);
+					 	? ANIMMODE_LOOP_INTERP : ANIMMODE_ONCE_INTERP,
+					def->morph);
 				botw->anim = def->anim;
 				botw->anim_whendone = def->anim_whendone;
 				botw->morph_whendone = def->morph_whendone;
@@ -196,8 +197,9 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 			}
 		}
 		f32 frac = Environment_LerpWeightAccelDecel(
-			action->endFrame, action->startFrame, globalCtx->csCtx.frames,
-			(botw->flags & FLAG_ACCEL) ? 8 : 0, (botw->flags & FLAG_DECEL) ? 8 : 0);
+			action->endFrame - ((botw->flags & FLAG_ENDEARLY) ? 2 : 0),
+			action->startFrame, globalCtx->csCtx.frames,
+			(botw->flags & FLAG_ACCEL) ? 8 : 0, (botw->flags & FLAG_DECEL) ? 12 : 0);
 		if(frac < 0.0f) frac = 0.0f;
 		if(frac > 1.0f) frac = 1.0f;
 		f32 finv = 1.0f - frac;
@@ -206,18 +208,27 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 		botw->actor.world.pos.z = finv * (f32)action->startPos.z + frac * (f32)action->endPos.z;
 		s16 drot = botw->actor.shape.rot.y - action->rot.y;
         const s16 minrot = 0x100;
-		if(drot < 0) drot = -drot;
+		s16 absdrot = drot;
+		if(absdrot < 0) absdrot = -absdrot;
 		if((botw->flags & FLAG_DELAYROT)){
 			(void)0; //don't rotate
-		}else if(drot <= minrot){
+		}else if((botw->flags & FLAG_SMOOTHROT)){
+			s16 framesleft = action->endFrame - globalCtx->csCtx.frames;
+			if(framesleft <= 1){
+				botw->actor.shape.rot.y = action->rot.y;
+			}else{
+				botw->actor.shape.rot.y -= drot / framesleft;
+			}
+		}else if(absdrot <= minrot){
 			botw->actor.shape.rot.y = action->rot.y;
 		}else{
-			drot >>= 3;
-			if(drot < minrot) drot = minrot;
-			Math_StepToAngleS(&botw->actor.shape.rot.y, action->rot.y, drot);
+			absdrot >>= 3;
+			if(absdrot < minrot) absdrot = minrot;
+			Math_StepToAngleS(&botw->actor.shape.rot.y, action->rot.y, absdrot);
 		}
 		if(def->func != NULL) def->func(botw, globalCtx);
 	}
+	Actor_UpdateBgCheckInfo(globalCtx, &botw->actor, 0.0f, 0.0f, 0.0f, 4);
 	BotWActor_UpdateEyes(botw, repeatCurFrame);
 	botw->skelAnime.playSpeed = Statics_LagPlaySpeed();
 	s32 animFinished = SkelAnime_Update(&botw->skelAnime);
@@ -232,8 +243,8 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 			}
 		}
 		if(botw->anim_whendone != NULL){
-			BotWActor_SetAnim(botw, botw->anim_whendone, ANIMMODE_LOOP,
-				botw->morph_whendone, botw->flags & FLAG_SKIPLASTFRAMEWHENDONE);
+			BotWActor_SetAnim(botw, botw->anim_whendone, ANIMMODE_LOOP_INTERP,
+				botw->morph_whendone);
 			botw->anim = botw->anim_whendone;
 			botw->anim_whendone = NULL;
 		}

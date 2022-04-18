@@ -12,6 +12,7 @@
 #include "BotWLinkMeshTurnleftzeldadescendingAnim.h"
 #include "BotWLinkMeshTurnrightAnim.h"
 #include "BotWLinkMeshTurnrightfromspeechAnim.h"
+#include "BotWLinkMeshWalkendAnim.h"
 #include "BotWLinkMeshTex.h"
 #include "../../statics/scene.h"
 
@@ -111,6 +112,7 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	Statics_SetUpStaffRoll();
 	BotWActor_Init(&en->botw, globalCtx, &BotWLinkMesh, &BotWLinkMeshIdleAnim,
 		en->jointTable, en->morphTable, BOTWLINKMESH_NUM_LIMBS, ACTOR_SCALE, 1.0f);
+    ActorShape_Init(&en->botw.actor.shape, 0.0f, ActorShadow_DrawFeet, 20.0f);
 	//Physics initialization
 	s32 c = 0;
 	for(s32 i=0; i<4; ++i) en->physStates[c++] = &en->physSimple[i];
@@ -162,14 +164,14 @@ static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx)
 	if(de->shrinkTimer >= 95) Actor_Kill(&tw_actor);
 }
 
-#define NACTIONDEFS 13
+#define NACTIONDEFS 16
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*0*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, NULL},
 	/*1*/{&BotWLinkMeshIdleAnim, -8.0f, NULL, 0.0f,
 			0, 0, 0, NULL},
 	/*2*/{&BotWLinkMeshModerate_walkAnim, -8.0f, NULL, 0.0f,
-			FLAG_SKIPLASTFRAME | FLAG_DECEL, 0, 0, NULL},
+			FLAG_SMOOTHROT, 0, 0, NULL},
 	/*3*/{&BotWLinkMeshLookatitselfAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			0, 0, 0, NULL},
 	/*4*/{&BotWLinkMeshTurnleftAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
@@ -179,17 +181,23 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*6*/{&BotWLinkMeshLookstozeldaAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			0, 0, 0, NULL},
 	/*7*/{&BotWLinkMeshLinksdialogAnim, -8.0f, NULL, 0.0f,
-			0, VO_LINK_ZERUDAHIME, 5+VO_EXTRA_FRAMES, BotWLink_DialogCallback},
+			FLAG_NOLOOP, VO_LINK_ZERUDAHIME, 5+VO_EXTRA_FRAMES, BotWLink_DialogCallback},
 	/*8*/{&BotWLinkMeshTakeszeldahandAnim, -8.0f, NULL, 0.0f,
 			FLAG_NOLOOP, 0, 0, NULL},
 	/*9*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, BotWLink_TimeWarpCallback},
 	/*A*/{&BotWLinkMeshModerate_walk_lookingaroundAnim, -8.0f, NULL, 0.0f,
-			FLAG_ACCEL, 0, 0, NULL},
+			FLAG_SMOOTHROT, 0, 0, NULL},
 	/*B*/{&BotWLinkMeshTurnleftzeldadescendingAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			FLAG_DELAYROT, 0, 0, NULL},
 	/*C*/{&BotWLinkMeshTurnrightfromspeechAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			FLAG_DELAYROT, 0, 0, NULL},
+	/*D*/{&BotWLinkMeshWalkendAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
+			FLAG_DECEL | FLAG_ENDEARLY, 0, 0, NULL},
+	/*E*/{&BotWLinkMeshModerate_walk_lookingaroundAnim, -8.0f, NULL, 0.0f,
+			FLAG_ACCEL, 0, 0, NULL},
+	/*F*/{&BotWLinkMeshModerate_walkAnim, -8.0f, NULL, 0.0f,
+			FLAG_DECEL, 0, 0, NULL},
 };
 
 static const BotWFixRotAnimDef FixRotAnimDefs[] = {
@@ -205,6 +213,9 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 
 s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
 	Entity *en = (Entity*)thisx;
+	static Vec3f footOffset = { 0.0f, 100.0f, 0.0f };
+	Actor_SetFeetPos(&en->botw.actor, limbIndex, BOTWLINKMESH_LFOOT_LIMB, &footOffset,
+		BOTWLINKMESH_RFOOT_LIMB, &footOffset);
 	s8 p = limbToPhysMap[limbIndex];
 	u32 limbMask = 1 << limbIndex;
 	if(((en->botw.flags & FLAG_NO_LOWLEGS) && (limbMask & LIMB_IS_LOWLEGS)) ||
@@ -235,6 +246,7 @@ void BotWLink_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
+	en->botw.actor.shape.shadowDraw = (en->botw.flags & FLAG_INVISIBLE) ? NULL : ActorShadow_DrawFeet;
 	//
 	en->botw.flags &= ~(FLAG_NO_LOWLEGS | FLAG_NO_LOWERBODY);
 	Vec3f pos = en->botw.actor.world.pos;

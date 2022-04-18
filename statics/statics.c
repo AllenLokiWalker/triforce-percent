@@ -212,12 +212,12 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x01F9;
             //Warp to Zora's Domain
-            WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
-            WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
-            Statics_GiveLongOfTime();
-            SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
-            globalCtx->linkAgeOnLoad = 0;
-            globalCtx->nextEntranceIndex = 0x0108;
+            // WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+            // WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
+            // Statics_GiveLongOfTime();
+            // SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
+            // globalCtx->linkAgeOnLoad = 0;
+            // globalCtx->nextEntranceIndex = 0x0108;
             //Warp to Unicorn Fountain
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x0560;
@@ -229,8 +229,8 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x034D;
             //Warp to ending
-            // globalCtx->linkAgeOnLoad = 0;
-            // globalCtx->nextEntranceIndex = 0x03FC;
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x03FC;
             //Warp to Staff Roll
             // globalCtx->linkAgeOnLoad = 1;
             // globalCtx->nextEntranceIndex = 0x00CD;

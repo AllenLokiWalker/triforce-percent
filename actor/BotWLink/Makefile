@@ -18,6 +18,7 @@ OBJECTOBJS = \
 	BotWLinkMeshTurnleftzeldadescendingAnim.o \
 	BotWLinkMeshTurnrightAnim.o \
 	BotWLinkMeshTurnrightfromspeechAnim.o \
+	BotWLinkMeshWalkendAnim.o \
 	BotWLinkMeshTex.o
 OBJECTHDRS = \
 	BotWLinkMesh.h \
@@ -31,6 +32,7 @@ OBJECTHDRS = \
 	BotWLinkMeshTurnleftzeldadescendingAnim.h \
 	BotWLinkMeshTurnrightAnim.h \
 	BotWLinkMeshTurnrightfromspeechAnim.h \
+	BotWLinkMeshWalkendAnim.h \
 	BotWLinkMeshTex.h
 SHDRS = \
 	../BotWActors.h \

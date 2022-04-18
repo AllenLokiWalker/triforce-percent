@@ -80,6 +80,7 @@ typedef struct {
 static void init(Entity *en, GlobalContext *globalCtx) {
 	BotWActor_Init(&en->botw, globalCtx, &BotWZeldaMesh, &BotWZeldaMeshDescendidleAnim, 
 		en->jointTable, en->morphTable, BOTWZELDAMESH_NUM_LIMBS, ACTOR_SCALE, 1.99f);
+    ActorShape_Init(&en->botw.actor.shape, 0.0f, ActorShadow_DrawCircle, 4.0f);
 	//Physics initialization
 	s32 c = 0;
 	for(s32 i=0; i<3; ++i) en->physStates[c++] = &en->physDouble[i];
@@ -180,6 +181,7 @@ void BotWZelda_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
 }
 
 static void draw(Entity *en, GlobalContext *globalCtx) {
+	en->botw.actor.shape.shadowDraw = (en->botw.flags & FLAG_INVISIBLE) ? NULL : ActorShadow_DrawCircle;
 	//
 	en->botw.flags &= ~FLAG_NO_LOWERBODY;
 	Vec3f pos = en->botw.actor.world.pos;

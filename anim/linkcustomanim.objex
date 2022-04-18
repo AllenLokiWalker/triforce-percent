@@ -2,7 +2,7 @@
 # www.blender.org
 # io_export_objex2 v2.0.0
 version 2.0
-exportid 1649049072.862951
+exportid 1649135014.746057
 softinfo animation_framerate 20
 skellib linkcustomanim.skel
 animlib linkcustomanim.anim

@@ -73,7 +73,7 @@ void SilentPrincess_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     for (i = 0; i < posHead; i++) {
         // Check if the flower is on screen or not
-        if (Statics_UncullObject(globalCtx, &posList[i], 5.0f, 0, 11.0f, 0.0f, 900.0f)) {
+        if (Statics_UncullObject(globalCtx, &posList[i], 7.0f, 0, 15.0f, 0.0f, 900.0f)) {
             if (!matInitialized) {
                 // Reset RDP state for OPA drawing
                 func_80093D18(globalCtx->state.gfxCtx);
