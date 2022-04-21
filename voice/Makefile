@@ -10,7 +10,8 @@ SOUNDS = \
 	vo_zelda_look.c \
 	vo_zelda_youasked.c \
 	vo_zelda_hereitis.c \
-	vo_zelda_thankyou.c
+	vo_zelda_thankyou.c \
+	chimes_14562_205627.c
 
 Z64AUDIO = $(PROJECT_DIR)/toolchain/z64audio/z64audio
 
@@ -47,6 +48,9 @@ default: $(SOUNDS)
 	mkdir -p                           $(STATICDATADIR)/26
 	cp vo_zelda_thankyouRaw.bin        $(STATICDATADIR)/26/staticdata.bin
 	echo "dtype 3\ndata1 9\ndata2 0" > $(STATICDATADIR)/26/conf.txt
+	mkdir -p                           $(STATICDATADIR)/27
+	cp chimes_14562_205627Raw.bin      $(STATICDATADIR)/27/staticdata.bin
+	echo "dtype 3\ndata1 10\ndata2 0"> $(STATICDATADIR)/27/conf.txt
 
 %.c: %.wav
 	$(Z64AUDIO) -i $< -o $@

@@ -128,7 +128,7 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
     force.z += windZ * b->windpush + (Rand_ZeroOne() - 0.5f) * b->yawmult;
     //Tame large forces
     mag = sqrtf(force.x * force.x + force.y * force.y + force.z * force.z);
-    const float flimit = 0.3f;
+    const float flimit = 0.6f;
     if(mag > flimit){
         d = sqrtf(flimit / mag);
         force.x *= d;
@@ -153,7 +153,7 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
     dp.z = pos1.z - newFulcrum->z;
     //Normalized (length 1) dp
     d = dp.x * dp.x + dp.y * dp.y + dp.z * dp.z;
-    if(d < 0.001f){
+    if(d < 0.0001f){
         dp.x = 0.0f; dp.y = -1.0f; dp.z = 0.0f;
     }else{
         d = 1.0f / sqrtf(d);
@@ -180,7 +180,11 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
             //Remaining component goes into Y
             d = 1.0f - dp.x * dp.x - dp.z * dp.z;
             if(d < 0.0f){
-                dp.x = 0.0f; dp.y = -1.0f; dp.z = 0.0f;
+                k = 1.0f - d; //x^2 + z^2
+                k = 1.0f / sqrtf(k);
+                dp.x *= k;
+                dp.z *= k;
+                dp.y = 0.0f;
             }else{
                 dp.y = -sqrtf(d);
             }
@@ -205,7 +209,7 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
     }
     //Tame large velocities
     mag = sqrtf(vel2.x * vel2.x + vel2.y * vel2.y + vel2.z * vel2.z);
-    const float vlimit = 6.0f;
+    const float vlimit = 10.0f;
     if(mag > vlimit){
         mag = sqrtf(mag * vlimit);
     }
@@ -317,6 +321,29 @@ static void ApplyLimbPosRot(Vec3f *pos1, Vec3f *pos2, float len, float actorscal
     lRot->z = 0;
 }
 
+static void HairPhys_StartRunTwice(Vec3f *fulcrum, Vec3f *lastfulcrum, Vec3f *halffulcrum){
+    dt = 0.025f;
+    fps = 40.0f;
+    halffulcrum->x = (lastfulcrum->x + fulcrum->x) * 0.5f;
+    halffulcrum->y = (lastfulcrum->y + fulcrum->y) * 0.5f;
+    halffulcrum->z = (lastfulcrum->z + fulcrum->z) * 0.5f;
+}
+
+static void HairPhys_EndRunTwice(Vec3f *fulcrum, Vec3f *lastfulcrum){
+    *lastfulcrum = *fulcrum;
+    dt = 0.05f;
+    fps = 20.0f;
+}
+
+static void HairPhys_UpdateDoubleImpl(
+    HairPhysDoubleState *s, const HairPhysConstants *c,
+    float costwist, float sintwist, float windX, float windZ, Vec3f *fc){
+    PhysSegment(&s->s1, c->b, c->lim, fc, NULL, 
+        costwist, sintwist, windX, windZ);
+    PhysSegment(&s->s2, &c->dbl->b, c->dbl->lim, &s->s1.pos, &s->s1.fnext, 
+        costwist, sintwist, windX, windZ);
+}
+
 void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
         Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale, bool ignoreY){
     const HairPhysDouble *dbl = c->dbl;
@@ -333,13 +360,17 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
         s->s2.pos.x = fulcrum.x;
         s->s2.pos.y = s->s1.pos.y - dbl->b.len;
         s->s2.pos.z = fulcrum.z;
+        s->lastfulcrum = fulcrum;
     }else{
-        //Segment 1
-        PhysSegment(&s->s1, c->b, c->lim, &fulcrum, NULL, 
-            costwist, sintwist, windX, windZ);
-        //Segment 2
-        PhysSegment(&s->s2, &dbl->b, dbl->lim, &s->s1.pos, &s->s1.fnext, 
-            costwist, sintwist, windX, windZ);
+        if(c->b->runtwice){
+            Vec3f halffulcrum;
+            HairPhys_StartRunTwice(&fulcrum, &s->lastfulcrum, &halffulcrum);
+            HairPhys_UpdateDoubleImpl(s, c, costwist, sintwist, windX, windZ, &halffulcrum);
+        }
+        HairPhys_UpdateDoubleImpl(s, c, costwist, sintwist, windX, windZ, &fulcrum);
+        if(c->b->runtwice){
+            HairPhys_EndRunTwice(&fulcrum, &s->lastfulcrum);
+        }
     }
     Vec3f s1p = s->s1.pos, s2p = s->s2.pos;
     if(ignoreY){
@@ -350,7 +381,7 @@ void HairPhys_UpdateDouble(HairPhysDoubleState *s, const HairPhysConstants *c,
         lPos, lRot, twist);
 }
 
-void TunicPullOther(HairPhysTunicState *s, const HairPhysConstants *c, void *conn){
+static void TunicPullOther(HairPhysTunicState *s, const HairPhysConstants *c, void *conn){
     if(conn == NULL) return;
     HairPhysTunicState *other = (HairPhysTunicState*)conn;
     float dx = s->s.pos.x - other->s.pos.x;
@@ -366,6 +397,14 @@ void TunicPullOther(HairPhysTunicState *s, const HairPhysConstants *c, void *con
     }
 }
 
+static void HairPhys_UpdateTunicImpl(HairPhysTunicState *s, const HairPhysConstants *c,
+    float costwist, float sintwist, float windX, float windZ, Vec3f *fc){
+    PhysSegment(&s->s, c->b, c->lim, fc, NULL,
+        costwist, sintwist, windX, windZ);
+    TunicPullOther(s, c, s->conn1);
+    TunicPullOther(s, c, s->conn2);
+}
+
 void HairPhys_UpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c,
         Vec3f *lPos, Vec3s *lRot, float windX, float windZ, float actorscale, bool ignoreY){
     Vec3f fulcrum; float costwist, sintwist;
@@ -378,11 +417,17 @@ void HairPhys_UpdateTunic(HairPhysTunicState *s, const HairPhysConstants *c,
         s->s.pos.x = fulcrum.x;
         s->s.pos.y = fulcrum.y - c->b->len;
         s->s.pos.z = fulcrum.z;
+        s->lastfulcrum = fulcrum;
     }else{
-        PhysSegment(&s->s, c->b, c->lim, &fulcrum, NULL,
-            costwist, sintwist, windX, windZ);
-        TunicPullOther(s, c, s->conn1);
-        TunicPullOther(s, c, s->conn2);
+        if(c->b->runtwice){
+            Vec3f halffulcrum;
+            HairPhys_StartRunTwice(&fulcrum, &s->lastfulcrum, &halffulcrum);
+            HairPhys_UpdateTunicImpl(s, c, costwist, sintwist, windX, windZ, &halffulcrum);
+        }
+        HairPhys_UpdateTunicImpl(s, c, costwist, sintwist, windX, windZ, &fulcrum);
+        if(c->b->runtwice){
+            HairPhys_EndRunTwice(&fulcrum, &s->lastfulcrum);
+        }
     }
     Vec3f sp = s->s.pos;
     if(ignoreY){

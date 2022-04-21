@@ -7,92 +7,150 @@ _start:
     mutebhv 32
     mutescale 50
     initchan 0x6FFF
-seq:
-    startchan 0, seq_chn0
-    startchan 1, seq_chn1
-    startchan 2, seq_chn2
-    startchan 3, seq_chn3
-    startchan 4, seq_chn4
-    startchan 5, seq_chn5
-    startchan 6, seq_chn6
-    startchan 7, seq_chn7
-    startchan 8, seq_chn8
-    startchan 9, seq_chn9
-    startchan 10, seq_chn10
-    startchan 11, seq_chn11
-    startchan 13, seq_chn13
-    startchan 14, seq_chn14
+15 Bell:
+    startchan 0, 15 Bell_chn0
+    startchan 1, 15 Bell_chn1
+    startchan 2, 15 Bell_chn2
+    startchan 3, 15 Bell_chn3
+    startchan 4, 15 Bell_chn4
+    startchan 5, 15 Bell_chn5
+    startchan 6, 15 Bell_chn6
+    startchan 7, 15 Bell_chn7
+    startchan 8, 15 Bell_chn8
+    startchan 9, 15 Bell_chn9
+    startchan 10, 15 Bell_chn10
+    startchan 11, 15 Bell_chn11
+    startchan 13, 15 Bell_chn13
+    startchan 14, 15 Bell_chn14
     tempo 85
     svol 91
-    delay 3792
+    delay 4224
+    tempo 77
+    delay 144
+    tempo 85
+    delay 576
     tempo 64
     disablechan 0x6FFF
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
 ; Channel Headers
 
 ; tsec0
 
-seq_chn0:
+15 Bell_chn0:
     shortoff
-    startlayer 0, seq_chn0_ly0
+    startlayer 0, 15 Bell_chn0_ly0
     cpan 50
     reverb 48
     cvol 127
     instr 0
-    delay 3792
+    delay 4944
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn1:
+15 Bell_chn1:
     shortoff
-    startlayer 0, seq_chn1_ly0
+    startlayer 0, 15 Bell_chn1_ly0
     cpan 58
     vibdepth 0
     cvol 127
     reverb 32
     instr 1
-    delay 1200
+    delay 2136
     call _chn1_call8
     call _chn1_call9
-    delay 48
-    cvol 112
-    delay 576
-    vibdepth 2
+    cvol 92
     cdelay 12
-    vibdepth 4
-    delay 60
-    loop 3
-    vibdepth 1
+    cvol 84
+    delay 132
+    cvol 115
+    delay 552
+    cvol 111
+    cdelay 6
+    cvol 114
     cdelay 12
-    vibdepth 3
-    delay 36
+    cvol 118
+    cdelay 6
+    cvol 121
+    cdelay 3
+    cvol 118
+    cdelay 3
+    cvol 123
+    cdelay 3
+    cvol 118
+    cdelay 3
+    loop 5
+    cvol 114
+    cdelay 2
+    cvol 111
+    cdelay 2
+    cvol 114
+    cdelay 2
+    cvol 118
+    cdelay 2
+    cvol 123
+    cdelay 2
+    cvol 118
+    cdelay 2
     loopend
+    cvol 114
+    cdelay 2
+    cvol 111
+    cdelay 4
+    cvol 105
+    cdelay 12
     cvol 109
-    call _chn1_call24
-    call _chn1_call25
-    vibdepth 0
+    cdelay 6
+    cvol 112
+    cdelay 6
+    cvol 115
+    cdelay 6
+    cvol 118
+    delay 72
+    cvol 123
+    cdelay 3
+    cvol 118
+    cdelay 3
+    loop 2
+    cvol 114
+    cdelay 2
+    cvol 111
+    cdelay 2
+    cvol 114
+    cdelay 2
+    cvol 118
+    cdelay 2
+    cvol 123
+    cdelay 2
+    cvol 118
+    cdelay 2
+    loopend
+    cvol 114
+    cdelay 6
+    cvol 109
+    call _chn1_call9
+    call _chn1_call80
     delay 24
     cvol 97
-    call _chn1_call24
+    call _chn1_call9
     cvol 106
-    delay 1116
+    delay 492
+    cvol 109
+    call _chn1_call9
+    call _chn1_call80
+    delay 1164
     end
 ; Section total ticks: 0
 
-seq_chn2:
+15 Bell_chn2:
     shortoff
-    startlayer 0, seq_chn2_ly0
+    startlayer 0, 15 Bell_chn2_ly0
     cvol 114
     cpan 74
     reverb 32
     instr 2
-    delay 1680
-    call _chn2_call7
-    call _chn2_call8
-    call _chn1_call9
-    delay 48
+    delay 2376
     cvol 109
     delay 984
     cvol 99
@@ -100,75 +158,93 @@ seq_chn2:
     cvol 108
     cdelay 6
     cvol 113
-    delay 300
-    cvol 110
-    delay 24
-    call _chn2_call7
-    call _chn2_call8
-    call _chn1_call9
-    delay 600
+    delay 876
+    call _chn2_call15
+    call _chn2_call16
+    call _chn2_call17
+    call _chn1_call80
+    call _chn2_call19
+    cvol 84
+    delay 588
     end
 ; Section total ticks: 0
 
-seq_chn3:
+15 Bell_chn3:
     shortoff
-    startlayer 0, seq_chn3_ly0
+    startlayer 0, 15 Bell_chn3_ly0
     cvol 110
     cpan 78
     reverb 10
     instr 3
-    delay 1140
-    cvol 104
-    cdelay 12
-    call _chn1_call25
-    delay 516
+    delay 2256
+    call _chn2_call16
+    call _chn3_call8
+    delay 24
     cvol 90
-    delay 24
-    cvol 85
-    delay 24
-    cvol 79
-    delay 24
-    cvol 73
     delay 48
     cvol 100
-    delay 1992
+    delay 2568
     end
 ; Section total ticks: 0
 
-seq_chn4:
+15 Bell_chn4:
     shortoff
-    startlayer 0, seq_chn4_ly0
+    startlayer 0, 15 Bell_chn4_ly0
     cvol 113
     reverb 32
     cpan 20
     instr 4
-    delay 1080
-    cvol 118
+    delay 1512
+    call _chn2_call15
+    cvol 103
     delay 24
-    cvol 110
-    call _chn1_call24
-    call _chn1_call25
-    delay 60
-    call _chn1_call8
-    call _chn1_call9
+    call _chn3_call8
+    delay 36
+    cvol 112
     delay 180
+    call _chn2_call15
+    cvol 103
+    delay 24
+    call _chn3_call8
+    delay 240
+    call _chn2_call15
+    call _chn2_call16
+    call _chn2_call17
     cvol 97
-    call _chn1_call24
+    delay 36
+    cvol 92
+    call _chn2_call19
+    cvol 84
+    delay 24
+    cvol 97
+    delay 84
+    cvol 93
+    call _chn2_call19
+    cvol 81
+    cdelay 12
+    cvol 74
+    delay 108
+    cvol 89
+    cdelay 12
+    cvol 97
+    cdelay 12
+    cvol 104
+    cdelay 12
     cvol 108
     delay 108
     cvol 113
-    delay 1728
+    delay 2304
     end
 ; Section total ticks: 0
 
-seq_chn5:
+15 Bell_chn5:
     shortoff
-    startlayer 0, seq_chn5_ly0
+    startlayer 0, 15 Bell_chn5_ly0
     cvol 127
     cpan 64
     reverb 32
     instr 5
-    delay 1968
+    delay 2544
     cvol 85
     cdelay 12
     cvol 90
@@ -176,26 +252,50 @@ seq_chn5:
     cvol 94
     cdelay 12
     cvol 99
-    call _chn1_call24
-    call _chn5_call15
-    delay 1740
+    call _chn1_call9
+    cvol 108
+    cdelay 12
+    cvol 112
+    cdelay 12
+    cvol 117
+    delay 1116
+    cvol 109
+    call _chn1_call9
+    call _chn1_call80
+    delay 1164
     end
 ; Section total ticks: 0
 
-seq_chn6:
+15 Bell_chn6:
     shortoff
-    startlayer 0, seq_chn6_ly0
+    startlayer 0, 15 Bell_chn6_ly0
+    startlayer 1, 15 Bell_chn6_ly1
     reverb 12
     cvol 127
     cpan 90
     instr 6
-    delay 1128
-    cvol 118
-    delay 24
-    cvol 110
-    call _chn1_call24
-    call _chn1_call25
-    delay 780
+    delay 1512
+    call _chn1_call8
+    delay 36
+    cvol 127
+    delay 180
+    call _chn1_call8
+    delay 120
+    cvol 127
+    delay 120
+    call _chn1_call8
+    delay 36
+    cvol 102
+    cdelay 12
+    cvol 98
+    cdelay 12
+    call _chn6_call22
+    cvol 103
+    delay 84
+    call _chn1_call80
+    call _chn2_call19
+    cvol 80
+    delay 156
     cvol 85
     cdelay 12
     cvol 90
@@ -203,80 +303,101 @@ seq_chn6:
     cvol 94
     cdelay 12
     cvol 99
-    call _chn1_call24
-    call _chn5_call15
-    delay 1740
+    call _chn1_call9
+    cvol 108
+    cdelay 12
+    cvol 112
+    cdelay 12
+    cvol 117
+    delay 1620
+    call _chn2_call15
+    call _chn2_call16
+    call _chn2_call17
+    call _chn1_call80
+    call _chn2_call19
+    cvol 84
+    delay 588
     end
 ; Section total ticks: 0
 
-seq_chn7:
+15 Bell_chn7:
     shortoff
-    startlayer 0, seq_chn7_ly0
+    startlayer 0, 15 Bell_chn7_ly0
     cvol 127
     cpan 115
     reverb 32
     instr 7
-    delay 1152
-    cvol 119
-    cdelay 12
-    cvol 113
-    cdelay 12
-    cvol 107
-    cdelay 12
-    cvol 101
-    delay 2604
+    delay 2232
+    call _chn1_call8
+    delay 24
+    cvol 103
+    delay 2616
     end
-; Section total ticks: 3792
+; Section total ticks: 0
 
-seq_chn8:
+15 Bell_chn8:
     shortoff
-    startlayer 0, seq_chn8_ly0
-    startlayer 1, seq_chn8_ly1
+    startlayer 0, 15 Bell_chn8_ly0
+    startlayer 1, 15 Bell_chn8_ly1
     cpan 54
     reverb 32
     cvol 127
     instr 8
-    delay 3792
+    delay 4944
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn9:
+15 Bell_chn9:
     shortoff
-    startlayer 0, seq_chn9_ly0
-    startlayer 1, seq_chn9_ly1
+    startlayer 0, 15 Bell_chn9_ly0
+    startlayer 1, 15 Bell_chn9_ly1
     cvol 127
     cpan 64
     reverb 4
     instr 127
-    delay 3792
+    delay 4944
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn10:
+15 Bell_chn10:
     shortoff
-    startlayer 0, seq_chn10_ly0
-    startlayer 1, seq_chn10_ly1
+    startlayer 0, 15 Bell_chn10_ly0
+    startlayer 1, 15 Bell_chn10_ly1
     cvol 110
     cpan 49
     reverb 32
     instr 10
     delay 1104
-    call _chn2_call7
-    call _chn2_call8
-    call _chn1_call25
-    call _chn10_call11
-    delay 252
-    cvol 105
+    call _chn2_call16
+    call _chn2_call17
+    cvol 97
+    delay 24
+    cvol 93
+    delay 36
+    cvol 97
+    call _chn1_call9
+    cvol 108
     cdelay 12
     cvol 111
-    delay 204
-    cvol 108
+    delay 840
+    cvol 104
+    delay 48
+    cvol 101
+    delay 96
+    call _chn3_call8
     delay 24
-    call _chn2_call7
-    call _chn2_call8
-    call _chn1_call25
-    call _chn10_call11
-    delay 156
+    cvol 91
+    call _chn2_call19
+    cvol 85
+    cdelay 12
+    cvol 81
+    cdelay 12
+    cvol 76
+    cdelay 12
+    cvol 68
+    cdelay 12
+    cvol 58
+    delay 144
     cvol 109
     delay 672
     cvol 103
@@ -287,130 +408,144 @@ seq_chn10:
     cdelay 12
     cvol 91
     cdelay 12
-    call _chn1_call8
-    call _chn1_call25
-    call _chn10_call11
+    cvol 109
+    delay 1056
+    call _chn2_call16
+    call _chn2_call17
+    call _chn1_call80
+    call _chn2_call19
+    cvol 84
     cdelay 12
-    call _chn10_call38
-    call _chn2_call8
-    call _chn2_call7
+    call _chn10_call56
+    call _chn6_call22
+    call _chn2_call17
+    call _chn2_call16
     cvol 112
     delay 24
-    call _chn2_call7
-    call _chn2_call8
-    cvol 95
-    delay 24
+    call _chn2_call15
+    call _chn2_call17
+    call _chn6_call22
     cvol 88
     delay 24
     cvol 81
     delay 24
-    call _chn10_call38
-    call _chn2_call8
-    call _chn2_call7
+    call _chn10_call56
+    call _chn6_call22
+    call _chn2_call17
+    call _chn2_call16
     cvol 112
     delay 24
-    call _chn2_call7
-    call _chn2_call8
-    call _chn1_call9
+    call _chn2_call15
+    call _chn2_call17
+    call _chn6_call22
+    cvol 90
     delay 24
     cvol 86
     delay 24
     end
 ; Section total ticks: 0
 
-seq_chn11:
+15 Bell_chn11:
     shortoff
-    startlayer 0, seq_chn11_ly0
-    startlayer 1, seq_chn11_ly1
+    startlayer 0, 15 Bell_chn11_ly0
+    startlayer 1, 15 Bell_chn11_ly1
+    startlayer 2, 15 Bell_chn11_ly2
     cvol 112
     cpan 79
     reverb 32
     instr 10
-    delay 1680
-    call _chn2_call7
-    cvol 99
+    delay 2232
+    call _chn2_call15
+    call _chn2_call16
+    call _chn3_call8
     delay 24
-    call _chn1_call9
+    cvol 90
     delay 24
     cvol 87
     delay 168
     cvol 90
     delay 24
-    cvol 95
-    delay 24
+    call _chn6_call22
     cvol 102
     cdelay 12
     cvol 105
     cdelay 12
-    call _chn5_call15
+    cvol 109
+    cdelay 12
+    cvol 112
+    cdelay 12
+    cvol 116
     cdelay 12
     cvol 119
     delay 24
     cvol 115
     cdelay 12
     cvol 111
-    delay 1008
-    cvol 108
-    delay 24
-    call _chn2_call7
-    call _chn2_call8
-    call _chn1_call25
-    call _chn10_call11
+    delay 1584
+    call _chn2_call15
+    call _chn2_call16
+    call _chn2_call17
+    call _chn1_call80
+    call _chn2_call19
+    cvol 84
     cdelay 12
-    call _chn10_call38
-    call _chn2_call8
-    call _chn2_call7
+    call _chn10_call56
+    call _chn6_call22
+    call _chn2_call17
+    call _chn2_call16
     cvol 112
     delay 24
-    call _chn2_call7
-    call _chn2_call8
-    cvol 95
-    delay 24
+    call _chn2_call15
+    call _chn2_call17
+    call _chn6_call22
     cvol 88
     delay 24
     cvol 81
     delay 24
-    call _chn10_call38
-    call _chn2_call8
-    call _chn2_call7
+    call _chn10_call56
+    call _chn6_call22
+    call _chn2_call17
+    call _chn2_call16
     cvol 112
     delay 24
-    call _chn2_call7
-    call _chn2_call8
-    call _chn1_call9
+    call _chn2_call15
+    call _chn2_call17
+    call _chn6_call22
+    cvol 90
     delay 24
     cvol 86
     delay 24
     end
 ; Section total ticks: 0
 
-seq_chn13:
+15 Bell_chn13:
     shortoff
-    startlayer 0, seq_chn13_ly0
-    startlayer 1, seq_chn13_ly1
-    startlayer 2, seq_chn13_ly2
+    startlayer 0, 15 Bell_chn13_ly0
+    startlayer 1, 15 Bell_chn13_ly1
+    startlayer 2, 15 Bell_chn13_ly2
     cpan 100
     cvol 127
     reverb 4
     instr 13
-    delay 3792
+    delay 4944
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn14:
+15 Bell_chn14:
     shortoff
-    startlayer 0, seq_chn14_ly0
+    startlayer 0, 15 Bell_chn14_ly0
+    startlayer 1, 15 Bell_chn14_ly1
     cpan 45
     cvol 127
     reverb 4
     instr 14
-    delay 3792
+    delay 4944
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
 ; Note Layers
 
-seq_chn0_ly0:
+15 Bell_chn0_ly0:
     ltp 0
     ldelay 72
     loop 2
@@ -461,9 +596,8 @@ seq_chn0_ly0:
     loop 2
     notedvg 51, 12, 63, 128
     loopend
-    loop 2
-    notedvg 48, 12, 63, 128
-    loopend
+    notevg 48, 63, 128
+    notevg 48, 63, 128
     notevg 44, 63, 128
     notevg 44, 63, 128
     notevg 39, 63, 128
@@ -476,14 +610,11 @@ seq_chn0_ly0:
     notedv 51, 24, 52
     notevg 50, 52, 0
     notedv 48, 72, 52
-    notedv 55, 24, 47
-    notevg 53, 44, 0
-    notevg 51, 37, 0
-    ldelay 2592
+    ldelay 3816
     end
-; Section total ticks: 3612
+; Section total ticks: 4776
 
-seq_chn1_ly0:
+15 Bell_chn1_ly0:
     ltp 0
     ldelay 48
     loop 2
@@ -497,35 +628,44 @@ seq_chn1_ly0:
     notedv 55, 48, 66
     notedv 48, 96, 66
     notedv 43, 48, 66
-    notevg 46, 66, 0
-    notedvg 45, 144, 66, 85
-    loop 2
-    notedv 46, 24, 75
-    notevg 48, 75, 0
-    notedvg 50, 96, 75, 128
-    loopend
-    notedv 43, 24, 75
-    notevg 45, 75, 0
-    notedv 46, 48, 75
-    notedvg 48, 192, 75, 64
-    call _chn1_ly0_call24
-    notedv 48, 48, 71
-    call _chn1_ly0_call24
-    notedvg 43, 288, 61, 234
-    notedv 51, 96, 84
-    notedv 58, 48, 84
+    call _chn1_ly0_call13
+    notedv 39, 24, 66
+    notevg 41, 66, 0
+    notedv 43, 96, 67
+    notedv 46, 48, 67
+    notedvg 45, 144, 67, 85
+    notedv 43, 96, 68
+    notedv 46, 48, 68
+    notedvg 45, 240, 68, 102
+    notedv 50, 48, 68
+    notedv 52, 96, 68
+    notedv 55, 48, 56
+    notedvg 58, 336, 49, 109
+    notedv 46, 48, 78
+    notevg 45, 78, 0
+    notevg 48, 81, 0
+    notevg 46, 84, 0
+    notevg 45, 84, 0
+    notedvg 43, 288, 64, 234
+    notedv 51, 96, 90
+    notedv 58, 48, 80
     notevg 57, 84, 0
     notedv 50, 96, 84
     notevg 39, 74, 0
     notedv 38, 48, 74
-    notevg 41, 74, 0
-    notevg 39, 74, 0
-    notevg 44, 74, 0
-    notedvg 48, 864, 74, 177
+    notevg 41, 81, 0
+    notevg 39, 81, 0
+    notedv 44, 24, 81
+    notevg 51, 88, 0
+    notevg 53, 74, 0
+    notevg 51, 74, 0
+    notedv 53, 96, 74
+    notedv 58, 48, 74
+    notedvg 55, 1248, 74, 236
     end
-; Section total ticks: 3360
+; Section total ticks: 4656
 
-seq_chn2_ly0:
+15 Bell_chn2_ly0:
     ltp 0
     ldelay 72
     loop 2
@@ -584,30 +724,33 @@ seq_chn2_ly0:
     loopend
     notevg 44, 55, 64
     notedv 44, 9, 55
-    ldelay 531
-    notedv 46, 24, 89
-    notevg 48, 89, 0
-    notedv 50, 96, 89
-    notedv 53, 48, 89
-    notedvg 48, 96, 89, 32
-    notedv 46, 24, 80
-    notevg 45, 80, 0
-    notedv 43, 144, 80
-    notedvg 41, 192, 80, 64
-    notedv 43, 48, 73
-    notevg 41, 73, 0
-    notevg 45, 73, 0
-    notevg 43, 73, 0
-    notedvg 41, 768, 73, 240
-    notedv 50, 48, 86
-    notevg 48, 86, 0
-    notevg 44, 86, 0
-    notedv 46, 144, 86
-    notedvg 45, 720, 86, 209
+    ldelay 867
+    notedv 39, 96, 70
+    notedv 43, 48, 70
+    notedvg 41, 768, 70, 208
+    notedv 43, 48, 71
+    notevg 41, 72, 0
+    notevg 45, 75, 0
+    notevg 43, 81, 0
+    notedvg 41, 768, 78, 240
+    notedv 50, 48, 95
+    notevg 48, 95, 0
+    notevg 44, 95, 0
+    notedv 37, 24, 59
+    notevg 32, 59, 0
+    notevg 37, 59, 0
+    notevg 39, 59, 0
+    notevg 39, 59, 0
+    notevg 41, 59, 0
+    notedv 43, 48, 59
+    notevg 39, 59, 0
+    notevg 34, 59, 0
+    notedv 41, 288, 68
+    notedvg 41, 864, 60, 174
     end
-; Section total ticks: 3600
+; Section total ticks: 4752
 
-seq_chn3_ly0:
+15 Bell_chn3_ly0:
     ltp 0
     ldelay 96
     notedv 34, 96, 83
@@ -657,20 +800,29 @@ seq_chn3_ly0:
     notevg 38, 96, 64
     notedvg 38, 36, 96, 192
     notedv 34, 24, 91
-    notedv 36, 96, 91
-    notedv 38, 144, 80
-    notedv 36, 96, 80
-    notedv 38, 48, 80
-    notedv 34, 144, 80
-    notedvg 36, 192, 80, 64
-    notedv 34, 48, 71
-    notevg 36, 71, 0
+    notedvg 36, 120, 91, 51
+    loop 2
+    notedv 22, 24, 53
+    notedvg 31, 120, 53, 153
+    notedv 24, 24, 53
+    notedvg 33, 120, 53, 153
+    loopend
+    notedv 29, 24, 53
+    notedv 36, 48, 53
+    notedvg 34, 72, 53, 85
+    notedv 28, 24, 53
+    notedv 36, 48, 53
+    notevg 34, 53, 0
+    notedvg 39, 288, 53, 21
+    notedv 33, 48, 53
+    notevg 34, 68, 0
+    notevg 36, 67, 0
     notevg 36, 68, 0
-    ldelay 1824
+    ldelay 2400
     end
-; Section total ticks: 3648
+; Section total ticks: 4512
 
-seq_chn4_ly0:
+15 Bell_chn4_ly0:
     ltp 0
     ldelay 96
     notedv 50, 96, 71
@@ -684,17 +836,36 @@ seq_chn4_ly0:
     notedv 41, 96, 83
     notedv 39, 24, 83
     notevg 38, 83, 0
-    notedvg 36, 192, 83, 64
-    notedv 43, 24, 59
-    notevg 45, 59, 0
-    notedvg 46, 96, 59, 128
-    notedv 41, 24, 59
-    notevg 45, 59, 0
-    notedvg 46, 96, 59, 128
-    notedv 39, 24, 59
-    notevg 41, 59, 0
-    notedv 43, 48, 59
-    notedvg 45, 288, 59, 128
+    notedvg 36, 288, 83, 128
+    notedvg 41, 48, 72, 128
+    notedvg 36, 36, 72, 49
+    notedv 41, 12, 54
+    notevg 41, 72, 0
+    notevg 43, 72, 0
+    notevg 45, 72, 0
+    notevg 46, 72, 0
+    notedvg 46, 144, 72, 85
+    notedvg 48, 48, 83, 96
+    notedvg 41, 36, 83, 42
+    notedv 46, 12, 64
+    notevg 46, 83, 0
+    notevg 48, 83, 0
+    notevg 50, 83, 0
+    notevg 51, 83, 0
+    notedv 53, 96, 83
+    notedv 46, 48, 83
+    notedvg 48, 72, 83, 17
+    notedv 43, 24, 83
+    notedv 43, 16, 83
+    notevg 45, 83, 0
+    notevg 46, 83, 0
+    notedv 48, 96, 83
+    notedvg 46, 120, 89, 51
+    notedv 46, 24, 83
+    notedv 46, 16, 83
+    notevg 45, 83, 0
+    notevg 43, 83, 0
+    notedvg 45, 144, 83, 170
     notedv 41, 48, 71
     notevg 39, 71, 0
     notedvg 36, 72, 71, 85
@@ -706,19 +877,20 @@ seq_chn4_ly0:
     notevg 48, 96, 0
     notedv 41, 48, 96
     notedv 39, 96, 69
-    call _chn1_ly0_call24
-    notedv 38, 96, 69
-    notevg 32, 54, 0
-    notedv 34, 24, 54
-    notevg 36, 54, 0
-    notedv 38, 48, 54
-    notevg 36, 54, 0
-    notevg 32, 54, 0
-    notedvg 36, 864, 54, 177
+    call _chn1_ly0_call13
+    notedvg 38, 672, 69, 219
+    notedvg 41, 48, 102, 64
+    notedvg 36, 168, 91, 36
+    notedvg 41, 24, 101, 128
+    notedv 41, 12, 101
+    notevg 43, 101, 0
+    notevg 45, 101, 0
+    notevg 46, 101, 0
+    notedvg 48, 864, 91, 184
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn5_ly0:
+15 Bell_chn5_ly0:
     ltp 0
     ldelay 96
     notedv 41, 96, 67
@@ -732,11 +904,7 @@ seq_chn5_ly0:
     notedv 39, 96, 67
     notedv 43, 48, 83
     notevg 46, 83, 0
-    notedv 45, 24, 74
-    notevg 43, 74, 0
-    notevg 41, 71, 0
-    notevg 39, 68, 0
-    ldelay 768
+    notedvg 45, 1440, 74, 238
     notedv 39, 48, 85
     notedvg 36, 72, 85, 85
     loop 2
@@ -746,12 +914,19 @@ seq_chn5_ly0:
     notevg 41, 69, 0
     notedv 41, 144, 69
     notedv 43, 96, 69
-    call _chn1_ly0_call24
-    notedvg 41, 1248, 69, 236
+    call _chn1_ly0_call13
+    notedvg 41, 336, 69, 182
+    notedv 36, 24, 77
+    notevg 39, 77, 0
+    notevg 41, 100, 0
+    notevg 39, 100, 0
+    notedv 41, 96, 100
+    notedv 46, 48, 100
+    notedvg 43, 1248, 100, 236
     end
-; Section total ticks: 3780
+; Section total ticks: 4932
 
-seq_chn6_ly0:
+15 Bell_chn6_ly0:
     ltp 0
     ldelay 96
     notedv 38, 96, 85
@@ -765,9 +940,37 @@ seq_chn6_ly0:
     notedv 39, 24, 88
     notevg 38, 88, 0
     notedv 34, 48, 83
-    notedvg 33, 864, 79, 227
-    notedv 34, 48, 92
-    notedvg 33, 72, 92, 85
+    notevg 33, 79, 0
+    notedv 34, 24, 79
+    notedvg 36, 168, 79, 219
+    notedvg 41, 48, 79, 85
+    notedvg 36, 36, 79, 35
+    notedv 41, 12, 64
+    notevg 41, 79, 0
+    notedvg 43, 24, 79, 106
+    notedv 46, 12, 79
+    notedvg 43, 144, 79, 85
+    notedvg 36, 48, 96, 96
+    notedvg 29, 36, 90, 42
+    notedv 34, 12, 65
+    notevg 34, 96, 0
+    notevg 36, 96, 0
+    notevg 38, 96, 0
+    notevg 39, 96, 0
+    notedv 41, 144, 96
+    notedvg 40, 72, 96, 17
+    notedv 40, 24, 88
+    notedv 40, 16, 88
+    notevg 41, 88, 0
+    notevg 43, 88, 0
+    notedvg 43, 216, 88, 56
+    notedv 43, 24, 88
+    notedv 43, 16, 88
+    notevg 41, 88, 0
+    notevg 39, 88, 0
+    notedvg 41, 192, 88, 192
+    notedv 34, 48, 95
+    notedvg 33, 72, 95, 85
     loop 2
     notedvg 34, 12, 72, 149
     loopend
@@ -780,11 +983,31 @@ seq_chn6_ly0:
     notedv 36, 96, 55
     notedv 43, 48, 55
     notevg 41, 55, 0
-    notedvg 34, 1248, 55, 236
+    notedv 34, 96, 55
+    notevg 32, 54, 0
+    notedv 34, 24, 61
+    notevg 36, 61, 0
+    notedv 38, 48, 61
+    notevg 36, 61, 0
+    notevg 32, 61, 0
+    notedv 32, 144, 59
+    notevg 34, 59, 5
+    notedv 34, 192, 68
+    notedv 36, 48, 75
+    notevg 34, 75, 0
+    notedvg 36, 864, 68, 174
     end
-; Section total ticks: 3732
+; Section total ticks: 4884
 
-seq_chn7_ly0:
+15 Bell_chn6_ly1:
+    ltp 0
+    ldelay 1464
+    notedv 45, 12, 79
+    ldelay 3468
+    end
+; Section total ticks: 4944
+
+15 Bell_chn7_ly0:
     ltp 0
     ldelay 48
     loop 2
@@ -794,41 +1017,76 @@ seq_chn7_ly0:
     notevg 13, 86, 0
     notedv 12, 96, 86
     notedv 19, 48, 86
-    notedvg 17, 2736, 86, 242
+    notedvg 17, 192, 86, 64
+    notedvg 27, 144, 77, 85
+    notevg 29, 77, 85
+    notevg 27, 77, 85
+    notedv 29, 96, 77
+    notedv 26, 48, 70
+    notevg 29, 70, 0
+    notevg 34, 70, 0
+    notevg 25, 70, 0
+    notevg 28, 70, 0
+    notevg 34, 70, 0
+    notevg 24, 70, 0
+    notevg 27, 70, 0
+    notedv 31, 96, 70
+    notedv 29, 48, 70
+    notevg 27, 70, 0
+    notedvg 29, 2592, 70, 241
     end
-; Section total ticks: 3504
+; Section total ticks: 4656
 
-seq_chn8_ly0:
-    ltp 0
-    ldelay 1152
-    notedv 58, 24, 70
-    notevg 60, 70, 0
-    notedv 62, 96, 70
+15 Bell_chn8_ly0:
     ltp 12
-    notedv 53, 48, 70
-    notedvg 48, 96, 70, 32
-    notedv 46, 24, 70
-    notevg 45, 70, 0
-    notedv 43, 144, 70
-    notedvg 41, 720, 70, 204
+    ldelay 1200
+    notedvg 55, 144, 57, 170
+    notedvg 41, 48, 47, 128
+    notedvg 36, 36, 47, 85
+    notedv 41, 12, 32
+    notevg 41, 47, 0
+    notevg 43, 47, 0
+    notevg 45, 47, 0
+    notevg 46, 47, 0
+    notedvg 46, 144, 47, 170
+    notedvg 48, 48, 57, 128
+    notedvg 41, 36, 57, 85
+    notedv 46, 12, 42
+    notevg 46, 57, 0
+    notevg 48, 57, 0
+    notevg 50, 57, 0
+    notevg 51, 57, 0
+    notedvg 53, 216, 57, 199
+    notedv 43, 24, 46
+    notedv 43, 16, 57
+    notevg 45, 57, 0
+    notevg 46, 57, 0
+    notedvg 48, 864, 57, 241
     notedv 39, 96, 80
     notedv 46, 48, 80
     notevg 45, 80, 0
-    notedvg 38, 906, 80, 228
+    notedvg 38, 672, 80, 219
+    notedv 41, 48, 72
+    notedv 36, 96, 42
+    notedvg 46, 108, 56, 85
+    notedv 43, 12, 37
+    notevg 45, 42, 0
+    notevg 46, 46, 0
+    notedvg 48, 522, 53, 185
     notedvg 41, 288, 72, 208
     notedv 41, 54, 72
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn8_ly1:
+15 Bell_chn8_ly1:
     ltp 12
-    ldelay 3456
+    ldelay 4608
     notedvg 53, 288, 72, 213
     notedv 53, 48, 72
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn9_ly0:
+15 Bell_chn9_ly0:
     ltp 0
     ldelay 24
     notedv 46, 12, 77
@@ -836,7 +1094,8 @@ seq_chn9_ly0:
     notedvg 46, 552, 93, 233
     notedv 46, 12, 73
     notevg 46, 84, 0
-    notedvg 50, 1296, 97, 246
+    notedv 50, 48, 97
+    ldelay 1824
     notedv 41, 24, 86
     loop 8
     notedv 41, 6, 42
@@ -857,19 +1116,19 @@ seq_chn9_ly0:
     notedv 41, 6, 80
     loopend
     notevg 41, 89, 0
-    ldelay 1728
+    ldelay 2304
     end
-; Section total ticks: 3714
+; Section total ticks: 4866
 
-seq_chn9_ly1:
+15 Bell_chn9_ly1:
     ltp 0
     ldelay 48
-    notedvg 28, 2016, 94, 237
-    notedvg 28, 1728, 78, 234
+    notedvg 28, 2592, 94, 241
+    notedvg 28, 2304, 78, 240
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn10_ly0:
+15 Bell_chn10_ly0:
     ltp 0
     ldelay 48
     notedv 50, 96, 113
@@ -877,21 +1136,25 @@ seq_chn10_ly0:
     notedv 48, 96, 105
     notedv 46, 24, 105
     notevg 48, 105, 0
-    notedv 50, 96, 105
-    notedv 53, 48, 105
+    call _chn10_ly0_call7
     notedv 48, 144, 105
-    notedv 50, 96, 105
-    notedv 53, 48, 105
+    call _chn10_ly0_call7
     notedv 60, 96, 97
     notedv 58, 48, 102
     notedv 53, 96, 105
     notedv 51, 24, 105
     notevg 50, 105, 0
-    notedvg 48, 384, 105, 160
-    notedv 58, 24, 63
-    notevg 57, 63, 0
-    notedv 55, 144, 72
-    notedvg 53, 312, 72, 137
+    notedvg 48, 144, 105, 21
+    call _chn10_ly0_call7
+    notedv 48, 96, 100
+    notedv 46, 24, 103
+    notevg 48, 103, 0
+    call _chn10_ly0_call7
+    notedv 48, 144, 100
+    call _chn10_ly0_call7
+    notedv 60, 96, 95
+    notedv 58, 48, 100
+    notedvg 63, 456, 94, 90
     notedv 29, 6, 74
     notevg 31, 82, 0
     notevg 33, 86, 0
@@ -927,17 +1190,29 @@ seq_chn10_ly0:
     notevg 55, 85, 0
     notevg 50, 55, 0
     notevg 48, 55, 0
-    notedv 56, 24, 55
-    notevg 58, 55, 0
-    notedv 60, 288, 55
+    notedv 44, 24, 55
+    notevg 51, 55, 0
+    notevg 53, 85, 0
+    notevg 51, 85, 0
+    notedv 53, 96, 85
+    notedv 58, 48, 85
+    notedv 55, 60, 85
+    notedv 57, 7, 76
+    notevg 58, 76, 0
+    notevg 60, 76, 0
+    notevg 62, 76, 0
+    notedv 63, 8, 76
+    notedv 53, 144, 70
+    notevg 58, 70, 0
+    notedvg 60, 288, 69, 7
     ltp 12
     notedv 58, 576, 60
     end
-; Section total ticks: 3744
+; Section total ticks: 4896
 
-seq_chn10_ly1:
+15 Bell_chn10_ly1:
     ltp 0
-    ldelay 1998
+    ldelay 2574
     notedv 46, 6, 108
     notevg 48, 108, 0
     notevg 50, 108, 0
@@ -964,11 +1239,20 @@ seq_chn10_ly1:
     loopend
     notevg 29, 72, 0
     notedv 27, 144, 70
-    notedvg 29, 864, 70, 213
+    notedv 25, 24, 76
+    notevg 20, 76, 0
+    notevg 25, 76, 0
+    loop 2
+    notedv 27, 24, 76
+    loopend
+    notevg 29, 76, 0
+    notedv 31, 48, 76
+    notedv 27, 96, 76
+    notedvg 53, 1152, 66, 129
     end
-; Section total ticks: 3696
+; Section total ticks: 4824
 
-seq_chn11_ly0:
+15 Bell_chn11_ly0:
     ltp 0
     ldelay 48
     notedv 22, 288, 100
@@ -1016,17 +1300,24 @@ seq_chn11_ly0:
     notevg 38, 110, 64
     notedvg 38, 36, 110, 192
     notedv 34, 24, 104
-    notevg 36, 104, 0
-    notevg 43, 104, 0
-    notevg 41, 104, 0
-    notevg 39, 104, 0
-    notedv 38, 144, 69
-    notedv 36, 96, 69
-    notedv 38, 48, 69
-    notedv 34, 144, 69
-    notedvg 36, 288, 69, 128
-    notedv 17, 144, 109
-    notedvg 15, 312, 94, 137
+    notedv 36, 48, 104
+    notedv 34, 24, 97
+    notedvg 36, 48, 97, 128
+    notedv 22, 24, 88
+    notedvg 31, 120, 89, 51
+    notedv 24, 24, 88
+    notedvg 33, 120, 89, 51
+    notedv 22, 24, 88
+    notedvg 31, 120, 89, 51
+    notedv 24, 24, 88
+    notedvg 36, 144, 88, 85
+    notedv 36, 48, 97
+    notedvg 34, 96, 93, 128
+    notedv 36, 48, 97
+    notevg 34, 93, 0
+    notedv 36, 96, 88
+    notevg 34, 88, 0
+    notedvg 33, 696, 93, 238
     notedv 31, 24, 92
     notevg 38, 92, 0
     notevg 36, 92, 0
@@ -1041,17 +1332,22 @@ seq_chn11_ly0:
     notedv 32, 96, 74
     notedv 34, 24, 74
     notevg 36, 74, 0
-    notedv 32, 144, 74
-    notevg 34, 74, 0
-    notedvg 33, 192, 74, 80
+    notedv 32, 96, 74
+    notedv 39, 48, 74
+    notedv 32, 144, 69
+    notevg 34, 69, 21
+    notedv 34, 192, 87
+    notedv 36, 48, 87
+    notevg 34, 87, 0
+    notedvg 33, 336, 87, 45
     notedv 50, 96, 80
     notedvg 48, 192, 80, 96
     notedv 50, 96, 75
     notedv 48, 144, 75
     end
-; Section total ticks: 3648
+; Section total ticks: 4800
 
-seq_chn11_ly1:
+15 Bell_chn11_ly1:
     ltp 0
     ldelay 72
     notedv 29, 24, 83
@@ -1075,221 +1371,381 @@ seq_chn11_ly1:
     notedv 24, 96, 87
     notedv 31, 48, 87
     notedv 29, 144, 87
-    notevg 31, 93, 0
-    notevg 29, 93, 0
-    notevg 27, 93, 0
-    notevg 29, 93, 0
+    loop 4
+    notedv 15, 144, 100
+    loopend
+    notevg 14, 100, 0
+    notevg 13, 100, 0
+    notedvg 12, 432, 100, 85
+    notedv 17, 144, 109
+    notedvg 15, 384, 94, 160
+    notedvg 17, 768, 99, 240
+    notedv 17, 288, 99
+    notedvg 17, 864, 99, 170
+    end
+; Section total ticks: 4512
+
+15 Bell_chn11_ly2:
+    ltp 0
+    ldelay 1248
+    notedvg 34, 144, 88, 85
+    notevg 36, 88, 85
+    notevg 34, 88, 85
+    notedvg 33, 120, 89, 51
+    notedvg 29, 144, 88, 42
+    notedvg 28, 360, 88, 170
+    notedv 31, 48, 101
     notedv 29, 192, 108
     notedvg 29, 240, 102, 153
     notedv 26, 144, 99
-    notedv 24, 96, 99
-    notedv 17, 48, 99
-    notedv 22, 144, 99
-    notedv 20, 288, 94
-    notedvg 17, 336, 94, 36
+    notevg 24, 99, 85
+    notevg 22, 99, 0
+    notedv 20, 240, 94
+    notedv 24, 48, 94
+    notedv 25, 144, 94
+    notedv 27, 96, 94
+    notedvg 22, 336, 94, 219
+    notevg 41, 75, 45
     notedv 46, 96, 80
     notedvg 44, 192, 80, 96
     notedv 46, 96, 75
     notedv 44, 144, 75
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn13_ly0:
+15 Bell_chn13_ly0:
     ltp 0
-    ldelay 2064
-    notedv 53, 96, 96
-    notedvg 41, 72, 81, 170
-    notedv 50, 24, 88
-    notedvg 46, 144, 96, 85
-    notedvg 38, 48, 81, 128
-    notevg 46, 96, 0
-    notedvg 45, 144, 96, 170
-    notedv 50, 48, 103
-    notevg 48, 103, 0
-    notedvg 41, 96, 81, 128
-    notedvg 39, 48, 81, 128
-    notedvg 36, 96, 81, 128
-    notedv 36, 24, 81
-    notevg 41, 81, 0
-    notevg 43, 81, 0
-    notedvg 46, 29, 81, 44
-    notedvg 41, 715, 81, 223
+    ldelay 2640
+    notedv 53, 96, 100
+    notedvg 41, 72, 85, 170
+    notedv 50, 24, 92
+    notedvg 46, 144, 100, 85
+    notedvg 38, 48, 85, 128
+    notevg 46, 100, 0
+    notedvg 45, 144, 100, 170
+    notedv 50, 48, 107
+    notevg 48, 107, 0
+    notedvg 41, 96, 85, 128
+    notedvg 39, 48, 85, 128
+    notedv 36, 24, 85
+    notedvg 39, 72, 85, 170
+    notedv 37, 24, 94
+    notevg 32, 94, 0
+    notedvg 37, 72, 94, 85
+    notedv 34, 24, 94
+    notedvg 43, 48, 94, 128
+    notedv 41, 24, 94
+    notevg 43, 94, 0
+    notedv 53, 48, 91
+    notedvg 48, 168, 95, 109
+    notedvg 53, 24, 74, 128
+    notedv 53, 12, 74
+    notevg 55, 74, 0
+    notevg 57, 74, 0
+    notevg 58, 74, 0
+    notedvg 53, 153, 74, 135
+    notedvg 45, 711, 94, 224
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn13_ly1:
+15 Bell_chn13_ly1:
     ltp 0
-    ldelay 2088
-    notedv 34, 24, 81
-    notevg 43, 81, 0
-    notevg 34, 81, 0
-    notevg 51, 96, 0
-    notevg 50, 80, 0
-    notevg 51, 96, 0
-    notevg 34, 81, 0
-    notedvg 38, 72, 81, 170
-    notedv 38, 24, 89
-    notedv 39, 96, 96
-    notedv 36, 24, 81
-    notedvg 43, 72, 81, 170
-    notedv 38, 48, 96
-    notedvg 38, 96, 81, 128
-    notedvg 39, 48, 81, 128
-    notevg 38, 81, 0
-    notedv 38, 24, 89
-    notevg 27, 81, 0
-    notevg 36, 81, 0
-    notevg 27, 81, 0
-    notedvg 32, 72, 81, 85
-    notedvg 29, 133, 81, 209
-    notedvg 45, 707, 81, 225
+    ldelay 2664
+    notedv 34, 24, 85
+    notevg 43, 85, 0
+    notevg 34, 85, 0
+    notevg 51, 100, 0
+    notevg 50, 84, 0
+    notevg 51, 100, 0
+    notevg 34, 85, 0
+    notedvg 38, 48, 85, 128
+    notevg 34, 78, 0
+    notedv 39, 96, 100
+    notedv 36, 24, 85
+    notedvg 43, 72, 85, 170
+    notedv 38, 48, 100
+    notedvg 38, 96, 85, 128
+    notedvg 39, 48, 85, 128
+    notevg 38, 85, 0
+    notedv 38, 24, 93
+    notevg 27, 85, 0
+    notevg 36, 85, 0
+    notevg 27, 85, 0
+    notedvg 32, 72, 85, 170
+    notedv 32, 24, 94
+    notedvg 41, 48, 94, 128
+    notedv 39, 24, 94
+    notedvg 41, 72, 94, 170
+    notedv 39, 24, 94
+    notevg 34, 94, 0
+    notedv 39, 48, 94
+    notevg 46, 73, 0
+    notedv 34, 24, 94
+    notedvg 36, 96, 94, 192
+    notedv 29, 24, 94
+    notedvg 36, 48, 94, 128
+    notevg 46, 94, 32
+    notedv 45, 24, 81
+    notevg 33, 94, 0
+    notevg 36, 94, 0
+    notevg 41, 94, 0
+    notevg 43, 94, 0
+    notedvg 46, 29, 94, 44
+    notedvg 43, 715, 94, 223
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn13_ly2:
+15 Bell_chn13_ly2:
     ltp 0
-    ldelay 2112
-    notedvg 39, 48, 81, 128
-    notedvg 39, 96, 81, 192
-    notedv 41, 24, 81
-    notevg 29, 81, 0
-    notedvg 36, 72, 89, 170
-    notedv 31, 24, 81
-    notevg 36, 81, 0
-    notevg 31, 81, 0
-    notedvg 39, 72, 81, 170
-    notedv 29, 24, 81
-    notevg 36, 81, 0
-    notevg 29, 81, 0
-    notedvg 34, 72, 81, 85
-    notedv 27, 24, 81
-    notevg 36, 81, 0
-    notevg 27, 81, 0
-    notedvg 55, 345, 103, 220
-    notedvg 43, 711, 81, 224
+    ldelay 2688
+    notedvg 39, 48, 85, 128
+    notedvg 39, 96, 85, 192
+    notedv 41, 24, 85
+    notevg 29, 85, 0
+    notevg 36, 93, 0
+    notedvg 38, 48, 93, 128
+    notedv 31, 24, 85
+    notevg 36, 85, 0
+    notevg 31, 85, 0
+    notedvg 39, 72, 85, 170
+    notedv 29, 24, 85
+    notevg 36, 85, 0
+    notevg 29, 85, 0
+    notedvg 34, 72, 85, 85
+    notedv 27, 24, 85
+    notevg 36, 85, 0
+    notevg 27, 85, 0
+    notedvg 55, 504, 107, 231
+    notedv 29, 24, 94
+    notedv 41, 48, 95
+    notedv 41, 24, 94
+    notedvg 43, 96, 94, 192
+    notedv 41, 24, 94
+    notedvg 43, 48, 94, 128
+    notedvg 60, 157, 74, 21
+    notedvg 48, 707, 94, 225
     end
-; Section total ticks: 3792
+; Section total ticks: 4944
 
-seq_chn14_ly0:
+15 Bell_chn14_ly0:
     ltp 0
-    ldelay 1224
-    notedv 38, 24, 73
-    notevg 43, 73, 0
-    notevg 45, 73, 0
-    notevg 46, 73, 0
-    notedvg 50, 48, 73, 128
-    notedv 36, 24, 73
-    notevg 41, 73, 0
-    notevg 45, 73, 0
-    notevg 46, 73, 0
-    notedvg 50, 48, 73, 128
-    notedv 34, 24, 73
-    notevg 39, 73, 0
-    notevg 41, 73, 0
-    notevg 43, 73, 0
-    notevg 46, 73, 0
-    notedvg 48, 432, 73, 241
-    notedv 27, 144, 90
-    notevg 26, 90, 0
-    notedv 24, 96, 90
-    notedv 17, 48, 90
-    notedv 22, 144, 90
-    loop 2
-    notedv 20, 144, 90
-    loopend
-    notevg 17, 90, 0
-    notedvg 36, 336, 62, 182
+    ldelay 1080
+    notedv 36, 24, 74
+    notevg 41, 74, 0
+    notedvg 31, 8, 66, 64
+    notedvg 34, 7, 70, 36
+    notevg 38, 72, 36
+    notedv 41, 6, 72
+    notedv 45, 7, 72
+    notevg 48, 72, 36
+    notedv 51, 6, 72
+    notedv 55, 7, 68
+    notevg 58, 64, 36
+    notedv 62, 6, 61
     ltp 12
+    notedvg 53, 28, 57, 192
+    notedv 22, 24, 74
+    notevg 27, 74, 0
+    call _chn14_ly0_call18
+    notedv 34, 24, 74
+    notevg 33, 74, 0
+    notevg 24, 74, 0
+    call _chn14_ly0_call18
+    notedv 33, 24, 74
+    notevg 36, 74, 0
+    notevg 34, 74, 0
+    notevg 22, 74, 0
+    notevg 27, 74, 0
+    call _chn14_ly0_call18
+    notedv 34, 24, 74
+    notevg 33, 74, 0
+    notevg 24, 74, 0
+    call _chn14_ly0_call18
+    notedv 33, 24, 74
+    notevg 36, 74, 0
+    notevg 41, 75, 0
+    notevg 24, 75, 0
+    notevg 29, 75, 0
+    notevg 33, 75, 0
+    notevg 34, 75, 0
+    notevg 38, 75, 0
+    notevg 40, 75, 0
+    notevg 28, 59, 0
+    notevg 31, 59, 0
+    notevg 34, 59, 0
+    notevg 36, 59, 0
+    notevg 40, 59, 0
+    notevg 43, 59, 0
+    notevg 19, 59, 0
+    notevg 24, 59, 0
+    loop 2
+    notedv 27, 24, 59
+    notevg 31, 59, 0
+    notevg 34, 59, 0
+    notevg 39, 59, 0
+    loopend
+    notevg 31, 59, 0
+    notedvg 29, 288, 59, 170
+    notedv 15, 144, 90
+    notevg 14, 90, 0
+    notedv 12, 96, 90
+    notedv 5, 48, 90
+    notedv 10, 144, 90
+    notevg 8, 90, 0
+    notedv 8, 96, 90
+    notedv 12, 48, 66
+    notedv 13, 144, 85
+    notedvg 15, 96, 85, 32
+    notedv 22, 5, 44
+    notevg 26, 45, 0
+    notedvg 29, 6, 48, 42
+    notedv 33, 5, 52
+    notevg 36, 56, 0
+    notedvg 39, 6, 60, 42
+    notedv 43, 5, 57
+    notevg 46, 55, 0
+    notedvg 50, 6, 50, 42
+    notedvg 5, 288, 87, 128
+    notedv 5, 144, 90
+    notedvg 24, 720, 62, 221
+    end
+; Section total ticks: 4848
+
+15 Bell_chn14_ly1:
+    ltp 0
+    ldelay 1132
+    notedvg 33, 8, 68, 64
+    notedv 36, 6, 71
+    notedv 39, 7, 72
+    notevg 43, 72, 36
+    notedv 46, 6, 72
+    notedv 50, 7, 72
+    notevg 53, 70, 36
+    notedv 57, 6, 66
+    notedv 60, 7, 63
+    notevg 63, 59, 36
+    ltp 12
+    notedv 55, 24, 55
+    ldelay 2522
+    notedvg 24, 6, 44, 42
+    notedv 27, 5, 47
+    notevg 31, 51, 0
+    notedvg 34, 6, 55, 42
+    notedv 38, 5, 58
+    notevg 41, 57, 0
+    notedvg 45, 6, 57, 42
+    notedv 48, 5, 54
+    notedv 51, 3, 48
+    notedvg 53, 768, 64, 240
     notedvg 53, 288, 61, 224
     notedvg 53, 96, 61, 160
     end
-; Section total ticks: 3648
+; Section total ticks: 4944
 
 ; Channel Headers
 
 _chn1_call8:
-    cvol 110
-    delay 480
-    call _chn2_call7
-    call _chn2_call8
+    cvol 120
+    delay 24
+    cvol 116
+    delay 24
+    cvol 112
+    delay 24
+    cvol 107
     end
-; Section total ticks: 0
+; Section total ticks: 72
 
 _chn1_call9:
-    cvol 96
-    delay 24
-    cvol 91
-    end
-; Section total ticks: 24
-
-_chn1_call24:
     cdelay 12
-    cvol 103
+    cvol 102
     cdelay 12
     end
 ; Section total ticks: 24
 
-_chn1_call25:
+_chn1_call80:
     cvol 98
     cdelay 12
     cvol 92
     end
 ; Section total ticks: 12
 
-_chn2_call7:
-    cvol 106
+_chn2_call15:
+    cvol 108
     delay 24
     end
 ; Section total ticks: 24
 
-_chn2_call8:
+_chn2_call16:
+    cvol 105
+    delay 24
+    end
+; Section total ticks: 24
+
+_chn2_call17:
     cvol 101
     delay 24
     end
 ; Section total ticks: 24
 
-_chn5_call15:
-    cvol 108
-    cdelay 12
-    cvol 112
-    cdelay 12
-    cvol 117
-    end
-; Section total ticks: 24
-
-_chn10_call11:
+_chn2_call19:
     cdelay 12
     cvol 88
     cdelay 12
-    cvol 84
     end
 ; Section total ticks: 24
 
-_chn10_call38:
+_chn3_call8:
+    cvol 99
+    delay 24
+    cvol 94
+    end
+; Section total ticks: 24
+
+_chn6_call22:
+    cvol 94
+    delay 24
+    end
+; Section total ticks: 24
+
+_chn10_call56:
     cvol 76
     delay 24
     cvol 82
     delay 24
     cvol 88
     delay 24
-    cvol 94
-    delay 24
     end
-; Section total ticks: 96
+; Section total ticks: 72
 
 ; Note Layers
 
-_chn1_ly0_call24:
-    notedv 46, 48, 71
-    notevg 45, 71, 0
+_chn1_ly0_call13:
+    notedv 46, 48, 66
+    notevg 45, 66, 0
     end
 ; Section total ticks: 96
 
 ; Calls
 
+_chn10_ly0_call7:
+    notedv 50, 96, 105
+    notedv 53, 48, 105
+    end
+; Section total ticks: 144
+
+; Note Layers
+
 _chn11_ly1_call3:
     notedv 34, 24, 83
     notevg 36, 83, 0
+    end
+; Section total ticks: 48
+
+; Calls
+
+_chn14_ly0_call18:
+    notedv 29, 24, 74
+    notevg 31, 74, 0
     end
 ; Section total ticks: 48
 

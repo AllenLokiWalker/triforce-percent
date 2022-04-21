@@ -71,12 +71,12 @@ static       HairPhysLimits tunicFRLimits    = {{ 0.0f,  0.1f, -4.0f}, {0.0f, 0.
 static       HairPhysLimits tunicBLLimits    = {{ 0.0f,  0.1f,  4.0f}, {0.0f, 0.0f, 0.0f}};
 static       HairPhysLimits tunicBCLimits    = {{ 0.0f,  0.1f,  4.0f}, {0.0f, 0.0f, 0.0f}};
 static       HairPhysLimits tunicBRLimits    = {{ 0.0f,  0.1f,  4.0f}, {0.0f, 0.0f, 0.0f}};
-static const HairPhysBasic  bangsBasic    =  {0.004f,250.0f,  3.0f,  1.2f, 1.00f, 0.70f, 1.500f, 0};
-static const HairPhysBasic  ponytailBasic =  {0.002f,500.0f,  2.0f,  1.0f, 1.00f, 0.85f, 3.000f, 0};
-static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f,120.0f, 0.02f, 0.97f, 0.010f, 1};
-static const HairPhysDouble tasselsLDouble= {{0.001f,999.9f,  2.0f,120.0f, 0.07f, 0.97f, 0.015f, 1}, &tasselLLimits};
-static const HairPhysDouble tasselsRDouble= {{0.001f,999.9f,  2.0f,120.0f, 0.07f, 0.97f, 0.015f, 1}, &tasselRLimits};
-static const HairPhysBasic  tunicBasic    =  {0.002f,500.0f,  5.0f,200.0f, 0.10f, 0.92f, 0.015f, 2};
+static const HairPhysBasic  bangsBasic    =  {0.004f,250.0f,  3.0f,  1.2f, 1.00f, 0.70f, 1.500f, 0, 0};
+static const HairPhysBasic  ponytailBasic =  {0.002f,500.0f,  2.0f,  1.0f, 1.00f, 0.85f, 3.000f, 0, 0};
+static const HairPhysBasic  tasselsBasic  =  {0.002f,500.0f,  3.0f,120.0f, 0.02f, 0.97f, 0.010f, 1, 1};
+static const HairPhysDouble tasselsLDouble= {{0.001f,999.9f,  2.0f,120.0f, 0.07f, 0.97f, 0.015f, 1, 0}, &tasselLLimits};
+static const HairPhysDouble tasselsRDouble= {{0.001f,999.9f,  2.0f,120.0f, 0.07f, 0.97f, 0.015f, 1, 0}, &tasselRLimits};
+static const HairPhysBasic  tunicBasic    =  {0.002f,500.0f,  5.0f,200.0f, 0.10f, 0.92f, 0.015f, 2, 1};
 static const HairPhysTunic  tunicTunic    =  {4.0f, 0.03f};
 static const HairPhysConstants physc[NUM_PHYS] = {
 	/*ponytail*/{0, &ponytailBasic, &ponytailLimits, NULL, NULL},
@@ -105,6 +105,7 @@ typedef struct {
 	HairPhysDoubleState physDouble[2];
 	HairPhysTunicState physTunic[6];
 	void *physStates[NUM_PHYS];
+	s16 lastAnimFrame;
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
@@ -113,6 +114,7 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 	BotWActor_Init(&en->botw, globalCtx, &BotWLinkMesh, &BotWLinkMeshIdleAnim,
 		en->jointTable, en->morphTable, BOTWLINKMESH_NUM_LIMBS, ACTOR_SCALE, 1.0f);
     ActorShape_Init(&en->botw.actor.shape, 0.0f, ActorShadow_DrawFeet, 20.0f);
+	en->lastAnimFrame = -1;
 	//Physics initialization
 	s32 c = 0;
 	for(s32 i=0; i<4; ++i) en->physStates[c++] = &en->physSimple[i];
@@ -164,6 +166,35 @@ static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx)
 	if(de->shrinkTimer >= 95) Actor_Kill(&tw_actor);
 }
 
+static void BotWLink_WalkingCallback(BotWActor *botw, GlobalContext *globalCtx){
+	Entity *en = (Entity*)botw;
+	float ff = en->botw.skelAnime.curFrame;
+	s16 f = (s16)ff - (s16)(ff * (1.0f / 30.0f)) * 30;
+	if(f == en->lastAnimFrame) return;
+	if(f == 8 || f == 22){
+		
+	}else if(f == 10 || f == 24){
+		
+	}
+	en->lastAnimFrame = f;
+}
+
+static void BotWLink_WalkEndCallback(BotWActor *botw, GlobalContext *globalCtx){
+	Entity *en = (Entity*)botw;
+	s16 f = en->botw.skelAnime.curFrame;
+	if(f == en->lastAnimFrame) return;
+	if(f == 7){
+		
+	}else if(f == 9){
+		
+	}else if(f == 16){
+		
+	}
+	en->lastAnimFrame = f;
+}
+
+//7, 9, 16
+
 #define NACTIONDEFS 16
 static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*0*/{NULL, 0.0f, NULL, 0.0f,
@@ -171,7 +202,7 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*1*/{&BotWLinkMeshIdleAnim, -8.0f, NULL, 0.0f,
 			0, 0, 0, NULL},
 	/*2*/{&BotWLinkMeshModerate_walkAnim, -8.0f, NULL, 0.0f,
-			FLAG_SMOOTHROT, 0, 0, NULL},
+			FLAG_SMOOTHROT, 0, 0, BotWLink_WalkingCallback},
 	/*3*/{&BotWLinkMeshLookatitselfAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			0, 0, 0, NULL},
 	/*4*/{&BotWLinkMeshTurnleftAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
@@ -187,17 +218,17 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*9*/{NULL, 0.0f, NULL, 0.0f,
 			FLAG_INVISIBLE, 0, 0, BotWLink_TimeWarpCallback},
 	/*A*/{&BotWLinkMeshModerate_walk_lookingaroundAnim, -8.0f, NULL, 0.0f,
-			FLAG_SMOOTHROT, 0, 0, NULL},
+			FLAG_SMOOTHROT, 0, 0, BotWLink_WalkingCallback},
 	/*B*/{&BotWLinkMeshTurnleftzeldadescendingAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			FLAG_DELAYROT, 0, 0, NULL},
 	/*C*/{&BotWLinkMeshTurnrightfromspeechAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			FLAG_DELAYROT, 0, 0, NULL},
 	/*D*/{&BotWLinkMeshWalkendAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
-			FLAG_DECEL | FLAG_ENDEARLY, 0, 0, NULL},
+			FLAG_DECEL | FLAG_ENDEARLY, 0, 0, BotWLink_WalkEndCallback},
 	/*E*/{&BotWLinkMeshModerate_walk_lookingaroundAnim, -8.0f, NULL, 0.0f,
-			FLAG_ACCEL, 0, 0, NULL},
+			FLAG_ACCEL, 0, 0, BotWLink_WalkingCallback},
 	/*F*/{&BotWLinkMeshModerate_walkAnim, -8.0f, NULL, 0.0f,
-			FLAG_DECEL, 0, 0, NULL},
+			FLAG_DECEL, 0, 0, BotWLink_WalkingCallback},
 };
 
 static const BotWFixRotAnimDef FixRotAnimDefs[] = {
@@ -213,7 +244,7 @@ static void update(Entity *en, GlobalContext *globalCtx) {
 
 s32 BotWLink_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
 	Entity *en = (Entity*)thisx;
-	static Vec3f footOffset = { 0.0f, 100.0f, 0.0f };
+	static Vec3f footOffset = { 0.0f, 0.0f, 0.0f };
 	Actor_SetFeetPos(&en->botw.actor, limbIndex, BOTWLINKMESH_LFOOT_LIMB, &footOffset,
 		BOTWLINKMESH_RFOOT_LIMB, &footOffset);
 	s8 p = limbToPhysMap[limbIndex];

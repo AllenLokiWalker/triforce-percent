@@ -10,6 +10,7 @@ typedef struct {
     float dampening;
     float windpush;
     u8 parentaxis;
+    u8 runtwice;
 } HairPhysBasic;
 
 typedef struct {
@@ -50,6 +51,7 @@ typedef struct {
 
 typedef struct {
     HairPhysSegState s1, s2;
+    Vec3f lastfulcrum;
     u8 initted;
 } HairPhysDoubleState;
 
@@ -57,6 +59,7 @@ typedef struct {
     void *conn1; //Pointer to another HairPhysTunicState to apply force to.
     void *conn2;
     HairPhysSegState s;
+    Vec3f lastfulcrum;
     u8 initted;
 } HairPhysTunicState;
 
