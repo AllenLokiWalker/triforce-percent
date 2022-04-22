@@ -31,11 +31,7 @@ void Statics_SetGameState(){
     gSaveContext.eventChkInf[0xA] |= (1 << 8) | (1 << 5);
     gSaveContext.eventChkInf[0xB] |= (1 << 0xB) | (1 << 0xC);
     //Debugging
-    // WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
-    // WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
-    // Statics_GiveLongOfTime();
-    // SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
-    // Statics_GiveOvertureOfSages();
+    
     //Set up Adult Link inventory to not have the Master Sword
     gSaveContext.adultEquips.buttonItems[0] = 0x3D; //ITEM_SWORD_BGS
     gSaveContext.adultEquips.buttonItems[1] = 0xFF; //ITEM_NONE
@@ -178,7 +174,7 @@ void Statics_Player_BunnyHood_YSpeed(){
 void Statics_TestShortcuts(){
     GlobalContext* globalCtx = &gGlobalContext;
     //Test/Debugging
-    if((CTRLR_RAW & BTN_L)){
+    if((CTRLR_RAW & BTN_L) && !(CTRLR_RAW & BTN_R) && !(CTRLR_RAW & BTN_Z)){
         if((CTRLR_PRESS & BTN_DDOWN)){
             //Press L+DD to spawn the Arwing
             Actor *arwing = Actor_Find(&globalCtx->actorCtx, ACTOR_EN_CLEAR_TAG, ACTORCAT_BOSS);
@@ -197,8 +193,6 @@ void Statics_TestShortcuts(){
             */
         }else if((CTRLR_PRESS & BTN_DRIGHT)){
             //Press L+DR for....
-            //animation test
-            //Statics_AnimeTest(0);
             //race test
             // gSaveContext.eventInf[1] |= 1;
             // gSaveContext.timer2State = -30;
@@ -206,11 +200,6 @@ void Statics_TestShortcuts(){
             // NABOORU_CONTINUE_VAR |= NABOORU_CONTINUE_BIT;
             // globalCtx->linkAgeOnLoad = 1;
             // globalCtx->nextEntranceIndex = 0x04A6;
-            //Warp to the Running Man
-            // RUNNINGMAN_WANTS_TO_BATTLE_VAR |= RUNNINGMAN_WANTS_TO_BATTLE_BIT;
-            // SAGES_CHARM_VAR &= ~SAGES_CHARM_BIT;
-            // globalCtx->linkAgeOnLoad = 0;
-            // globalCtx->nextEntranceIndex = 0x01F9;
             //Warp to Zora's Domain
             // WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
             // WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
@@ -225,22 +214,11 @@ void Statics_TestShortcuts(){
             // globalCtx->linkAgeOnLoad = 0;
             // globalCtx->nextEntranceIndex = 0x006B;
             // gSaveContext.cutsceneIndex = 0xFFF0;
-            //Warp to Triforce room
-            // globalCtx->linkAgeOnLoad = 0;
-            // globalCtx->nextEntranceIndex = 0x034D;
-            //Warp to ending
-            globalCtx->linkAgeOnLoad = 0;
-            globalCtx->nextEntranceIndex = 0x03FC;
             //Warp to Staff Roll
             // globalCtx->linkAgeOnLoad = 1;
             // globalCtx->nextEntranceIndex = 0x00CD;
             // gSaveContext.cutsceneIndex = 0xFFF8;
             // Statics_SetUpStaffRoll();
-            //Common warp
-            gSaveContext.respawnFlag = -2;
-            globalCtx->sceneLoadFlag = 0x14;
-            globalCtx->fadeTransition = 0x2C;
-            gSaveContext.nextTransition = 5;
         }else if((CTRLR_PRESS & BTN_DUP)){
             /*
             //Kill Link (sorry) and try to exit cutscene (this usually does not work)
@@ -248,6 +226,65 @@ void Statics_TestShortcuts(){
             gGlobalContext.csCtx.state = CS_STATE_IDLE;
             */
         }
+    }
+    if((CTRLR_RAW & BTN_L) && (CTRLR_RAW & BTN_R) && (CTRLR_RAW & BTN_Z) && (CTRLR_RAW & BTN_B)){
+        if((CTRLR_PRESS & BTN_DUP)){
+            //Warp to Sacred Forest Meadow from warp pad with butterfly
+            BETAKOKIRI_SPAWNED_VAR |= BETAKOKIRI_SPAWNED_BIT;
+            LOOKING_FOR_BUTTERFLY_VAR |= LOOKING_FOR_BUTTERFLY_BIT;
+            SHOP_HAS_BUTTERFLY_VAR |= SHOP_HAS_BUTTERFLY_BIT;
+            globalCtx->linkAgeOnLoad = 1;
+            globalCtx->nextEntranceIndex = 0x0600;
+        }else if((CTRLR_PRESS & BTN_DLEFT)){
+            //Warp to Kokiri Forest from Lost Woods with working masks
+            WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+            WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
+            globalCtx->linkAgeOnLoad = 1;
+            globalCtx->nextEntranceIndex = 0x0286;
+        }else if((CTRLR_PRESS & BTN_DDOWN)){
+            //Warp to Gerudo's Fortress from Thieves' Hideout with Long of Time
+            WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+            WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
+            Statics_GiveLongOfTime();
+            globalCtx->linkAgeOnLoad = 1;
+            globalCtx->nextEntranceIndex = 0x02AA;
+        }else if((CTRLR_PRESS & BTN_DRIGHT)){
+            //Warp to Hyrule Field from Lost Woods Bridge with running man wants to battle
+            WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+            WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
+            Statics_GiveLongOfTime();
+            RUNNINGMAN_WANTS_TO_BATTLE_VAR |= RUNNINGMAN_WANTS_TO_BATTLE_BIT;
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x0185;
+        }else if((CTRLR_PRESS & BTN_CUP)){
+            //Warp to Hyrule Field from Lon Lon Ranch with Sages' Charm
+            WORKING_BUNNYHOOD_VAR |= WORKING_BUNNYHOOD_BIT;
+            WORKING_GERUDOMASK_VAR |= WORKING_GERUDOMASK_BIT;
+            Statics_GiveLongOfTime();
+            SAGES_CHARM_VAR |= SAGES_CHARM_BIT;
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x01F9;
+        }else if((CTRLR_PRESS & BTN_CLEFT)){
+            //Warp to Temple of Time from warp pad with Overture of Sages
+            Statics_GiveOvertureOfSages();
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x05F4;
+        }else if((CTRLR_PRESS & BTN_CDOWN)){
+            //Warp to Triforce
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x034D;
+        }else if((CTRLR_PRESS & BTN_CRIGHT)){
+            //Warp to finale
+            globalCtx->linkAgeOnLoad = 0;
+            globalCtx->nextEntranceIndex = 0x03FC;
+        }else{
+            return;
+        }
+        //Common warp
+        gSaveContext.respawnFlag = -2;
+        globalCtx->sceneLoadFlag = 0x14;
+        globalCtx->fadeTransition = 0x2C;
+        gSaveContext.nextTransition = 5;
     }
 }
 
