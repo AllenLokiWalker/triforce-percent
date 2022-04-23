@@ -108,6 +108,19 @@ void HairPhys_UpdateSimple(HairPhysSimpleState *s, const HairPhysConstants *c,
     lRot->z += s->r.z * HAIRPHYS_UNITROT * b->yawmult;
 }
 
+static void SafeRestInNegY(Vec3f *v){
+    float d = 1.0f - v->x * v->x - v->z * v->z;
+    if(d < 0.0f){
+        d = 1.0f - d; //x^2 + z^2
+        d = 1.0f / sqrtf(d);
+        v->x *= d;
+        v->z *= d;
+        v->y = 0.0f;
+    }else{
+        v->y = -sqrtf(d);
+    }
+}
+
 static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b, 
         const HairPhysLimits *lim, const Vec3f *newFulcrum, Vec3f *prevFNext,
         float costwist, float sintwist, float windX, float windZ){
@@ -177,17 +190,18 @@ static void PhysSegment(HairPhysSegState *ss, const HairPhysBasic *b,
             //  = d - (k - normlim) * l
             dp.x -= (k - normlim) * lx;
             dp.z -= (k - normlim) * lz;
-            //Remaining component goes into Y
-            d = 1.0f - dp.x * dp.x - dp.z * dp.z;
-            if(d < 0.0f){
-                k = 1.0f - d; //x^2 + z^2
-                k = 1.0f / sqrtf(k);
-                dp.x *= k;
-                dp.z *= k;
-                dp.y = 0.0f;
-            }else{
-                dp.y = -sqrtf(d);
-            }
+            SafeRestInNegY(&dp);
+        }
+        if(b->limdrag && normlim < 0.0f){
+            float ratio = normlim * -2.0f;
+            if(ratio > 1.0f) ratio = 1.0f;
+            Vec3f dragdp;
+            dragdp.x = lx * normlim;
+            dragdp.z = lz * normlim;
+            SafeRestInNegY(&dragdp);
+            dp.x = (1.0f - ratio) * dp.x + ratio * dragdp.x;
+            dp.y = (1.0f - ratio) * dp.y + ratio * dragdp.y;
+            dp.z = (1.0f - ratio) * dp.z + ratio * dragdp.z;
         }
     }
     //New position

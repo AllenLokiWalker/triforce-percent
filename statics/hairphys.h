@@ -11,6 +11,7 @@ typedef struct {
     float windpush;
     u8 parentaxis;
     u8 runtwice;
+    u8 limdrag;
 } HairPhysBasic;
 
 typedef struct {

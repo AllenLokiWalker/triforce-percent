@@ -837,35 +837,35 @@ _start:
     notedv 39, 24, 83
     notevg 38, 83, 0
     notedvg 36, 288, 83, 128
-    notedvg 41, 48, 72, 128
-    notedvg 36, 36, 72, 49
-    notedv 41, 12, 54
-    notevg 41, 72, 0
-    notevg 43, 72, 0
-    notevg 45, 72, 0
-    notevg 46, 72, 0
-    notedvg 46, 144, 72, 85
-    notedvg 48, 48, 83, 96
-    notedvg 41, 36, 83, 42
-    notedv 46, 12, 64
-    notevg 46, 83, 0
-    notevg 48, 83, 0
-    notevg 50, 83, 0
-    notevg 51, 83, 0
-    notedv 53, 96, 83
-    notedv 46, 48, 83
-    notedvg 48, 72, 83, 17
-    notedv 43, 24, 83
-    notedv 43, 16, 83
-    notevg 45, 83, 0
-    notevg 46, 83, 0
-    notedv 48, 96, 83
-    notedvg 46, 120, 89, 51
-    notedv 46, 24, 83
+    notedvg 41, 48, 78, 128
+    notedvg 36, 36, 78, 49
+    notedv 41, 12, 60
+    notevg 41, 78, 0
+    notevg 43, 78, 0
+    notevg 45, 78, 0
+    notevg 46, 78, 0
+    notedvg 46, 144, 78, 85
+    notedvg 48, 48, 89, 96
+    notedvg 41, 36, 89, 42
+    notedv 46, 12, 70
+    notevg 46, 89, 0
+    notevg 48, 89, 0
+    notevg 50, 89, 0
+    notevg 51, 89, 0
+    notedv 53, 96, 89
+    notedv 46, 48, 89
+    notedvg 48, 72, 89, 17
+    notedv 43, 24, 89
+    notedv 43, 16, 89
+    notevg 45, 89, 0
+    notevg 46, 89, 0
+    notedv 48, 96, 89
+    notedvg 46, 120, 91, 51
+    notedv 46, 24, 85
     notedv 46, 16, 83
-    notevg 45, 83, 0
-    notevg 43, 83, 0
-    notedvg 45, 144, 83, 170
+    notevg 45, 82, 0
+    notevg 43, 80, 0
+    notedvg 45, 144, 79, 170
     notedv 41, 48, 71
     notevg 39, 71, 0
     notedvg 36, 72, 71, 85
@@ -1041,27 +1041,27 @@ _start:
     ltp 12
     ldelay 1200
     notedvg 55, 144, 57, 170
-    notedvg 41, 48, 47, 128
-    notedvg 36, 36, 47, 85
-    notedv 41, 12, 32
-    notevg 41, 47, 0
-    notevg 43, 47, 0
-    notevg 45, 47, 0
-    notevg 46, 47, 0
-    notedvg 46, 144, 47, 170
-    notedvg 48, 48, 57, 128
-    notedvg 41, 36, 57, 85
-    notedv 46, 12, 42
-    notevg 46, 57, 0
-    notevg 48, 57, 0
-    notevg 50, 57, 0
-    notevg 51, 57, 0
-    notedvg 53, 216, 57, 199
-    notedv 43, 24, 46
-    notedv 43, 16, 57
+    notedvg 41, 48, 57, 128
+    notedvg 36, 36, 57, 85
+    notedv 41, 12, 42
+    notevg 41, 57, 0
+    notevg 43, 57, 0
     notevg 45, 57, 0
     notevg 46, 57, 0
-    notedvg 48, 864, 57, 241
+    notedvg 46, 144, 57, 170
+    notedvg 48, 48, 62, 128
+    notedvg 41, 36, 62, 85
+    notedv 46, 12, 47
+    notevg 46, 62, 0
+    notevg 48, 62, 0
+    notevg 50, 62, 0
+    notevg 51, 62, 0
+    notedvg 53, 216, 62, 199
+    notedv 43, 24, 51
+    notedv 43, 16, 62
+    notevg 45, 62, 0
+    notevg 46, 62, 0
+    notedvg 48, 864, 62, 241
     notedv 39, 96, 80
     notedv 46, 48, 80
     notevg 45, 80, 0
