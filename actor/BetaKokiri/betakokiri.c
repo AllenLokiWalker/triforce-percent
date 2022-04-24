@@ -117,19 +117,17 @@ static s32 updateCommon(Entity *en, GlobalContext *globalCtx) {
 	return SkelAnime_Update(&en->skelAnime);
 }
 
-static void update(Entity *en, GlobalContext *globalCtx){
+static void updateWaitGive(Entity *en, GlobalContext *globalCtx);
+static void updateWaitPickedUp(Entity *en, GlobalContext *globalCtx);
+static void updatePostItem(Entity *en, GlobalContext *globalCtx);
+
+static void updateWaitTalk(Entity *en, GlobalContext *globalCtx){
 	Player *player = PLAYER;
 	s32 animDone = updateCommon(en, globalCtx);
 	if(animDone < 0) return;
-	Actor_RequestToTalkInRange(&en->actor, globalCtx, en->actor.colChkInfo.cylRadius +
-        ((en->actor.textId == 0x0B15 && (en->actor.flags & 0x10000)) ? 1000.0f : 50.0f));
 	if(Actor_IsTalking(&en->actor, globalCtx)){
-		LOOKING_FOR_BUTTERFLY_VAR |= LOOKING_FOR_BUTTERFLY_BIT;
-		en->actor.flags &= ~0x10000;
-		s8 playerExchangeItem = Actor_GetItemExchangePlayer(globalCtx);
-		if(en->actor.textId == 0x0B15){
-			(void)0;
-		}else if((BETAKOKIRI_DONE_VAR & BETAKOKIRI_DONE_BIT)){
+		s8 playerExchangeItem = player->exchangeItemId;
+		if((BETAKOKIRI_DONE_VAR & BETAKOKIRI_DONE_BIT)){
 			en->actor.textId = 0x0B16;
 		}else if(playerExchangeItem == EXCH_ITEM_BUG){
 			en->actor.textId = 0x0B12;
@@ -138,27 +136,56 @@ static void update(Entity *en, GlobalContext *globalCtx){
 			en->actor.textId = 0x0B13;
 			func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
 			Player_UpdateBottleHeld(globalCtx, player, ITEM_BOTTLE, PLAYER_AP_BOTTLE);
-		}else if(playerExchangeItem == EXCH_ITEM_NONE){
-			en->actor.textId = 0x0B10;
-		}else{
+			en->actor.update = (ActorFunc)updateWaitGive;
+		}else if(playerExchangeItem != EXCH_ITEM_NONE){
 			en->actor.textId = 0x0B11;
+		}else{
+			LOOKING_FOR_BUTTERFLY_VAR |= LOOKING_FOR_BUTTERFLY_BIT;
+			en->actor.textId = 0x0B10;
 		}
 		player->actor.textId = en->actor.textId;
+		return;
 	}
-	player->exchangeItemId = EXCH_ITEM_BLUE_FIRE;
-	if(en->actor.textId == 0x0B13 && MESSAGE_ADVANCE_END){
-		en->getItemId = GI_ODD_POTION;
+	Actor_RequestToTalk(&en->actor, globalCtx);
+	if(!(BETAKOKIRI_DONE_VAR & BETAKOKIRI_DONE_BIT)){
+		player->exchangeItemId = EXCH_ITEM_BLUE_FIRE;
+	}
+}
+
+static void updateWaitGive(Entity *en, GlobalContext *globalCtx){
+	s32 animDone = updateCommon(en, globalCtx);
+	if(animDone < 0) return;
+	if(MESSAGE_ADVANCE_END){
 		BETAKOKIRI_DONE_VAR |= BETAKOKIRI_DONE_BIT;
+		en->getItemId = GI_ODD_POTION;
+        globalCtx->msgCtx.unk_E3E7 = 4;
+        globalCtx->msgCtx.msgMode = 0x36;
+		Actor_PickUp(&en->actor, globalCtx, en->getItemId, 2000.0f, 2000.0f);
+		en->actor.update = (ActorFunc)updateWaitPickedUp;
 	}
-	if(en->getItemId >= 0){
-		if(en->actor.parent != NULL){
-			en->actor.parent = NULL;
-			en->getItemId = -1;
-			en->actor.flags |= 0x10000;
-			en->actor.textId = 0x0B15;
-		}else{
-			Actor_PickUp(&en->actor, globalCtx, en->getItemId, 2000.0f, 2000.0f);
-		}
+}
+
+static void updateWaitPickedUp(Entity *en, GlobalContext *globalCtx){
+	s32 animDone = updateCommon(en, globalCtx);
+	if(animDone < 0) return;
+	if(en->actor.parent != NULL){
+		en->actor.parent = NULL;
+		en->getItemId = -1;
+		en->actor.flags |= 0x10000;
+		en->actor.textId = 0x0B15;
+		en->actor.update = (ActorFunc)updatePostItem;
+		return;
+	}
+	Actor_PickUp(&en->actor, globalCtx, en->getItemId, 2000.0f, 2000.0f);
+}
+
+static void updatePostItem(Entity *en, GlobalContext *globalCtx){
+	s32 animDone = updateCommon(en, globalCtx);
+	if(animDone < 0) return;
+	Actor_RequestToTalkInRange(&en->actor, globalCtx, en->actor.colChkInfo.cylRadius +
+        ((en->actor.flags & 0x10000) ? 1000.0f : 50.0f));
+	if(Actor_IsTalking(&en->actor, globalCtx)){
+		en->actor.flags &= ~0x10000;
 	}
 }
 
@@ -205,6 +232,6 @@ const ActorInitExplPad init_vars = {
 	.instanceSize = sizeof(Entity),
 	.init = (ActorFunc)init,
 	.destroy = (ActorFunc)destroy,
-	.update = (ActorFunc)update,
+	.update = (ActorFunc)updateWaitTalk,
 	.draw = (ActorFunc)draw
 };
