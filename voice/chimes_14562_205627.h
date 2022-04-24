@@ -1,4 +1,0 @@
-extern u8 chimes_14562_205627Table[];
-AdpcmLoop chimes_14562_205627Loop;
-AdpcmBook chimes_14562_205627Book;
-AudioBankSample chimes_14562_205627Sample;

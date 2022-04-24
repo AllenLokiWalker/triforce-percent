@@ -24,6 +24,9 @@ endif
 ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/z64audio/Makefile)","")
     $(error z64audio not found; try git submodule update --init --recursive)
 endif
+ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/ExtLib/ExtLib.h)","")
+    $(error ExtLib not found; try git submodule update --init --recursive)
+endif
 ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/z64convert/wowlib/wow.h)","")
     $(error wowlib within z64convert not found; try git submodule update --init --recursive)
 endif

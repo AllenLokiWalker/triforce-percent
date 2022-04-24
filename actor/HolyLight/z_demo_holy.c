@@ -196,9 +196,10 @@ void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
         NA_SE_EV_ZELDA_POWER
         */
         static f32 FreqScale = 1.0f;
-        static f32 Vol = 0.99f;
+        static f32 Vol = 0.3f;//0.99f;
         static u32 ReverbAdd = 0;
-        Audio_PlaySoundGeneral(NA_SE_EV_AURORA - SFX_FLAG, &this->actor.projectedPos, 4, 
+        Audio_PlaySoundGeneral(/*NA_SE_EV_AURORA*/NA_SE_EN_GANON_BREATH
+             - SFX_FLAG, &this->actor.projectedPos, 4, 
             &FreqScale, &Vol, (f32*)&ReverbAdd);
     }
 }

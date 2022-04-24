@@ -100,16 +100,17 @@ OBJECT 123 ../actor/SilentPrincess/zobj.zobj
 ACTOR 120 ../actor/SilentPrincess/SilentPrincess.zovl
 SCENE 58 ../scene/Ending/Ending_scene.zscene
 
-STATICDATA ../voice/vo_link_zerudahimeRaw.bin 3 0 0
-STATICDATA ../voice/vo_link_isshoniRaw.bin 3 1 0
-STATICDATA ../voice/vo_zelda_linkRaw.bin 3 2 0
-STATICDATA ../voice/vo_zelda_itseemsRaw.bin 3 3 0
-STATICDATA ../voice/vo_zelda_imsohappyRaw.bin 3 4 0
-STATICDATA ../voice/vo_zelda_iknowtheyreRaw.bin 3 5 0
-STATICDATA ../voice/vo_zelda_lookRaw.bin 3 6 0
-STATICDATA ../voice/vo_zelda_youaskedRaw.bin 3 7 0
-STATICDATA ../voice/vo_zelda_hereitisRaw.bin 3 8 0
-STATICDATA ../voice/vo_zelda_thankyouRaw.bin 3 9 0
+STATICDATA ../voice/vo_link_zerudahime.vadpcm.bin 3 0 0
+STATICDATA ../voice/vo_link_isshoni.vadpcm.bin 3 1 0
+STATICDATA ../voice/vo_zelda_link.vadpcm.bin 3 2 0
+STATICDATA ../voice/vo_zelda_itseems.vadpcm.bin 3 3 0
+STATICDATA ../voice/vo_zelda_imsohappy.vadpcm.bin 3 4 0
+STATICDATA ../voice/vo_zelda_iknowtheyre.vadpcm.bin 3 5 0
+STATICDATA ../voice/vo_zelda_look.vadpcm.bin 3 6 0
+STATICDATA ../voice/vo_zelda_youasked.vadpcm.bin 3 7 0
+STATICDATA ../voice/vo_zelda_hereitis.vadpcm.bin 3 8 0
+STATICDATA ../voice/vo_zelda_thankyou.vadpcm.bin 3 9 0
+STATICDATA ../voice/chimes.vadpcm.bin 3 10 0
 STATICDATA ../music/HereTogether1.aseq 1 0x73020201 0x27000000
 STATICDATA ../music/HereTogether2.aseq 1 0x74020201 0x27000000
 STATICDATA ../music/HereTogether3.aseq 1 0x75020201 0x27000000

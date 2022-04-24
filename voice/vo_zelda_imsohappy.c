@@ -1,33 +1,40 @@
-AdpcmLoop vo_zelda_imsohappyLoop = {
-	.start = 0,
-	.end = 61440,
-	.count = 0x00000000,
-	.origSpls = 0x00000000,
-};
+// "include/z64.h"
 
 AdpcmBook vo_zelda_imsohappyBook = {
-	.order = 2,
+	.order       = 2,
 	.npredictors = 4,
-	.book = {
-		 -1038,   1327,  -1171,    824,   -461,    171,     15,   -106, 
-		 -2619,   2310,  -1626,    909,   -338,    -29,    208,   -251, 
-		  -746,   -537,   -115,    113,    123,     48,    -11,    -25, 
-		  1475,    316,   -310,   -338,   -131,     29,     68,     39, 
-		 -1414,   -260,    928,    351,   -576,   -348,    333,    302, 
-		   377,  -1344,   -508,    834,    504,   -483,   -437,    253, 
-		  -673,   -824,   -789,   -697,   -595,   -500,   -418,   -348, 
-		  2510,   2404,   2122,   1812,   1523,   1272,   1059,    880, 
+	.book        = {
+		  -993,  1245, -1078,   746,  -413,   155,     6,   -83,
+		 -2566,  2222, -1539,   850,  -319,   -13,   171,  -208,
+		  -751,  -542,  -116,   115,   126,    48,   -11,   -26,
+		  1478,   315,  -314,  -342,  -132,    30,    70,    40,
+		 -1414,  -260,   928,   351,  -576,  -348,   333,   302,
+		   377, -1344,  -508,   834,   504,  -483,  -437,   253,
+		  -668,  -818,  -782,  -691,  -590,  -496,  -415,  -346,
+		  2506,  2398,  2117,  1808,  1521,  1271,  1059,   882,
 	},
 };
 
-AudioBankSample vo_zelda_imsohappySample = {
-	.codec = 0,
-	.medium = 0,
-	.unk_bit26 = 0,
-	.unk_bit25 = 0,
-	.size = 34560,
-	.sampleAddr = vo_zelda_imsohappyTable,
-	.loop = &vo_zelda_imsohappyLoop,
-	.book = &vo_zelda_imsohappyBook,
+AdpcmLoop vo_zelda_imsohappyLoop = {
+	.start  = 0,
+	.end    = 61440,
+	.count  = 0,
+	.unk_0C = {
+		0x0, 0x0, 0x0, 0x0
+	},
 };
 
+SoundFontSample vo_zelda_imsohappySample = {
+	.codec     = 0,
+	.medium    = 0,
+	.unk_bit26 = 0,
+	.unk_bit25 = 0,
+	.size      = 34560,
+	.loop      = &vo_zelda_imsohappyLoop,
+	.book      = &vo_zelda_imsohappyBook,
+};
+
+SoundFontSound vo_zelda_imsohappySound = {
+	.sample = &vo_zelda_imsohappySample,
+	.tuning = 1.000000f
+};

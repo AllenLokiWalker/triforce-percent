@@ -1,23 +1,24 @@
 include make/main.mk
 
 SUBDIRS = \
+z64audio/ \
 ZAPD/ \
 yaz0/
 
-.PHONY: default clean $(SUBDIRS) z64audio/ z64convert/
+.PHONY: default clean $(SUBDIRS) z64convert/
 
-default: $(SUBDIRS) z64audio/ z64convert/ $(NOVL)
+default: $(SUBDIRS) z64convert/ $(NOVL)
 	
 clean: yaz0/
 	rm -f $(NOVL)
 	$(MAKE) -C z64convert/ clean
+	$(MAKE) -C z64audio/ clean
+
+z64audio/: export C_INCLUDE_PATH := ../ExtLib
 
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 
-z64audio/:
-	$(MAKE) -C $@ lin
-	
 z64convert/:
 	$(MAKE) -C $@ lincli
 	

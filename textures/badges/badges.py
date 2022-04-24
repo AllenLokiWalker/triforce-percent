@@ -44,7 +44,7 @@ with open('badges.inc', 'w') as f:
     while bi < len(badges_data):
         f.write('    gsDPLoadSync(),\n')
         f.write('    gsDPLoadBlock(7, 0, 0, ((BADGE_SIZE*BADGE_SIZE*BADGES_PER_GROUP+3)>>2)-1,\n')
-        f.write('        CALC_DXT_4b(BADGE_SIZE)),\n')
+        f.write('        G_DXT(G_IM_SIZ_4b, BADGE_SIZE)),\n')
         f.write('    gsDPPipeSync(),\n')
         for t in range(4):
             if bi >= len(badges_data): break

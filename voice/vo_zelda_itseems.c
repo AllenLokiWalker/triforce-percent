@@ -1,33 +1,40 @@
-AdpcmLoop vo_zelda_itseemsLoop = {
-	.start = 0,
-	.end = 119808,
-	.count = 0x00000000,
-	.origSpls = 0x00000000,
-};
+// "include/z64.h"
 
 AdpcmBook vo_zelda_itseemsBook = {
-	.order = 2,
+	.order       = 2,
 	.npredictors = 4,
-	.book = {
-		 -1394,     28,    948,    -38,   -644,     39,    438,    -35, 
-		   -41,  -1393,     56,    947,    -57,   -643,     52,    437, 
-		   688,    269,    336,    222,    200,    153,    127,    101, 
-		   801,   1001,    660,    594,    454,    377,    300,    244, 
-		 -1091,   -757,     56,    442,    277,    -44,   -178,   -100, 
-		  1421,   -106,   -830,   -520,     82,    334,    188,    -48, 
-		  -719,   -923,   -933,   -874,   -794,   -713,   -636,   -566, 
-		  2629,   2657,   2488,   2261,   2029,   1811,   1613,   1435, 
+	.book        = {
+		 -1394,    28,   948,   -38,  -644,    39,   438,   -35,
+		   -41, -1393,    56,   947,   -57,  -643,    52,   437,
+		   683,   266,   332,   218,   196,   149,   123,    98,
+		   799,   995,   654,   587,   447,   370,   293,   238,
+		 -1095,  -761,    56,   446,   280,   -44,  -180,  -102,
+		  1424,  -105,  -834,  -524,    82,   337,   191,   -48,
+		  -717,  -920,  -929,  -870,  -791,  -710,  -634,  -564,
+		  2627,  2654,  2484,  2258,  2026,  1809,  1611,  1434,
 	},
 };
 
-AudioBankSample vo_zelda_itseemsSample = {
-	.codec = 0,
-	.medium = 0,
-	.unk_bit26 = 0,
-	.unk_bit25 = 0,
-	.size = 67392,
-	.sampleAddr = vo_zelda_itseemsTable,
-	.loop = &vo_zelda_itseemsLoop,
-	.book = &vo_zelda_itseemsBook,
+AdpcmLoop vo_zelda_itseemsLoop = {
+	.start  = 0,
+	.end    = 119808,
+	.count  = 0,
+	.unk_0C = {
+		0x0, 0x0, 0x0, 0x0
+	},
 };
 
+SoundFontSample vo_zelda_itseemsSample = {
+	.codec     = 0,
+	.medium    = 0,
+	.unk_bit26 = 0,
+	.unk_bit25 = 0,
+	.size      = 67392,
+	.loop      = &vo_zelda_itseemsLoop,
+	.book      = &vo_zelda_itseemsBook,
+};
+
+SoundFontSound vo_zelda_itseemsSound = {
+	.sample = &vo_zelda_itseemsSample,
+	.tuning = 1.000000f
+};

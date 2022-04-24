@@ -128,7 +128,7 @@ static const Gfx uname_setup_dl[] = {
 };
 
 #define G_CC_BADGES 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0
-#define SETTILESIZEVAL (BADGE_SIZE-1)<<G_TEXTURE_IMAGE_FRAC
+#define SETTILESIZEVAL qu102((BADGE_SIZE) - 1) //(BADGE_SIZE-1)<<G_TEXTURE_IMAGE_FRAC
 
 static const Gfx badge_setup_dl[] = {
     //Rest of load palettes

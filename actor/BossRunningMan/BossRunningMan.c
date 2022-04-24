@@ -215,8 +215,8 @@ void RunningMan_RelativePos(Vec3f* posOrigin, s16 yawOrigin, Vec3f* result, Vec3
 /* -_-_-_-_-_-_-_-_-_- */
 
 static void RunningMan_ClearReusedVars(BossRunningMan* this){
-	const u32 maxsize = MAX(sizeof(this->boss), sizeof(this->npc));
-	bzero(&this->boss, maxsize);
+	bzero(&this->boss, 
+		sizeof(this->boss) > sizeof(this->npc) ? sizeof(this->boss) : sizeof(this->npc));
 }
 
 static void RunningMan_ChangeToBoss(BossRunningMan* this, GlobalContext* globalCtx) {

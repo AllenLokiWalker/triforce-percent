@@ -15,14 +15,14 @@ AdpcmLoop Choir_Norm_Loop = {
     .start = 0x6e7d,
     .end = 0xcf80,
     .count = 0xffffffff,
-    .origSpls = 0x0,
+    .unk_0C = {0,0,0,0},
     .state = {
         0x104b, 0xeff, 0xf94, 0x14de, 0x1a36, 0x1d2c, 0x1ba4, 0x18fa,
         0x1775, 0x182b, 0x17ea, 0x13bf, 0x93d, -0x469, -0xef4, -0x13bf,
     },
 };
 
-AudioBankSample Choir_Norm_Sample = {
+SoundFontSample Choir_Norm_Sample = {
     .codec = 0x0,
     .medium = 0x2,
     .unk_bit26 = 0x0,
@@ -48,14 +48,14 @@ AdpcmLoop Choir_High_Loop = {
     .start = 0x6a2d,
     .end = 0xe765,
     .count = 0xffffffff,
-    .origSpls = 0x0,
+    .unk_0C = {0,0,0,0},
     .state = {
         0x942, 0x1352, 0x13ec, 0xb4a, -0xd, -0x487, -0x2b9, 0x151,
         -0x200, -0xbf8, -0x1260, -0xc7c, 0x31c, 0x13fd, 0x1985, 0x1126,
     },
 };
 
-AudioBankSample Choir_High_Sample = {
+SoundFontSample Choir_High_Sample = {
     .codec = 0x0,
     .medium = 0x2,
     .unk_bit26 = 0x0,
@@ -112,14 +112,14 @@ AdpcmLoop Shehnai_Loop =
     .start = 0x42cf,
     .end = 0x55bf,
     .count = 0xffffffff,
-    .origSpls = 0x0,
+    .unk_0C = {0,0,0,0},
     .state = {
         0x79e, 0xbdd, 0x5fe, 0x81f, 0x8e9, -0x1394, -0x41b4, -0x5914,
         -0x5daf, -0x5d6c, -0x5505, -0x46a3, -0x38e7, -0x2d9c, -0x19d5, -0x151,
     },
 };
 
-AudioBankSample Shehnai_Sample = 
+SoundFontSample Shehnai_Sample = 
 {
     .codec = 0x0,
     .medium = 0x2,
