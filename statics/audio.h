@@ -8,3 +8,4 @@ extern void func_800F5C64(u16 seqId); // Audio_PlayFanfare
 extern void Audio_ClearBGMMute(u8 arg0);
 extern u16 D_801333D0; // sequence mute states
 extern void Audio_SetVolScale(u8 seqIdx, u8 scaleIdx, u8 targetVol, u8 volFadeTimer);
+extern void Audio_BGMButtonHandler();

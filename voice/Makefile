@@ -25,17 +25,17 @@ define procvoice
 endef
 
 default: $(SOUNDS)
-	$(call procvoice,17,0,vo_link_zerudahime)
-	$(call procvoice,18,1,vo_link_isshoni)
-	$(call procvoice,19,2,vo_zelda_link)
-	$(call procvoice,20,3,vo_zelda_itseems)
-	$(call procvoice,21,4,vo_zelda_imsohappy)
-	$(call procvoice,22,5,vo_zelda_iknowtheyre)
-	$(call procvoice,23,6,vo_zelda_look)
-	$(call procvoice,24,7,vo_zelda_youasked)
-	$(call procvoice,25,8,vo_zelda_hereitis)
-	$(call procvoice,26,9,vo_zelda_thankyou)
-	$(call procvoice,27,10,chimes)
+	$(call procvoice,18,0,vo_link_zerudahime)
+	$(call procvoice,19,1,vo_link_isshoni)
+	$(call procvoice,20,2,vo_zelda_link)
+	$(call procvoice,21,3,vo_zelda_itseems)
+	$(call procvoice,22,4,vo_zelda_imsohappy)
+	$(call procvoice,23,5,vo_zelda_iknowtheyre)
+	$(call procvoice,24,6,vo_zelda_look)
+	$(call procvoice,25,7,vo_zelda_youasked)
+	$(call procvoice,26,8,vo_zelda_hereitis)
+	$(call procvoice,27,9,vo_zelda_thankyou)
+	$(call procvoice,28,10,chimes)
 
 %.c: %.wav
 	$(Z64AUDIO) -i $< -o $@

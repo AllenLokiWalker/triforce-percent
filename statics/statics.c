@@ -227,7 +227,8 @@ void Statics_TestShortcuts(){
             */
         }
     }
-    if((CTRLR_RAW & BTN_L) && (CTRLR_RAW & BTN_R) && (CTRLR_RAW & BTN_Z) && (CTRLR_RAW & BTN_B)){
+    const u16 holdbtns = BTN_L | BTN_R | BTN_Z | BTN_B;
+    if((CTRLR_RAW & holdbtns) == holdbtns){
         if((CTRLR_PRESS & BTN_DUP)){
             //Warp to Sacred Forest Meadow from warp pad with butterfly
             BETAKOKIRI_SPAWNED_VAR |= BETAKOKIRI_SPAWNED_BIT;
@@ -380,7 +381,7 @@ void Statics_Player_Update(){
     Statics_KeepTimerNegative();
     Statics_AnimePlayerUpdate();
     Statics_InterfacePlayerUpdate();
-    
+    Audio_BGMButtonHandler();
     /*
     static u8 oldMsgMode = 0;
     static u16 oldOcarinaAction = 0;

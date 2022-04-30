@@ -17,6 +17,8 @@
 #undef Drum
 
 #include "audio.h"
+#include "statics.h"
+#include "../loader/debugger/debugger.h"
 #include "z64audiocompat.h"
 
 #include "../voice/vo_link_zerudahime.c"
@@ -346,5 +348,25 @@ void Statics_AudioRegisterStaticData(void* ram_addr, s32 size,
         entry->numSfx = (data2 >>  8) & 0xFF;
         //Need to update the copy of metadata in gCtlEntries
         func_800E3034(idx);
+    }
+}
+
+void Audio_BGMButtonHandler(){
+    static u16 bgm_num = 0x6E;
+    if(!sIsLiveRun) return;
+    const u16 holdbtns = BTN_L | BTN_Z | BTN_A;
+    if((CTRLR_RAW & holdbtns) != holdbtns) return;
+    if((CTRLR_PRESS & BTN_DLEFT)){
+        Audio_SetBGM(0x100100FF);
+        Debugger_Printf("BGM stop");
+    }else if((CTRLR_PRESS & BTN_DRIGHT)){
+        Audio_SetBGM(bgm_num);
+        Debugger_Printf("BGM %X play", bgm_num);
+    }else if((CTRLR_PRESS & BTN_DUP)){
+        --bgm_num;
+        Debugger_Printf("BGM %X", bgm_num);
+    }else if((CTRLR_PRESS & BTN_DDOWN)){
+        ++bgm_num;
+        Debugger_Printf("BGM %X", bgm_num);
     }
 }
