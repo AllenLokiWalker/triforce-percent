@@ -341,9 +341,9 @@ static void fl_run(OSMesgQueue* queue) {
 			} break;
 			
 			case 10: { // Twitch message
-				for(i=0; i<4; ++i){
-					bcopy(&out_data.command.bytes[21*i], 
-						&twitch_msg_buf[twitch_write_idx], 21);
+				for(i=0; i<NUM_TWITCH_PER_PACKET; ++i){
+					bcopy(&out_data.command.bytes[TWITCH_BYTES*i], 
+						&twitch_msg_buf[twitch_write_idx], TWITCH_BYTES);
 					twitch_msg_buf[twitch_write_idx].timer = 0xFF;
 					++twitch_write_idx;
 					if(twitch_write_idx >= MAX_TWITCH_MESSAGES) twitch_write_idx = 0;

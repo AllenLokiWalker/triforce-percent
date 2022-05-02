@@ -7,22 +7,29 @@ extern s32 fl_disable_green_bar;
 extern u32 last_fl_count;
 extern u32 avg_fl_count;
 
+#define NUM_TWITCH_PER_PACKET 3
+#define TWITCH_BYTES 28
+
 typedef struct {
+    /*
     //Old version: 85 bytes / 4 messages per packet = 21 bytes / packet
     u8 flags; // 4: username color, 2: casing, 2: exclamation qty
     u8 badges; // 1: X, 2: channel badge, 5: global badge
     u8 uname_encoded[19]; //25x 6-bit chars -> 19 bytes
-    /*
-    //New version: 85 bytes / 3 messages per packet = 28 bytes / packet
-    u8 flags1; // 2: content, 2: casing, 4: username color
-    //content: 0: text only, 1: emotes, 2: text then emotes, 3: emotes then text
-    u8 flags2; // 3: emote qty, 3: emote, 2: channel badge
-    u8 flags3; // 3: exclamation qty, 5: global badge
-    u8 uname_encoded[19]; //25x 6-bit chars -> 19 bytes
     */
+    //New version: 85 bytes / 3 messages per packet = 28 bytes / packet
+    u8 flags; // 2: content, 2: casing, 1: bad words, 3: unused
+    //content: 0: text only, 1: emotes, 2: text then emotes, 3: emotes then text
+    Color_RGB8 rgb; // username color
+    u8 quantities; // 4: exclamation qty, 4: emote qty
+    u8 emote;
+    u8 global_badge;
+    u8 channel_badge;
+    u8 dummy;
+    u8 uname_encoded[19]; //25x 6-bit chars -> 19 bytes
+    
     u8 timer;
     u8 culled;
-    Color_RGB8 rgb;
     u8 a;
     Vec3f center;
 } TwitchMessage;
