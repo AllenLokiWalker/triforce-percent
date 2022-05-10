@@ -34,7 +34,7 @@
     {"path": "channel/subscriber_2000.png", "plt": "palettes/misc.png", "dither": false},
     {"path": "channel/subscriber_3000.png", "plt": "palettes/misc.png", "dither": false},
     {"path": "emote/heart.png", "plt": "palettes/lowdenoms.png", "dither": false},
-    {"path": "emote/VirtualHug.png", "plt": "palettes/misc.png", "dither": true},
+    {"path": "emote/VirtualHug.png", "plt": "palettes/virtualhug.png", "dither": true},
     {"path": "emote/FrankerZ.png", "plt": "palettes/leaders.png", "dither": false},
     {"path": "emote/PogChamp.png", "plt": "palettes/misc.png", "dither": false}
 ]

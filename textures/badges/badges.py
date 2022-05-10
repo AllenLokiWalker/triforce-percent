@@ -31,7 +31,7 @@ for badge in badges_data:
             im = im.convert()
         if im.size[0] != outsz or im.size[1] != outsz:
             im = im.resize((outsz, outsz), resample=Image.NEAREST)
-        badge['data'] = ci4tool.apply_palette_to_im(im, palettes[badge['plt']], badge['dither'])
+        badge['data'] = ci4tool.apply_palette_to_im(im, palettes[badge['plt']])#, badge['dither'])
 
 with open('badges.inc', 'w') as f:
     f.write('__attribute__((aligned(16))) static const u64 badge_textures[] = {\n')

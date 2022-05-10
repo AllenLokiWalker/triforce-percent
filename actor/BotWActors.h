@@ -135,7 +135,8 @@ static inline void BotWActor_SetAnim(BotWActor *botw, AnimationHeader *anim,
 	if(mode <= ANIMMODE_LOOP_INTERP) botw->skelAnime.animLength -= 1.0f;
 }
 
-static inline void BotWActor_UpdateEyes(BotWActor *botw, u8 repeatCurFrame){
+static inline void BotWActor_UpdateEyes(BotWActor *botw, GlobalContext *globalCtx,
+		u8 repeatCurFrame){
 	if((botw->flags & FLAG_EYESCLOSED) && (botw->eyeState == 0 || botw->eyeState == 3)){
 		botw->eyeState = 1; //Start closing eyes
 	}else if(!(botw->flags & FLAG_EYESCLOSED) && (botw->eyeState == 1 || botw->eyeState == 2)){
@@ -157,8 +158,10 @@ static inline void BotWActor_UpdateEyes(BotWActor *botw, u8 repeatCurFrame){
 			botw->blinkTimer = 20;
 		}
 	}else{
-		if(botw->blinkTimer == 0){
-			botw->blinkTimer = Rand_S16Offset(60, 60);
+		if(globalCtx->csCtx.frames == 682){
+			botw->blinkTimer = 5;
+		}else if(botw->blinkTimer == 0){
+			botw->blinkTimer = Rand_S16Offset(40, 70);
 		}else if(botw->blinkTimer < 4){
 			--botw->blinkTimer;
 		}else{
@@ -229,7 +232,7 @@ static inline void BotWActor_Update(BotWActor *botw, GlobalContext *globalCtx,
 		if(def->func != NULL) def->func(botw, globalCtx);
 	}
 	Actor_UpdateBgCheckInfo(globalCtx, &botw->actor, 0.0f, 0.0f, 0.0f, 4);
-	BotWActor_UpdateEyes(botw, repeatCurFrame);
+	BotWActor_UpdateEyes(botw, globalCtx, repeatCurFrame);
 	botw->skelAnime.playSpeed = Statics_LagPlaySpeed();
 	s32 animFinished = SkelAnime_Update(&botw->skelAnime);
 	if(animFinished){

@@ -41,7 +41,8 @@ static Color_RGBA8 SparkleEnv = { 60, 60, 20, 0 };
 void HolyLight_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnHolyLight* this = (EnHolyLight*)thisx;
 
-    this->sound = 0;
+    this->sound = HLYLGT_SOUND_STOP;
+    this->soundVol = 0.4f;
 
     this->actorSlot = this->actor.params;
     this->update = &Update_WaitForCutscene;
@@ -67,17 +68,18 @@ void Update_WaitForCutscene(EnHolyLight* this, GlobalContext* globalCtx, f32 cur
         this->mode = action->action;
         switch (action->action) {
             case HLYLGT_MD_FADEIN:
-                this->sound = 1;
+                this->sound = HLYLGT_SOUND_PLAY;
                 this->update = &Update_FadeIn;
                 Update_FadeIn(this, globalCtx, currentFrame);
                 break;
             case HLYLGT_MD_GLOW_SILENT:
-                this->sound = 0;
+                this->sound = HLYLGT_SOUND_LOWER;
             case HLYLGT_MD_GLOW:
                 this->update = &Update_Glow;
                 Update_Glow(this, globalCtx, currentFrame);
                 break;
             case HLYLGT_MD_FADEOUT:
+                this->sound = HLYLGT_SOUND_FADEOUT;
                 this->update = &Update_FadeOut;
                 Update_FadeOut(this, globalCtx, currentFrame);
                 break;
@@ -187,20 +189,20 @@ void HolyLight_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.world.pos.z = startPos.z + ((endPos.z - startPos.z) * lerp);
     this->update(this, globalCtx, currentFrame);
     
-    if(this->sound) {
-        /*
-        other candidates:
-        NA_SE_EV_SPIRIT_STONE
-        NA_SE_EV_HEALING
-        NA_SE_EV_TRIFORCE
-        NA_SE_EV_ZELDA_POWER
-        */
-        static f32 FreqScale = 1.0f;
-        static f32 Vol = 0.3f;//0.99f;
-        static u32 ReverbAdd = 0;
-        Audio_PlaySoundGeneral(/*NA_SE_EV_AURORA*/NA_SE_EN_GANON_BREATH
-             - SFX_FLAG, &this->actor.projectedPos, 4, 
-            &FreqScale, &Vol, (f32*)&ReverbAdd);
+    if(this->sound >= HLYLGT_SOUND_PLAY){
+        if(this->sound == HLYLGT_SOUND_LOWER){
+            this->soundVol = 0.25f;
+        }else if(this->sound == HLYLGT_SOUND_FADEOUT){
+            this->soundVol -= 0.025f;
+        }
+        if(this->soundVol > 0.0f){
+            //original: NA_SE_EV_AURORA, other candidates:
+            //NA_SE_EV_SPIRIT_STONE, NA_SE_EV_HEALING, NA_SE_EV_TRIFORCE, NA_SE_EV_ZELDA_POWER
+            static f32 FreqScale = 1.0f;
+            static u32 ReverbAdd = 0;
+            Audio_PlaySoundGeneral(NA_SE_EN_GANON_BREATH - SFX_FLAG, 
+                &this->actor.projectedPos, 4, &FreqScale, &this->soundVol, (f32*)&ReverbAdd);
+        }
     }
 }
 

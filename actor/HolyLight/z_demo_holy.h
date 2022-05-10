@@ -13,6 +13,13 @@ typedef enum HolyLightMode {
     HLYLGT_MD_MAX
 } HolyLightMode;
 
+enum HolyLightSoundState {
+    HLYLGT_SOUND_STOP,
+    HLYLGT_SOUND_PLAY,
+    HLYLGT_SOUND_LOWER,
+    HLYLGT_SOUND_FADEOUT
+};
+
 typedef struct EnHolyLight {
     Actor actor;
     UpdateFunc update;
@@ -28,6 +35,7 @@ typedef struct EnHolyLight {
     HolyLightMode mode;
     u8 actorSlot;
     u8 sound;
+    f32 soundVol;
 } EnHolyLight; // size = 0x03A8
 
 #endif

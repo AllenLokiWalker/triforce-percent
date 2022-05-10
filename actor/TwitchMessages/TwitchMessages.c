@@ -12,7 +12,7 @@ typedef struct {
 #define NUM_ICONS 38
 #define IDX_CHANNEL_START 31
 #define IDX_EMOTE_START 34
-#define NUM_PALETTES 4
+#define NUM_PALETTES 5
 #define ICON_SIZE 32
 #define ICONS_PER_GROUP 4
 #define NUM_ICON_GROUPS ((NUM_ICONS + ICONS_PER_GROUP - 1) / ICONS_PER_GROUP)
