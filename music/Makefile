@@ -18,7 +18,7 @@ TARGETS=\
 define procaudio
 	mkdir -p $(STATICDATADIR)/$(1)
 	cp $(5) $(STATICDATADIR)/$(1)/staticdata.bin
-	echo "dtype $(2)\ndata1 0x$(3)\ndata2 0x$(4)0000" > $(STATICDATADIR)/$(1)/conf.txt
+	echo "dtype $(2)\ndata1 0x$(3)020201\ndata2 0x$(4)0000" > $(STATICDATADIR)/$(1)/conf.txt
 endef
 
 	

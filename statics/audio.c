@@ -235,12 +235,6 @@ static const u8 PatchedEnv12Chirps[] = {
     0x04, 0x03, 0x50, //NATURE_IO_CRITTER_1_BEND_PITCH(80),
     0x04, 0x04, 0x00, //NATURE_IO_CRITTER_1_NUM_LAYERS(0),
     0x04, 0x05, 0x30, //NATURE_IO_CRITTER_1_PORT5(48),
-    /*
-    0x05, 0x02, 0x0C, //NATURE_IO_CRITTER_1_TYPE(NATURE_CRITTER_BIRD_SONG),
-    0x05, 0x03, 0x50, //NATURE_IO_CRITTER_1_BEND_PITCH(80),
-    0x05, 0x04, 0x00, //NATURE_IO_CRITTER_1_NUM_LAYERS(0),
-    0x05, 0x05, 0x30, //NATURE_IO_CRITTER_1_PORT5(48),
-    */
     0xFF
 };
 
@@ -353,20 +347,19 @@ void Statics_AudioRegisterStaticData(void* ram_addr, s32 size,
 
 void Audio_BGMButtonHandler(){
     static u16 bgm_num = 0x6E;
-    if(!sIsLiveRun) return;
     const u16 holdbtns = BTN_L | BTN_Z | BTN_A;
     if((CTRLR_RAW & holdbtns) != holdbtns) return;
     if((CTRLR_PRESS & BTN_DLEFT)){
         Audio_SetBGM(0x100100FF);
-        Debugger_Printf("BGM stop");
+        if(sIsLiveRun) Debugger_Printf("BGM stop");
     }else if((CTRLR_PRESS & BTN_DRIGHT)){
         Audio_SetBGM(bgm_num);
-        Debugger_Printf("BGM %X play", bgm_num);
+        if(sIsLiveRun) Debugger_Printf("BGM %X play", bgm_num);
     }else if((CTRLR_PRESS & BTN_DUP)){
         --bgm_num;
-        Debugger_Printf("BGM %X", bgm_num);
+        if(sIsLiveRun) Debugger_Printf("BGM %X", bgm_num);
     }else if((CTRLR_PRESS & BTN_DDOWN)){
         ++bgm_num;
-        Debugger_Printf("BGM %X", bgm_num);
+        if(sIsLiveRun) Debugger_Printf("BGM %X", bgm_num);
     }
 }

@@ -369,10 +369,21 @@ void Statics_Player_Init(){
     //nothing using this right now
 }
 
+static u8 sOneTime = 0;
+static u8 sPatchWaitCounter = 0;
+
 void Statics_Player_Update(){
     //Patch overwrote this
     if(PLAYER->unk_A73 != 0) PLAYER->unk_A73--;
     //Custom content
+    if(!sIsLiveRun && !sOneTime){
+        if(sPatchWaitCounter < 40){
+            ++sPatchWaitCounter;
+        }else{
+            Statics_OneTime();
+            sOneTime = 1;
+        }
+    }
     Statics_TestShortcuts();
     Statics_LostWoods();
     Statics_PatchShop();
@@ -395,10 +406,8 @@ void Statics_Player_Update(){
     */
 }
 
-static u8 sOneTime = 0;
-
 void Statics_Update(){
-    if(!sOneTime){
+    if(sIsLiveRun && !sOneTime){
         Statics_OneTime();
         sOneTime = 1;
     }
@@ -417,7 +426,7 @@ __attribute__((section(".start"))) void Statics_Init(){
     bzero((void*)0x80700000, 256);
 }
 
-static void* malloc_addr = (void*)0x80410000;
+static void* malloc_addr = (void*)0x80440000;
 
 void* Statics_StaticDataMalloc(u32 size){
     void* ret = malloc_addr;
@@ -429,7 +438,6 @@ void Statics_RegisterStaticData(void* ram_addr, s32 type_and_size,
         s32 data1, s32 data2){
     u32 size = type_and_size & 0x00FFFFFF;
     u8 type = type_and_size >> 24;
-    //if(sIsLiveRun) Debugger_Printf("Registering %08X size %d type %d", ram_addr, size, type);
     if(type == 0){
         Statics_AnimeRegisterStaticData(ram_addr);
     }else if(type >= 1 && type <= 3){
