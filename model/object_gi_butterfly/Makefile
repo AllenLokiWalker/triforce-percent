@@ -6,7 +6,8 @@ CCFLAGS += -Wno-incompatible-pointer-types -Wno-missing-braces
 
 .PRECIOUS: object_gi_butterfly.bin
 
-default: object_gi_butterfly.pat
+default: object_gi_butterfly.pat object_gi_butterfly.bin
+	dd if=object_gi_butterfly.bin of=../../build-romhack/object/373/zobj.zobj conv=notrunc bs=1 seek=$$((0xB50))
 
 object_gi_butterfly.pat: object_gi_butterfly.bin
 	cat patch_pre.dat $< patch_post.dat > $@

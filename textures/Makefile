@@ -9,6 +9,7 @@ TEXTURES = \
 	butterfly_bottle.rgba32.pat \
 	sages_charm_24.rgba32.bin \
 	sages_charm_24.rgba32.pat \
+	triforce.rgba32.bin \
 	triforce.rgba32.pat \
 	item_butterfly.ia4.bin \
 	item_magic_powder.ia4.bin \

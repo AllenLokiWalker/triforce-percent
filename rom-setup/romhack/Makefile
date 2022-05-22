@@ -19,6 +19,9 @@ $(BUILDDIR)/tf-romhack.z64: $(BUILDDIR)/update.txt $(LOCALBINFILES) ../../toolch
 	cp ../../toolchain/zzrtl/oot_build.rtl $(BUILDRTL)
 	sed -i 's/build.z64/tf-romhack.z64/g' $(BUILDRTL)
 	$(ZZRTL) $(BUILDRTL)
+	dd if=../../textures/butterfly_bottle.rgba32.bin of=$@ conv=notrunc bs=1 seek=$$((0x7DB000))
+	dd if=../../textures/sages_charm_24.rgba32.bin of=$@ conv=notrunc bs=1 seek=$$((0x84B100))
+	dd if=../../textures/triforce.rgba32.bin of=$@ conv=notrunc bs=1 seek=$$((0x84D500))
 
 padmgr_call_statics.o: padmgr_call_statics.s
 	$(AS) -Os -o $@ $<
