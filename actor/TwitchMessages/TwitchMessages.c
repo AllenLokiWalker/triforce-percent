@@ -2,51 +2,7 @@
 #include "../loader/fast_loader/fast_loader.h"
 #include "../statics/statics.h"
 
-typedef struct {
-    Actor actor;
-    MtxF modelf;
-    Mtx modelrsp;
-    u16 frames_fade;
-} Entity;
-
-#define NUM_ICONS 38
-#define IDX_CHANNEL_START 31
-#define IDX_EMOTE_START 34
-#define NUM_PALETTES 5
-#define ICON_SIZE 32
-#define ICONS_PER_GROUP 4
-#define NUM_ICON_GROUPS ((NUM_ICONS + ICONS_PER_GROUP - 1) / ICONS_PER_GROUP)
-#define NUM_CMDS_PER_TILE_SETUP_DL 8
-
-#define UNAME_TEX_COLS 128
-#define ST_SCALE_PWR 7
-
-#define FRAMES_FADE_MAX 100
-#define FRAMES_FADE_MIN 10
-#define MSGS_ON_SCREEN_TARGET 40
-#define MSG_POS_EXTENT_X 1000.0f
-#define MSG_POS_EXTENT_Y 300.0f
-#define MSG_POS_EXTENT_Z 300.0f
-#define MSG_SCALE 1.6f
-
-#define RAM_END 0x80800000
-#define UNAME_TEX_SZ (UNAME_TEX_COLS * sizeof(u64))
-#define UNAME_TEX_BEGIN (RAM_END - MAX_TWITCH_MESSAGES * UNAME_TEX_SZ) //0x20000 / 0x807E0000
-#define VTX_EACH_SZ (4 * sizeof(Vtx))
-#define VTX_PERMSG_SZ (6 * VTX_EACH_SZ)
-#define VTX_BEGIN (UNAME_TEX_BEGIN - MAX_TWITCH_MESSAGES * VTX_PERMSG_SZ) //0xA000 / 0x807D6000
-
-static inline u64 *GetMessageTexture(u16 m) {
-    return (u64*)(UNAME_TEX_BEGIN + m * UNAME_TEX_SZ);
-}
-
-static inline Vtx *GetMessageVerts(u16 m) {
-    return (Vtx*)(VTX_BEGIN + m * VTX_PERMSG_SZ);
-}
-
-__attribute__((aligned(16))) static const u64 username_font[] = {
-    #include "../../textures/username_font.i4.inc"
-};
+#include "../../textures/twitch/icons.inc"
 
 __attribute__((aligned(16))) static const u64 tw_msg_case0[] = {
     #include "../../textures/tw_msg_case0.i4.inc"
@@ -68,7 +24,9 @@ __attribute__((aligned(16))) static const u64 tw_msg_exclam[] = {
     #include "../../textures/tw_msg_exclam.i4.inc"
 };
 
-#include "../../textures/badges/badges.inc"
+__attribute__((aligned(16))) static const u64 username_font[] = {
+    #include "../../textures/username_font.i4.inc"
+};
 
 static const u16 char_starts[64] = {
     0, 
@@ -89,8 +47,6 @@ static const u64 *const tw_msg_cases[4] = {
 static const u16 casing_widths[4] = {
     87, 89, 91, 107
 };
-
-#define EXCLAM_WIDTH 4
 
 /*
 static const Color_RGB8 uname_colors[16] = {
@@ -141,12 +97,12 @@ static const Gfx icon_setup_dl[] = {
     gsDPLoadSync(),
     gsDPLoadTLUTCmd(7, NUM_PALETTES*16 - 1),
     gsDPPipeSync(),
-    //Badge tile sizes
+    //Icon tile sizes
     gsDPSetTileSize(0, 0, 0, SETTILESIZEVAL, SETTILESIZEVAL),
     gsDPSetTileSize(1, 0, 0, SETTILESIZEVAL, SETTILESIZEVAL),
     gsDPSetTileSize(2, 0, 0, SETTILESIZEVAL, SETTILESIZEVAL),
     gsDPSetTileSize(3, 0, 0, SETTILESIZEVAL, SETTILESIZEVAL),
-    //Badge load tile info
+    //Icon load tile info
     gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_16b, 0, 0, 7, 
         0, 0, 0, 0, 0, 0, 0),
     //Rest of pipeline
@@ -154,6 +110,43 @@ static const Gfx icon_setup_dl[] = {
     gsDPSetCombineMode(G_CC_ICONS, G_CC_ICONS),
     gsSPEndDisplayList(),
 };
+
+#define FRAMES_FADE_MAX 100
+#define FRAMES_FADE_MIN 10
+#define MSGS_ON_SCREEN_TARGET 40
+#define MSG_POS_EXTENT_X 1000.0f
+#define MSG_POS_EXTENT_Y 300.0f
+#define MSG_POS_EXTENT_Z 300.0f
+#define MSG_SCALE 1.6f
+
+typedef struct {
+    Actor actor;
+    MtxF modelf;
+    Mtx modelrsp;
+    u16 frames_fade;
+    u8 override_icon;
+} Entity;
+
+#define NUM_ICON_GROUPS ((NUM_ICONS + ICONS_PER_GROUP - 1) / ICONS_PER_GROUP)
+#define NUM_CMDS_PER_TILE_SETUP_DL 8
+#define ST_SCALE_PWR 7
+#define UNAME_TEX_COLS 128
+#define EXCLAM_WIDTH 4
+
+#define RAM_END 0x80800000
+#define UNAME_TEX_SZ (UNAME_TEX_COLS * sizeof(u64))
+#define UNAME_TEX_BEGIN (RAM_END - MAX_TWITCH_MESSAGES * UNAME_TEX_SZ) //0x20000 / 0x807E0000
+#define VTX_EACH_SZ (4 * sizeof(Vtx))
+#define VTX_PERMSG_SZ (6 * VTX_EACH_SZ)
+#define VTX_BEGIN (UNAME_TEX_BEGIN - MAX_TWITCH_MESSAGES * VTX_PERMSG_SZ) //0xA000 / 0x807D6000
+
+static inline u64 *GetMessageTexture(u16 m) {
+    return (u64*)(UNAME_TEX_BEGIN + m * UNAME_TEX_SZ);
+}
+
+static inline Vtx *GetMessageVerts(u16 m) {
+    return (Vtx*)(VTX_BEGIN + m * VTX_PERMSG_SZ);
+}
 
 static inline void SetupRectangleInternal(Vtx *verts, s16 basex, s16 basey, s16 basez){
     for(s32 i=0; i<4; ++i){
@@ -264,7 +257,7 @@ static void SetUpMessage(Entity *en, u16 m, TwitchMessage *msg) {
         SetupRectangleBadge(verts, basex + x, basey, basez);
         x += 18;
     }
-    if(msg->channel_badge){
+    if(msg->sub_badge){
         SetupRectangleBadge(verts + 4, basex + x, basey, basez);
         x += 18;
     }
@@ -316,6 +309,7 @@ static void SetUpMessage(Entity *en, u16 m, TwitchMessage *msg) {
 
 static void init(Entity *en, GlobalContext *globalCtx) {
     en->frames_fade = FRAMES_FADE_MAX;
+    en->override_icon = 0;
     bzero((void*)VTX_BEGIN, UNAME_TEX_BEGIN - VTX_BEGIN);
     //Create model matrix
     Matrix_Translate(en->actor.world.pos.x, en->actor.world.pos.y,
@@ -331,15 +325,21 @@ static void destroy(Entity *en, GlobalContext *globalCtx) {}
 
 static void update(Entity *en, GlobalContext *globalCtx){
     s32 numAlive = 0;
+    float fff = 255.0f / (float)en->frames_fade;
+    s32 fi = (s32)fff;
     for(s32 m=0; m<MAX_TWITCH_MESSAGES; ++m){
         TwitchMessage *msg = &twitch_msg_buf[m];
         if(msg->timer == 0xFF){
             msg->timer = 1;
             SetUpMessage(en, m, msg);
         }else if(msg->timer != 0){
-            ++msg->timer;
-            if(msg->timer >= en->frames_fade) msg->timer = 0;
-            msg->a = ((float)(en->frames_fade - msg->timer) / (float)en->frames_fade) * 255.0f;
+            s32 a = msg->a;
+            a -= fi;
+            if(a <= 7){ // RDP has 5-bit alpha, so alpha <= 7 becomes 0, so invisible, so just kill it now
+                msg->timer = msg->a = 0;
+            }else{
+                msg->a = a;
+            }
         }
         if(msg->timer != 0) ++numAlive;
     }
@@ -347,6 +347,18 @@ static void update(Entity *en, GlobalContext *globalCtx){
         en->frames_fade -= 3;
     }else if(numAlive < MSGS_ON_SCREEN_TARGET && en->frames_fade < FRAMES_FADE_MAX){
         en->frames_fade += 2;
+    }
+    //Debugging
+    const u16 holdbtns = BTN_R | BTN_CLEFT;
+    if((CTRLR_RAW & holdbtns) == holdbtns){
+        --globalCtx->csCtx.frames;
+        if((CTRLR_PRESS & BTN_DLEFT)){
+            en->override_icon = 0;
+        }else if((CTRLR_PRESS & BTN_DUP)){
+            ++en->override_icon;
+        }else if((CTRLR_PRESS & BTN_DDOWN) && en->override_icon > 1){
+            --en->override_icon;
+        }
     }
 }
 
@@ -423,37 +435,49 @@ static void draw(Entity *en, GlobalContext *globalCtx) {
         VertsAndTris(m, 16);
     }
     //Icon palettes
-    gDPSetTextureImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, badge_palettes);
+    gDPSetTextureImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, icon_palettes);
     gSPDisplayList(POLY_OPA_DISP++, icon_setup_dl);
-    //Badges
-    u8 badge = 1;
+    //Icons
+    u8 icon = 1;
     u8 last_tile = 0xFF;
-    for(s32 badgegroup=0; badgegroup<NUM_ICON_GROUPS; ++badgegroup){
+    for(s32 icongroup=0; icongroup<NUM_ICON_GROUPS; ++icongroup){
         gDPSetTextureImage(POLY_OPA_DISP++, G_IM_FMT_I, G_IM_SIZ_16b, 1, 
-            (u8*)badge_textures + ICON_SIZE * ICON_SIZE / 2 * ICONS_PER_GROUP * badgegroup);
-        gSPDisplayList(POLY_OPA_DISP++, &badge_tile_setup_dls[NUM_CMDS_PER_TILE_SETUP_DL*badgegroup]);
+            (u8*)icon_textures + ICON_SIZE * ICON_SIZE / 2 * ICONS_PER_GROUP * icongroup);
+        gSPDisplayList(POLY_OPA_DISP++, &icon_tile_setup_dls[NUM_CMDS_PER_TILE_SETUP_DL*icongroup]);
         for(s32 m=0; m<MAX_TWITCH_MESSAGES; ++m){
             TwitchMessage *msg = &twitch_msg_buf[m];
             if(msg->culled) continue;
             u8 global_badge = msg->global_badge;
-            u8 channel_badge = msg->channel_badge;
+            u8 sub_badge = msg->sub_badge;
             u8 emote = msg->emote + 1;
             u8 content = msg->flags >> 6;
-            bool draw_g = global_badge >= badge && global_badge < badge + ICONS_PER_GROUP;
-            bool draw_c = channel_badge != 0 && 
-                channel_badge+IDX_CHANNEL_START >= badge &&
-                channel_badge+IDX_CHANNEL_START < badge + ICONS_PER_GROUP;
+            bool draw_g = global_badge >= icon && global_badge < icon + ICONS_PER_GROUP;
+            bool draw_s = sub_badge != 0 && 
+                sub_badge+IDX_SUB_START >= icon &&
+                sub_badge+IDX_SUB_START < icon + ICONS_PER_GROUP;
             bool draw_e = content != 0 &&
-                emote+IDX_EMOTE_START >= badge &&
-                emote+IDX_EMOTE_START < badge + ICONS_PER_GROUP;
-            if(draw_g || draw_c || draw_e){
+                emote+IDX_EMOTE_START >= icon &&
+                emote+IDX_EMOTE_START < icon + ICONS_PER_GROUP;
+            if(en->override_icon != 0){
+                bool in_range = en->override_icon >= icon && en->override_icon < icon + ICONS_PER_GROUP;
+                draw_g = global_badge != 0 && in_range;
+                draw_s = sub_badge != 0 && in_range;
+                draw_e = content != 0 && in_range;
+            }
+            if(draw_g || draw_s || draw_e){
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, msg->a);
             }
-            if(draw_g) DrawTileNoRedundant(m,  0, &last_tile, global_badge - badge);
-            if(draw_c) DrawTileNoRedundant(m,  4, &last_tile, channel_badge+IDX_CHANNEL_START - badge);
-            if(draw_e) DrawTileNoRedundant(m, 20, &last_tile, emote+IDX_EMOTE_START - badge);
+            u8 tile_g = global_badge - icon;
+            u8 tile_s = sub_badge+IDX_SUB_START - icon;
+            u8 tile_e = emote+IDX_EMOTE_START - icon;
+            if(en->override_icon != 0){
+                tile_g = tile_s = tile_e = en->override_icon - icon;
+            }
+            if(draw_g) DrawTileNoRedundant(m,  0, &last_tile, tile_g);
+            if(draw_s) DrawTileNoRedundant(m,  4, &last_tile, tile_s);
+            if(draw_e) DrawTileNoRedundant(m, 20, &last_tile, tile_e);
         }
-        badge += ICONS_PER_GROUP;
+        icon += ICONS_PER_GROUP;
     }
 }
 

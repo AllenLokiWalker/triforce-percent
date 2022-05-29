@@ -12,7 +12,7 @@ INCFILES = \
 	../../textures/tw_msg_case2.i4.inc \
 	../../textures/tw_msg_case3.i4.inc \
 	../../textures/tw_msg_exclam.i4.inc \
-	../../textures/badges/badges.inc
+	../../textures/twitch/icons.inc
 
 default: copyactor
 

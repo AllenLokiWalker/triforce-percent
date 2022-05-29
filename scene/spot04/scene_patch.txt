@@ -1,4 +1,5 @@
 0
+B2 .short 0x00FF
 B803 .byte 4
 B9A0 .include spot04cspatch.bin
 D8F7 .byte 0x76
