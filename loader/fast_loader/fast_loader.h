@@ -24,7 +24,7 @@ typedef struct {
     u8 quantities; // 4: exclamation qty, 4: emote qty
     u8 emote;
     u8 global_badge;
-    u8 channel_badge;
+    u8 sub_badge;
     u8 dummy;
     u8 uname_encoded[19]; //25x 6-bit chars -> 19 bytes
     

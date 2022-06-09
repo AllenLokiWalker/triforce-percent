@@ -1,7 +1,7 @@
 include ../toolchain/make/main.mk
 
 SUBDIRS = \
-	badges
+	twitch
 
 TEXTURES = \
 	butterfly_bottle.rgba32.inc \
