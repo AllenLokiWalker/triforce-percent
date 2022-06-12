@@ -10,7 +10,7 @@ extern EntranceEntry Ending_scene_header04_entranceList[];
 extern LightSettings Ending_scene_header04_lightSettings[4];
 extern SurfaceType Ending_polygonTypes[];
 extern CollisionPoly Ending_polygons[];
-extern Vec3s Ending_vertices[130];
+extern Vec3s Ending_vertices[116];
 extern CollisionHeader Ending_collisionHeader;
 extern s32 FinaleCS[];
 extern s32 StaffRollFinaleCS[];

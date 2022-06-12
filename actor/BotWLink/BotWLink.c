@@ -106,6 +106,9 @@ typedef struct {
 	HairPhysTunicState physTunic[6];
 	void *physStates[NUM_PHYS];
 	s16 lastAnimFrame;
+	u8 lastRustle;
+	u8 firstRustle;
+	u8 rightStep, leftStep;
 } Entity;
 
 static void init(Entity *en, GlobalContext *globalCtx) {
@@ -115,6 +118,9 @@ static void init(Entity *en, GlobalContext *globalCtx) {
 		en->jointTable, en->morphTable, BOTWLINKMESH_NUM_LIMBS, ACTOR_SCALE, 1.0f);
     ActorShape_Init(&en->botw.actor.shape, 0.0f, ActorShadow_DrawFeet, 20.0f);
 	en->lastAnimFrame = -1;
+	en->lastRustle = 2;
+	en->firstRustle = 0;
+	en->rightStep = en->leftStep = 0;
 	//Physics initialization
 	s32 c = 0;
 	for(s32 i=0; i<4; ++i) en->physStates[c++] = &en->physSimple[i];
@@ -166,15 +172,71 @@ static void BotWLink_TimeWarpCallback(BotWActor *botw, GlobalContext *globalCtx)
 	if(de->shrinkTimer >= 95) Actor_Kill(&tw_actor);
 }
 
+static float sfxfreqscale = 1.0f;
+static u32 sfxreverbadd = 0;
+
+static void BotWLink_StepSfx(Entity *en, GlobalContext *globalCtx, u8 right){
+	static float step_stone_vol = 0.85f;
+	static float step_grass_vol = 1.0f; //0.6f;
+	u16 sfx;
+	float *vol;
+	u16 surface_sfx;
+	if(en->botw.actor.floorPoly != NULL){
+		surface_sfx = SurfaceType_GetSfx(&globalCtx->colCtx, en->botw.actor.floorPoly,
+			en->botw.actor.floorBgId) + SFX_FLAG;
+	}else{
+		surface_sfx = NA_SE_PL_WALK_GROUND;
+	}
+	if(surface_sfx == NA_SE_PL_WALK_GROUND || surface_sfx == NA_SE_PL_WALK_DIRT
+		|| surface_sfx == NA_SE_PL_WALK_GRASS){
+		sfx = NA_SE_EN_IRONNACK_DAMAGE;
+		vol = &step_grass_vol;
+	}else{
+		sfx = NA_SE_EN_GANON_TOKETU;
+		vol = &step_stone_vol;
+	}
+	if(right){
+		sfx += 2;
+		sfx += en->rightStep;
+		en->rightStep ^= 1;
+	}else{
+		sfx += en->leftStep;
+		en->leftStep ^= 1;
+	}
+	//if(Rand_ZeroOne() >= 0.5f) ++sfx;
+	Audio_PlaySoundGeneral(sfx, &en->botw.actor.projectedPos, 4,
+		&sfxfreqscale, vol, (f32*)&sfxreverbadd);
+}
+
+static void BotWLink_RustleSfx(Entity *en, GlobalContext *globalCtx){
+	static float rustle_vol = 1.0f; //0.4f;
+	++en->lastRustle;
+	if(en->lastRustle >= 3) en->lastRustle = 0;
+	u16 sfx = NA_SE_EN_TWINROBA_YOUNG_DAMAGE2 + en->lastRustle;
+	Audio_PlaySoundGeneral(sfx, &en->botw.actor.projectedPos, 4,
+		&sfxfreqscale, &rustle_vol, (f32*)&sfxreverbadd);
+}
+
+static void BotWLink_LookatitselfCallback(BotWActor *botw, GlobalContext *globalCtx){
+	Entity *en = (Entity*)botw;
+	s16 f = en->botw.skelAnime.curFrame;
+	if(f == en->lastAnimFrame) return;
+	if(f == 27 || f == 56){
+		BotWLink_RustleSfx(en, globalCtx);
+	}
+	en->lastAnimFrame = f;
+}
+
 static void BotWLink_WalkingCallback(BotWActor *botw, GlobalContext *globalCtx){
 	Entity *en = (Entity*)botw;
 	float ff = en->botw.skelAnime.curFrame;
 	s16 f = (s16)ff - (s16)(ff * (1.0f / 30.0f)) * 30;
 	if(f == en->lastAnimFrame) return;
 	if(f == 8 || f == 22){
-		
-	}else if(f == 10 || f == 24){
-		
+		BotWLink_StepSfx(en, globalCtx, f == 22);
+	}else if(f == 19 || (f == 2 && !en->firstRustle)){
+		BotWLink_RustleSfx(en, globalCtx);
+		en->firstRustle = 1;
 	}
 	en->lastAnimFrame = f;
 }
@@ -183,12 +245,10 @@ static void BotWLink_WalkEndCallback(BotWActor *botw, GlobalContext *globalCtx){
 	Entity *en = (Entity*)botw;
 	s16 f = en->botw.skelAnime.curFrame;
 	if(f == en->lastAnimFrame) return;
-	if(f == 7){
-		
-	}else if(f == 9){
-		
-	}else if(f == 16){
-		
+	if(f == 7 || f == 16){
+		BotWLink_StepSfx(en, globalCtx, f == 7);
+	}else if(f == 4 || f == 18){
+		BotWLink_RustleSfx(en, globalCtx);
 	}
 	en->lastAnimFrame = f;
 }
@@ -204,7 +264,7 @@ static const BotWCSActionDef ActionDefs[NACTIONDEFS] = {
 	/*2*/{&BotWLinkMeshModerate_walkAnim, -8.0f, NULL, 0.0f,
 			FLAG_SMOOTHROT, 0, 0, BotWLink_WalkingCallback},
 	/*3*/{&BotWLinkMeshLookatitselfAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
-			0, 0, 0, NULL},
+			0, 0, 0, BotWLink_LookatitselfCallback},
 	/*4*/{&BotWLinkMeshTurnleftAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,
 			FLAG_DELAYROT, 0, 0, NULL},
 	/*5*/{&BotWLinkMeshTurnrightAnim, -8.0f, &BotWLinkMeshIdleAnim, -8.0f,

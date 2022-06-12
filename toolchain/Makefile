@@ -8,7 +8,8 @@ yaz0/
 .PHONY: default clean $(SUBDIRS) z64convert/
 
 default: $(SUBDIRS) z64convert/ $(NOVL)
-	
+
+clean: export C_INCLUDE_PATH := ../ExtLib
 clean: yaz0/
 	rm -f $(NOVL)
 	$(MAKE) -C z64convert/ clean

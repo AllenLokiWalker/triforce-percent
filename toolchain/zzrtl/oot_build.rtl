@@ -1031,7 +1031,7 @@ void update_rom_pointer(char *file, int filesz, int romfilestart, int romfilesz)
 enum statics_patch_info {
     BOOT_LOAD_STATICS_PATCH_START = 0x000011A0,
 	PADMGR_CALL_STATICS_PATCH_START = 0x00B18598,
-	MAX_STATICDATA = 32
+	MAX_STATICDATA = 48
 };
 
 void mods(struct rom* rom) {

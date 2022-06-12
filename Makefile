@@ -39,7 +39,12 @@ rom-setup/: statics/ $(CONTENTS)
 	rm $*scene/11/title.png
 	rm $*scene/13/title.png
 	rm $*scene/16/title.png
+	rm $*scene/30/title.png
+	rm $*scene/31/title.png
+	rm $*scene/32/title.png
+	rm $*scene/33/title.png
 	rm $*scene/34/title.png
+	rm $*scene/44/title.png
 	rm $*scene/45/title.png
 	rm $*scene/46/title.png
 	rm $*scene/47/title.png
@@ -64,6 +69,17 @@ rom-setup/: statics/ $(CONTENTS)
 	rm $*scene/75/title.png
 	rm $*scene/78/title.png
 	rm $*scene/80/title.png
+	rm $*scene/82/title.png
+	rm $*scene/83/title.png
+	rm $*scene/87/title.png
+	rm $*scene/92/title.png
+	rm $*scene/94/title.png
+	rm $*scene/95/title.png
+	rm $*scene/96/title.png
+	rm $*scene/97/title.png
+	rm $*scene/98/title.png
+	rm $*scene/99/title.png
+	rm $*scene/100/title.png
 
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
