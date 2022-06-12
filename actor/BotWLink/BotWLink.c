@@ -234,7 +234,7 @@ static void BotWLink_WalkingCallback(BotWActor *botw, GlobalContext *globalCtx){
 	if(f == en->lastAnimFrame) return;
 	if(f == 8 || f == 22){
 		BotWLink_StepSfx(en, globalCtx, f == 22);
-	}else if(f == 19 || (f == 2 && !en->firstRustle)){
+	}else if(f == 18 || (f == 2 && !en->firstRustle)){
 		BotWLink_RustleSfx(en, globalCtx);
 		en->firstRustle = 1;
 	}
@@ -247,7 +247,7 @@ static void BotWLink_WalkEndCallback(BotWActor *botw, GlobalContext *globalCtx){
 	if(f == en->lastAnimFrame) return;
 	if(f == 7 || f == 16){
 		BotWLink_StepSfx(en, globalCtx, f == 7);
-	}else if(f == 4 || f == 18){
+	}else if(f == 3 || f == 18){
 		BotWLink_RustleSfx(en, globalCtx);
 	}
 	en->lastAnimFrame = f;
