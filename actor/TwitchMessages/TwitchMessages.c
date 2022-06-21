@@ -1,5 +1,6 @@
 #include "ootmain.h" 
 #include "../loader/fast_loader/fast_loader.h"
+#include "../loader/debugger/debugger.h"
 #include "../statics/statics.h"
 
 #include "../../textures/twitch/icons.inc"
@@ -125,6 +126,7 @@ typedef struct {
     Mtx modelrsp;
     u16 frames_fade;
     u8 override_icon;
+    u8 pause_enabled;
 } Entity;
 
 #define NUM_ICON_GROUPS ((NUM_ICONS + ICONS_PER_GROUP - 1) / ICONS_PER_GROUP)
@@ -310,6 +312,7 @@ static void SetUpMessage(Entity *en, u16 m, TwitchMessage *msg) {
 static void init(Entity *en, GlobalContext *globalCtx) {
     en->frames_fade = FRAMES_FADE_MAX;
     en->override_icon = 0;
+    en->pause_enabled = 0;
     bzero((void*)VTX_BEGIN, UNAME_TEX_BEGIN - VTX_BEGIN);
     //Create model matrix
     Matrix_Translate(en->actor.world.pos.x, en->actor.world.pos.y,
@@ -358,7 +361,14 @@ static void update(Entity *en, GlobalContext *globalCtx){
             ++en->override_icon;
         }else if((CTRLR_PRESS & BTN_DDOWN) && en->override_icon > 1){
             --en->override_icon;
+        }else if((CTRLR_PRESS & BTN_DRIGHT)){
+            en->pause_enabled ^= 1;
+            if(sIsLiveRun){
+                Debugger_Printf("Pause %d", en->pause_enabled);
+            }
         }
+    }else if(en->pause_enabled){
+        --globalCtx->csCtx.frames;
     }
 }
 
