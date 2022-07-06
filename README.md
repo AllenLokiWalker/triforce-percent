@@ -17,10 +17,10 @@ use this power for?
 
 - Install Linux (Ubuntu / other Debian derivative), either natively or through
 WSL/WSL2 if you're on Windows.
-- Make sure you got the Git submodules (ZAP2/ZAPD, novl, z64hdr). You will need
-`libpng-dev`, `libelf-dev`, and `libglib2.0-dev` for these to compile. You will
-also need `build-essential` in order to be able to compile anything for your
-local machine.
+- Make sure you got the Git submodules. The build system checks for some of
+them but not all. You will need `libpng-dev`, `libelf-dev`, and `libglib2.0-dev`
+for these to compile. You will also need `build-essential` in order to be able
+to compile anything for your local machine.
 - In your python3, install `pyserial` (not `serial`), `pillow`, and `psutil`.
 - Install the N64 toolchain from https://github.com/glankk/n64. **See below for
 more detailed instructions.**
@@ -43,7 +43,8 @@ make sure to `make clean`.
 
 This was tried on a mostly fresh native install of Ubuntu 20.04, and on Ubuntu
 20.04 through WSL2 on Windows 10. These are modifications/notes to the
-installation instructions on the glank N64 toolchain github page.
+installation instructions on the glank N64 toolchain github page, so you should
+be following those instructions but also looking at this info at the same time.
 
 - Install `libgmp-dev`.
 - `git clone` the repo instead of downloading the zip file (because of the next
@@ -88,7 +89,7 @@ DWANGOAC
 
 Scene Design \
 CDI-FAILS \
-\/ZEL\/ \
+ZEL \
 SAURAEN
 
 Music \
@@ -110,12 +111,9 @@ SAURAEN
 
 Animation \
 UNESAG \
-RANKAISIJA \
 SAURAEN \
+RANKAISIJA \
 AEROARTWORK
-
-Motion Actor \
-TBD
 
 Zelda (English Voice) \
 SAOIRSE
@@ -129,7 +127,7 @@ YUKLOJ
 Textures \
 CDI-FAILS \
 KIM-SUKLEY \
-\/ZEL\/ \
+ZEL \
 SAURAEN
 
 ### PROGRAM UNIT
@@ -139,16 +137,15 @@ SAURAEN \
 RANKAISIJA \
 Z64ME \
 MNGOLDENEAGLE \
-\/ZEL\/
+ZEL
 
 Game / Actor Patches \
 SAURAEN \
-MNGOLDENEAGLE \
-\/ZEL\/
+MNGOLDENEAGLE
 
 System Patches \
 SAURAEN \
-\/ZEL\/
+ZEL
 
 Cel Shading \
 SAURAEN \
@@ -181,17 +178,12 @@ Z64ME
 
 Partner Creators \
 SWANKYBOX \
-SCOTTFALCO \
 RETRO GAME MECHANICS EXPLAINED \
-TBD \
-TBD
+HARD4GAMES
 
 Partner Reactors \
-TBD \
-TBD \
-TBD \
-TBD \
-TBD
+HMK \
+TETRABITGAMING
 
 OST Published By \
 SIIVAGUNNER
@@ -203,13 +195,12 @@ SAVESTATE \
 SAURAEN
 
 Technical Support \
-\/ZEL\/ \
+ZEL \
 Z64ME \
 MZXRULES \
 THARO \
+WISEGUY \
 JACK WALKER
-
-(Scene TBD)
 
 Special Thanks \
 KAZE EMANUAR \
@@ -219,12 +210,9 @@ ARIANA ALMANDOZ
 Executive Producer \
 DWANGOAC
 
-
 ### PRESENTED AT
 
 Summer Games Done Quick 2022
-
-(Finale Scene)
 
 Assets, Toolchain, and Performance \
 Copyright (C) 2019-2022 \
@@ -233,3 +221,4 @@ The Triforce% Team
 The Legend of ZELDA: Ocarina of Time \
 Copyright (C) 1998 \
 Nintendo
+

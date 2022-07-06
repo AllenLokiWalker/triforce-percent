@@ -22,6 +22,8 @@ bootstrap/: loader/
 
 rom-setup/: statics/ $(CONTENTS)
 
+# All the deleting scene title images is because we need dmadata entries for custom
+# content for the romhack version.
 %project.zzrpl: %oot_1.0U_uncomp.z64 toolchain/zzrtl/oot_dump.rtl
 	cp toolchain/zzrtl/oot_dump.rtl $*oot_dump.rtl
 	$(ZZRTL) $*oot_dump.rtl

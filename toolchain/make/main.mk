@@ -30,6 +30,9 @@ endif
 ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/z64convert/wowlib/wow.h)","")
     $(error wowlib within z64convert not found; try git submodule update --init --recursive)
 endif
+ifeq ("$(wildcard $(PROJECT_DIR)/toolchain/ExtLib/zip/src/zip.h)","")
+    $(error zip within ExtLib not found; try git submodule update --init --recursive)
+endif
 
 include $(PROJECT_DIR)/local.mk
 
@@ -68,7 +71,6 @@ CCOPTFLAGS := -mips3 -mabi=32 -mtune=vr4300 -mfix4300 -mno-gpopt -fomit-frame-po
 	-Wbuiltin-declaration-mismatch -Wbuiltin-macro-redefined \
 	-G 0 -Os
 CCFLAGS := $(CCOPTFLAGS) -I $(MAININCLUDEDIR) -I $(Z64HDRMAINDIR) -I $(Z64HDRINCLUDEDIR)
-# loader and statics had -O2 instead of -Os
 
 LDFLAGS := --emit-relocs -L $(MAININCLUDEDIR) -T $(OOTMAINLD)
 OCFLAGS := -R .MIPS.abiflags -O binary

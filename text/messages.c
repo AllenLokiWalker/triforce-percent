@@ -15,11 +15,13 @@ DECLARE_MESSAGE(0x0B10, BOX_BLACK, POS_MIDDLE,
 )
 
 DECLARE_MESSAGE(0x0B11, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
     "What is that? I asked you for a" NEWLINE
     "bug!"
 )
 
 DECLARE_MESSAGE(0x0B12, BOX_BLACK, POS_MIDDLE,
+    UNSKIPPABLE
     "No, no! These are crawlies!" NEWLINE
     "Crawlies are dumb. I want a flying" NEWLINE
     "bug. You know, colorful, with wings." BOX_BREAK UNSKIPPABLE
