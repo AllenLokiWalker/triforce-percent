@@ -18,7 +18,7 @@ use this power for?
 - Install Linux (Ubuntu / other Debian derivative), either natively or through
 WSL/WSL2 if you're on Windows.
 - Make sure you got the Git submodules. The build system checks for some of
-them but not all. You will need `libpng-dev`, `libelf-dev`, and `libglib2.0-dev`
+them but not all. You will need `libpng-dev`, `libelf-dev`, `libglfw3-dev`, and `libglib2.0-dev`
 for these to compile. You will also need `build-essential` in order to be able
 to compile anything for your local machine.
 - In your python3, install `pyserial` (not `serial`), `pillow`, and `psutil`.
